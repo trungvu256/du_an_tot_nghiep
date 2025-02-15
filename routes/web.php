@@ -1,17 +1,11 @@
 <?php
 
-use App\Http\Controllers\Admin\BlogController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\ContactController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Admin\LoginController;
-use App\Http\Controllers\Admin\OrderController;
-use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\LoginController as WebLoginController;
-use App\Models\Category;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,13 +29,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('admin')->group(function () {
         Route::get('/main', [MainController::class, 'index'])->name('admin.main');
-        Route::prefix('category')->group(function () {
-            route::get('/',[CategoryController::class,'index'])->name('admin.cate');
-            route::get('/add',[CategoryController::class,'create'])->name('admin.create.cate');
-            route::post('/add',[CategoryController::class,'store'])->name('admin.store.cate');
-            route::get('/edit/{id}',[CategoryController::class,'edit'])->name('admin.edit.cate');
-            route::post('/update/{id}',[CategoryController::class,'update'])->name('admin.update.cate');
-            route::get('/delete/{id}',[CategoryController::class,'delete'])->name('admin.delete.cate');
         });
         Route::prefix('user')->group(function () {
             route::get('/',[UserController::class,'index'])->name('admin.user');
