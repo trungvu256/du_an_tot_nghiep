@@ -1,0 +1,1 @@
+<h4>Thank you for trusting and using our website here is the password reset <a href="{{ $route }}">Click Here</a>. Good Luck !</h4>
