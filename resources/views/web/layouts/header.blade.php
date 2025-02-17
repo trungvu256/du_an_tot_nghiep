@@ -1,4 +1,4 @@
-<title>Best Store a Ecommerce Online Shopping</title>
+<title>Ethereal Noir a Ecommerce Online Shopping</title>
 <!-- for-mobile-apps -->
 <base href="http://127.0.0.1:8000/">
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<meta name="keywords" content="Best Store Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+<meta name="keywords" content="Ethereal Noir Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
 Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
 		function hideURLbar(){ window.scrollTo(0,1); } </script>
@@ -32,7 +32,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <link rel="stylesheet" href="template/web/css/jquery.countdown.css" />
 <!-- //timer -->
 <!-- animation-effect -->
-<link href="template/web/css/animate.min.css" rel="stylesheet"> 
+<link href="template/web/css/animate.min.css" rel="stylesheet">
 <script src="template/web/js/wow.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
@@ -41,7 +41,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		let url = $(this).data('url');
 		$.ajax({
 			type: "GET",
-			url: url,       
+			url: url,
 			dataType: 'json',
 			success: function(data) {
 				if(data.code === 200) {
@@ -56,7 +56,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </script>
 <script src="template/web/js/checkout.js"></script>
 <script>
-	
+
 	paypal.Button.render({
 	  // Configure environment
 	  env: 'sandbox',
@@ -71,10 +71,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		color: 'gold',
 		shape: 'pill',
 	  },
-  
+
 	  // Enable Pay Now checkout flow (optional)
 	  commit: true,
-  
+
 	  // Set up a payment
 	  payment: function(data, actions) {
 		return actions.payment.create({
@@ -94,5 +94,5 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		});
 	  }
 	}, '#paypal-button');
-  
+
   </script>

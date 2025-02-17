@@ -4,7 +4,7 @@
             <div class="header-grid-left animated wow slideInLeft" data-wow-delay=".5s">
 
                 <ul>
-                    <li><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i><a href="">BestStore@gmail.com</a>
+                    <li><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i><a href="">vu.trungminh@vti.com.vn</a>
                     </li>
                     <li><i class="glyphicon glyphicon-earphone" aria-hidden="true"></i>0326966504</li>
                     <li><i class="glyphicon glyphicon-log-in" aria-hidden="true"></i><a href="/login">Login</a></li>
@@ -35,7 +35,7 @@
         </div>
         <div class="logo-nav">
             <div class="logo-nav-left animated wow zoomIn" data-wow-delay=".5s">
-                <h1><a href="/">Best Store <span>Shop anywhere</span></a></h1>
+                <h1><a href="/">Ethereal Noir <span>Shop anywhere</span></a></h1>
             </div>
             <div class="logo-nav-left1">
                 <nav class="navbar navbar-default">
