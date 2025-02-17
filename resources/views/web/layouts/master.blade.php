@@ -6,7 +6,7 @@
 </head>
 <body>
 <!-- header -->
-@include('web.layouts.menu')	
+{{-- @include('web.layouts.menu')	 --}}
 @yield('content')
 @include('web.layouts.footer')
 <!-- //footer -->
