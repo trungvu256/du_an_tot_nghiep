@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\LoginController as WebLoginController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,3 +66,11 @@ Route::post('/checkout',[HomeController::class,'checkoutPost'])->name('web.check
 //Login with Google
 Route::get('login/google', [HomeController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('login/google/callback', [HomeController::class, 'handleGoogleCallback']);
+
+// Admin 
+Route::get('/admin', [ProductController::class, 'list'])->name('admin.list');
+Route::get('/create/admin', [ProductController::class, 'create'])->name('admin.create');
+Route::post('/create/admin', [ProductController::class, 'store'])->name('admin.store');
+Route::delete('/delete/{id}',  [ProductController::class, 'destroy'])->name('admin.destroy');
+Route::get('/edit/admin/{id}', [ProductController::class, 'edit'])->name('admin.edit');
+Route::put('/edit/admin/{id}', [ProductController::class, 'update'])->name('admin.update');
