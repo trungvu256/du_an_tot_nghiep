@@ -19,7 +19,7 @@
                 @endif</a>
                 <a href="{{ route('logout') }}" class="btn btn-danger mt-3">Logout</a>
             </div>
-            
+
         </div>
 
 
@@ -50,7 +50,7 @@
                                 <p>List Category</p>
                             </a>
                         </li>
-                   
+
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -74,7 +74,7 @@
                                 <p>List Product</p>
                             </a>
                         </li>
-                   
+
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -97,7 +97,7 @@
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>List User</p>
                             </a>
-                        </li>            
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -115,7 +115,7 @@
                                 <p>List Order</p>
                             </a>
                         </li>
-                   
+
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -139,7 +139,7 @@
                                 <p>Add Blog</p>
                             </a>
                         </li>
-                   
+
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -157,10 +157,10 @@
                                 <p>List Contact</p>
                             </a>
                         </li>
-                   
+
                     </ul>
                 </li>
-                         
+
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
