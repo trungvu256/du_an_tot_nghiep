@@ -1,13 +1,14 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\MainController;
+use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\LoginController as WebLoginController;
-use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\CategoryController;
+use App\Models\Category;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('admin')->group(function () {
         Route::get('/main', [MainController::class, 'index'])->name('admin.main');
+        Route::prefix('category')->group(function () {
+            route::get('/',[CategoryController::class,'index'])->name('admin.cate');
+            route::get('/add',[CategoryController::class,'create'])->name('admin.create.cate');
+            route::post('/add',[CategoryController::class,'store'])->name('admin.store.cate');
+            route::get('/edit/{id}',[CategoryController::class,'edit'])->name('admin.edit.cate');
+            route::post('/update/{id}',[CategoryController::class,'update'])->name('admin.update.cate');
+            route::get('/delete/{id}',[CategoryController::class,'delete'])->name('admin.delete.cate');
         });
         Route::prefix('user')->group(function () {
             route::get('/',[UserController::class,'index'])->name('admin.user');
@@ -42,10 +50,20 @@ Route::middleware(['auth'])->group(function () {
 
         });
 
+        Route::prefix('product')->group(function () {
+            route::get('/',[ProductController::class,'index'])->name('admin.product');
+            route::get('/add',[ProductController::class,'create'])->name('admin.add.product');
+            route::post('/add',[ProductController::class,'store'])->name('admin.store.product');
+            route::get('/edit/{id}',[ProductController::class,'edit'])->name('admin.edit.product');
+            route::post('/update/{id}',[ProductController::class,'update'])->name('admin.update.product');
+            route::get('/delete/{id}',[ProductController::class,'delete'])->name('admin.delete.product');
+            Route::get('/del-image/{id}',[ProductController::class,'delete_img'])->name('admin.delete_img.product');
+        });
+
+    });
+
 
 });
-    //website
-route::get('/',[HomeController::class,'index'])->name('web.index');
 //Login web
 Route::get('/login',[WebLoginController::class,'index'])->name('web.login');
 Route::post('/login',[WebLoginController::class,'store'])->name('login.store.web');
@@ -66,11 +84,3 @@ Route::post('/checkout',[HomeController::class,'checkoutPost'])->name('web.check
 //Login with Google
 Route::get('login/google', [HomeController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('login/google/callback', [HomeController::class, 'handleGoogleCallback']);
-
-// Admin 
-Route::get('/admin', [ProductController::class, 'list'])->name('admin.list');
-Route::get('/create/admin', [ProductController::class, 'create'])->name('admin.create');
-Route::post('/create/admin', [ProductController::class, 'store'])->name('admin.store');
-Route::delete('/delete/{id}',  [ProductController::class, 'destroy'])->name('admin.destroy');
-Route::get('/edit/admin/{id}', [ProductController::class, 'edit'])->name('admin.edit');
-Route::put('/edit/admin/{id}', [ProductController::class, 'update'])->name('admin.update');
