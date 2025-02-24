@@ -68,9 +68,9 @@ Route::get('login/google', [HomeController::class, 'redirectToGoogle'])->name('l
 Route::get('login/google/callback', [HomeController::class, 'handleGoogleCallback']);
 
 // Admin 
-Route::get('/admin', [ProductController::class, 'list'])->name('admin.list');
-Route::get('/create/admin', [ProductController::class, 'create'])->name('admin.create');
-Route::post('/create/admin', [ProductController::class, 'store'])->name('admin.store');
-Route::delete('/delete/{id}',  [ProductController::class, 'destroy'])->name('admin.destroy');
-Route::get('/edit/admin/{id}', [ProductController::class, 'edit'])->name('admin.edit');
-Route::put('/edit/admin/{id}', [ProductController::class, 'update'])->name('admin.update');
+Route::get('/admin/product', [ProductController::class, 'list'])->name('admin.product.list');
+Route::get('/admin/product/create', [ProductController::class, 'create'])->name('admin.product.create');
+Route::post('/admin/product/create', [ProductController::class, 'store'])->name('admin.product.store');
+Route::delete('/admin/product/delete/{id}',  [ProductController::class, 'destroy'])->name('admin.product.destroy');
+Route::get('/admin/product/edit/{id}', [ProductController::class, 'edit'])->name('admin.product.edit');
+Route::put('/admin/product/edit/{id}', [ProductController::class, 'update'])->name('admin.product.update');
