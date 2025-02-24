@@ -29,7 +29,11 @@
                     <td>{{ $product->category->name }}</td>
                     <td>
                         <a href="{{ route('admin.edit.product',$product->id) }}" class="btn btn-warning">Edit</a>
-                        <a href="{{ route('admin.delete.product',$product->id) }}" class="btn btn-danger">Delete</a>
+                        <form action="{{route('admin.delete.product', $product->id)}}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn muốn xóa')"><i class="bi bi-x-square"></i>Delete</button>
+                        </form>
                     </td>
                 </tr>
             @endforeach
