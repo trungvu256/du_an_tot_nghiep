@@ -27,12 +27,12 @@
                 <label>Category</label>
                 <select name="category_id" class="form-control" id="">
                     @foreach ($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>     
                     @endforeach
-
+                        
                 </select>
             </div>
-
+          
             <div class="form-group">
                 <label>Cover Image</label>
                 <input type="file" name="img" class="form-control" >
@@ -56,7 +56,7 @@
             <div class="form-group">
                 <label>Price Discount Product</label>
                 <input type="text" name="price_sale" class="form-control" placeholder="Enter Discount Product">
-            </div>
+            </div>     
             <div class="from-group">
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
