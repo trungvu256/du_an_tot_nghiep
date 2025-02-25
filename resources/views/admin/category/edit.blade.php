@@ -2,6 +2,7 @@
 @section('content')
     <form action="{{ route('admin.update.cate',$categoryedit->id) }}" method="POST">
         @csrf
+        
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -27,9 +28,13 @@
                 <label> Category</label>
                 <select name="parent_id" class="form-control" id="">
                     <option value="0">Category</option>      
-                    @foreach ($categories as $category)
-                    <option {{ $category->id == $categoryedit->parent_id ? "selected" : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
-                    @endforeach         
+                    @foreach($categories as $category)
+        <option 
+            value="{{ $category->id }}" 
+            {{ isset($categoryedit) && $categoryedit->parent_id == $category->id ? 'selected' : '' }}>
+            {{ $category->name }}
+        </option>
+    @endforeach        
                    
                 </select>
             </div>
