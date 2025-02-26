@@ -20,6 +20,7 @@ class CreateCommentsTable extends Migration
             $table->bigInteger('id_blog')->unsigned();
             $table->foreign('id_blog')->references('id')->on('blogs')
             ->onDelete('cascade');
+            $table->boolean('is_hidden')->default(false);
             $table->timestamps();
         });
     }

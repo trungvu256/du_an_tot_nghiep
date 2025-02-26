@@ -1,4 +1,5 @@
 @extends('admin.layout.master')
+
 @section('content')
     <table class="table">
         @if (session('success'))
@@ -8,52 +9,26 @@
                 </ul>
             </div>
         @endif
+
         <thead>
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Action</th>
+                <th>#</th>
+                <th>Name</th>
+                <th>Action</th>
             </tr>
         </thead>
+
         <tbody>
-            <?php
-            showCategories($categories);
-            ?>
+            @foreach ($categories as $category)
+                <tr>
+                    <td>{{ $category['id'] }}</td>
+                    <td>{{ $category['name'] }}</td>
+                    <td>
+                        <a href="{{ url('admin/category/edit/' . $category['id']) }}" class="btn btn-warning">Edit</a>
+                        <a href="{{ url('admin/category/delete/' . $category['id']) }}" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            @endforeach
         </tbody>
     </table>
 @endsection
-
-<?php
-
-function showCategories($categories, $parent_id = 0, $char = '')
-{
-
-    foreach ($categories as $key => $item) {
-        if ($item->parent_id == $parent_id) {
-            
-            echo '
-            <tr>
-                <th scope="row">' .
-                $key.
-                '</th>
-                <td>' .
-                $char .
-                $item->name .
-                '</td>   
-                <td>
-                <a href="admin/category/delete/' .
-                $item->id .
-                '"  class="btn btn-danger">Delete</a>
-                <a href="admin/category/edit/' .
-                $item->id .
-                '" class="btn btn-warning">Edit</a>
-                </td>       
-            </tr>    
-            ';
-            unset($categories[$key]);
-            showCategories($categories, $item->id, $char . '--');
-        }
-    }
-}
-?>
-

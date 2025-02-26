@@ -1,84 +1,133 @@
-<?php 
+<?php
+
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Images;
+use App\Models\Product;
+use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Category;
-use App\Models\Product;
-use iLLminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
-class ProductController extends Controller 
+class ProductController extends Controller
 {
-    public function list() 
+    public function index()
     {
-        $categories = Category::all();
-        // $categories_2 = Category::whereNotNull('parent_id')->get();
-        $products = DB::table('products')->join('categories', 'products.category_id', '=', 'categories.id')->select('products.*', 'categories.name as category_name')->get();
-        return view('admin.products.list', compact('products', 'categories'));
-        
+        $title = "List Category";
+        $products = Product::paginate(4);
+        return view('admin.product.index', compact('title', 'products'));
     }
-    public function create() 
+    public function create()
     {
+        $title = 'Add Product';
         $categories = Category::all();
-        return view('admin.products.create', compact('categories'));
+        return view('admin.product.add', compact('title', 'categories'));
     }
-
     public function store(Request $request)
     {
-        
-        $data = $request->all(); 
-        $data = $request->except('img');
+
+        $request->validate([
+            'name' => 'required',
+            'content' => 'required',
+            'price' => 'required'
+        ]);
         if ($request->hasFile('img')) {
-            $path_img = $request->file('img')->store('images', 'public');
-            $data['img'] = $path_img;
+            $file = $request->file('img');
+            $imageName = time() . '-' . $file->getClientOriginalName();
+            $file->move("cover", $imageName);
+            $product = new Product([
+                'name' => $request->name,
+                'description' => $request->description,
+                'content' => $request->content,
+                'price' => $request->price,
+                'price_sale' => $request->price_sale,
+                'slug' => Str::slug($request->name),
+                'category_id' => $request->category_id,
+                'img' => $imageName,
+                'views'=> 0
+            ]);
+            $product->save();
         }
-        Product::query()->create($data);
-        return redirect()->route('admin.list')->with('message', 'Sản phẩm đã được thêm thành công.');
-    }
 
-    public function destroy ($id) 
-    {
-        $product = DB::table('products')->where('id', $id)->first();
-
-        if($product) {
-            $path_img = $product->img;
-             
-            if($path_img && Storage::exists($path_img)) {
-                Storage::delete($path_img);
+        if ($request->hasFile('images')) {
+            $files = $request->file('images');
+            foreach ($files as $file) {
+                $imageName = time() . '-' . $file->getClientOriginalName();
+                $request['product_id'] = $product->id;
+                $request['image'] = $imageName;
+                $file->move("images", $imageName);
+                Images::create($request->all());
             }
-            DB::table('products')->where('id', $id)->delete();
-            return redirect()->route('admin.list')->with('message', 'Sản phẩm đã được xóa');
         }
-        return redirect()->route('admin.list')->with('error', 'Sản phẩm xóa không thành công');
+        return redirect()->route('admin.product')->with('success', 'Created Product Succeessful');
     }
-   
     public function edit($id)
     {
-        $product = Product::query()->find($id);
+        $title = 'Edit Product';
         $categories = Category::all();
-        return view('admin.products.edit', compact('product', 'categories'));
+        $product = Product::find($id);
+        return view('admin.product.edit', compact('product', 'categories', 'title'));
     }
-
     public function update(Request $request, $id)
-{
-    $product = Product::find($id);
-
-    if ($product) {
-        $data = $request->except('img');
+    {
+        $product = Product::find($id);
         if ($request->hasFile('img')) {
-            if ($product->img && Storage::disk('public')->exists($product->img)) {
-                Storage::disk('public')->delete($product->img);
+            $file = $request->file('img');
+            $imageName = time() . '-' . $file->getClientOriginalName();
+            $file->move("cover", $imageName);
+            if (File::exists('cover/' . $product->img)) {
+                File::delete('cover/' . $product->img);
             }
-            $data['img'] = $request->file('img')->store('images', 'public');
         } else {
-            $data['img'] = $product->img;
+            $imageName = $product->img;
         }
-        $product->update($data);
-
+        $product->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'content' => $request->content,
+            'price' => $request->price,
+            'price_sale' => $request->price_sale,
+            'slug' => Str::slug($request->name),
+            'category_id' => $request->category_id,
+            'img' => $imageName,
+            'views'=>0
+        ]);
+        if ($request->hasFile('images')) {
+            $files = $request->file('images');
+            foreach ($files as $file) {
+                $imageName = time() . '-' . $file->getClientOriginalName();
+                $request['product_id'] = $product->id;
+                $request['image'] = $imageName;
+                $file->move("images", $imageName);
+                Images::create($request->all());
+               
+            }
+        }
+        return redirect()->route('admin.product')->with('success', 'Updated Product Succeessful');
     }
-    return redirect()->route('admin.list')->with('message', 'Cập nhật thành công!');
-}
-
+    public function delete($id)
+    {
+        $product = Product::find($id);
+        if (File::exists('cover/' . $product->img)) {
+            File::delete('cover/' . $product->img);
+        }
+        $images = Images::where('product_id', $product->id)->get();
+        foreach ($images as $image) {
+            if (File::exists('images/' . $image->image)) {
+                File::delete('images/' . $image->image);
+            }
+        }
+        $product->delete();
+        Images::where('product_id', $product->id)->delete();
+        return back();
+    }
+    public function delete_img($id) {
+        $delete_img = Images::find($id);
+        if (File::exists('images/' . $delete_img->image)) {
+            File::delete('images/' . $delete_img->image);
+        }
+        $delete_img->delete();
+        return back();
+    }
 }
