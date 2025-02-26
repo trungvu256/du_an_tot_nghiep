@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CommentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Admin\LoginController;
@@ -50,6 +51,11 @@ Route::middleware(['auth'])->group(function () {
 
         });
 
+        //Bình luận 
+        Route::prefix('comment')->group(function () {
+            route::get('/',[CommentController::class, 'index'])->name('admin.comment');
+            route::patch('/showhidden/{id}', [CommentController::class, 'Hide_comments'])->name('admin.comment.showhidden');
+         });
         Route::prefix('product')->group(function () {
             route::get('/',[ProductController::class,'index'])->name('admin.product');
             route::get('/add',[ProductController::class,'create'])->name('admin.add.product');
