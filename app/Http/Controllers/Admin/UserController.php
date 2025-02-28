@@ -2,7 +2,4 @@
 
 namespace App\Http\Controllers\Admin;
 
-class UserController
-{
-
-}
+class UserController {}
