@@ -12,18 +12,18 @@ class CreateCommentsTable extends Migration
      * @return void
      */
     public function up()
-    {
-        Schema::create('comments', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->text('comment');
-            $table->bigInteger('id_blog')->unsigned();
-            $table->foreign('id_blog')->references('id')->on('blogs')
-            ->onDelete('cascade');
-            $table->boolean('is_hidden')->default(false);
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('comments', function (Blueprint $table) {
+        $table->id();
+        $table->string('name');
+        $table->text('comment');
+        $table->bigInteger('id_blog')->unsigned()->nullable(); // Cho phép NULL
+        $table->foreign('id_blog')->references('id')->on('blogs')->onDelete('cascade');
+        $table->boolean('is_hidden')->default(false);
+        $table->timestamps();
+    });
+}
+
 
     /**
      * Reverse the migrations.

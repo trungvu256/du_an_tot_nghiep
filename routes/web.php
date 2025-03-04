@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CommentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\MainController;
@@ -55,6 +54,8 @@ Route::middleware(['auth'])->group(function () {
         //Bình luận 
         Route::prefix('comment')->group(function () {
             route::get('/',[CommentController::class, 'index'])->name('admin.comment');
+            route::get('/create',[CommentController::class, 'create'])->name('create.comment');
+            route::post('/store',[CommentController::class, 'store'])->name('store.comment');
             route::patch('/showhidden/{id}', [CommentController::class, 'Hide_comments'])->name('admin.comment.showhidden');
          });
         Route::prefix('product')->group(function () {
@@ -65,16 +66,6 @@ Route::middleware(['auth'])->group(function () {
             route::post('/update/{id}',[ProductController::class,'update'])->name('admin.update.product');
             route::delete('/delete/{id}',[ProductController::class,'delete'])->name('admin.delete.product');
             Route::get('/del-image/{id}',[ProductController::class,'delete_img'])->name('admin.delete_img.product');
-        });
-
-        // Blog
-        Route::prefix('blog')->group(function () {
-            route::get('/',[BlogController::class,'index'])->name('admin.blog');
-            route::get('/add',[BlogController::class,'create'])->name('admin.create.blog');
-            route::post('/add',[BlogController::class,'store'])->name('admin.store.blog');
-            route::get('/edit/{id}',[BlogController::class,'edit'])->name('admin.edit.blog');
-            route::post('/update/{id}',[BlogController::class,'update'])->name('admin.update.blog');
-            route::delete('/delete/{id}',[BlogController::class,'delete'])->name('admin.delete.blog');
         });
 
     });
