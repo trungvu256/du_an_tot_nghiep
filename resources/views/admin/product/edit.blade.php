@@ -2,77 +2,133 @@
 @section('content')
 <form action="{{ route('admin.update.product', $product->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
-    @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
+    
     @if (session('success'))
-    <div class="alert alert-success">
-        <ul>
-            <li>{{ session('success') }}</li>
-        </ul>
-    </div>
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
     @endif
+    
     <div class="card-body">
-        <div class="form-group">
+        <div class="mb-3">
             <label>Name Product</label>
-            <input type="text" value="{{ $product->name }}" name="name" class="form-control"
-                placeholder="Enter Name Product">
+            <input type="text" name="name" class="form-control" value="{{ old('name', $product->name) }}">
+            @error('name')<span class="text-danger">{{ $message }}</span>@enderror
         </div>
-        <div class="form-group">
+        
+        <div class="mb-3">
             <label>Category</label>
-            <select name="category_id" class="form-control" id="">
+            <select name="category_id" class="form-control">
+                <option value="">-- Select Category --</option>
                 @foreach ($categories as $category)
-                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
                 @endforeach
-
             </select>
+            @error('category_id')<span class="text-danger">{{ $message }}</span>@enderror
         </div>
 
-        <div class="form-group">
-            <label>Cover Image</label>
+        <div class="mb-3">
+            <label>Image</label>
             <input type="file" name="img" class="form-control">
-            <br>
-            <img src="cover/{{ $product->img }}" width="50px" alt="">
+            @if ($product->img)
+                <br><img src="{{ asset('cover/' . $product->img) }}" width="100px" alt="Cover Image">
+            @endif
+           
         </div>
-        <div class="form-group">
-            <label>Additional Image</label>
+        
+        <div class="mb-3">
+            <label>Additional Images</label>
             <input type="file" name="images[]" multiple class="form-control">
             <br>
-            @foreach ($product->images as $item)
-            <a href="{{ route('admin.delete_img.product',$item->id) }}"> X <img src="images/{{ $item->image }}" width="50px" alt=""></a>
-            @endforeach
+            @if($product->images && count($product->images) > 0)
+                @foreach ($product->images as $item)
+                    <a href="{{ route('admin.delete_img.product', $item->id) }}" class="text-danger"> X </a>
+                    <img src="{{ asset('images/' . $item->image) }}" width="100px" alt="Additional Image">
+                @endforeach
+            @else
+                <p>No additional images available.</p>
+            @endif
+            @error('images')<span class="text-danger">{{ $message }}</span>@enderror
         </div>
-        <div class="form-group">
+        
+        <div class="mb-3">
             <label>Description</label>
-            <textarea name="description" class="form-control ckeditor" id="" cols="6"
-                rows="6">{{ $product->description }}</textarea>
+            <textarea name="description" class="form-control ckeditor">{{ old('description', $product->description) }}</textarea>
+            @error('description')<span class="text-danger">{{ $message }}</span>@enderror
         </div>
-        <div class="form-group">
+        
+        <div class="mb-3">
             <label>Content</label>
-            <textarea name="content" class="form-control ckeditor" id="" cols="6"
-                rows="6">{{ $product->content }}</textarea>
+            <textarea name="content" class="form-control ckeditor">{{ old('content', $product->content) }}</textarea>
+            @error('content')<span class="text-danger">{{ $message }}</span>@enderror
         </div>
-        <div class="form-group">
-            <label>Price Product</label>
-            <input type="text" value="{{ $product->price }}" name="price" class="form-control"
-                placeholder="Enter Price Product">
+        
+        <div class="mb-3">
+            <label>Price</label>
+            <input type="number" name="price" class="form-control" value="{{ old('price', $product->price) }}" required min="0">
+            @error('price')<span class="text-danger">{{ $message }}</span>@enderror
         </div>
-        <div class="form-group">
-            <label>Price Discount Product</label>
-            <input type="text" value="{{ $product->price_sale }}" name="price_sale" class="form-control"
-                placeholder="Enter Discount Product">
+        
+        <div class="mb-3">
+            <label>Discount Price</label>
+            <input type="number" name="price_sale" class="form-control" value="{{ old('price_sale', $product->price_sale) }}" min="0">
+            @error('price_sale')<span class="text-danger">{{ $message }}</span>@enderror
         </div>
-        <div class="from-group">
+        
+        <div class="mb-3">
+            <label>Variants</label>
+            <div id="variant-container">
+                @foreach ($product->variants as $index => $variant)
+                    <div class="variant-item mt-2">
+                        <input type="text" name="variants[{{ $index }}][name]" class="form-control" value="{{ old("variants.$index.name", $variant->name) }}" >
+                        @error("variants.$index.name")
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+
+                        <input type="number" name="variants[{{ $index }}][price]" class="form-control mt-2" value="{{ old("variants.$index.price", $variant->price) }}" >
+                        @error("variants.$index.price")
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+
+                        <button type="button" class="btn btn-danger btn-sm mt-2 remove-variant">Remove</button>
+                    </div>
+                @endforeach
+            </div>
+            <button type="button" class="btn btn-success mt-2" id="add-variant">Add Variant</button>
+        </div>
+        
+        <div class="mb-3 mt-3">
             <button type="submit" class="btn btn-primary">Update</button>
         </div>
-
     </div>
-    <!-- /.card-body -->
 </form>
+
+<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('description');
+    CKEDITOR.replace('content');
+</script>
+<script>
+    let variantIndex = {{ count($product->variants) }};
+    document.getElementById('add-variant').addEventListener('click', function () {
+        let container = document.getElementById('variant-container');
+        let newVariant = document.createElement('div');
+        newVariant.classList.add('variant-item', 'mt-2');
+        newVariant.innerHTML = `
+            <input type="text" name="variants[${variantIndex}][name]" class="form-control" placeholder="Variant Name" >
+            <input type="number" name="variants[${variantIndex}][price]" class="form-control mt-2" placeholder="Variant Price" >
+            <button type="button" class="btn btn-danger btn-sm mt-2 remove-variant">Remove</button>
+        `;
+        container.appendChild(newVariant);
+        variantIndex++;
+    });
+
+    document.getElementById('variant-container').addEventListener('click', function (e) {
+        if (e.target.classList.contains('remove-variant')) {
+            e.target.parentElement.remove();
+        }
+    });
+</script>
 @endsection

@@ -1,7 +1,8 @@
 @extends('admin.main')
 @section('content')
 
-<h2>Danh sách sản phẩm đã xóa</h2>
+<a href="{{route('admin.product')}}" class="btn btn-danger"><i class="bi bi-arrow-left"></i>
+</a>
 
 <table class="table">
     @if (session('success'))
@@ -30,13 +31,14 @@
             <td>
                 <form action="{{ route('admin.restore.product', $product->id) }}" method="POST" style="display:inline;">
                     @csrf
-                    <button type="submit" class="btn btn-success">Khôi phục</button>
+                    <button type="submit" class="btn btn-success"><i class="bi bi-arrow-clockwise"></i>
+                    </button>
                 </form>
 
                 <form action="{{ route('admin.foreDelete.product', $product->id) }}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Xóa vĩnh viễn?')">Xóa vĩnh viễn</button>
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Xóa vĩnh viễn?')"><i class="bi bi-x-circle-fill"></i></button>
                 </form>
             </td>
         </tr>
