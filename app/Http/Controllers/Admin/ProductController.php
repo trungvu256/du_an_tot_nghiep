@@ -169,7 +169,7 @@ class ProductController extends Controller
             'variants.*.price.min' => 'Giá biến thể không được nhỏ hơn 0.',
         ]);
         $product = Product::findOrFail($id);
-        $imageName = $product->img; // Giữ nguyên ảnh cũ nếu không có ảnh mới
+        $imageName = $product->img; 
 
         if ($request->hasFile('img')) {
             $file = $request->file('img');
@@ -181,7 +181,6 @@ class ProductController extends Controller
             }
         }
         
-        // Cập nhật sản phẩm, đảm bảo ảnh giữ nguyên nếu không đổi
         $product->update([
             'name' => $request->name,
             'description' => $request->description,
@@ -190,7 +189,7 @@ class ProductController extends Controller
             'price_sale' => $request->price_sale,
             'slug' => Str::slug($request->name),
             'category_id' => $request->category_id,
-            'img' => $imageName, // Ảnh chính vẫn giữ nguyên nếu không thay đổi
+            'img' => $imageName,
             'views' => $product->views
         ]);
         
