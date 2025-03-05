@@ -68,6 +68,9 @@ Route::middleware(['auth'])->group(function () {
             route::post('/update/{id}',[ProductController::class,'update'])->name('admin.update.product');
             route::delete('/delete/{id}',[ProductController::class,'delete'])->name('admin.delete.product');
             Route::get('/del-image/{id}',[ProductController::class,'delete_img'])->name('admin.delete_img.product');
+            route::get('/admin/product/trash', [ProductController::class, 'trash'])->name('admin.trash.product');
+            route::post('/admin/product/restore/{id}', [ProductController::class, 'restore'])->name('admin.restore.product');
+            route::delete('/admin/product/fore-delete/{id}', [ProductController::class, 'foreDelete'])->name('admin.foreDelete.product');
         });
 
         // Blog

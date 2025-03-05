@@ -1,6 +1,6 @@
 @extends('admin.main')
 @section('content')
-
+<a href="{{ route('admin.trash.product') }}" class="btn btn-warning">Sản phẩm đã xóa</a>
 <form action="{{ route('admin.product') }}" method="GET">
     <div class="row">
         <div class="col-md-3">
@@ -24,6 +24,13 @@
 </form>
 
 <table class="table mt-3">
+    @if (session('success'))
+    <div class="alert alert-success">
+        <ul>
+            <li>{{ session('success') }}</li>
+        </ul>
+    </div>
+    @endif
     <thead>
         <tr>
             <th>#</th>
@@ -63,6 +70,7 @@
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn muốn xóa?')">Xóa</button>
                 </form>
+
             </td>
         </tr>
         @endforeach

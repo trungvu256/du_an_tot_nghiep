@@ -148,19 +148,36 @@ class ProductController extends Controller
     }
     public function delete($id)
     {
-        $product = Product::find($id);
-        if (File::exists('cover/' . $product->img)) {
-            File::delete('cover/' . $product->img);
-        }
-        $images = Images::where('product_id', $product->id)->get();
-        foreach ($images as $image) {
-            if (File::exists('images/' . $image->image)) {
-                File::delete('images/' . $image->image);
-            }
-        }
+        $product = Product::findOrFail($id);
+
         $product->delete();
         Images::where('product_id', $product->id)->delete();
-        return back();
+
+        return back()->with('success', 'Sản phẩm đã được đưa vào thùng rác');
+
+    }
+    public function trash() {
+        $products = Product::onlyTrashed()->paginate(10);
+        return view('admin.product.trash',compact('products'));
+    }
+    public function restore($id) {
+        $product= Product::withTrashed()->findOrFail($id);
+        $product->restore();
+
+        return redirect()->route('admin.trash.product')->with('success', ' Sản phẩm đã được phục hồi');
+    }
+
+    public function foreDelete($id) {
+        $product = Product::withTrashed()->findOrFail($id);
+
+        if($product->img && file_exists(public_path('cover/' . $product->img))){
+            unlink(public_path('cover/' . $product->img));
+        }
+
+        $product->forceDelete();
+
+        return redirect()->route('admin.trash.product')->with('success', 'Sản phẩm đã được xóa');
+
     }
     public function delete_img($id)
     {

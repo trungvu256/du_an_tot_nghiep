@@ -15,7 +15,8 @@ class CreateVariantsTable extends Migration
     {
         Schema::create('variants', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('cascade');
+            $table -> unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->string('name');
             $table->decimal('price', 10 , 2);
             $table->timestamps();
