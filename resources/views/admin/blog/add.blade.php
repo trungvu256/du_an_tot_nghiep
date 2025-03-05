@@ -5,46 +5,59 @@
     @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
-            @foreach ($errors ->all() as $error)
-            <li>
-              {{$error}}  
-            </li>  
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>  
             @endforeach
         </ul>
     </div>
-        
     @endif
-@csrf
-<div class="mb-3">
-    <label for="form-lable">Author</label>
-    <input type="text" name="author" id="" class="form-control">
-</div>
 
-<div class="mb-3">
-    <label for="form-lable">Title</label>
-    <input type="text" name="title" id="" class="form-control">
-</div>
+    @csrf
+    <div class="mb-3">
+        <label for="author">Author</label>
+        <input type="text" name="author" class="form-control">
+    </div>
 
-<div class="mb-3">
-    <label for="form-lable">Image</label>
-    <input type="file" name="image" id="" class="form-control">
-</div>
+    <div class="mb-3">
+        <label for="title">Title</label>
+        <input type="text" name="title" class="form-control">
+    </div>
 
-<div class="mb-3">
-    <label for="form-lable">Preview</label>
-    <textarea type="text" name="preview" id="" class="form-control"></textarea>
-</div>
+    <div class="mb-3">
+        <label for="image">Image</label>
+        <input type="file" name="image" class="form-control">
+    </div>
 
-<div class="mb-3">
-    <label for="form-lable">Content</label>
-    <textarea type="text" name="content" id="" class="form-control"></textarea>
-</div>
+    <div class="mb-3">
+        <label for="preview">Preview</label>
+        <textarea name="preview" id="preview" class="form-control"></textarea>
+    </div>
 
-<div class="mb-3">
-    <label for="form-lable">Slug</label>
-    <input type="text" name="slug" id="" class="form-control" required>
-</div>
+    <div class="mb-3">
+        <label for="content">Content</label>
+        <textarea name="content" id="content" class="form-control"></textarea>
+    </div>
 
-<button class="btn btn-primary">Submit</button>
+    <div class="mb-3">
+        <label for="slug">Slug</label>
+        <input type="text" name="slug" class="form-control" required>
+    </div>
+
+    <button class="btn btn-primary">Submit</button>
 </form>
+
+@endsection
+
+@section('scripts')
+<script src="https://cdn.ckeditor.com/4.25.1/full/ckeditor.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        if (document.getElementById("preview")) {
+            CKEDITOR.replace("preview");
+        }
+        if (document.getElementById("content")) {
+            CKEDITOR.replace("content");
+        }
+    });
+</script>
 @endsection

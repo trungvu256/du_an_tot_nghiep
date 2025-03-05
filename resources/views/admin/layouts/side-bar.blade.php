@@ -91,7 +91,24 @@
                         </ul>
                     </div>
                 </li> <!-- end Dashboard Menu -->
-
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse"
+                        role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Blog</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarDashboards">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.create.blog') }}" class="nav-link" data-key="t-analytics">
+                                    Add blog </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.blog') }}" class="nav-link" data-key="t-crm">
+                                    Blog </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li> <!-- end Dashboard Menu -->
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse"
                         role="button" aria-expanded="false" aria-controls="sidebarDashboards">
