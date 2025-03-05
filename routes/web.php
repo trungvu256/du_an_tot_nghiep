@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CommentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\MainController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\LoginController as WebLoginController;
 use App\Models\Category;
+use App\Http\Controllers\Web\WebController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,8 +70,23 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/del-image/{id}',[ProductController::class,'delete_img'])->name('admin.delete_img.product');
         });
 
+        // Blog
+        Route::prefix('blog')->group(function () {
+            route::get('/',[BlogController::class,'index'])->name('admin.blog');
+            route::get('/add',[BlogController::class,'create'])->name('admin.create.blog');
+            route::post('/add',[BlogController::class,'store'])->name('admin.store.blog');
+            route::get('/edit/{id}',[BlogController::class,'edit'])->name('admin.edit.blog');
+            route::post('/update/{id}',[BlogController::class,'update'])->name('admin.update.blog');
+            route::delete('/delete/{id}',[BlogController::class,'delete'])->name('admin.delete.blog');
+        });
+
     });
 
+    Route::prefix('user')->group(function () {
+        Route::get('/cart',[WebController::class, 'cart'])->name('user.cart');
+        Route::get('/checkout',[WebController::class, 'checkout'])->name('user.checkout');
+        Route::get('/contact',[WebController::class, 'contact'])->name('user.contact');
+    });
 
 });
 //Login web
@@ -92,3 +109,8 @@ Route::post('/checkout',[HomeController::class,'checkoutPost'])->name('web.check
 //Login with Google
 Route::get('login/google', [HomeController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('login/google/callback', [HomeController::class, 'handleGoogleCallback']);
+
+//web
+Route::get('/', [WebController::class, 'index'])->name('web.home');
+Route::get('/shop', [WebController::class, 'shop'])->name('web.shop');
+Route::get('/shop/detail', [WebController::class, 'shopdetail'])->name('web.shop-detail');
