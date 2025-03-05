@@ -8,16 +8,40 @@ use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Variant;
 use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $title = "List Category";
-        $products = Product::paginate(4);
-        return view('admin.product.index', compact('title', 'products'));
+        $query = Product::with('variants', 'category');
+    
+        $selectedVariant = null;
+    
+        if ($request->has('variant_name') && !empty($request->variant_name)) {
+            $query->whereHas('variants', function ($q) use ($request) {
+                $q->where('name', 'LIKE', '%' . $request->variant_name . '%');
+            });
+            $selectedVariant = Variant::where('name', 'LIKE', '%' . $request->variant_name . '%')->first();
+        }
+
+        if ($request->has('min_price') && $request->has('max_price')) {
+            $minPrice = $request->min_price;
+            $maxPrice = $request->max_price;
+    
+            $query->whereHas('variants', function ($q) use ($minPrice, $maxPrice) {
+                $q->whereBetween('price', [$minPrice, $maxPrice]);
+            });
+        }
+    
+        $products = $query->paginate(10);
+        $variantNames = Variant::distinct()->pluck('name');
+    
+        return view('admin.product.index', compact('products', 'variantNames', 'selectedVariant'));
     }
+    
+
     public function create()
     {
         $title = 'Add Product';
@@ -29,8 +53,14 @@ class ProductController extends Controller
 
         $request->validate([
             'name' => 'required',
+            'category_id' => 'required|exists:categories,id',
+            'img' => 'required',
             'content' => 'required',
-            'price' => 'required'
+            'price' => 'required|numeric|min:0',
+            'price_sale' => 'nullable|numeric|min:0',
+            'variants.*.name' => 'required|string|max:255',
+            'variants.*.price' => 'required|numeric|min:0',
+            'description' => 'required|string',
         ]);
         if ($request->hasFile('img')) {
             $file = $request->file('img');
@@ -45,7 +75,7 @@ class ProductController extends Controller
                 'slug' => Str::slug($request->name),
                 'category_id' => $request->category_id,
                 'img' => $imageName,
-                'views'=> 0
+                'views' => 0
             ]);
             $product->save();
         }
@@ -60,7 +90,18 @@ class ProductController extends Controller
                 Images::create($request->all());
             }
         }
-        return redirect()->route('admin.product')->with('success', 'Created Product Succeessful');
+        
+        if($request->has('variants')) {
+            foreach($request->variants as $variant) {
+                Variant::create([
+                'product_id' => $product->id,
+                'name' => $variant['name'],
+                'price' => $variant['price'],
+                
+                ]);
+            }
+        }
+        return redirect()->route('admin.product')->with('success', 'Created Product Successfully');
     }
     public function edit($id)
     {
@@ -91,7 +132,7 @@ class ProductController extends Controller
             'slug' => Str::slug($request->name),
             'category_id' => $request->category_id,
             'img' => $imageName,
-            'views'=>0
+            'views' => 0
         ]);
         if ($request->hasFile('images')) {
             $files = $request->file('images');
@@ -101,7 +142,6 @@ class ProductController extends Controller
                 $request['image'] = $imageName;
                 $file->move("images", $imageName);
                 Images::create($request->all());
-               
             }
         }
         return redirect()->route('admin.product')->with('success', 'Updated Product Succeessful');
@@ -122,7 +162,8 @@ class ProductController extends Controller
         Images::where('product_id', $product->id)->delete();
         return back();
     }
-    public function delete_img($id) {
+    public function delete_img($id)
+    {
         $delete_img = Images::find($id);
         if (File::exists('images/' . $delete_img->image)) {
             File::delete('images/' . $delete_img->image);
