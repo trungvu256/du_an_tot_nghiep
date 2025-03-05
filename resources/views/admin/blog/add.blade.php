@@ -51,13 +51,7 @@
 @section('scripts')
 <script src="https://cdn.ckeditor.com/4.25.1/full/ckeditor.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        if (document.getElementById("preview")) {
-            CKEDITOR.replace("preview");
-        }
-        if (document.getElementById("content")) {
-            CKEDITOR.replace("content");
-        }
-    });
+    CKEDITOR.replace('preview');
+    CKEDITOR.replace('content');
 </script>
 @endsection
