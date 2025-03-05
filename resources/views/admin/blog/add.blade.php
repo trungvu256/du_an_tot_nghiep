@@ -45,11 +45,7 @@
 
     <button class="btn btn-primary">Submit</button>
 </form>
-
-@endsection
-
-@section('scripts')
-<script src="https://cdn.ckeditor.com/4.25.1/full/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
 <script>
     CKEDITOR.replace('preview');
     CKEDITOR.replace('content');
