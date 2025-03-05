@@ -1,6 +1,6 @@
 @extends('admin.main')
 @section('content')
-<a href="{{ route('admin.trash.product') }}" class="btn btn-warning">Sản phẩm đã xóa</a>
+<a href="{{ route('admin.trash.product') }}" class="btn btn-warning"><i class="bi bi-trash"></i></a>
 <form action="{{ route('admin.product') }}" method="GET">
     <div class="row">
         <div class="col-md-3">
@@ -14,7 +14,7 @@
             </select>
         </div>
         <div class="col-md-3">
-            <input type="number" name="variant_price" class="form-control" placeholder="Nhập giá biến thể" value="{{ request('variant_price') }}">
+            <input type="number" name="variant_price" class="form-control" placeholder="Nhập giá" value="{{ request('variant_price') }}">
         </div>
         <div class="col-md-3">
             <button type="submit" class="btn btn-primary">Lọc</button>
@@ -64,11 +64,11 @@
                 @endif
             </td>
             <td>
-                <a href="{{ route('admin.edit.product', $product->id) }}" class="btn btn-warning">Sửa</a>
+                <a href="{{ route('admin.edit.product', $product->id) }}" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
                 <form action="{{ route('admin.delete.product', $product->id) }}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn muốn xóa?')">Xóa</button>
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn muốn xóa?')"><i class="bi bi-x-circle-fill"></i></button>
                 </form>
 
             </td>
