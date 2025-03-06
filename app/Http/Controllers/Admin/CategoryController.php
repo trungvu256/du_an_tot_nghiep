@@ -6,6 +6,7 @@
     use Illuminate\Support\Str;
     use Illuminate\Http\Request;
     use App\Http\Controllers\Controller;
+use Illuminate\Validation\Rule;
 
     class CategoryController extends Controller
     {
@@ -25,16 +26,28 @@
         public function store(Request $request)
         {
             $request->validate([
-                'name' => 'required',
-
+                'name' => [
+                    'required',
+                    'string',
+                    'min:3',
+                    'max:50',
+                    'regex:/^[a-zA-Z\s]+$/',
+                    Rule::unique('categories', 'name'),
+                ],
+            ], [
+                'name.required' => 'Tên không được để trống.',
+                'name.string' => 'Tên phải là một chuỗi ký tự.',
+                'name.min' => 'Tên phải có ít nhất :min ký tự.',
+                'name.max' => 'Tên không được vượt quá :max ký tự.',
+                'name.regex' => 'Tên chỉ được chứa chữ cái và khoảng trắng.',
+                'name.unique' => 'Tên danh mục đã tồn tại, vui lòng chọn tên khác.',
             ]);
             Category::create([
                 'name' => $request->name,
-                'parent_id' => $request->parent_id,
-                'active' => $request->active,
-                'slug' => Str::slug($request->name),
+                
+                
             ]);
-            return back()->with('success', 'Created category succesfully !');
+            return redirect()->route('admin.cate')->with('success', 'thêm mới thành công');
         }
         public function delete($id)
         {

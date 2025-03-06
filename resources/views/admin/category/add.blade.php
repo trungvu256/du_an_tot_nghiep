@@ -2,15 +2,6 @@
 @section('content')
 <form action="{{ route('admin.store.cate') }}" method="POST">
     @csrf
-    @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
     @if (session('success'))
     <div class="alert alert-success">
         <ul>
@@ -22,6 +13,9 @@
         <div class="form-group">
             <label>Name Category</label>
             <input type="text" name="name" class="form-control" placeholder="Enter category name">
+            @error('name')
+            <span class="text-danger">{{ $message }}</span>
+            @enderror
         </div>
         <div class="form-group">
             <label> Category</label>
