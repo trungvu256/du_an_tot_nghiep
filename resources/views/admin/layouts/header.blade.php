@@ -67,11 +67,13 @@
                                 src="{{ asset('template/admin/velzon/assets/images/users/avatar-1.jpg') }}"
                                 alt="Header Avatar">
                             <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">@if(Auth::check())
-                                    {{Auth::user()->name}}
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
+                                    @if (Auth::check())
+                                        {{ Auth::user()->name }}
                                     @endif
                                 </span>
-                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">Founder</span>
+                                <span
+                                    class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">{{ Auth::user()->is_admin ? 'admin' : 'user' }}</span>
                             </span>
                         </span>
                     </button>
@@ -101,7 +103,7 @@
                         <a class="dropdown-item" href="auth-lockscreen-basic.html"><i
                                 class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span
                                 class="align-middle">Lock screen</span></a>
-                        <a class="dropdown-item" href="{{route('logout')}}"><i
+                        <a class="dropdown-item" href="{{ route('logout') }}"><i
                                 class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span
                                 class="align-middle" data-key="t-logout">Logout</span></a>
                     </div>

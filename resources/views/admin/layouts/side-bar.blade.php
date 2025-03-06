@@ -39,7 +39,7 @@
                                 <a href="{{ route('admin.create.user') }}" class="nav-link">Add User</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.user') }}" class="nav-link">User</a>
+                                <a href="{{ route('admin.user') }}" class="nav-link">List User</a>
                             </li>
                         </ul>
                     </div>
@@ -56,7 +56,7 @@
                                 <a href="{{ route('admin.create.cate') }}" class="nav-link">Add Category</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.cate') }}" class="nav-link">Category</a>
+                                <a href="{{ route('admin.cate') }}" class="nav-link">List Category</a>
                             </li>
                         </ul>
                     </div>
@@ -73,7 +73,7 @@
                                 <a href="{{ route('admin.add.product') }}" class="nav-link">Add Product</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.product') }}" class="nav-link">Product</a>
+                                <a href="{{ route('admin.product') }}" class="nav-link">List Product</a>
                             </li>
                         </ul>
                     </div>
@@ -107,7 +107,7 @@
                                 <a href="{{ route('admin.create.blog') }}" class="nav-link">Add Blog</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.blog') }}" class="nav-link">Blog</a>
+                                <a href="{{ route('admin.blog') }}" class="nav-link">List Blog</a>
                             </li>
                         </ul>
                     </div>

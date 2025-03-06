@@ -36,30 +36,32 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->group(function () {
         Route::get('/main', [MainController::class, 'index'])->name('admin.main');
         Route::prefix('category')->group(function () {
-            route::get('/',[CategoryController::class,'index'])->name('admin.cate');
-            route::get('/add',[CategoryController::class,'create'])->name('admin.create.cate');
-            route::post('/add',[CategoryController::class,'store'])->name('admin.store.cate');
-            route::get('/edit/{id}',[CategoryController::class,'edit'])->name('admin.edit.cate');
-            route::post('/update/{id}',[CategoryController::class,'update'])->name('admin.update.cate');
-            route::get('/delete/{id}',[CategoryController::class,'delete'])->name('admin.delete.cate');
+            route::get('/', [CategoryController::class, 'index'])->name('admin.cate');
+            route::get('/add', [CategoryController::class, 'create'])->name('admin.create.cate');
+            route::post('/add', [CategoryController::class, 'store'])->name('admin.store.cate');
+            route::get('/edit/{id}', [CategoryController::class, 'edit'])->name('admin.edit.cate');
+            route::post('/update/{id}', [CategoryController::class, 'update'])->name('admin.update.cate');
+            route::get('/delete/{id}', [CategoryController::class, 'delete'])->name('admin.delete.cate');
         });
         Route::prefix('user')->group(function () {
-            route::get('/',[UserController::class,'index'])->name('admin.user');
-            route::get('/add',[UserController::class,'create'])->name('admin.create.user');
-            route::post('/add',[UserController::class,'store'])->name('admin.store.user');
-            route::get('/edit/{id}',[UserController::class,'edit'])->name('admin.edit.user');
-            route::post('/update/{id}',[UserController::class,'update'])->name('admin.update.user');
-            route::get('/delete/{id}',[UserController::class,'delete'])->name('admin.delete.user');
-
+            route::get('/', [UserController::class, 'index'])->name('admin.user');
+            route::get('/add', [UserController::class, 'create'])->name('admin.create.user');
+            route::post('/add', [UserController::class, 'store'])->name('admin.store.user');
+            route::get('/edit/{id}', [UserController::class, 'edit'])->name('admin.edit.user');
+            route::post('/update/{id}', [UserController::class, 'update'])->name('admin.update.user');
+            route::get('/delete/{id}', [UserController::class, 'delete'])->name('admin.delete.user');
+            route::get('/admin/users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
+            route::put('/admin/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
+            route::get('/admin/users/{id}/delete', [UserController::class, 'destroy'])->name('admin.delete.user');
         });
 
-        //Bình luận 
+        //Bình luận
         Route::prefix('comment')->group(function () {
-            route::get('/',[CommentController::class, 'index'])->name('admin.comment');
-            route::get('/create',[CommentController::class, 'create'])->name('create.comment');
-            route::post('/store',[CommentController::class, 'store'])->name('store.comment');
+            route::get('/', [CommentController::class, 'index'])->name('admin.comment');
+            route::get('/create', [CommentController::class, 'create'])->name('create.comment');
+            route::post('/store', [CommentController::class, 'store'])->name('store.comment');
             route::patch('/showhidden/{id}', [CommentController::class, 'Hide_comments'])->name('admin.comment.showhidden');
-         });
+        });
         Route::prefix('product')->group(function () {
             route::get('/',[ProductController::class,'index'])->name('admin.product');
             route::get('/add',[ProductController::class,'create'])->name('admin.add.product');
@@ -76,39 +78,37 @@ Route::middleware(['auth'])->group(function () {
 
         // Blog
         Route::prefix('blog')->group(function () {
-            route::get('/',[BlogController::class,'index'])->name('admin.blog');
-            route::get('/add',[BlogController::class,'create'])->name('admin.create.blog');
-            route::post('/add',[BlogController::class,'store'])->name('admin.store.blog');
-            route::get('/edit/{id}',[BlogController::class,'edit'])->name('admin.edit.blog');
-            route::post('/update/{id}',[BlogController::class,'update'])->name('admin.update.blog');
-            route::delete('/delete/{id}',[BlogController::class,'delete'])->name('admin.delete.blog');
+            route::get('/', [BlogController::class, 'index'])->name('admin.blog');
+            route::get('/add', [BlogController::class, 'create'])->name('admin.create.blog');
+            route::post('/add', [BlogController::class, 'store'])->name('admin.store.blog');
+            route::get('/edit/{id}', [BlogController::class, 'edit'])->name('admin.edit.blog');
+            route::post('/update/{id}', [BlogController::class, 'update'])->name('admin.update.blog');
+            route::delete('/delete/{id}', [BlogController::class, 'delete'])->name('admin.delete.blog');
         });
-
     });
 
     Route::prefix('user')->group(function () {
-        Route::get('/cart',[WebController::class, 'cart'])->name('user.cart');
-        Route::get('/checkout',[WebController::class, 'checkout'])->name('user.checkout');
-        Route::get('/contact',[WebController::class, 'contact'])->name('user.contact');
+        Route::get('/cart', [WebController::class, 'cart'])->name('user.cart');
+        Route::get('/checkout', [WebController::class, 'checkout'])->name('user.checkout');
+        Route::get('/contact', [WebController::class, 'contact'])->name('user.contact');
     });
-
 });
 //Login web
-Route::get('/login',[WebLoginController::class,'index'])->name('web.login');
-Route::post('/login',[WebLoginController::class,'store'])->name('login.store.web');
-Route::get('/register',[WebLoginController::class,'register'])->name('web.register');
-Route::post('/register',[WebLoginController::class,'registerStore'])->name('web.register.store');
-Route::get('/logout',[WebLoginController::class,'logout'])->name('web.logout');
+Route::get('/login', [WebLoginController::class, 'index'])->name('web.login');
+Route::post('/login', [WebLoginController::class, 'store'])->name('login.store.web');
+Route::get('/register', [WebLoginController::class, 'register'])->name('web.register');
+Route::post('/register', [WebLoginController::class, 'registerStore'])->name('web.register.store');
+Route::get('/logout', [WebLoginController::class, 'logout'])->name('web.logout');
 
 //Forget Password
-Route::get('/forget',[WebLoginController::class,'forget'])->name('web.forget');
-Route::post('/forget',[WebLoginController::class,'postForget'])->name('web.post.forget');
-Route::get('/getPass',[WebLoginController::class,'getPass'])->name('web.getPass');
-Route::post('/getPass/{id}',[WebLoginController::class,'savePass'])->name('web.getPass.post');
+Route::get('/forget', [WebLoginController::class, 'forget'])->name('web.forget');
+Route::post('/forget', [WebLoginController::class, 'postForget'])->name('web.post.forget');
+Route::get('/getPass', [WebLoginController::class, 'getPass'])->name('web.getPass');
+Route::post('/getPass/{id}', [WebLoginController::class, 'savePass'])->name('web.getPass.post');
 
 //Checkout
-Route::get('/checkout',[HomeController::class,'checkout'])->name('web.checkout');
-Route::post('/checkout',[HomeController::class,'checkoutPost'])->name('web.checkout.post');
+Route::get('/checkout', [HomeController::class, 'checkout'])->name('web.checkout');
+Route::post('/checkout', [HomeController::class, 'checkoutPost'])->name('web.checkout.post');
 
 //Login with Google
 Route::get('login/google', [HomeController::class, 'redirectToGoogle'])->name('login.google');

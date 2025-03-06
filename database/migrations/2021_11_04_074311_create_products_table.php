@@ -21,7 +21,7 @@ class CreateProductsTable extends Migration
             $table->integer('price');
             $table->integer('price_sale')->nullable();
             $table->string('image');
-            $table->string('sex'); // Giới tính
+            $table->string('gender'); // Giới tính
             $table->string('brand'); // Thương hiệu
             $table->string('longevity'); // Độ lưu hương
             $table->string('concentration'); // Nồng độ

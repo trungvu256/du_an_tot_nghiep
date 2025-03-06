@@ -9,81 +9,143 @@
     @endif
 
     <div class="card-body">
-        <div class="mb-3">
-            <label>Name Product</label>
-            <input type="text" name="name" class="form-control" value="{{ old('name') }}" >
-            @error('name')
+        <div class="row mb-3">
+            <div class="col-6">
+                <label>Product Name</label>
+                <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="Enter product name">
+                @error('name')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="col-6">
+                <label>Category</label>
+                <select name="category_id" class="form-control">
+                    <option value="">-- Select Category --</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('category_id')
                 <span class="text-danger">{{ $message }}</span>
-            @enderror
+                @enderror
+            </div>
         </div>
-        <div class="mb-3">
-            <label>Category</label>
-            <select name="category_id" class="form-control" >
-                <option value="">-- Select Category --</option>
-                @foreach ($categories as $category)
-                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                        {{ $category->name }}
-                    </option>
-                @endforeach
-            </select>
-            @error('category_id')
-            <span class="text-danger">{{ $message }}</span>
-            @enderror
+        <div class="row mb-3">
+            <div class="col-6">
+                <label>Image</label>
+                <input type="file" name="img" class="form-control" placeholder="Choose image">
+                @error('img')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="col-6">
+                <label>Description Images</label>
+                <input type="file" name="images[]" multiple class="form-control" placeholder="Choose additional images">
+                @error('images')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
         </div>
-        <div class="mb-3">
-            <label>Cover Image</label>
-            <input type="file" name="img" class="form-control" >
-            @error('img')
+        <div class="row mb-3">
+            <div class="col-6">
+                <label>Price</label>
+                <input type="number" name="price" class="form-control" value="{{ old('price') }}" placeholder="Enter price">
+                @error('price')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="col-6">
+                <label>Discount Price</label>
+                <input type="number" name="price_sale" class="form-control" value="{{ old('price_sale') }}" min="0" placeholder="Enter discount price">
+                @error('price_sale')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-6">
+                <label>Brand</label>
+                <input type="text" name="brand" class="form-control" value="{{ old('brand') }}" placeholder="Enter brand">
+                @error('brand')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="col-6">
+                <label>Longevity</label>
+                <input type="text" name="longevity" class="form-control" value="{{ old('longevity') }}" placeholder="Enter longevity">
+                @error('longevity')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-6">
+                <label>Concentration</label>
+                <input type="text" name="concentration" class="form-control" value="{{ old('concentration') }}" placeholder="Enter concentration">
+                @error('concentration')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="col-6">
+                <label>Origin</label>
+                <input type="text" name="origin" class="form-control" value="{{ old('origin') }}" placeholder="Enter origin">
+                @error('origin')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-6">
+                <label>Style</label>
+                <input type="text" name="style" class="form-control" value="{{ old('style') }}" placeholder="Enter style">
+                @error('style')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="col-6">
+                <label>Fragrance Group</label>
+                <input type="text" name="fragrance_group" class="form-control" value="{{ old('fragrance_group') }}" placeholder="Enter fragrance group">
+                @error('fragrance_group')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-6">
+                <label>Gender</label>
+                <select name="gender" class="form-control">
+                    <option value="nam">Nam</option>
+                    <option value="nữ">Nữ</option>
+                    <option value="unisex">Unisex</option>
+                </select>
+                @error('category_id')
                 <span class="text-danger">{{ $message }}</span>
-            @enderror
+                @enderror
+            </div>
+            <div class="col-6">
+                <label>Description</label>
+                <textarea name="description" class="form-control ckeditor" placeholder="Enter description">{{ old('description') }}</textarea>
+                @error('description')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
         </div>
-        <div class="mb-3">
-            <label>Additional Images</label>
-            <input type="file" name="images[]" multiple class="form-control">
-            @error('images')
-                <span class="text-danger">{{ $message }}</span>
-            @enderror
-        </div>
-        <div class="mb-3">
-            <label>Description</label>
-            <textarea name="description" class="form-control ckeditor">{{ old('description') }}</textarea>
-            @error('description')
-                <span class="text-danger">{{ $message }}</span>
-            @enderror
-        </div>
-        <div class="mb-3">
-            <label>Content</label>
-            <textarea name="content" class="form-control ckeditor">{{ old('content') }}</textarea>
-            @error('content')
-                <span class="text-danger">{{ $message }}</span>
-            @enderror
-        </div>
-        <div class="mb-3">
-            <label>Price</label>
-            <input type="number" name="price" class="form-control" value="{{ old('price') }}" >
-            @error('price')
-                <span class="text-danger">{{ $message }}</span>
-            @enderror
-        </div>
-        <div class="mb-3">
-            <label>Discount Price</label>
-            <input type="number" name="price_sale" class="form-control" value="{{ old('price_sale') }}" min="0">
-            @error('price_sale')
-                <span class="text-danger">{{ $message }}</span>
-            @enderror
-        </div>
+
+        <!-- Variants -->
         <div class="mb-3">
             <label>Variants</label>
             <div id="variant-container">
                 @if(old('variants'))
                     @foreach(old('variants') as $index => $variant)
                         <div class="variant-item mt-2">
-                            <input type="text" name="variants[{{ $index }}][name]" class="form-control" value="{{ $variant['name'] }}" >
+                            <input type="text" name="variants[{{ $index }}][name]" class="form-control" value="{{ $variant['name'] }}" placeholder="Enter variant name">
                             @error("variants.{$index}.name")
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
 
-                            <input type="number" name="variants[{{ $index }}][price]" class="form-control mt-2" value="{{ $variant['price'] }}" >
+                            <input type="number" name="variants[{{ $index }}][price]" class="form-control mt-2" value="{{ $variant['price'] }}" placeholder="Enter variant price">
                             @error("variants.{$index}.price")
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -93,12 +155,12 @@
                     @endforeach
                 @else
                     <div class="variant-item">
-                        <input type="text" name="variants[0][name]" class="form-control" >
+                        <input type="text" name="variants[0][name]" class="form-control" placeholder="Enter variant name">
                         @error('variants.0.name')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
 
-                        <input type="number" name="variants[0][price]" class="form-control mt-2" >
+                        <input type="number" name="variants[0][price]" class="form-control mt-2" placeholder="Enter variant price">
                         @error('variants.0.price')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
