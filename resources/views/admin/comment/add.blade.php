@@ -1,4 +1,4 @@
-@extends('admin.main')
+@extends('admin.layouts.main')
 @section('content')
 <form action="{{route('store.comment')}} " method="POST">
     @csrf
@@ -59,7 +59,7 @@
         <button type="submit" class="btn btn-primary">Gửi bình luận</button>
     </div>
 
-   
+
 </div>
 </form>
 <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>

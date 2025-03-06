@@ -1,4 +1,4 @@
-@extends('admin.main')
+@extends('admin.layouts.main')
 @section('content')
 
 <a href="{{route('admin.product')}}" class="btn btn-danger"><i class="bi bi-arrow-left"></i>

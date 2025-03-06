@@ -34,7 +34,7 @@ Route::prefix('admin')->group(function () {
 Route::middleware(['auth'])->group(function () {
 
     Route::prefix('admin')->group(function () {
-        Route::get('/main', [MainController::class, 'index'])->name('admin.main');
+        Route::get('/', [MainController::class, 'index'])->name('admin.dashboard');
         Route::prefix('category')->group(function () {
             route::get('/', [CategoryController::class, 'index'])->name('admin.cate');
             route::get('/add', [CategoryController::class, 'create'])->name('admin.create.cate');

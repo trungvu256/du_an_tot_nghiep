@@ -28,6 +28,13 @@
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
 
+                <!--dashboard-->
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="{{ route('admin.dashboard') }}" data-bs-toggle="" role="button">
+                        <i class="ri-file-list-line"></i> <span>Dashboard</span>
+                    </a>
+                </li>
+
                 <!-- User -->
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#menuUser" data-bs-toggle="collapse" role="button">
@@ -117,3 +124,4 @@
     </div>
     <div class="sidebar-background"></div>
 </div>
+
