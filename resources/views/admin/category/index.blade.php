@@ -14,7 +14,8 @@
                     <span>{{ $category->name }}</span>
                 </div>
                 <div class="actions">
-                    <a href="{{ route('admin.edit.cate', $category->id) }}" class="btn btn-warning btn-sm"><i class="bi bi-arrow-clockwise"></i></a>
+                    <a href="{{ route('admin.edit.cate', $category->id) }}" class="btn btn-warning btn-sm"><i
+                        class="bi bi-pencil-square"></i>g</a>
                     <form action="{{ route('admin.delete.cate', $category->id) }}" method="POST" onsubmit="return confirm('Đưa vào thùng rác');">
                         @csrf
                         @method('DELETE')
@@ -32,7 +33,8 @@
                                 <span>— {{ $child->name }}</span>
                             </div>
                             <div class="actions">
-                                <a href="{{ route('admin.edit.cate', $child->id) }}" class="btn btn-warning btn-sm"><i class="bi bi-arrow-clockwise"></i></a>
+                                <a href="{{ route('admin.edit.cate', $child->id) }}" class="btn btn-warning btn-sm"><i
+                                    class="bi bi-pencil-square"></i></a>
                                 <form action="{{ route('admin.delete.cate', $child->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
