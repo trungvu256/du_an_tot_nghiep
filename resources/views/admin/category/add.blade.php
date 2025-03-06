@@ -24,17 +24,6 @@
                 <?php showCategories($categories) ?>
             </select>
         </div>
-        <div class="form-group">
-            <label for="">Active Category</label>
-            <div class="form-check">
-                <input type="checkbox" name="active" value="1" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Active</label>
-            </div>
-            <div class="form-check">
-                <input type="checkbox" name="active" checked value="0" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">No Active</label>
-            </div>
-        </div>
         <div class="from-group">
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
