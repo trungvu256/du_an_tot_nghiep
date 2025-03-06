@@ -14,11 +14,11 @@
                     <span>{{ $category->name }}</span>
                 </div>
                 <div class="actions">
-                    <a href="{{ route('admin.edit.cate', $category->id) }}" class="btn btn-warning btn-sm">Sửa</a>
+                    <a href="{{ route('admin.edit.cate', $category->id) }}" class="btn btn-warning btn-sm"><i class="bi bi-arrow-clockwise"></i></a>
                     <form action="{{ route('admin.delete.cate', $category->id) }}" method="POST" onsubmit="return confirm('Đưa vào thùng rác');">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                        <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-x-circle-fill"></i></button>
                     </form>
                 </div>
             </li>
@@ -32,11 +32,13 @@
                                 <span>— {{ $child->name }}</span>
                             </div>
                             <div class="actions">
-                                <a href="{{ route('admin.edit.cate', $child->id) }}" class="btn btn-warning btn-sm">Sửa</a>
+                                <a href="{{ route('admin.edit.cate', $child->id) }}" class="btn btn-warning btn-sm"><i class="bi bi-arrow-clockwise"></i></a>
                                 <form action="{{ route('admin.delete.cate', $child->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Đưa vào thùng rác');">Xóa</button>
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Đưa vào thùng rác');"><i class="bi bi-x-circle-fill"></i></button>
+                                    
+
                                 </form>
                             </div>
                         </li>
