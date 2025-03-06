@@ -12,7 +12,7 @@
         public function index()
         {
 
-            $categories = Category::all();
+            $categories = Category::whereNull('parent_id')->with('children')->get();
             $title = "List Category";
             return view('admin.category.index', compact('title', 'categories'));
         }
