@@ -124,6 +124,14 @@ class ProductController extends Controller
     return redirect()->route('admin.product')->with('success', 'Tạo sản phẩm thành công.');
 }
 
+    public function show($id)
+    {
+        $title = 'Detail Product';
+        $categories = Category::all();
+        $product = Product::with('category')->find($id);
+        return view('admin.product.show', compact('product', 'categories', 'title'));
+    }
+
     public function edit($id)
     {
         $title = 'Edit Product';
@@ -131,6 +139,7 @@ class ProductController extends Controller
         $product = Product::find($id);
         return view('admin.product.edit', compact('product', 'categories', 'title'));
     }
+
     public function update(Request $request, $id)
     {
         $request->validate([

@@ -64,6 +64,7 @@ Route::middleware(['auth'])->group(function () {
             route::get('/',[ProductController::class,'index'])->name('admin.product');
             route::get('/add',[ProductController::class,'create'])->name('admin.add.product');
             route::post('/add',[ProductController::class,'store'])->name('admin.store.product');
+            route::get('/show/{id}',[ProductController::class,'show'])->name('admin.show.product');
             route::get('/edit/{id}',[ProductController::class,'edit'])->name('admin.edit.product');
             route::post('/update/{id}',[ProductController::class,'update'])->name('admin.update.product');
             route::delete('/delete/{id}',[ProductController::class,'delete'])->name('admin.delete.product');

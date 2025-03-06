@@ -65,8 +65,9 @@
                         @endif
                     </td>
                     <td>
-                        <a href="{{ route('admin.edit.product', $product->id) }}" class="btn btn-warning"><i
-                                class="bi bi-pencil-square"></i></a>
+                        <a href="{{ route('admin.show.product', $product->id) }}" class="btn btn-info"><i class="bi bi-eye"></i></a>
+                                <a href="{{ route('admin.edit.product', $product->id) }}" class="btn btn-warning"><i
+                                    class="bi bi-pencil-square"></i></a>
                         <form action="{{ route('admin.delete.product', $product->id) }}" method="POST"
                             style="display:inline;">
                             @csrf
