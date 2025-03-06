@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 class UserController {
 public function index(){
     $title = "List User";
-    $users = User::all();
+    $users = User::paginate(10);
     return view('admin.user.index',compact('title','users'));
 }
 
