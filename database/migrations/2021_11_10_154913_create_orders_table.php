@@ -15,13 +15,14 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->nullable()->change();
             $table->string('email');
             $table->string('phone');
             $table->string('address');
             $table->bigInteger('id_user')->unsigned();
+            $table->decimal('total_price', 10, 2)->default(0);//thêm tổng tiền
             $table->foreign('id_user')->references('id')->on('users')
-            ->onDelete('cascade');
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }
