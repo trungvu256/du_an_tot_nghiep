@@ -15,19 +15,27 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->string('product_code')->unique();
             $table->string('name');
             $table->string('description');
-            $table->string('content');
+            $table->text('content');
             $table->integer('price');
-            $table->integer('price_sale');
-            $table->string('img');
+            $table->integer('price_sale')->nullable();
+            $table->string('image');
+            $table->string('sex'); // Giới tính
+            $table->string('brand'); // Thương hiệu
+            $table->string('longevity'); // Độ lưu hương
+            $table->string('concentration'); // Nồng độ
+            $table->string('origin'); // Xuất xứ
+            $table->string('style'); // Phong cách
+            $table->string('fragrance_group'); // Nhóm hương
+            $table->integer('stock_quantity')->default(0);
             $table->bigInteger('category_id')->unsigned();
-            $table->string('slug');
-            $table->foreign('category_id')->references('id')->on('categories')
-
-                ->onDelete('cascade');
+        
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();
         });
+        
     }
 
     /**
