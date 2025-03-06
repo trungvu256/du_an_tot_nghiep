@@ -35,7 +35,7 @@ class ProductController extends Controller
             });
         }
     
-        $products = $query->paginate(10);
+        $products = $query->paginate(5);
         $variantNames = Variant::distinct()->pluck('name');
     
         return view('admin.product.index', compact('products', 'variantNames', 'selectedVariant'));

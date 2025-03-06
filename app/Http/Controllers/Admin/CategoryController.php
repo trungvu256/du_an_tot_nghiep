@@ -12,7 +12,7 @@
         public function index()
         {
 
-            $categories = Category::all();
+            $categories = Category::paginate(10);
             $title = "List Category";
             return view('admin.category.index', compact('title', 'categories'));
         }

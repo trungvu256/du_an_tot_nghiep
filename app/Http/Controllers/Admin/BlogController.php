@@ -13,7 +13,7 @@ class BlogController extends Controller
 {
     public function  index()  {
         $title = "List Blog";
-        $blogs = Blog::all();
+        $blogs = Blog::paginate(5);
         return view('admin.blog.index', compact('title', 'blogs'));
     }
     public function create() {
