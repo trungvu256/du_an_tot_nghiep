@@ -27,20 +27,27 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => [
-                'required',
-                Rule::unique('categories', 'name'),
-            ],
+            'name' => 'required',
+            'parent_id' => 'nullable|integer',
+            'image' => 'nullable|image|max:2048',
         ], [
-            'name.required' => 'Tên không được để trống.',
-            'name.unique' => 'Tên danh mục đã tồn tại, vui lòng chọn tên khác.',
+            'name.required' => 'Tên danh mục không được để trống!',
         ]);
+
+        $imageCategory = null;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $imageCategory = time() . '-' . $file->getClientOriginalName();
+            $file->move(public_path('category'), $imageCategory);
+        }
+
         Category::create([
             'name' => $request->name,
-
-
+            'parent_id' => $request->parent_id == 0 ? null : $request->parent_id,
+            'image' => $imageCategory,
         ]);
-        return redirect()->route('admin.cate')->with('success', 'thêm mới thành công');
+
+        return redirect()->route('admin.cate')->with('success', 'Thêm mới thành công');
     }
     public function delete($id)
     {
