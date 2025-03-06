@@ -28,13 +28,6 @@
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
 
-                <!--dashboard-->
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="{{ route('admin.dashboard') }}" data-bs-toggle="" role="button">
-                        <i class="ri-file-list-line"></i> <span>Dashboard</span>
-                    </a>
-                </li>
-
                 <!-- User -->
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#menuUser" data-bs-toggle="collapse" role="button">
@@ -46,7 +39,7 @@
                                 <a href="{{ route('admin.create.user') }}" class="nav-link">Add User</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.user') }}" class="nav-link">List User</a>
+                                <a href="{{ route('admin.user') }}" class="nav-link">User</a>
                             </li>
                         </ul>
                     </div>
@@ -63,7 +56,7 @@
                                 <a href="{{ route('admin.create.cate') }}" class="nav-link">Add Category</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.cate') }}" class="nav-link">List Category</a>
+                                <a href="{{ route('admin.cate') }}" class="nav-link">Category</a>
                             </li>
                         </ul>
                     </div>
@@ -80,7 +73,7 @@
                                 <a href="{{ route('admin.add.product') }}" class="nav-link">Add Product</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.product') }}" class="nav-link">List Product</a>
+                                <a href="{{ route('admin.product') }}" class="nav-link">Product</a>
                             </li>
                         </ul>
                     </div>
@@ -114,7 +107,7 @@
                                 <a href="{{ route('admin.create.blog') }}" class="nav-link">Add Blog</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.blog') }}" class="nav-link">List Blog</a>
+                                <a href="{{ route('admin.blog') }}" class="nav-link">Blog</a>
                             </li>
                         </ul>
                     </div>
@@ -124,4 +117,3 @@
     </div>
     <div class="sidebar-background"></div>
 </div>
-
