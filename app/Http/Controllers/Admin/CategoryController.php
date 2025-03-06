@@ -10,6 +10,7 @@ use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
+    
     public function index()
     {
 
@@ -43,9 +44,37 @@ class CategoryController extends Controller
     }
     public function delete($id)
     {
-        Category::where('id', $id)->orWhere('parent_id', $id)->delete();
-        return back()->with('success', 'Delete category successfull !');
+        $category = Category::find($id);
+
+        if (!$category) {
+            return back()->with('error', 'Category not found!');
+        }
+
+        // Kiểm tra xem danh mục có danh mục con không
+        if ($category->children()->exists()) {
+            return back()->with('error', 'Cannot delete category because it has subcategories!');
+        }
+
+        // Xóa mềm danh mục
+        $category->delete();
+
+        return back()->with('success', 'Category deleted successfully!');
     }
+public function restore($id)//khôi phục danh sách đã xóa mềm 
+{
+    $category = Category::withTrashed()->find($id);
+
+    if (!$category) {
+        return back()->with('error', 'Category not found!');
+    }
+
+    $category->restore();
+
+    return back()->with('success', 'Category restored successfully!');
+}
+
+
+    
     public function edit($id)
     {
         $title = "Edit Category";
@@ -54,26 +83,27 @@ class CategoryController extends Controller
         return view('admin.category.edit', compact('categoryedit', 'categories', 'title'));
     }
     public function update(Request $request, $id)
-    {
-        $request->validate([
-            'name' => [
-                'required',
-                Rule::unique('categories', 'name'),
-            ],
-            'parent_id' => 'required|exists:categories,id'
-        ], [
-            'name.required' => 'Tên không được để trống.',
-            'name.unique' => 'Tên danh mục đã tồn tại, vui lòng chọn tên khác.',
-            'parent_id.required' => 'Vui lòng chọn danh mục cha.',
-            'parent_id.exists' => 'Danh mục cha không hợp lệ.',
+{
+    $request->validate([
+        'name' => [
+            'required',
+            Rule::unique('categories', 'name')->ignore($id), // Cho phép trùng tên với chính nó
+        ],
+        'parent_id' => 'nullable|exists:categories,id' // Cho phép không chọn danh mục cha
+    ], [
+        'name.required' => 'Tên không được để trống.',
+        'name.unique' => 'Tên danh mục đã tồn tại, vui lòng chọn tên khác.',
+        'parent_id.exists' => 'Danh mục cha không hợp lệ.',
+    ]);
 
-        ]);
-        Category::where('id', $id)->update([
-            'name' => $request->name,
-            'parent_id' => $request->parent_id,
-        ]);
-        return redirect()->route('admin.cate')->with('success', 'cập nhật thành công');
-    }
+    Category::where('id', $id)->update([
+        'name' => $request->name,
+        'parent_id' => $request->parent_id,
+    ]);
+
+    return redirect()->route('admin.cate')->with('success', 'Cập nhật danh mục thành công!');
+}
+
 
     
 }

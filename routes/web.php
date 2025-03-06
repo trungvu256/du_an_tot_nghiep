@@ -41,7 +41,10 @@ Route::middleware(['auth'])->group(function () {
             route::post('/add',[CategoryController::class,'store'])->name('admin.store.cate');
             route::get('/edit/{id}',[CategoryController::class,'edit'])->name('admin.edit.cate');
             route::post('/update/{id}',[CategoryController::class,'update'])->name('admin.update.cate');
-            route::get('/delete/{id}',[CategoryController::class,'delete'])->name('admin.delete.cate');
+            route::delete('/delete/{id}',[CategoryController::class,'delete'])->name('admin.delete.cate');
+            route::get('/admin/cate/trash', [CategoryController::class, 'trash'])->name('admin.trash.cate');
+            route::post('/admin/cate/restore/{id}', [CategoryController::class, 'restore'])->name('admin.restore.cate');
+            route::delete('/admin/cate/fore-delete/{id}', [CategoryController::class, 'foreDelete'])->name('admin.foreDelete.cate');
         });
         Route::prefix('user')->group(function () {
             route::get('/',[UserController::class,'index'])->name('admin.user');
