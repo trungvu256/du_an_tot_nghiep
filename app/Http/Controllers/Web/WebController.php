@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Blog;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -12,6 +13,8 @@ class WebController extends Controller
     public function index(){
         $list_product = Product::with('category')->paginate(8);
         $list_product_new = Product::with('category')->orderBy('created_at', 'desc')->get();
+        // $list_blog = Blog::orderBy('created_at', 'desc')->take(3)->get();
+
 
         return view('web2.Home.home',compact('list_product','list_product_new'));
     }

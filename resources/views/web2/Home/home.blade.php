@@ -347,6 +347,7 @@
   </div>
   <!-- Products End -->
 
+  <!-- bài viết -->
 
   <!-- Vendor Start -->
   <div class="container-fluid py-5">
@@ -382,4 +383,142 @@
       </div>
   </div>
   <!-- Vendor End -->
+
+  <style>
+body {
+    background-color: #ffffff;
+    /* Nền trắng */
+    font-family: 'Arial', sans-serif;
+}
+
+.perfume-card {
+    background-color: #ffffff;
+    /* Nền trắng cho card */
+    border: 1px solid #ddd;
+    /* Viền nhẹ */
+    border-radius: 10px;
+    /* Bo góc nhẹ */
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    /* Hiệu ứng đổ bóng */
+    padding: 20px;
+    text-align: center;
+    height: 100%;
+    transition: transform 0.3s ease-in-out;
+}
+
+.perfume-card:hover {
+    transform: scale(1.05);
+    /* Phóng to nhẹ khi hover */
+}
+
+.perfume-card img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+.logo {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 24px;
+    color: #333;
+    /* Màu chữ tối hơn để dễ đọc */
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 28px;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: #666;
+    /* Màu xám đậm */
+    margin-bottom: 10px;
+}
+
+.description {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    color: #444;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+/* Nút Xem chi tiết */
+.details-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    /* Màu xanh dương của Bootstrap */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.details-btn:hover {
+    background-color: #0056b3;
+    /* Màu xanh đậm hơn khi hover */
+}
+
+/* Tùy chỉnh nền */
+.spring-bg {
+    background: url('spring-bg.jpg') center center/cover;
+    border-radius: 10px;
+}
+
+.wood-bg {
+    background: url('wood-bg.jpg') center center/cover;
+    border-radius: 10px;
+}
+
+.valentine-bg {
+    background: url('valentine-bg.jpg') center center/cover;
+    border-radius: 10px;
+}
+  </style>
+  </head>
+
+  <body>
+      <div class="container py-5">
+          <div class="row">
+
+
+              <div class="col-12 col-md-4 mb-4">
+                  <div class="perfume-card spring-bg">
+                      <div class="logo">ARMAF</div>
+                      <div class="title">NƯỚC HOA MÙA XUÂN</div>
+                      <img src="{{asset('')}}" alt="Spring Perfume" class="img-fluid">
+                      <div class="subtitle">LẮC VÀO VƯƠNG HOA CỦA ARMAF – SỰ THANH LỊCH VÀ CUỐN HÚT</div>
+                      <div class="description">
+                          Nhóm hương Floral (Hoa cỏ) là một trong những nhóm hương lịch sử và cuốn hút tự nhiên, hương
+                          lâu dài và phổ biến nhất trong giới…
+                      </div>
+                      <a href="#" class="details-btn">Xem chi tiết</a>
+                  </div>
+              </div>
+
+
+
+
+
+          </div>
+      </div>
+
+      <!-- Bootstrap JS (optional) -->
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+
+  </html>
   @endsection

@@ -56,8 +56,6 @@ Route::middleware(['auth'])->group(function () {
         //Bình luận 
         Route::prefix('comment')->group(function () {
             route::get('/',[CommentController::class, 'index'])->name('admin.comment');
-            route::get('/create',[CommentController::class, 'create'])->name('create.comment');
-            route::post('/store',[CommentController::class, 'store'])->name('store.comment');
             route::patch('/showhidden/{id}', [CommentController::class, 'Hide_comments'])->name('admin.comment.showhidden');
          });
         Route::prefix('product')->group(function () {
