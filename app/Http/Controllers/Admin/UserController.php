@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
 class UserController
 {
     public function index()
@@ -18,7 +20,6 @@ class UserController
         $users = User::all();
         $title = "Add User";
         return view('admin.user.add', compact('title', 'users'));
-
     }
 
     public function update(Request $request, $id)
@@ -34,7 +35,7 @@ class UserController
 
         $user->save();
 
-        return redirect()->route('admin.users.index')->with('success', 'Cập nhật thành công!');
+        return redirect()->route('admin.user')->with('success', 'Cập nhật thành công!');
     }
 
     public function store(Request $request)
@@ -52,5 +53,19 @@ class UserController
             'is_admin' => in_array($request->is_admin, [0, 1]) ? $request->is_admin : 0
         ]);
         return back()->with('success', 'Created user succesfull !');
+    }
+    public function edit($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.user.edit', compact('user'));
+    }
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+
+        $user->status = 0; // Cập nhật trạng thái thành bị khóa
+        $user->save();
+
+        return redirect()->route('admin.user')->with('success', 'Người dùng đã bị khóa thành công.');
     }
 }
