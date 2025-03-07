@@ -1,4 +1,4 @@
-@extends('admin.main')
+@extends('admin.layouts.main')
 @section('content')
 <form action="{{ route('admin.update.user',$user->id) }}" method="POST">
     @csrf
@@ -28,22 +28,24 @@
             <input type="email" name="email" value="{{ $user->email }}" class="form-control" placeholder="Enter Email">
         </div>
         <div class="form-group">
-            <label>Password </label>
-            <input type="password" name="password" class="form-control" placeholder="Enter Password">
+            <label for="">Trạng Thái Tài Khoản</label>
+            <div class="form-check">
+                <input type="radio" name="status" {{ $user->status == 1 ? "checked" : "" }} value="1" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Tài Khoản Đang Hoạt Động</label>
+            </div>
+            <div class="form-check">
+                <input type="radio" name="status" {{ $user->status == 0 ? "checked" : "" }} value="0" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Tài khoản Đang Bị Khóa</label>
+            </div>
         </div>
-        <div class="form-group">
-            <label>Confirm Password </label>
-            <input type="password" name="confirm-password" class="form-control" placeholder="Enter Password Again">
-        </div>
-
         <div class="form-group">
             <label for="">Role Admin</label>
             <div class="form-check">
-                <input type="checkbox" name="is_admin" {{ $user->is_admin == 1 ? "checked" : "" }} value="1" class="form-check-input" id="exampleCheck1">
+                <input type="radio" name="is_admin" {{ $user->is_admin == 1 ? "checked" : "" }} value="1" class="form-check-input" id="exampleCheck1">
                 <label class="form-check-label" for="exampleCheck1">Admin</label>
             </div>
             <div class="form-check">
-                <input type="checkbox" name="is_admin" {{ $user->is_admin == 0 ? "checked" : "" }} value="0" class="form-check-input" id="exampleCheck1">
+                <input type="radio" name="is_admin" {{ $user->is_admin == 0 ? "checked" : "" }} value="0" class="form-check-input" id="exampleCheck1">
                 <label class="form-check-label" for="exampleCheck1">User</label>
             </div>
         </div>

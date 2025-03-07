@@ -1,34 +1,65 @@
-@extends('admin.main')
+@extends('admin.layouts.main')
 
 @section('content')
-<table class="table">
-    @if (session('success'))
-    <div class="alert alert-success">
-        <ul>
-            <li>{{ session('success') }}</li>
-        </ul>
-    </div>
-    @endif
 
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Action</th>
-        </tr>
-    </thead>
 
-    <tbody>
+<div class="category-container">
+    <h3>Category</h3>
+    <a href="{{ route('admin.trash.cate') }}" class="btn btn-warning"><i class="bi bi-trash"></i></a>
+    <ul class="category-list">
         @foreach ($categories as $category)
-        <tr>
-            <td>{{ $category['id'] }}</td>
-            <td>{{ $category['name'] }}</td>
-            <td>
-                <a href="{{ url('admin/category/edit/' . $category['id']) }}" class="btn btn-warning">Edit</a>
-                <a href="{{ url('admin/category/delete/' . $category['id']) }}" class="btn btn-danger">Delete</a>
-            </td>
-        </tr>
+            <li class="category-item" onclick="toggleSubcategories({{ $category->id }})">
+                <div class="category-content">
+                    <img src="{{ asset('category/' . $category->image) }}" alt="Category Image">
+                    <span>{{ $category->name }}</span>
+                </div>
+                <div class="actions">
+                    <a href="{{ route('admin.edit.cate', $category->id) }}" class="btn btn-warning btn-sm"><i
+                        class="bi bi-pencil-square"></i>g</a>
+                    <form action="{{ route('admin.delete.cate', $category->id) }}" method="POST" onsubmit="return confirm('Đưa vào thùng rác');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-x-circle-fill"></i></button>
+                    </form>
+                </div>
+            </li>
+
+            @if ($category->children->count() > 0)
+                <ul id="sub-category-{{ $category->id }}" class="sub-category">
+                    @foreach ($category->children as $child)
+                        <li class="category-item">
+                            <div class="category-content">
+                                <img src="{{ asset('category/' . $child->image) }}" alt="Category Image">
+                                <span>— {{ $child->name }}</span>
+                            </div>
+                            <div class="actions">
+                                <a href="{{ route('admin.edit.cate', $child->id) }}" class="btn btn-warning btn-sm"><i
+                                    class="bi bi-pencil-square"></i></a>
+                                <form action="{{ route('admin.delete.cate', $child->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Đưa vào thùng rác');"><i class="bi bi-x-circle-fill"></i></button>
+                                    
+
+                                </form>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+            @endif
         @endforeach
-    </tbody>
-</table>
+    </ul>
+</div>
+
+<script>
+function toggleSubcategories(categoryId) {
+    let subCategoryList = document.getElementById('sub-category-' + categoryId);
+    if (subCategoryList.style.display === 'none' || subCategoryList.style.display === '') {
+        subCategoryList.style.display = 'block';
+    } else {
+        subCategoryList.style.display = 'none';
+    }
+}
+</script>
+
 @endsection

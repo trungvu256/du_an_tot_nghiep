@@ -4,21 +4,32 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
+    use SoftDeletes;
     use HasFactory;
-    // protected $table = 'products';
+    protected $dates = ['delete_at'];
     protected $fillable = [
+        'product_code',
         'name',
-        'content',
-        'price',
-        'img',
-        'price_sale',
-        'category_id',
         'slug',
         'description',
-        'views'
+        'price',
+        'price_sale',
+        'image',
+        'gender',
+        'brand',
+        'longevity',
+        'concentration',
+        'origin',
+        'style',
+        'fragrance_group',
+        'stock_quantity',
+        'category_id',
+        'created_at',
+        'updated_at',
     ];
     /**
      * Get all of the comments for the Product
@@ -46,4 +57,5 @@ class Product extends Model
         return $this->hasMany(Variant::class);
     }
     
+
 }

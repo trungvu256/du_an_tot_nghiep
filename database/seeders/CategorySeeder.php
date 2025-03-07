@@ -15,9 +15,9 @@ class CategorySeeder extends Seeder
     public function run()
     {
         DB::table('categories')->insert([
-         ['name' => 'Pháp'],
-         ['name' => 'Italia'],
-         ['name' => 'Nhật']
+            ['id' => 1, 'name' => 'Danh mục 1', 'slug' => 'danh-muc-1'],
+            ['id' => 2, 'name' => 'Danh mục 2', 'slug' => 'danh-muc-2'],
         ]);
+
     }
 }

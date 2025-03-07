@@ -8,6 +8,7 @@ use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreProductRequest;
 use App\Models\Variant;
 use Illuminate\Support\Facades\File;
 
@@ -16,9 +17,9 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $query = Product::with('variants', 'category');
-    
+
         $selectedVariant = null;
-    
+
         if ($request->has('variant_name') && !empty($request->variant_name)) {
             $query->whereHas('variants', function ($q) use ($request) {
                 $q->where('name', 'LIKE', '%' . $request->variant_name . '%');
@@ -29,18 +30,18 @@ class ProductController extends Controller
         if ($request->has('min_price') && $request->has('max_price')) {
             $minPrice = $request->min_price;
             $maxPrice = $request->max_price;
-    
+
             $query->whereHas('variants', function ($q) use ($minPrice, $maxPrice) {
                 $q->whereBetween('price', [$minPrice, $maxPrice]);
             });
         }
-    
-        $products = $query->paginate(10);
+
+        $products = $query->paginate(5);
         $variantNames = Variant::distinct()->pluck('name');
-    
+
         return view('admin.product.index', compact('products', 'variantNames', 'selectedVariant'));
     }
-    
+
 
     public function create()
     {
@@ -51,58 +52,69 @@ class ProductController extends Controller
     public function store(Request $request)
     {
 
-        $request->validate([
-            'name' => 'required',
-            'category_id' => 'required|exists:categories,id',
-            'img' => 'required',
-            'content' => 'required',
-            'price' => 'required|numeric|min:0',
-            'price_sale' => 'nullable|numeric|min:0',
-            'variants.*.name' => 'required|string|max:255',
-            'variants.*.price' => 'required|numeric|min:0',
-            'description' => 'required|string',
-        ]);
-        if ($request->hasFile('img')) {
-            $file = $request->file('img');
-            $imageName = time() . '-' . $file->getClientOriginalName();
-            $file->move("cover", $imageName);
-            $product = new Product([
-                'name' => $request->name,
-                'description' => $request->description,
-                'content' => $request->content,
-                'price' => $request->price,
-                'price_sale' => $request->price_sale,
-                'slug' => Str::slug($request->name),
-                'category_id' => $request->category_id,
-                'img' => $imageName,
-                'views' => 0
-            ]);
-            $product->save();
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('images/products', 'public');
         }
 
+        $currentTime = now()->format('YmdHis');
+
+        $randomString = Str::random(4);
+
+        $product_code = $randomString . $currentTime;
+
+        $product = Product::create([
+            'product_code' => $product_code,
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+            'description' => $request->description,
+            'price' => $request->price,
+            'price_sale' => $request->price_sale,
+            'image' => $imagePath,
+            'gender' => $request->gender,
+            'brand' => $request->brand,
+            'longevity' => $request->longevity,
+            'concentration' => $request->concentration,
+            'origin' => $request->origin,
+            'style' => $request->style,
+            'fragrance_group' => $request->fragrance_group,
+            'stock_quantity' => $request->stock_quantity,
+            'category_id' => $request->category_id,
+        ]);
+
         if ($request->hasFile('images')) {
-            $files = $request->file('images');
-            foreach ($files as $file) {
-                $imageName = time() . '-' . $file->getClientOriginalName();
-                $request['product_id'] = $product->id;
-                $request['image'] = $imageName;
-                $file->move("images", $imageName);
-                Images::create($request->all());
-            }
-        }
-        
-        if($request->has('variants')) {
-            foreach($request->variants as $variant) {
-                Variant::create([
-                'product_id' => $product->id,
-                'name' => $variant['name'],
-                'price' => $variant['price'],
-                
+            foreach ($request->file('images') as $image) {
+                $imagePath = $image->store('images/products/descriptions', 'public');
+                Images::create([
+                    'product_id' => $product->id,
+                    'image' => $imagePath,
                 ]);
             }
         }
-        return redirect()->route('admin.product')->with('success', 'Created Product Successfully');
+
+        if ($request->has('variants')) {
+            foreach ($request->variants as $variant) {
+                Variant::create([
+                    'product_id' => $product->id,
+                    'name' => $variant['name'],
+                    'price' => $variant['price'],
+                ]);
+            }
+        }
+
+        return redirect()->route('admin.product')->with('success', 'Thêm sản phẩm thành công.');
     }
+
+    public function show($id)
+    {
+        $title = 'Detail Product';
+        $categories = Category::all();
+        $product = Product::with('category')->find($id);
+        $description_images = Images::where('product_id', $id)->get();
+        $variants = Variant::where('product_id', $id)->get();
+        return view('admin.product.show', compact('product', 'categories', 'description_images', 'variants', 'title'));
+    }
+
     public function edit($id)
     {
         $title = 'Edit Product';
@@ -110,19 +122,58 @@ class ProductController extends Controller
         $product = Product::find($id);
         return view('admin.product.edit', compact('product', 'categories', 'title'));
     }
+
     public function update(Request $request, $id)
     {
-        $product = Product::find($id);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'content' => 'required|string',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'price_sale' => 'nullable|numeric|min:0',
+            'variants' => 'nullable|array',
+            'variants.*.name' => 'required_with:variants|string|max:255',
+            'variants.*.price' => 'required_with:variants|numeric|min:0',
+        ], [
+            'name.required' => 'Tên sản phẩm không được để trống.',
+            'category_id.required' => 'Danh mục không được để trống.',
+            'category_id.exists' => 'Danh mục không hợp lệ.',
+            'img.required' => 'Ảnh sản phẩm không được để trống.',
+            'img.image' => 'Ảnh phải là một tập tin hình ảnh.',
+            'img.mimes' => 'Ảnh phải có định dạng: jpeg, png, jpg, gif.',
+            'img.max' => 'Ảnh không được lớn hơn 2MB.',
+            'images.*.image' => 'Ảnh bổ sung phải là tập tin hình ảnh.',
+            'images.*.mimes' => 'Ảnh bổ sung phải có định dạng: jpeg, png, jpg, gif.',
+            'images.*.max' => 'Ảnh bổ sung không được lớn hơn 2MB.',
+            'content.required' => 'Nội dung sản phẩm không được để trống.',
+            'description.required' => 'Mô tả sản phẩm không được để trống.',
+            'price.required' => 'Giá sản phẩm không được để trống.',
+            'price.numeric' => 'Giá sản phẩm phải là số.',
+            'price.min' => 'Giá sản phẩm không được nhỏ hơn 0.',
+            'price_sale.numeric' => 'Giá khuyến mãi phải là số.',
+            'price_sale.min' => 'Giá khuyến mãi không được nhỏ hơn 0.',
+            'variants.*.name.required_with' => 'Tên biến thể không được để trống.',
+            'variants.*.price.required_with' => 'Giá biến thể không được để trống.',
+            'variants.*.price.numeric' => 'Giá biến thể phải là số.',
+            'variants.*.price.min' => 'Giá biến thể không được nhỏ hơn 0.',
+        ]);
+        $product = Product::findOrFail($id);
+        $imageName = $product->img; // Giữ nguyên ảnh cũ nếu không có ảnh mới
+
         if ($request->hasFile('img')) {
             $file = $request->file('img');
             $imageName = time() . '-' . $file->getClientOriginalName();
-            $file->move("cover", $imageName);
-            if (File::exists('cover/' . $product->img)) {
-                File::delete('cover/' . $product->img);
+            $file->move(public_path('cover'), $imageName);
+
+            if ($product->img && File::exists(public_path('cover/' . $product->img))) {
+                File::delete(public_path('cover/' . $product->img));
             }
-        } else {
-            $imageName = $product->img;
         }
+
+        // Cập nhật sản phẩm, đảm bảo ảnh giữ nguyên nếu không đổi
         $product->update([
             'name' => $request->name,
             'description' => $request->description,
@@ -131,36 +182,68 @@ class ProductController extends Controller
             'price_sale' => $request->price_sale,
             'slug' => Str::slug($request->name),
             'category_id' => $request->category_id,
-            'img' => $imageName,
-            'views' => 0
+            'img' => $imageName, // Ảnh chính vẫn giữ nguyên nếu không thay đổi
+            'views' => $product->views
         ]);
+
         if ($request->hasFile('images')) {
-            $files = $request->file('images');
-            foreach ($files as $file) {
-                $imageName = time() . '-' . $file->getClientOriginalName();
-                $request['product_id'] = $product->id;
-                $request['image'] = $imageName;
-                $file->move("images", $imageName);
-                Images::create($request->all());
+            foreach ($request->file('images') as $file) {
+                $editionalImage = time() . '-' . $file->getClientOriginalName();
+                $file->move(public_path('images'), $editionalImage);
+
+                Images::create([
+                    'product_id' => $product->id,
+                    'image' => $editionalImage,
+                ]);
             }
         }
-        return redirect()->route('admin.product')->with('success', 'Updated Product Succeessful');
+
+        if ($request->has('variants')) {
+            $product->variants()->delete();
+            foreach ($request->variants as $variant) {
+                if (!empty($variant['name']) && isset($variant['price'])) {
+                    $product->variants()->create([
+                        'name' => $variant['name'],
+                        'price' => $variant['price'],
+                    ]);
+                }
+            }
+        }
+        return redirect()->route('admin.product')->with('success', 'Cập nhật sản phẩm thành công ');
     }
     public function delete($id)
     {
-        $product = Product::find($id);
-        if (File::exists('cover/' . $product->img)) {
-            File::delete('cover/' . $product->img);
-        }
-        $images = Images::where('product_id', $product->id)->get();
-        foreach ($images as $image) {
-            if (File::exists('images/' . $image->image)) {
-                File::delete('images/' . $image->image);
-            }
-        }
+        $product = Product::findOrFail($id);
+
         $product->delete();
         Images::where('product_id', $product->id)->delete();
-        return back();
+
+        return back()->with('success', 'Sản phẩm đã được đưa vào thùng rác');
+    }
+    public function trash()
+    {
+        $products = Product::onlyTrashed()->paginate(10);
+        return view('admin.product.trash', compact('products'));
+    }
+    public function restore($id)
+    {
+        $product = Product::withTrashed()->findOrFail($id);
+        $product->restore();
+
+        return redirect()->route('admin.trash.product')->with('success', ' Sản phẩm đã được phục hồi');
+    }
+
+    public function foreDelete($id)
+    {
+        $product = Product::withTrashed()->findOrFail($id);
+
+        if ($product->img && file_exists(public_path('cover/' . $product->img))) {
+            unlink(public_path('cover/' . $product->img));
+        }
+
+        $product->forceDelete();
+
+        return redirect()->route('admin.trash.product')->with('success', 'Sản phẩm đã được xóa');
     }
     public function delete_img($id)
     {

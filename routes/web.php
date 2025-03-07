@@ -34,7 +34,7 @@ Route::prefix('admin')->group(function () {
 Route::middleware(['auth'])->group(function () {
 
     Route::prefix('admin')->group(function () {
-        Route::get('/main', [MainController::class, 'index'])->name('admin.main');
+        Route::get('/', [MainController::class, 'index'])->name('admin.dashboard');
         Route::prefix('category')->group(function () {
             route::get('/', [CategoryController::class, 'index'])->name('admin.cate');
             route::get('/add', [CategoryController::class, 'create'])->name('admin.create.cate');
@@ -52,7 +52,7 @@ Route::middleware(['auth'])->group(function () {
             route::get('/delete/{id}', [UserController::class, 'delete'])->name('admin.delete.user');
         });
 
-        //Bình luận 
+        //Bình luận
         Route::prefix('comment')->group(function () {
             route::get('/', [CommentController::class, 'index'])->name('admin.comment');
             route::get('/create', [CommentController::class, 'create'])->name('create.comment');
@@ -60,13 +60,17 @@ Route::middleware(['auth'])->group(function () {
             route::patch('/showhidden/{id}', [CommentController::class, 'Hide_comments'])->name('admin.comment.showhidden');
         });
         Route::prefix('product')->group(function () {
-            route::get('/', [ProductController::class, 'index'])->name('admin.product');
-            route::get('/add', [ProductController::class, 'create'])->name('admin.add.product');
-            route::post('/add', [ProductController::class, 'store'])->name('admin.store.product');
-            route::get('/edit/{id}', [ProductController::class, 'edit'])->name('admin.edit.product');
-            route::post('/update/{id}', [ProductController::class, 'update'])->name('admin.update.product');
-            route::delete('/delete/{id}', [ProductController::class, 'delete'])->name('admin.delete.product');
-            Route::get('/del-image/{id}', [ProductController::class, 'delete_img'])->name('admin.delete_img.product');
+            route::get('/',[ProductController::class,'index'])->name('admin.product');
+            route::get('/add',[ProductController::class,'create'])->name('admin.add.product');
+            route::post('/add',[ProductController::class,'store'])->name('admin.store.product');
+            route::get('/show/{id}',[ProductController::class,'show'])->name('admin.show.product');
+            route::get('/edit/{id}',[ProductController::class,'edit'])->name('admin.edit.product');
+            route::post('/update/{id}',[ProductController::class,'update'])->name('admin.update.product');
+            route::delete('/delete/{id}',[ProductController::class,'delete'])->name('admin.delete.product');
+            Route::get('/del-image/{id}',[ProductController::class,'delete_img'])->name('admin.delete_img.product');
+            route::get('/admin/product/trash', [ProductController::class, 'trash'])->name('admin.trash.product');
+            route::post('/admin/product/restore/{id}', [ProductController::class, 'restore'])->name('admin.restore.product');
+            route::delete('/admin/product/fore-delete/{id}', [ProductController::class, 'foreDelete'])->name('admin.foreDelete.product');
         });
 
         // Blog
