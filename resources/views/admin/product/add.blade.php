@@ -35,8 +35,8 @@
         <div class="row mb-3">
             <div class="col-6">
                 <label>Image</label>
-                <input type="file" name="img" class="form-control" placeholder="Choose image">
-                @error('img')
+                <input type="file" name="image" class="form-control" placeholder="Choose image">
+                @error('image')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
@@ -120,17 +120,24 @@
                     <option value="nữ">Nữ</option>
                     <option value="unisex">Unisex</option>
                 </select>
-                @error('category_id')
+                @error('gender')
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
             <div class="col-6">
-                <label>Description</label>
-                <textarea name="description" class="form-control ckeditor" placeholder="Enter description">{{ old('description') }}</textarea>
-                @error('description')
+                <label>Stock quantity</label>
+                <input type="number" name="stock_quantity" class="form-control" value="{{ old('stock_quantity') }}" placeholder="Enter stock quantity">
+                @error('stock_quantity')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
+        </div>
+        <div class="mb-3">
+            <label>Description</label>
+            <textarea name="description" class="form-control" placeholder="Enter description">{{ old('description') }}</textarea>
+            @error('description')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
         </div>
 
         <!-- Variants -->

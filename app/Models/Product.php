@@ -12,15 +12,24 @@ class Product extends Model
     use HasFactory;
     protected $dates = ['delete_at'];
     protected $fillable = [
+        'product_code',
         'name',
-        'content',
-        'price',
-        'img',
-        'price_sale',
-        'category_id',
         'slug',
         'description',
-        'views'
+        'price',
+        'price_sale',
+        'image',
+        'gender',
+        'brand',
+        'longevity',
+        'concentration',
+        'origin',
+        'style',
+        'fragrance_group',
+        'stock_quantity',
+        'category_id',
+        'created_at',
+        'updated_at',
     ];
     /**
      * Get all of the comments for the Product

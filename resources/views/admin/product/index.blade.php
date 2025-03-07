@@ -47,7 +47,7 @@
                 <tr>
                     <th>{{ $product->id }}</th>
                     <td>{{ $product->name }}</td>
-                    <td><img src="/cover/{{ $product->img }}" width="70px" alt=""></td>
+                    <td><img src="{{ asset('storage/' . $product->image) }}" alt="Product Image" width="70px"></td>
                     <td>{{ $product->category->name }}</td>
                     <td>
                         @if ($product->variants->count() > 0)
