@@ -1,4 +1,4 @@
-@extends('admin.main')
+@extends('admin.layouts.main')
 @section('content')
 
 <form action="{{route('admin.store.blog')}}" method="post" enctype="multipart/form-data">
@@ -6,7 +6,7 @@
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>  
+            <li>{{ $error }}</li>
             @endforeach
         </ul>
     </div>

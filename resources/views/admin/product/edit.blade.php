@@ -1,21 +1,21 @@
-@extends('admin.main')
+@extends('admin.layouts.main')
 @section('content')
 <form action="{{ route('admin.update.product', $product->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
-    
+
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
     @endif
-    
+
     <div class="card-body">
         <div class="mb-3">
             <label>Name Product</label>
             <input type="text" name="name" class="form-control" value="{{ old('name', $product->name) }}">
             @error('name')<span class="text-danger">{{ $message }}</span>@enderror
         </div>
-        
+
         <div class="mb-3">
             <label>Category</label>
             <select name="category_id" class="form-control">
@@ -35,9 +35,9 @@
             @if ($product->img)
                 <br><img src="{{ asset('cover/' . $product->img) }}" width="100px" alt="Cover Image">
             @endif
-           
+
         </div>
-        
+
         <div class="mb-3">
             <label>Additional Images</label>
             <input type="file" name="images[]" multiple class="form-control">
@@ -52,31 +52,31 @@
             @endif
             @error('images')<span class="text-danger">{{ $message }}</span>@enderror
         </div>
-        
+
         <div class="mb-3">
             <label>Description</label>
             <textarea name="description" class="form-control ckeditor">{{ old('description', $product->description) }}</textarea>
             @error('description')<span class="text-danger">{{ $message }}</span>@enderror
         </div>
-        
+
         <div class="mb-3">
             <label>Content</label>
             <textarea name="content" class="form-control ckeditor">{{ old('content', $product->content) }}</textarea>
             @error('content')<span class="text-danger">{{ $message }}</span>@enderror
         </div>
-        
+
         <div class="mb-3">
             <label>Price</label>
             <input type="number" name="price" class="form-control" value="{{ old('price', $product->price) }}" required min="0">
             @error('price')<span class="text-danger">{{ $message }}</span>@enderror
         </div>
-        
+
         <div class="mb-3">
             <label>Discount Price</label>
             <input type="number" name="price_sale" class="form-control" value="{{ old('price_sale', $product->price_sale) }}" min="0">
             @error('price_sale')<span class="text-danger">{{ $message }}</span>@enderror
         </div>
-        
+
         <div class="mb-3">
             <label>Variants</label>
             <div id="variant-container">
@@ -98,7 +98,7 @@
             </div>
             <button type="button" class="btn btn-success mt-2" id="add-variant">Add Variant</button>
         </div>
-        
+
         <div class="mb-3 mt-3">
             <button type="submit" class="btn btn-primary">Update</button>
         </div>

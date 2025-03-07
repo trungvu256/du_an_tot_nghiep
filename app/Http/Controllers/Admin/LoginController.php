@@ -22,7 +22,7 @@ class LoginController extends Controller
             'password' => $request->password,
             'is_admin' => 1
         ], $request->remember)) {
-            return redirect()->route('admin.main');
+            return redirect()->route('admin.dashboard');
         } else {
             return back()->with('error', 'Email or Password is incorrect, or you do not have admin access.');
         }

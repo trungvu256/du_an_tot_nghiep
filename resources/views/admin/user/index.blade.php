@@ -1,4 +1,4 @@
-@extends('admin.main')
+@extends('admin.layouts.main')
 @section('content')
 <table class="table">
     @if (session('success'))
@@ -29,16 +29,16 @@
                 @if($user->status == 1)
                 <span class="badge badge-success">Hoạt động</span>
                 @else
-                <span class="badge badge-danger">Đã khóa</span>
+                <span class="badge badge-danger">Đã chặn</span>
                 @endif
             </td>
             <td>
                 <a href="{{ route('admin.edit.user', $user->id) }}" class="btn btn-warning">Edit</a>
 
-                @if($user->status == 1)
+                @if($user->status == 0)
                 <a href="{{ route('admin.delete.user', $user->id) }}" class="btn btn-danger"
-                    onclick="return confirm('Bạn có chắc chắn muốn khóa người dùng này không?')">
-                    Khóa
+                    onclick="return confirm('Bạn có chắc chắn muốn chặn người dùng này không?')">
+                    Chặn
                 </a>
                 @else
                 <span class="text-muted">Đã khóa</span>

@@ -52,7 +52,8 @@ class UserController
             'password' => bcrypt($request->password),
             'is_admin' => in_array($request->is_admin, [0, 1]) ? $request->is_admin : 0
         ]);
-        return back()->with('success', 'Created user succesfull !');
+        return redirect()->route('admin.user')->with('success', 'Created user successfully!');
+
     }
     public function edit($id)
     {
