@@ -41,10 +41,7 @@ Route::middleware(['auth'])->group(function () {
             route::post('/add', [CategoryController::class, 'store'])->name('admin.store.cate');
             route::get('/edit/{id}', [CategoryController::class, 'edit'])->name('admin.edit.cate');
             route::post('/update/{id}', [CategoryController::class, 'update'])->name('admin.update.cate');
-            route::delete('/delete/{id}', [CategoryController::class, 'delete'])->name('admin.delete.cate');
-            route::get('/admin/cate/trash', [CategoryController::class, 'trash'])->name('admin.trash.cate');
-            route::post('/admin/cate/restore/{id}', [CategoryController::class, 'restore'])->name('admin.restore.cate');
-            route::delete('/admin/cate/fore-delete/{id}', [CategoryController::class, 'foreDelete'])->name('admin.foreDelete.cate');
+            route::get('/delete/{id}', [CategoryController::class, 'delete'])->name('admin.delete.cate');
         });
         Route::prefix('user')->group(function () {
             route::get('/', [UserController::class, 'index'])->name('admin.user');
@@ -53,9 +50,6 @@ Route::middleware(['auth'])->group(function () {
             route::get('/edit/{id}', [UserController::class, 'edit'])->name('admin.edit.user');
             route::post('/update/{id}', [UserController::class, 'update'])->name('admin.update.user');
             route::get('/delete/{id}', [UserController::class, 'delete'])->name('admin.delete.user');
-            route::get('/admin/users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
-            route::put('/admin/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
-            route::get('/admin/users/{id}/delete', [UserController::class, 'destroy'])->name('admin.delete.user');
         });
 
         //Bình luận
@@ -87,6 +81,12 @@ Route::middleware(['auth'])->group(function () {
             route::get('/edit/{id}', [BlogController::class, 'edit'])->name('admin.edit.blog');
             route::post('/update/{id}', [BlogController::class, 'update'])->name('admin.update.blog');
             route::delete('/delete/{id}', [BlogController::class, 'delete'])->name('admin.delete.blog');
+            route::get('/show/{id}', [BlogController::class, 'show'])->name('admin.show.blog');
+            route::post('/admin/upload-image', [BlogController::class, 'uploadImage'])->name('admin.upload.image');
+            route::get('/trash', [BlogController::class, 'trash'])->name('admin.trash.blog');
+            route::get('/soft-delete/{id}', [BlogController::class, 'softDelete'])->name('admin.softdelete.blog');
+            route::get('/restore/{id}', [BlogController::class, 'restore'])->name('admin.restore.blog');
+            route::delete('/force-delete/{id}', [BlogController::class, 'forceDelete'])->name('admin.forceDelete.blog');
         });
     });
 
