@@ -27,17 +27,27 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required',
-
+            'parent_id' => 'nullable|integer',
+            'image' => 'nullable|image|max:2048',
+        ], [
+            'name.required' => 'Tên danh mục không được để trống!',
         ]);
+
+        $imageCategory = null;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $imageCategory = time() . '-' . $file->getClientOriginalName();
+            $file->move(public_path('category'), $imageCategory);
+        }
+
         Category::create([
             'name' => $request->name,
-            'parent_id' => $request->parent_id,
-            'active' => $request->active,
-            'slug' => Str::slug($request->name),
+            'parent_id' => $request->parent_id == 0 ? null : $request->parent_id,
+            'image' => $imageCategory,
         ]);
-        return redirect()->route('admin.cate')->with('success', 'Created category successfully!');
-    }
-    public function delete($id)
+
+        return redirect()->route('admin.cate')->with('success', 'Thêm mới thành công');
+    }    public function delete($id)
     {
         Category::where('id', $id)->orWhere('parent_id', $id)->delete();
         return back()->with('success', 'Delete category successfull !');
