@@ -47,10 +47,6 @@ class CategoryController extends Controller
         ]);
 
         return redirect()->route('admin.cate')->with('success', 'Thêm mới thành công');
-    }    public function delete($id)
-    {
-        Category::where('id', $id)->orWhere('parent_id', $id)->delete();
-        return back()->with('success', 'Delete category successfull !');
     }
     public function edit($id)
     {
@@ -92,5 +88,42 @@ class CategoryController extends Controller
         return redirect()->route('admin.cate')->with('success', 'Cập nhật danh mục thành công!');
     }
 
+    public function delete($id)
+    {
+        $category = Category::findOrFail($id);
 
+        if ($category->children()->count() > 0) {
+            return back()->with('error', 'Không thể xóa danh mục có danh mục con!');
+        }
+        $category->delete();
+
+        return back()->with('success', 'Danh mục đã được đưa vào thùng rác');
+    }
+
+    public function trash()
+    {
+        $categories = Category::onlyTrashed()->paginate(10);
+
+        return view('admin.category.trash', compact('categories'));
+    }
+    public function foreDelete($id)
+    {
+        $category = Category::withTrashed()->findOrFail($id);
+
+        if ($category->image && file_exists(public_path('category/' . $category->image))) {
+            unlink(public_path('category/' . $category->image));
+        }
+
+        $category->forceDelete();
+
+        return back()->with('success', 'Danh mục đã được xóa vĩnh viễn!');
+    }
+
+    public function restore($id)
+    {
+        $categories = Category::withTrashed()->findOrFail($id);
+        $categories->restore();
+
+        return redirect()->route('admin.trash.cate')->with('success', ' Danh mục đã được phục hồi');
+    }
 }
