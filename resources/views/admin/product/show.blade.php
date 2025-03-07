@@ -8,13 +8,13 @@
                     <div class="swiper product-thumbnail-slider p-2 rounded bg-light">
                         <div class="swiper-wrapper">
                             <div class="swiper-slide">
-                                <img src="/images/{}" alt="" class="img-fluid d-block" />
-                            </div>
-                            <div class="swiper-slide">
                                 <img src="{{asset('template/admin/velzon/assets/images/products/img-8.png')}}" alt="" class="img-fluid d-block" />
                             </div>
                             <div class="swiper-slide">
-                                <img src="{{asset('template/admin/velzon/assets/images/products/img-8.png')}}" alt="" class="img-fluid d-block" />
+                                <img src="{{asset('template/admin/velzon/assets/images/products/img-6.png')}}" alt="" class="img-fluid d-block" />
+                            </div>
+                            <div class="swiper-slide">
+                                <img src="{{asset('template/admin/velzon/assets/images/products/img-1.png')}}" alt="" class="img-fluid d-block" />
                             </div>
                             <div class="swiper-slide">
                                 <img src="{{asset('template/admin/velzon/assets/images/products/img-8.png')}}" alt="" class="img-fluid d-block" />
@@ -28,22 +28,22 @@
                         <div class="swiper-wrapper">
                             <div class="swiper-slide">
                                 <div class="nav-slide-item">
-                                    <img src="assets/images/products/img-8.png" alt="" class="img-fluid d-block" />
+                                    <img src="{{asset('template/admin/velzon/assets/images/products/img-8.png')}}" alt="" class="img-fluid d-block" />
                                 </div>
                             </div>
                             <div class="swiper-slide">
                                 <div class="nav-slide-item">
-                                    <img src="assets/images/products/img-6.png" alt="" class="img-fluid d-block" />
+                                    <img src="{{asset('template/admin/velzon/assets/images/products/img-6.png')}}" alt="" class="img-fluid d-block" />
                                 </div>
                             </div>
                             <div class="swiper-slide">
                                 <div class="nav-slide-item">
-                                    <img src="assets/images/products/img-1.png" alt="" class="img-fluid d-block" />
+                                    <img src="{{asset('template/admin/velzon/assets/images/products/img-1.png')}}" alt="" class="img-fluid d-block" />
                                 </div>
                             </div>
                             <div class="swiper-slide">
                                 <div class="nav-slide-item">
-                                    <img src="assets/images/products/img-8.png" alt="" class="img-fluid d-block" />
+                                    <img src="{{asset('template/admin/velzon/assets/images/products/img-8.png')}}" alt="" class="img-fluid d-block" />
                                 </div>
                             </div>
                         </div>
@@ -58,13 +58,12 @@
                     <div class="d-flex">
                         <div class="flex-grow-1">
                             <h4>{{$product->name}}</h4>
-                            {{-- <div class="hstack gap-3 flex-wrap">
-                                <div><a href="#" class="text-primary d-block">Tommy Hilfiger</a></div>
+                            <div class="hstack gap-3 flex-wrap">
                                 <div class="vr"></div>
                                 <div class="text-muted">Thể loại : <span class="text-body fw-medium">{{ $product->category->name }}</span></div>
                                 <div class="vr"></div>
                                 <div class="text-muted">Ngày đăng : <span class="text-body fw-medium">{{ $product->created_at }}</span></div>
-                            </div> --}}
+                            </div>
                         </div>
                         <div class="flex-shrink-0">
                             <div>
@@ -108,24 +107,12 @@
                             <div class="mt-4">
                                 <h5 class="fs-14">Sizes :</h5>
                                 <div class="d-flex flex-wrap gap-2">
+                                    @foreach ($variants as $variant)
                                     <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Out of Stock">
                                         <input type="radio" class="btn-check" name="productsize-radio" id="productsize-radio1" disabled>
-                                        <label class="btn btn-soft-primary avatar-xs rounded-circle p-0 d-flex justify-content-center align-items-center" for="productsize-radio1">S</label>
-                                    </div>
-
-                                    <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="04 Items Available">
-                                        <input type="radio" class="btn-check" name="productsize-radio" id="productsize-radio2">
-                                        <label class="btn btn-soft-primary avatar-xs rounded-circle p-0 d-flex justify-content-center align-items-center" for="productsize-radio2">M</label>
-                                    </div>
-                                    <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="06 Items Available">
-                                        <input type="radio" class="btn-check" name="productsize-radio" id="productsize-radio3">
-                                        <label class="btn btn-soft-primary avatar-xs rounded-circle p-0 d-flex justify-content-center align-items-center" for="productsize-radio3">L</label>
-                                    </div>
-
-                                    <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Out of Stock">
-                                        <input type="radio" class="btn-check" name="productsize-radio" id="productsize-radio4" disabled>
-                                        <label class="btn btn-soft-primary avatar-xs rounded-circle p-0 d-flex justify-content-center align-items-center" for="productsize-radio4">XL</label>
-                                    </div>
+                                        <label class="btn btn-soft-primary avatar-xs rounded-circle p-0 d-flex justify-content-center align-items-center" for="productsize-radio1">{{$variant->name}}</label>
+                                    </div>    
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -141,7 +128,7 @@
                         <p>{{$product->description}}</p>
                     </div>
 
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-sm-6">
                             <div class="mt-3">
                                 <h5 class="fs-14">Features :</h5>
@@ -162,7 +149,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
 
                     <div class="product-content mt-5">
@@ -183,25 +170,38 @@
                                     <table class="table mb-0">
                                         <tbody>
                                             <tr>
-                                                <th scope="row" style="width: 200px;">Category</th>
-                                                <td>T-Shirt</td>
+                                                <th scope="row" style="width: 200px;">Gender</th>
+                                                <td>{{$product->gender}}</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row">Brand</th>
-                                                <td>Tommy Hilfiger</td>
+                                                <td>{{$product->brand}}</td>
                                             </tr>
                                             <tr>
-                                                <th scope="row">Color</th>
-                                                <td>Blue</td>
+                                                <th scope="row">Longevity</th>
+                                                <td>{{$product->longevity}}</td>
                                             </tr>
                                             <tr>
-                                                <th scope="row">Material</th>
-                                                <td>Cotton</td>
+                                                <th scope="row">Concentration</th>
+                                                <td>{{$product->concentration}}</td>
                                             </tr>
                                             <tr>
-                                                <th scope="row">Weight</th>
-                                                <td>140 Gram</td>
+                                                <th scope="row">Origin</th>
+                                                <td>{{$product->origin}}</td>
                                             </tr>
+                                            <tr>
+                                                <th scope="row">Style</th>
+                                                <td>{{$product->style}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Frangrance group</th>
+                                                <td>{{$product->fragrance_group}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Stock quantity</th>
+                                                <td>{{$product->stock_quantity}}</td>
+                                            </tr>
+                                            
                                         </tbody>
                                     </table>
                                 </div>

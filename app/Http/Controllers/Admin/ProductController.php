@@ -110,7 +110,9 @@ class ProductController extends Controller
         $title = 'Detail Product';
         $categories = Category::all();
         $product = Product::with('category')->find($id);
-        return view('admin.product.show', compact('product', 'categories', 'title'));
+        $description_images = Images::where('product_id', $id)->get();
+        $variants = Variant::where('product_id', $id)->get();
+        return view('admin.product.show', compact('product', 'categories', 'description_images', 'variants', 'title'));
     }
 
     public function edit($id)

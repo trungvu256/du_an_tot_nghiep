@@ -969,6 +969,9 @@
     <!-- Dashboard init -->
     <script src="{{ asset('template/admin/velzon/assets/js/pages/dashboard-ecommerce.init.js') }}"></script>
 
+    <!-- ecommerce product details init -->
+    <script src="{{ asset('template/admin/velzon/assets/js/pages/ecommerce-product-details.init.js') }}"></script>
+
     <!-- App js -->
     <script src="{{ asset('template/admin/velzon/assets/js/app.js') }}"></script>
 </body>
