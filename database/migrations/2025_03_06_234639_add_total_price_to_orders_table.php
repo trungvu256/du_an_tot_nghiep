@@ -14,7 +14,7 @@ class AddTotalPriceToOrdersTable extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->decimal('total_price', 10, 2)->default(0)->after('id_user');
+            // $table->decimal('total_price', 10, 2)->default(0)->after('id_user');
         });
     }
 
