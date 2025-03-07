@@ -12,10 +12,11 @@ class CategoryController extends Controller
     public function index()
     {
 
-        $categories = Category::paginate(10);
+        $categories = Category::whereNull('parent_id')->with('children')->get();
         $title = "List Category";
         return view('admin.category.index', compact('title', 'categories'));
     }
+
     public function create()
     {
         $categories = Category::all();
