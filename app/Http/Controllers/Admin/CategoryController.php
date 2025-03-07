@@ -55,22 +55,42 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $title = "Edit Category";
-        $categoryedit = Category::find($id);
+        $categoryedit = Category::findOrFail($id);
         $categories = Category::all();
         return view('admin.category.edit', compact('categoryedit', 'categories', 'title'));
     }
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required',
+        $request->validate(
+            [
+                'name' => 'required',
+                'parent_id' => 'nullable|integer',
+                'image' => 'nullable|image|max:2048',
+            ],
+            [
+                'name.required' => 'Tên danh mục không được để trống!',
+            ]
+        );
 
-        ]);
-        Category::where('id', $id)->update([
-            'name' => $request->name,
-            'parent_id' => $request->parent_id,
-            'active' => $request->active,
-            'slug' => Str::slug($request->name),
-        ]);
-        return back()->with('success', 'Updated category succesfully !');
+        $category = Category::findOrFail($id);
+        $category->name = $request->name;
+        $category->parent_id = $request->parent_id ?: null;
+
+        if ($request->hasFile('image')) {
+
+            if ($category->image && file_exists(public_path('category/' . $category->image))) {
+                unlink(public_path('category/' . $category->image));
+            }
+
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('category'), $imageName);
+            $category->image = $imageName;
+        }
+
+        $category->save();
+
+        return redirect()->route('admin.cate')->with('success', 'Cập nhật danh mục thành công!');
     }
+
+
 }
