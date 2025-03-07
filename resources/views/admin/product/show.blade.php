@@ -105,7 +105,7 @@
                     <!-- end row -->
 
                     <div class="mt-4 text-muted">
-                        <h5 class="fs-14">Mô tả :</h5>
+                        <h5 class="fs-14">Description :</h5>
                         <p>{{$product->description}}</p>
                     </div>
 
@@ -134,7 +134,7 @@
 
 
                     <div class="product-content mt-5">
-                        <h5 class="fs-14 mb-3">Product Description :</h5>
+                        <h5 class="fs-14 mb-3">Product Specifications :</h5>
                         <nav>
                             <ul class="nav nav-tabs nav-tabs-custom nav-success" id="nav-tab" role="tablist">
                                 <li class="nav-item">
