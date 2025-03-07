@@ -1,59 +1,74 @@
 @extends('admin.main')
 @section('content')
 
-<form action="{{route('admin.store.blog', $blogs_edit->id)}}" method="post" enctype="multipart/form-data">
+<form action="{{ route('admin.update.blog', $blogs_edit->id) }}" method="post" enctype="multipart/form-data">
     @csrf
 
-    @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>  
-            @endforeach
-        </ul>
-    </div>
-    @endif
-
     <div class="mb-3">
-        <label for="author">Author</label>
-        <input type="text" name="author" class="form-control" value="{{$blogs_edit->author}}">
+        <label for="author">Tác giả</label>
+        <input type="text" name="author" class="form-control" value="{{ old('author', $blogs_edit->author) }}">
+        @error('author')
+            <span class="text-danger">{{ $message }}</span>
+        @enderror
     </div>
 
     <div class="mb-3">
-        <label for="title">Title</label>
-        <input type="text" name="title" class="form-control" value="{{$blogs_edit->title}}">
+        <label for="title">Tiêu đề</label>
+        <input type="text" name="title" class="form-control" value="{{ old('title', $blogs_edit->title) }}">
+        @error('title')
+            <span class="text-danger">{{ $message }}</span>
+        @enderror
     </div>
 
     <div class="mb-3">
-        <label for="image">Image</label>
+        <label for="image">Ảnh</label>
         <input type="file" name="image" class="form-control">
         <br>
         @if ($blogs_edit->image)
-            <img src="{{ asset('blog/'.$blogs_edit->image) }}" alt="" width="100">
+            <img src="{{ asset('blog/'.$blogs_edit->image) }}" alt="Ảnh bài viết" width="100">
         @endif
+        @error('image')
+            <span class="text-danger">{{ $message }}</span>
+        @enderror
     </div>
 
     <div class="mb-3">
-        <label for="preview">Preview</label>
-        <textarea name="preview" id="preview" class="form-control">{{$blogs_edit->preview}}</textarea>
+        <label for="preview">Mô tả ngắn</label>
+        <textarea name="preview" id="preview" class="form-control">{{ old('preview', $blogs_edit->preview) }}</textarea>
+        @error('preview')
+            <span class="text-danger">{{ $message }}</span>
+        @enderror
     </div>
 
     <div class="mb-3">
-        <label for="content">Content</label>
-        <textarea name="content" id="content" class="form-control">{{$blogs_edit->content}}</textarea>
+        <label for="content">Nội dung</label>
+        <textarea name="content" id="content" class="form-control">{{ old('content', $blogs_edit->content) }}</textarea>
+        @error('content')
+            <span class="text-danger">{{ $message }}</span>
+        @enderror
     </div>
 
     <div class="mb-3">
         <label for="slug">Slug</label>
-        <input type="text" name="slug" class="form-control" required value="{{$blogs_edit->slug}}">
+        <input type="text" name="slug" class="form-control" value="{{ old('slug', $blogs_edit->slug) }}" required>
+        @error('slug')
+            <span class="text-danger">{{ $message }}</span>
+        @enderror
     </div>
 
-    <button class="btn btn-primary">Submit</button>
+    <button class="btn btn-primary">Cập nhật</button>
 </form>
-<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
-<script>
-    CKEDITOR.replace('preview');
-    CKEDITOR.replace('content');
-</script>
 
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#content'), {
+            ckfinder: {
+                uploadUrl: "{{ route('admin.upload.image') }}?_token={{ csrf_token() }}"
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
+</script>
 @endsection
