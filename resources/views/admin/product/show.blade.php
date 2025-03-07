@@ -7,18 +7,11 @@
                 <div class="product-img-slider sticky-side-div">
                     <div class="swiper product-thumbnail-slider p-2 rounded bg-light">
                         <div class="swiper-wrapper">
+                            @foreach ($description_images as $image)   
                             <div class="swiper-slide">
-                                <img src="{{asset('template/admin/velzon/assets/images/products/img-8.png')}}" alt="" class="img-fluid d-block" />
+                                <img src="{{asset('storage/'.$image->image)}}" alt="" class="img-fluid d-block" />
                             </div>
-                            <div class="swiper-slide">
-                                <img src="{{asset('template/admin/velzon/assets/images/products/img-6.png')}}" alt="" class="img-fluid d-block" />
-                            </div>
-                            <div class="swiper-slide">
-                                <img src="{{asset('template/admin/velzon/assets/images/products/img-1.png')}}" alt="" class="img-fluid d-block" />
-                            </div>
-                            <div class="swiper-slide">
-                                <img src="{{asset('template/admin/velzon/assets/images/products/img-8.png')}}" alt="" class="img-fluid d-block" />
-                            </div>
+                            @endforeach
                         </div>
                         <div class="swiper-button-next"></div>
                         <div class="swiper-button-prev"></div>
@@ -26,26 +19,14 @@
                     <!-- end swiper thumbnail slide -->
                     <div class="swiper product-nav-slider mt-2">
                         <div class="swiper-wrapper">
+                            @foreach ($description_images as $image)
+                                
                             <div class="swiper-slide">
                                 <div class="nav-slide-item">
-                                    <img src="{{asset('template/admin/velzon/assets/images/products/img-8.png')}}" alt="" class="img-fluid d-block" />
+                                    <img src="{{asset('storage/'.$image->image)}}" alt="" class="img-fluid d-block" />
                                 </div>
                             </div>
-                            <div class="swiper-slide">
-                                <div class="nav-slide-item">
-                                    <img src="{{asset('template/admin/velzon/assets/images/products/img-6.png')}}" alt="" class="img-fluid d-block" />
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="nav-slide-item">
-                                    <img src="{{asset('template/admin/velzon/assets/images/products/img-1.png')}}" alt="" class="img-fluid d-block" />
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="nav-slide-item">
-                                    <img src="{{asset('template/admin/velzon/assets/images/products/img-8.png')}}" alt="" class="img-fluid d-block" />
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                     <!-- end swiper nav slide -->
@@ -228,7 +209,7 @@
                         </div>
                         <div class="row gy-4 gx-0">
                             <div class="col-lg-4">
-                                <div>
+                                {{-- <div>
                                     <div class="pb-3">
                                         <div class="bg-light px-3 py-2 rounded-2 mb-2">
                                             <div class="d-flex align-items-center">
@@ -359,11 +340,11 @@
                                         </div>
                                         <!-- end row -->
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             <!-- end col -->
 
-                            <div class="col-lg-8">
+                            <div class="col-lg-12">
                                 <div class="ps-lg-4">
                                     <div class="d-flex flex-wrap align-items-start gap-3">
                                         <h5 class="fs-14">Reviews: </h5>
