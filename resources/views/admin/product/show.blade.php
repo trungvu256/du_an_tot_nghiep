@@ -1,5 +1,23 @@
 @extends('admin.layouts.main')
 @section('content')
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                <a href="{{ route('admin.product') }}" class="btn btn-info"><i class="bi bi-arrow-left"></i>Back</a>
+                <h4 class="mb-sm-0">Product Details</h4>
+
+                {{-- <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Ecommerce</a></li>
+                        <li class="breadcrumb-item active">Product Details</li>
+                    </ol>
+                </div> --}}
+
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
     <div class="card">
         <div class="card-body">
             <div class="row gx-lg-5">
@@ -51,8 +69,8 @@
                             </div>
                             <div class="flex-shrink-0">
                                 <div>
-                                    <a href="apps-ecommerce-add-product.html" class="btn btn-light" data-bs-toggle="tooltip"
-                                        data-bs-placement="top" title="Edit"><i
+                                    <a href="{{ route('admin.edit.product', $product->id) }}" class="btn btn-light"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i
                                             class="ri-pencil-fill align-bottom"></i></a>
                                 </div>
                             </div>
@@ -359,125 +377,60 @@
 
                                         <div class="me-lg-n3 pe-lg-4" data-simplebar style="max-height: 225px;">
                                             <ul class="list-unstyled mb-0">
-                                                <li class="py-2">
-                                                    <div class="border border-dashed rounded p-3">
-                                                        <div class="d-flex align-items-start mb-3">
-                                                            <div class="hstack gap-3">
-                                                                <div class="badge rounded-pill bg-success mb-0">
-                                                                    <i class="mdi mdi-star"></i> 4.2
+                                                @foreach ($comments as $comment)
+                                                    <li class="py-2">
+                                                        <div class="border border-dashed rounded p-3">
+                                                            <div class="d-flex align-items-start mb-3">
+                                                                <div class="hstack gap-3">
+                                                                    <div class="flex-grow-1">
+                                                                        <h5 class="fs-14 mb-0">{{ $comment->user->name }}
+                                                                        </h5>
+                                                                    </div>
+                                                                    @if ($comment->rating)
+                                                                        <div class="badge rounded-pill bg-success mb-0">
+                                                                            {{ $comment->rating }}
+                                                                            <i class="mdi mdi-star"></i>
+                                                                        </div>
+                                                                    @endif
+
+                                                                    <div class="vr"></div>
+
                                                                 </div>
-                                                                <div class="vr"></div>
+                                                            </div>
+
+                                                            <div class="d-flex flex-grow-1 gap-2 mb-3">
+                                                                <a href="#" class="d-block">
+                                                                    <img src="assets/images/small/img-12.jpg"
+                                                                        alt=""
+                                                                        class="avatar-sm rounded object-fit-cover">
+                                                                </a>
+                                                                <a href="#" class="d-block">
+                                                                    <img src="assets/images/small/img-11.jpg"
+                                                                        alt=""
+                                                                        class="avatar-sm rounded object-fit-cover">
+                                                                </a>
+                                                                <a href="#" class="d-block">
+                                                                    <img src="assets/images/small/img-10.jpg"
+                                                                        alt=""
+                                                                        class="avatar-sm rounded object-fit-cover">
+                                                                </a>
+                                                            </div>
+
+                                                            <div class="d-flex align-items-end">
                                                                 <div class="flex-grow-1">
-                                                                    <p class="text-muted mb-0"> Superb sweatshirt. I loved
-                                                                        it. It is for winter.</p>
+                                                                    <p class="text-muted mb-0">
+                                                                        {{ $comment->content }}</p>
                                                                 </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="d-flex flex-grow-1 gap-2 mb-3">
-                                                            <a href="#" class="d-block">
-                                                                <img src="assets/images/small/img-12.jpg" alt=""
-                                                                    class="avatar-sm rounded object-fit-cover">
-                                                            </a>
-                                                            <a href="#" class="d-block">
-                                                                <img src="assets/images/small/img-11.jpg" alt=""
-                                                                    class="avatar-sm rounded object-fit-cover">
-                                                            </a>
-                                                            <a href="#" class="d-block">
-                                                                <img src="assets/images/small/img-10.jpg" alt=""
-                                                                    class="avatar-sm rounded object-fit-cover">
-                                                            </a>
-                                                        </div>
-
-                                                        <div class="d-flex align-items-end">
-                                                            <div class="flex-grow-1">
-                                                                <h5 class="fs-14 mb-0">Henry</h5>
-                                                            </div>
-
-                                                            <div class="flex-shrink-0">
-                                                                <p class="text-muted fs-13 mb-0">12 Jul, 21</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="py-2">
-                                                    <div class="border border-dashed rounded p-3">
-                                                        <div class="d-flex align-items-start mb-3">
-                                                            <div class="hstack gap-3">
-                                                                <div class="badge rounded-pill bg-success mb-0">
-                                                                    <i class="mdi mdi-star"></i> 4.0
-                                                                </div>
-                                                                <div class="vr"></div>
-                                                                <div class="flex-grow-1">
-                                                                    <p class="text-muted mb-0"> Great at this price,
-                                                                        Product quality and look is awesome.</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex align-items-end">
-                                                            <div class="flex-grow-1">
-                                                                <h5 class="fs-14 mb-0">Nancy</h5>
-                                                            </div>
-
-                                                            <div class="flex-shrink-0">
-                                                                <p class="text-muted fs-13 mb-0">06 Jul, 21</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-                                                <li class="py-2">
-                                                    <div class="border border-dashed rounded p-3">
-                                                        <div class="d-flex align-items-start mb-3">
-                                                            <div class="hstack gap-3">
-                                                                <div class="badge rounded-pill bg-success mb-0">
-                                                                    <i class="mdi mdi-star"></i> 4.2
-                                                                </div>
-                                                                <div class="vr"></div>
-                                                                <div class="flex-grow-1">
-                                                                    <p class="text-muted mb-0">Good product. I am so happy.
+                                                                <div class="flex-shrink-0">
+                                                                    <p class="text-muted fs-13 mb-0">
+                                                                        <i class="bi bi-clock"></i>
+                                                                        {{ $comment->created_at->format('Y-m-d') }}
                                                                     </p>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="d-flex align-items-end">
-                                                            <div class="flex-grow-1">
-                                                                <h5 class="fs-14 mb-0">Joseph</h5>
-                                                            </div>
-
-                                                            <div class="flex-shrink-0">
-                                                                <p class="text-muted fs-13 mb-0">06 Jul, 21</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-                                                <li class="py-2">
-                                                    <div class="border border-dashed rounded p-3">
-                                                        <div class="d-flex align-items-start mb-3">
-                                                            <div class="hstack gap-3">
-                                                                <div class="badge rounded-pill bg-success mb-0">
-                                                                    <i class="mdi mdi-star"></i> 4.1
-                                                                </div>
-                                                                <div class="vr"></div>
-                                                                <div class="flex-grow-1">
-                                                                    <p class="text-muted mb-0">Nice Product, Good Quality.
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex align-items-end">
-                                                            <div class="flex-grow-1">
-                                                                <h5 class="fs-14 mb-0">Jimmy</h5>
-                                                            </div>
-
-                                                            <div class="flex-shrink-0">
-                                                                <p class="text-muted fs-13 mb-0">24 Jun, 21</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
+                                                    </li>
+                                                @endforeach
                                             </ul>
                                         </div>
                                     </div>

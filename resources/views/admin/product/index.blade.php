@@ -24,7 +24,7 @@
         </div>
     </form>
 
-    <table class="table mt-3">
+    <table class="table table-hover mt-3">
         @if (session('success'))
             <div class="alert alert-success">
                 <ul>
@@ -55,7 +55,8 @@
                                 @foreach ($product->variants as $variant)
                                     @if (empty(request('variant_name')) || $variant->name == request('variant_name'))
                                         @if (empty(request('variant_price')) || $variant->price == request('variant_price'))
-                                            <li>{{ $variant->name }} - {{ number_format($variant->price, 2) }} VND</li>
+                                            <li>{{ $variant->name }} - {{ number_format($variant->price, 2) }} VND
+                                            </li>
                                         @endif
                                     @endif
                                 @endforeach
@@ -65,9 +66,10 @@
                         @endif
                     </td>
                     <td>
-                        <a href="{{ route('admin.show.product', $product->id) }}" class="btn btn-info"><i class="bi bi-eye"></i></a>
-                                <a href="{{ route('admin.edit.product', $product->id) }}" class="btn btn-warning"><i
-                                    class="bi bi-pencil-square"></i></a>
+                        <a href="{{ route('admin.show.product', $product->id) }}" class="btn btn-info"><i
+                                class="bi bi-eye"></i></a>
+                        <a href="{{ route('admin.edit.product', $product->id) }}" class="btn btn-warning"><i
+                                class="bi bi-pencil-square"></i></a>
                         <form action="{{ route('admin.delete.product', $product->id) }}" method="POST"
                             style="display:inline;">
                             @csrf

@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
+use App\Models\Comment;
 use App\Models\Variant;
 use Illuminate\Support\Facades\File;
 
@@ -111,8 +112,9 @@ class ProductController extends Controller
         $categories = Category::all();
         $product = Product::with('category')->find($id);
         $description_images = Images::where('product_id', $id)->get();
+        $comments = Comment::where('product_id', $id)->paginate(10);
         $variants = Variant::where('product_id', $id)->get();
-        return view('admin.product.show', compact('product', 'categories', 'description_images', 'variants', 'title'));
+        return view('admin.product.show', compact('product', 'categories', 'description_images', 'variants', 'comments', 'title'));
     }
 
     public function edit($id)
