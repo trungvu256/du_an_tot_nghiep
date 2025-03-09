@@ -15,7 +15,7 @@
                 </div>
                 <div class="actions">
                     <a href="{{ route('admin.edit.cate', $category->id) }}" class="btn btn-warning btn-sm"><i
-                        class="bi bi-pencil-square"></i>g</a>
+                        class="bi bi-pencil-square"></i></a>
                     <form action="{{ route('admin.delete.cate', $category->id) }}" method="POST" onsubmit="return confirm('Đưa vào thùng rác');">
                         @csrf
                         @method('DELETE')
@@ -39,7 +39,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Đưa vào thùng rác');"><i class="bi bi-x-circle-fill"></i></button>
-                                    
+
 
                                 </form>
                             </div>
