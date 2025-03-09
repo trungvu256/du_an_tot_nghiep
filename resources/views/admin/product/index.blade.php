@@ -24,7 +24,7 @@
         </div>
     </form>
 
-    <table class="table table-hover mt-3">
+    <table class="table table-hover align-middle text-center mt-3">
         @if (session('success'))
             <div class="alert alert-success">
                 <ul>
@@ -32,7 +32,7 @@
                 </ul>
             </div>
         @endif
-        <thead>
+        <thead class="table-info">
             <tr>
                 <th>#</th>
                 <th>Tên sản phẩm</th>
@@ -46,7 +46,7 @@
             @foreach ($products as $product)
                 <tr>
                     <th>{{ $product->id }}</th>
-                    <td>{{ $product->name }}</td>
+                    <td class="fw-bold">{{ $product->name }}</td>
                     <td><img src="{{ asset('storage/' . $product->image) }}" alt="Product Image" width="70px"></td>
                     <td>{{ $product->category->name }}</td>
                     <td>
