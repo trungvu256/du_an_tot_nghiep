@@ -19,11 +19,11 @@
                 <h6 class="animated wow slideInUp" data-wow-delay=".5s">Login Information</h6>
 
                 <form action="javascript:void(0)" id="form_register" class="animated wow slideInUp" data-wow-delay=".5s">
-                    <input type="text" id="name" name="name" placeholder="Email Name" required>
+                    <input type="text" id="name" name="name" placeholder="Enter full name" required>
                     <br>
-                    <input type="email" id="email" name="email" placeholder="Email Address" required>
-                    <input type="password" id="password" name="password" placeholder="Password" required>
-                    <input type="password" name="password_confirm" placeholder="Password Confirmation" required>
+                    <input type="email" id="email" name="email" placeholder="Enter email address" required>
+                    <input type="password" id="password" name="password" placeholder="Enter password" required>
+                    <input type="password" name="password_confirm" placeholder="Password confirmation" required>
                     <div class="register-check-box">
                         <div class="check">
                             <label class="checkbox"><input type="checkbox" name="checkbox"><i> </i>I accept the terms

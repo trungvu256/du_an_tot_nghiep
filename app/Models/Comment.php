@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Comment extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'comment', 'id_blog', 'id_product', 'id_hidden'];
+    protected $fillable = ['name', 'comment', 'user_id', 'product_id', 'status', 'image','rating', ];
 
-    public function blog() {
-        return $this->belongsTo(Blog::class, 'id_blog');
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id');
     }
     public function product() {
-        return $this->belongsTo(Product::class, 'id_product');
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }
