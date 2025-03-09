@@ -18,6 +18,7 @@ class CreateCommentsTable extends Migration
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
             $table->text('content');
+            $table->string('image')->nullable();
             $table->unsignedTinyInteger('rating')->nullable(); // Đánh giá (1-5 sao)
             $table->enum('status', ['pending', 'approved', 'hidden'])->default('pending'); // Trạng thái bình luận
             $table->text('admin_reply')->nullable(); // Phản hồi từ admin
