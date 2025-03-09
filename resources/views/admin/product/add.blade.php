@@ -134,7 +134,7 @@
         </div>
         <div class="mb-3">
             <label>Description</label>
-            <textarea name="description" class="form-control" placeholder="Enter description">{{ old('description') }}</textarea>
+            <textarea name="description" id="description" class="form-control" placeholder="Enter description">{{ old('description') }}</textarea>
             @error('description')
                 <span class="text-danger">{{ $message }}</span>
             @enderror
@@ -184,10 +184,17 @@
         </div>
     </div>
 </form>
-<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 <script>
-    CKEDITOR.replace('description');
-    CKEDITOR.replace('content');
+    ClassicEditor
+        .create(document.querySelector('#content'), {
+            ckfinder: {
+                uploadUrl: "{{ route('admin.upload.image') }}?_token={{ csrf_token() }}"
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
 </script>
 <script>
     let variantIndex = {{ old('variants') ? count(old('variants')) : 1 }};
