@@ -28,7 +28,7 @@
     </div>
 
     <div class="form-group">
-       <label for="comment">nội dung bình luận</label>
+       <label for="comment">Nội dung bình luận</label>
        <textarea name="comment"  class="form-control" rows="3" placeholder="nhập nội dung comment" required ></textarea>
 
     </div>
