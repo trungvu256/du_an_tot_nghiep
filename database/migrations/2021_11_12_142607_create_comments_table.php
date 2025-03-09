@@ -11,18 +11,19 @@ class CreateCommentsTable extends Migration
      *
      * @return void
      */
-    public function up()
-{
-    Schema::create('comments', function (Blueprint $table) {
-        $table->id();
-        $table->string('name');
-        $table->text('comment');
-        $table->bigInteger('id_blog')->unsigned()->nullable(); // Cho phép NULL
-        $table->foreign('id_blog')->references('id')->on('blogs')->onDelete('cascade');
-        $table->boolean('is_hidden')->default(false);
-        $table->timestamps();
-    });
-}
+    public function up(): void
+    {
+        Schema::create('comments', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
+            $table->text('content');
+            $table->unsignedTinyInteger('rating')->nullable(); // Đánh giá (1-5 sao)
+            $table->enum('status', ['pending', 'approved', 'hidden'])->default('pending'); // Trạng thái bình luận
+            $table->text('admin_reply')->nullable(); // Phản hồi từ admin
+            $table->timestamps();
+        });
+    }
 
 
     /**
