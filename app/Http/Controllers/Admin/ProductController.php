@@ -9,39 +9,31 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
-use App\Models\Comment;
 use App\Models\Variant;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::with('variants', 'category');
-
-        $selectedVariant = null;
-
-        if ($request->has('variant_name') && !empty($request->variant_name)) {
+        $query = Product::with('variants', 'category', 'comments');
+        if ($request->filled('variant_name')) {
             $query->whereHas('variants', function ($q) use ($request) {
                 $q->where('name', 'LIKE', '%' . $request->variant_name . '%');
             });
-            $selectedVariant = Variant::where('name', 'LIKE', '%' . $request->variant_name . '%')->first();
         }
-
-        if ($request->has('min_price') && $request->has('max_price')) {
-            $minPrice = $request->min_price;
-            $maxPrice = $request->max_price;
-
-            $query->whereHas('variants', function ($q) use ($minPrice, $maxPrice) {
-                $q->whereBetween('price', [$minPrice, $maxPrice]);
+        if ($request->filled('variant_price')) {
+            $query->whereHas('variants', function ($q) use ($request) {
+                $q->where('price', $request->variant_price);
             });
         }
-
-        $products = $query->paginate(5);
+        $products = $query->paginate(10);
         $variantNames = Variant::distinct()->pluck('name');
 
-        return view('admin.product.index', compact('products', 'variantNames', 'selectedVariant'));
+        return view('admin.product.index', compact('products', 'variantNames'));
     }
+
 
 
     public function create()
@@ -52,36 +44,103 @@ class ProductController extends Controller
     }
     public function store(Request $request)
     {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0|max:999999999999',
+            'price_sale' => 'nullable|numeric|min:0|max:999999999999|lte:price',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'gender' => 'required|string|max:50',
+            'brand' => 'required|string|max:100',
+            'longevity' => 'required|string|max:100',
+            'concentration' => 'required|string|max:100',
+            'origin' => 'required|string|max:100',
+            'style' => 'required|string|max:100',
+            'fragrance_group' => 'required|string|max:100',
+            'stock_quantity' => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
 
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images/products', 'public');
+            'variants' => 'nullable|array',
+            'variants.*.name' => 'required|string|max:100',
+            'variants.*.price' => 'required|numeric|min:0|max:999999999999',
+        ], [
+            'name.required' => 'Tên sản phẩm không được để trống.',
+            'description.required' => 'Mô tả sản phẩm không được để trống.',
+            'price.required' => 'Giá sản phẩm không được để trống.',
+            'image.required' => 'Ảnh sản phẩm không được để trống.',
+            'image.image' => 'File tải lên phải là hình ảnh.',
+            'image.mimes' => 'Ảnh phải có định dạng jpeg, png, jpg, hoặc gif.',
+            'image.max' => 'Dung lượng ảnh tối đa là 2MB.',
+            'gender.required' => 'Giới tính sản phẩm không được để trống.',
+            'brand.required' => 'Thương hiệu không được để trống.',
+            'longevity.required' => 'Độ lưu hương không được để trống.',
+            'concentration.required' => 'Nồng độ không được để trống.',
+            'origin.required' => 'Xuất xứ không được để trống.',
+            'style.required' => 'Phong cách không được để trống.',
+            'fragrance_group.required' => 'Nhóm hương không được để trống.',
+            'stock_quantity.required' => 'Số lượng tồn kho không được để trống.',
+            'category_id.exists' => 'Danh mục sản phẩm không hợp lệ.',
+            'variants.*.name.required' => 'Tên biến thể không được để trống.',
+            'variants.*.price.required' => 'Giá biến thể không được để trống.',
+        ]);
+
+
+        if (!empty($request->variants)) {
+            $variantsWithSize = collect($request->variants)->map(function ($variant) {
+                preg_match('/\d+/', $variant['name'], $matches);
+                return [
+                    'name' => $variant['name'],
+                    'size' => isset($matches[0]) ? (int) $matches[0] : null,
+                    'price' => $variant['price'],
+                ];
+            });
+
+            $sortedVariants = $variantsWithSize->sortBy('size')->values();
+            $previousVariant = null;
+
+            foreach ($sortedVariants as $variant) {
+                if ($previousVariant !== null) {
+
+                    if ($variant['size'] > $previousVariant['size'] && $variant['price'] < $previousVariant['price']) {
+                        return back()->withErrors([
+                            'variants' => "Giá của biến thể {$variant['name']} không thể thấp hơn biến thể {$previousVariant['name']}.",
+                        ])->withInput();
+                    }
+                }
+                $previousVariant = $variant;
+            }
         }
 
-        $currentTime = now()->format('YmdHis');
 
-        $randomString = Str::random(4);
+        $imagePath = $request->hasFile('image')
+            ? $request->file('image')->store('images/products', 'public')
+            : 'images/products/default.png';
 
-        $product_code = $randomString . $currentTime;
+
+        $product_code = Str::random(4) . now()->format('YmdHis');
+
 
         $product = Product::create([
             'product_code' => $product_code,
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
-            'description' => $request->description,
-            'price' => $request->price,
-            'price_sale' => $request->price_sale,
+            'name' => $validatedData['name'],
+            'slug' => Str::slug($validatedData['name']),
+            'description' => $validatedData['description'],
+            'price' => $validatedData['price'],
+            'price_sale' => $validatedData['price_sale'],
             'image' => $imagePath,
-            'gender' => $request->gender,
-            'brand' => $request->brand,
-            'longevity' => $request->longevity,
-            'concentration' => $request->concentration,
-            'origin' => $request->origin,
-            'style' => $request->style,
-            'fragrance_group' => $request->fragrance_group,
-            'stock_quantity' => $request->stock_quantity,
-            'category_id' => $request->category_id,
+            'gender' => $validatedData['gender'],
+            'brand' => $validatedData['brand'],
+            'longevity' => $validatedData['longevity'],
+            'concentration' => $validatedData['concentration'],
+            'origin' => $validatedData['origin'],
+            'style' => $validatedData['style'],
+            'fragrance_group' => $validatedData['fragrance_group'],
+            'stock_quantity' => $validatedData['stock_quantity'],
+            'category_id' => $validatedData['category_id'],
         ]);
+
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
@@ -93,7 +152,8 @@ class ProductController extends Controller
             }
         }
 
-        if ($request->has('variants')) {
+
+        if (!empty($request->variants)) {
             foreach ($request->variants as $variant) {
                 Variant::create([
                     'product_id' => $product->id,
@@ -110,11 +170,11 @@ class ProductController extends Controller
     {
         $title = 'Detail Product';
         $categories = Category::all();
-        $product = Product::with('category')->find($id);
+        $product = Product::with(['category', 'comments.user'])->find($id);
         $description_images = Images::where('product_id', $id)->get();
-        $comments = Comment::where('product_id', $id)->paginate(10);
         $variants = Variant::where('product_id', $id)->get();
-        return view('admin.product.show', compact('product', 'categories', 'description_images', 'variants', 'comments', 'title'));
+
+        return view('admin.product.show', compact('product', 'categories', 'description_images', 'variants', 'title'));
     }
 
     public function edit($id)
@@ -125,94 +185,127 @@ class ProductController extends Controller
         return view('admin.product.edit', compact('product', 'categories', 'title'));
     }
 
+
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id',
-            'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'content' => 'required|string',
             'description' => 'required|string',
-            'price' => 'required|numeric|min:0',
-            'price_sale' => 'nullable|numeric|min:0',
+            'price' => 'required|numeric|min:0|max:999999999999',
+            'price_sale' => 'nullable|numeric|min:0|max:999999999999|lte:price',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'gender' => 'required|string|max:50',
+            'brand' => 'required|string|max:100',
+            'longevity' => 'required|string|max:100',
+            'concentration' => 'required|string|max:100',
+            'origin' => 'required|string|max:100',
+            'style' => 'required|string|max:100',
+            'fragrance_group' => 'required|string|max:100',
+            'stock_quantity' => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+
             'variants' => 'nullable|array',
-            'variants.*.name' => 'required_with:variants|string|max:255',
-            'variants.*.price' => 'required_with:variants|numeric|min:0',
-        ], [
-            'name.required' => 'Tên sản phẩm không được để trống.',
-            'category_id.required' => 'Danh mục không được để trống.',
-            'category_id.exists' => 'Danh mục không hợp lệ.',
-            'img.required' => 'Ảnh sản phẩm không được để trống.',
-            'img.image' => 'Ảnh phải là một tập tin hình ảnh.',
-            'img.mimes' => 'Ảnh phải có định dạng: jpeg, png, jpg, gif.',
-            'img.max' => 'Ảnh không được lớn hơn 2MB.',
-            'images.*.image' => 'Ảnh bổ sung phải là tập tin hình ảnh.',
-            'images.*.mimes' => 'Ảnh bổ sung phải có định dạng: jpeg, png, jpg, gif.',
-            'images.*.max' => 'Ảnh bổ sung không được lớn hơn 2MB.',
-            'content.required' => 'Nội dung sản phẩm không được để trống.',
-            'description.required' => 'Mô tả sản phẩm không được để trống.',
-            'price.required' => 'Giá sản phẩm không được để trống.',
-            'price.numeric' => 'Giá sản phẩm phải là số.',
-            'price.min' => 'Giá sản phẩm không được nhỏ hơn 0.',
-            'price_sale.numeric' => 'Giá khuyến mãi phải là số.',
-            'price_sale.min' => 'Giá khuyến mãi không được nhỏ hơn 0.',
-            'variants.*.name.required_with' => 'Tên biến thể không được để trống.',
-            'variants.*.price.required_with' => 'Giá biến thể không được để trống.',
-            'variants.*.price.numeric' => 'Giá biến thể phải là số.',
-            'variants.*.price.min' => 'Giá biến thể không được nhỏ hơn 0.',
+            'variants.*.name' => 'required|string|max:100',
+            'variants.*.price' => 'required|numeric|min:0|max:999999999999',
         ]);
+
         $product = Product::findOrFail($id);
-        $imageName = $product->img; // Giữ nguyên ảnh cũ nếu không có ảnh mới
 
-        if ($request->hasFile('img')) {
-            $file = $request->file('img');
-            $imageName = time() . '-' . $file->getClientOriginalName();
-            $file->move(public_path('cover'), $imageName);
 
-            if ($product->img && File::exists(public_path('cover/' . $product->img))) {
-                File::delete(public_path('cover/' . $product->img));
+        if ($request->hasFile('image')) {
+
+            if ($product->image) {
+                Storage::delete('public/' . $product->image);
             }
+
+
+            $imagePath = $request->file('image')->store('images/products', 'public');
+        } else {
+            $imagePath = $product->image;
         }
 
-        // Cập nhật sản phẩm, đảm bảo ảnh giữ nguyên nếu không đổi
+
         $product->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'content' => $request->content,
-            'price' => $request->price,
-            'price_sale' => $request->price_sale,
-            'slug' => Str::slug($request->name),
-            'category_id' => $request->category_id,
-            'img' => $imageName, // Ảnh chính vẫn giữ nguyên nếu không thay đổi
-            'views' => $product->views
+            'name' => $validatedData['name'],
+            'slug' => Str::slug($validatedData['name']),
+            'description' => $validatedData['description'],
+            'price' => $validatedData['price'],
+            'price_sale' => $validatedData['price_sale'],
+            'image' => $imagePath,
+            'gender' => $validatedData['gender'],
+            'brand' => $validatedData['brand'],
+            'longevity' => $validatedData['longevity'],
+            'concentration' => $validatedData['concentration'],
+            'origin' => $validatedData['origin'],
+            'style' => $validatedData['style'],
+            'fragrance_group' => $validatedData['fragrance_group'],
+            'stock_quantity' => $validatedData['stock_quantity'],
+            'category_id' => $validatedData['category_id'],
         ]);
 
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $file) {
-                $editionalImage = time() . '-' . $file->getClientOriginalName();
-                $file->move(public_path('images'), $editionalImage);
 
+        if ($request->hasFile('images')) {
+
+            $oldImages = Images::where('product_id', $product->id)->get();
+            foreach ($oldImages as $oldImage) {
+                Storage::delete('public/' . $oldImage->image);
+                $oldImage->delete();
+            }
+
+
+            foreach ($request->file('images') as $image) {
+                $imagePath = $image->store('images/products/descriptions', 'public');
                 Images::create([
                     'product_id' => $product->id,
-                    'image' => $editionalImage,
+                    'image' => $imagePath,
                 ]);
             }
         }
 
-        if ($request->has('variants')) {
-            $product->variants()->delete();
-            foreach ($request->variants as $variant) {
-                if (!empty($variant['name']) && isset($variant['price'])) {
-                    $product->variants()->create([
-                        'name' => $variant['name'],
-                        'price' => $variant['price'],
-                    ]);
+
+        if (!empty($request->variants)) {
+
+            Variant::where('product_id', $product->id)->delete();
+
+
+            $variantsWithSize = collect($request->variants)->map(function ($variant) {
+                preg_match('/\d+/', $variant['name'], $matches);
+                return [
+                    'name' => $variant['name'],
+                    'size' => isset($matches[0]) ? (int) $matches[0] : null,
+                    'price' => $variant['price'],
+                ];
+            });
+
+            $sortedVariants = $variantsWithSize->sortBy('size')->values();
+            $previousVariant = null;
+
+            foreach ($sortedVariants as $variant) {
+                if ($previousVariant !== null) {
+                    if ($variant['size'] > $previousVariant['size'] && $variant['price'] < $previousVariant['price']) {
+                        return back()->withErrors([
+                            'variants' => "Giá của biến thể {$variant['name']} không thể thấp hơn biến thể {$previousVariant['name']}.",
+                        ])->withInput();
+                    }
                 }
+                $previousVariant = $variant;
+            }
+
+
+            foreach ($request->variants as $variant) {
+                Variant::create([
+                    'product_id' => $product->id,
+                    'name' => $variant['name'],
+                    'price' => $variant['price'],
+                ]);
             }
         }
-        return redirect()->route('admin.product')->with('success', 'Cập nhật sản phẩm thành công ');
+
+        return redirect()->route('admin.product')->with('success', 'Cập nhật sản phẩm thành công.');
     }
+
     public function delete($id)
     {
         $product = Product::findOrFail($id);
