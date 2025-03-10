@@ -96,7 +96,7 @@
 
                     <div class="mt-4 text-muted">
                         <h5 class="fs-14">Description :</h5>
-                        <p>{{$product->description}}</p>
+                        <p>{!! $product->description!!}</p>
                     </div>
 
 

@@ -4,14 +4,12 @@
         @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
-        {{-- <a href="{{route('admin.trash.blog')}}" class="btn btn-warning"><i class="bi bi-trash-fill"></i></a> --}}
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Email</th>
-                <th>Số điện thoại</th>
                 <th>Địa chỉ</th>
-                <th>Tổng tiền</th>
+                <th>Chi tiết đơn hàng</th>
                 <th>Trạng thái</th>
                 <th>Hành động</th>
             </tr>
@@ -21,9 +19,8 @@
                 <tr>
                     <td>{{ $order->id }}</td>
                     <td>{{ $order->email }}</td>
-                    <td>{{ $order->phone }}</td>
                     <td>{{ $order->address }}</td>
-                    <td>{{ number_format($order->total_price, 2) }}</td>
+                    <td><a href="{{route('admin.show.order',$order->id )}}" class="text-primary">Chi tiết đơn hàng</a></td>
                     <td>
                         @switch($order->status)
                             @case(0)
