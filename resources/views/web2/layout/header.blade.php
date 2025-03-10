@@ -69,34 +69,38 @@
             <div class="col-lg-6 col-6 text-left">
                 <form action="">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products">
-                        <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary">
-                                <i class="fa fa-search"></i>
-                            </span>
-                        </div>
+
+                    </div><input type="text" class="form-control" placeholder="Search for products">
+                    <div class="input-group-append">
+                        <span class="input-group-text bg-transparent text-primary">
+                            <i class="fa fa-search"></i>
+                        </span>
                     </div>
-                </form>
             </div>
-            <div class="col-lg-3 col-6 text-right">
+            </form>
+        </div>
+        <div class="col-lg-3 col-6 text-right">
+            @auth
             <div class="dropdown d-inline">
                 <a href="#" class="btn border dropdown-toggle" data-toggle="dropdown">
-                  <img src="{{ Auth::user()->avatar ? asset('uploads/avatars/' . Auth::user()->avatar) : asset('uploads/avatars/default.png') }}" 
-                       alt="Avatar" class="rounded-circle" width="40" height="40">
+                    <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('uploads/avatars/default.png') }}"
+                        alt="Avatar" class="rounded-circle" width="40" height="40">
+
                 </a>
                 <div class="dropdown-menu">
-                <a class="dropdown-item" href="{{ route('profile') }}">Thông tin cá nhân</a>
-                  <a class="dropdown-item" href="{{ route('logout') }}">Đăng xuất</a>
+                    <a class="dropdown-item" href="{{ route('profile') }}">Thông tin cá nhân</a>
+                    <a class="dropdown-item" href="{{ route('web.logout') }}">Đăng xuất</a>
                 </div>
-                  </div>
-                <a href="" class="btn border">
-                    <i class="fas fa-heart text-primary"></i>
-                    <span class="badge">0</span>
-                </a>
-                <a href="" class="btn border">
-                    <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge">0</span>
-                </a>
             </div>
+            @endauth
+            <a href="" class="btn border">
+                <i class="fas fa-heart text-primary"></i>
+                <span class="badge">0</span>
+            </a>
+            <a href="" class="btn border">
+                <i class="fas fa-shopping-cart text-primary"></i>
+                <span class="badge">0</span>
+            </a>
         </div>
+    </div>
     </div>
