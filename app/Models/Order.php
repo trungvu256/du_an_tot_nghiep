@@ -29,6 +29,11 @@ class Order extends Model
     // lk với OrderDetail
     public function orderDetails()
     {
-        return $this->hasMany(OrderDetail::class, 'order_id');
+        return $this->hasMany(OrderDetail::class, 'id_order');
+    }
+    // Liên kết với product
+
+    public function product() {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 }

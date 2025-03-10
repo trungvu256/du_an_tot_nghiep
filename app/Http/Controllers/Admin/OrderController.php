@@ -23,4 +23,10 @@ class OrderController extends Controller
      return redirect()->route('admin.order')->with('success', 'Cập nhật trạng thái thành công!');
     }
     
+    // show order
+    public function show ($id) {
+        $order = Order::with('orderDetails.product')->find($id);
+
+        return view('admin.order.detailOder', compact('order'));
+    }
 }

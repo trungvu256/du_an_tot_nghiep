@@ -9,22 +9,24 @@ class OrderDetail extends Model
 {
     use HasFactory;
 
-    protected $table = 'order_details';
+    protected $table = 'order_details'; // Tên bảng
+
     protected $fillable = [
-        'id_order',
-        'id_product',
-        'qty',
+        'order_id', 
+        'id_product', 
+        'quantity', 
         'price'
     ];
 
+    // Liên kết với Order
     public function order()
     {
-        return $this->belongsTo(Order::class, 'id_order');
+        return $this->belongsTo(Order::class, 'id_order', 'id');
     }
 
+    // Liên kết với Product
     public function product()
     {
-        return $this->belongsTo(Product::class, 'id_product');
+        return $this->belongsTo(Product::class, 'id_product', 'id');
     }
 }
-

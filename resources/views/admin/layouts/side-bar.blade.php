@@ -43,9 +43,6 @@
                     <div class="collapse menu-dropdown" id="menuUser">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.create.user') }}" class="nav-link">Add User</a>
-                            </li>
-                            <li class="nav-item">
                                 <a href="{{ route('admin.user') }}" class="nav-link">List User</a>
                             </li>
                         </ul>
