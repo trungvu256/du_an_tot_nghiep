@@ -86,15 +86,15 @@
                     </div>
                 </li>
 
-                <!-- Comment -->
+                <!-- order -->
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#menuComment" data-bs-toggle="collapse" role="button">
-                        <i class="ri-chat-3-line"></i> <span>Comment</span>
+                        <i class="ri-chat-3-line"></i> <span>Order</span>
                     </a>
                     <div class="collapse menu-dropdown" id="menuComment">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.comment') }}" class="nav-link">Comment</a>
+                                <a href="{{ route('admin.order') }}" class="nav-link">Order</a>
                             </li>
                         </ul>
                     </div>

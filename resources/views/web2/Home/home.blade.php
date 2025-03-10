@@ -68,8 +68,19 @@
                           <a href="{{route('user.contact')}}" class="nav-item nav-link">Contact</a>
                       </div>
                       <div class="navbar-nav ml-auto py-0">
-                          <a href="{{route('web.login')}}" class="nav-item nav-link">Login</a>
-                          <a href="{{route('web.register')}}" class="nav-item nav-link">Register</a>
+                        @auth
+                        <div class="dropdown d-inline">
+                            <a href="#" class="btn border dropdown-toggle" data-toggle="dropdown">
+                                <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('uploads/avatars/default.png') }}"
+                                    alt="Avatar" class="rounded-circle" width="40" height="40">
+            
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{{ route('profile') }}">Thông tin cá nhân</a>
+                                <a class="dropdown-item" href="{{ route('web.logout') }}">Đăng xuất</a>
+                            </div>
+                        </div>
+                        @endauth
                       </div>
                   </div>
               </nav>
