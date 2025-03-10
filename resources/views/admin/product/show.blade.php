@@ -182,6 +182,7 @@
                                     </div>
                                     <div class="me-lg-n3 pe-lg-4" data-simplebar style="max-height: 300px; overflow-y: auto;">
                                         <ul class="list-unstyled mb-0">
+                                            @if ($product->comments->isNotEmpty())
                                             @foreach ($product->comments as $comment)
                                             <li class="py-2">
                                                 <div class="border border-dashed rounded p-3">
@@ -192,28 +193,38 @@
                                                             </div>
                                                             <div class="vr"></div>
                                                             <div class="flex-grow-1">
-                                                                <p class="text-muted mb-0">{{ $comment->comment }}</p>
+                                                                <p class="text-muted mb-0">{{ $comment->content }}</p>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="d-flex align-items-end">
                                                         <div class="flex-grow-1">
-                                                            {{-- <h5 class="fs-14 mb-0">{{ $comment->user->name }}</h5> --}}
+                                                            {{-- Kiểm tra user có tồn tại không trước khi hiển thị tên --}}
+                                                            @if ($comment->user)
+                                                            <h5 class="fs-14 mb-0">{{ $comment->user->name }}</h5>
+                                                            @endif
                                                         </div>
                                                         <div class="flex-shrink-0">
-                                                            <p class="text-muted fs-13 mb-0">{{ $comment->created_at->format('d M, Y') }}</p>
+                                                            {{-- Kiểm tra created_at có giá trị không trước khi format --}}
+                                                            <p class="text-muted fs-13 mb-0">
+                                                                {{ optional($comment->created_at)->format('d M, Y') ?? 'N/A' }}
+                                                            </p>
                                                         </div>
                                                     </div>
-                                                    <form action="{{route('admin.comment.showhidden', $comment->id)}}" method="post">
+                                                    <form action="{{ route('admin.comment.showhidden', $comment->id) }}" method="post">
                                                         @csrf
                                                         @method('PATCH')
-                                                        <button type="submit" class="btn btn-sm {{$comment->id_hidden ? 'btn-success' : 'btn-warning'}}">
-                                                            {{$comment->is_hidden ? 'Hiện' : 'Ẩn'}}
+                                                        <button type="submit" class="btn btn-sm {{ $comment->admin_reply ? 'btn-success' : 'btn-warning' }}">
+                                                            {{ $comment->admin_reply ? 'Hiện' : 'Ẩn' }}
                                                         </button>
                                                     </form>
                                                 </div>
                                             </li>
                                             @endforeach
+                                            @else
+                                            <p class="text-muted">Chưa có bình luận nào.</p>
+                                            @endif
+
                                         </ul>
                                     </div>
                                 </div>
@@ -221,143 +232,19 @@
                         </div>
                     </div>
 
-                            <!-- end col -->
+                    <!-- end col -->
 
-                            {{-- <div class="col-lg-12">
-                                <div class="ps-lg-4">
-                                    <div class="d-flex flex-wrap align-items-start gap-3">
-                                        <h5 class="fs-14">Reviews: </h5>
-                                    </div>
 
-                                    <div class="me-lg-n3 pe-lg-4" data-simplebar style="max-height: 225px;">
-                                        <ul class="list-unstyled mb-0">
-                                            <li class="py-2">
-                                                <div class="border border-dashed rounded p-3">
-                                                    <div class="d-flex align-items-start mb-3">
-                                                        <div class="hstack gap-3">
-                                                            <div class="badge rounded-pill bg-success mb-0">
-                                                                <i class="mdi mdi-star"></i> 4.2
-                                                            </div>
-                                                            <div class="vr"></div>
-                                                            <div class="flex-grow-1">
-                                                                <p class="text-muted mb-0"> Superb sweatshirt. I loved it. It is for winter.</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="d-flex flex-grow-1 gap-2 mb-3">
-                                                        <a href="#" class="d-block">
-                                                            <img src="assets/images/small/img-12.jpg" alt="" class="avatar-sm rounded object-fit-cover">
-                                                        </a>
-                                                        <a href="#" class="d-block">
-                                                            <img src="assets/images/small/img-11.jpg" alt="" class="avatar-sm rounded object-fit-cover">
-                                                        </a>
-                                                        <a href="#" class="d-block">
-                                                            <img src="assets/images/small/img-10.jpg" alt="" class="avatar-sm rounded object-fit-cover">
-                                                        </a>
-                                                    </div>
-
-                                                    <div class="d-flex align-items-end">
-                                                        <div class="flex-grow-1">
-                                                            <h5 class="fs-14 mb-0">Henry</h5>
-                                                        </div>
-
-                                                        <div class="flex-shrink-0">
-                                                            <p class="text-muted fs-13 mb-0">12 Jul, 21</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="py-2">
-                                                <div class="border border-dashed rounded p-3">
-                                                    <div class="d-flex align-items-start mb-3">
-                                                        <div class="hstack gap-3">
-                                                            <div class="badge rounded-pill bg-success mb-0">
-                                                                <i class="mdi mdi-star"></i> 4.0
-                                                            </div>
-                                                            <div class="vr"></div>
-                                                            <div class="flex-grow-1">
-                                                                <p class="text-muted mb-0"> Great at this price, Product quality and look is awesome.</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex align-items-end">
-                                                        <div class="flex-grow-1">
-                                                            <h5 class="fs-14 mb-0">Nancy</h5>
-                                                        </div>
-
-                                                        <div class="flex-shrink-0">
-                                                            <p class="text-muted fs-13 mb-0">06 Jul, 21</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <li class="py-2">
-                                                <div class="border border-dashed rounded p-3">
-                                                    <div class="d-flex align-items-start mb-3">
-                                                        <div class="hstack gap-3">
-                                                            <div class="badge rounded-pill bg-success mb-0">
-                                                                <i class="mdi mdi-star"></i> 4.2
-                                                            </div>
-                                                            <div class="vr"></div>
-                                                            <div class="flex-grow-1">
-                                                                <p class="text-muted mb-0">Good product. I am so happy.</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex align-items-end">
-                                                        <div class="flex-grow-1">
-                                                            <h5 class="fs-14 mb-0">Joseph</h5>
-                                                        </div>
-
-                                                        <div class="flex-shrink-0">
-                                                            <p class="text-muted fs-13 mb-0">06 Jul, 21</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <li class="py-2">
-                                                <div class="border border-dashed rounded p-3">
-                                                    <div class="d-flex align-items-start mb-3">
-                                                        <div class="hstack gap-3">
-                                                            <div class="badge rounded-pill bg-success mb-0">
-                                                                <i class="mdi mdi-star"></i> 4.1
-                                                            </div>
-                                                            <div class="vr"></div>
-                                                            <div class="flex-grow-1">
-                                                                <p class="text-muted mb-0">Nice Product, Good Quality.</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex align-items-end">
-                                                        <div class="flex-grow-1">
-                                                            <h5 class="fs-14 mb-0">Jimmy</h5>
-                                                        </div>
-
-                                                        <div class="flex-shrink-0">
-                                                            <p class="text-muted fs-13 mb-0">24 Jun, 21</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div> --}}
-                            <!-- end col -->
-                        </div>
-                        <!-- end Ratings & Reviews -->
-                    </div>
-                    <!-- end card body -->
                 </div>
+                <!-- end Ratings & Reviews -->
             </div>
-            <!-- end col -->
+            <!-- end card body -->
         </div>
-        <!-- end row -->
     </div>
-    <!-- end card body -->
+    <!-- end col -->
+</div>
+<!-- end row -->
+</div>
+<!-- end card body -->
 </div>
 @endsection

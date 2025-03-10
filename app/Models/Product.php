@@ -61,5 +61,4 @@ class Product extends Model
     {
         return $this->hasMany(Comment::class, 'id_product');
     }
-
 }

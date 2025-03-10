@@ -94,9 +94,6 @@
                     <div class="collapse menu-dropdown" id="menuComment">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('create.comment') }}" class="nav-link">Add Comment</a>
-                            </li>
-                            <li class="nav-item">
                                 <a href="{{ route('admin.comment') }}" class="nav-link">Comment</a>
                             </li>
                         </ul>
@@ -124,4 +121,3 @@
     </div>
     <div class="sidebar-background"></div>
 </div>
-
