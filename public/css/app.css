@@ -1,5 +1,5 @@
 .category-container {
-       
+
     margin: auto;
 }
 
@@ -42,7 +42,7 @@
     display: inline;
 }
 .upload-box {
-    width: 120px; 
+    width: 120px;
     height: 120px;
     border: 2px dashed #6c757d;
     border-radius: 10px;
