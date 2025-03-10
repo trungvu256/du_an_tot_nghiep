@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CommentController;
+use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Admin\LoginController;
@@ -53,7 +54,7 @@ Route::middleware(['auth'])->group(function () {
             route::post('/add', [UserController::class, 'store'])->name('admin.store.user');
             route::get('/edit/{id}', [UserController::class, 'edit'])->name('admin.edit.user');
             route::post('/update/{id}', [UserController::class, 'update'])->name('admin.update.user');
-            route::get('/delete/{id}', [UserController::class, 'delete'])->name('admin.delete.user');
+            route::get('/delete/{id}', [UserController::class, 'destroy'])->name('admin.delete.user');
         });
 
         //Bình luận
@@ -64,14 +65,14 @@ Route::middleware(['auth'])->group(function () {
             route::patch('/showhidden/{id}', [CommentController::class, 'Hide_comments'])->name('admin.comment.showhidden');
         });
         Route::prefix('product')->group(function () {
-            route::get('/',[ProductController::class,'index'])->name('admin.product');
-            route::get('/add',[ProductController::class,'create'])->name('admin.add.product');
-            route::post('/add',[ProductController::class,'store'])->name('admin.store.product');
-            route::get('/show/{id}',[ProductController::class,'show'])->name('admin.show.product');
-            route::get('/edit/{id}',[ProductController::class,'edit'])->name('admin.edit.product');
-            route::post('/update/{id}',[ProductController::class,'update'])->name('admin.update.product');
-            route::delete('/delete/{id}',[ProductController::class,'delete'])->name('admin.delete.product');
-            Route::get('/del-image/{id}',[ProductController::class,'delete_img'])->name('admin.delete_img.product');
+            route::get('/', [ProductController::class, 'index'])->name('admin.product');
+            route::get('/add', [ProductController::class, 'create'])->name('admin.add.product');
+            route::post('/add', [ProductController::class, 'store'])->name('admin.store.product');
+            route::get('/show/{id}', [ProductController::class, 'show'])->name('admin.show.product');
+            route::get('/edit/{id}', [ProductController::class, 'edit'])->name('admin.edit.product');
+            route::post('/update/{id}', [ProductController::class, 'update'])->name('admin.update.product');
+            route::delete('/delete/{id}', [ProductController::class, 'delete'])->name('admin.delete.product');
+            Route::get('/del-image/{id}', [ProductController::class, 'delete_img'])->name('admin.delete_img.product');
             route::get('/admin/product/trash', [ProductController::class, 'trash'])->name('admin.trash.product');
             route::post('/admin/product/restore/{id}', [ProductController::class, 'restore'])->name('admin.restore.product');
             route::delete('/admin/product/fore-delete/{id}', [ProductController::class, 'foreDelete'])->name('admin.foreDelete.product');
@@ -92,6 +93,13 @@ Route::middleware(['auth'])->group(function () {
             route::get('/restore/{id}', [BlogController::class, 'restore'])->name('admin.restore.blog');
             route::delete('/force-delete/{id}', [BlogController::class, 'forceDelete'])->name('admin.forceDelete.blog');
         });
+
+        //dasboard
+        Route::get('/admin/revenue-data', [DashboardController::class, 'getRevenueData']);
+        Route::get('/admin/best-selling-products', [DashboardController::class, 'getBestSellingProducts']);
+
+
+
     });
 
     Route::prefix('user')->group(function () {

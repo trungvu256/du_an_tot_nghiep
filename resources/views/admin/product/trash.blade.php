@@ -26,12 +26,12 @@
         <tr>
             <th>{{ $product->id }}</th>
             <td>{{ $product->name }}</td>
-            <td><img src="/cover/{{ $product->img }}" width="70px" alt=""></td>
+            <td><img src="{{ asset('storage/'. $product->image) }}" width="70px" alt=""></td>
             <td>{{ $product->category->name }}</td>
             <td>
                 <form action="{{ route('admin.restore.product', $product->id) }}" method="POST" style="display:inline;">
                     @csrf
-                    <button type="submit" class="btn btn-success"><i class="bi bi-arrow-clockwise"></i>
+                    <button type="submit" class="btn btn-success" onclick="return confirm('Khôi phục')"><i class="bi bi-arrow-clockwise"></i>
                     </button>
                 </form>
 
