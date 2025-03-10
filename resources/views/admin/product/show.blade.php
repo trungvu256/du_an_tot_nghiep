@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <a href="{{ route('admin.product') }}" class="btn btn-info"><i class="bi bi-arrow-left"></i>Back</a>
+                <a href="{{ route('admin.product') }}" class="btn btn-info fw-bold text-white"><i class="bi bi-arrow-left"></i>Back</a>
                 <h4 class="mb-sm-0">Product Details</h4>
 
                 {{-- <div class="page-title-right">
