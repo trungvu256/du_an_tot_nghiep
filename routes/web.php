@@ -108,6 +108,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/checkout', [WebController::class, 'checkout'])->name('user.checkout');
         Route::get('/contact', [WebController::class, 'contact'])->name('user.contact');
     });
+    Route::get('/profile', [ProfileController::class, 'showProfile'])->name('profile');
+    Route::get('/profile/confirm-password', [ProfileController::class, 'confirmPassword'])->name('profile.confirm_password');
+    Route::post('/profile/confirm-password', [ProfileController::class, 'checkPassword'])->name('profile.check_password');
+    Route::get('/profile/edit', [ProfileController::class, 'editProfile'])->name('profile.edit');
+    Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
 });
 //Login web
 Route::get('/login', [WebLoginController::class, 'index'])->name('web.login');
