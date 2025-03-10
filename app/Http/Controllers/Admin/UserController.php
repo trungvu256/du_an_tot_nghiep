@@ -69,4 +69,13 @@ class UserController
 
         return redirect()->route('admin.user')->with('success', 'Người dùng đã bị khóa thành công.');
     }
+    public function unbanUser($id)
+{
+    $user = User::findOrFail($id);
+    $user->status = 1; // Đặt lại trạng thái hoạt động
+    $user->save();
+
+    return redirect()->back()->with('success', 'Người dùng đã được bỏ chặn thành công!');
+}
+
 }

@@ -25,6 +25,11 @@ class User extends Authenticatable
         'password',
         'is_admin',
         'provider_id',
+        'status',   // Trạng thái tài khoản (hoạt động/bị khóa)
+        'gender',   // Giới tính
+        'phone',    // Số điện thoại
+        'address',  // Địa chỉ
+        'avatar',   // Ảnh đại diện
     ];
 
     /**
