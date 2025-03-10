@@ -387,20 +387,20 @@
   <style>
 body {
     background-color: #ffffff;
-    /* Nền trắng */
+    /* Nền trắng cho toàn trang */
     font-family: 'Arial', sans-serif;
 }
 
 .perfume-card {
     background-color: #ffffff;
     /* Nền trắng cho card */
-    border: 1px solid #ddd;
-    /* Viền nhẹ */
-    border-radius: 10px;
-    /* Bo góc nhẹ */
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    /* Hiệu ứng đổ bóng */
-    padding: 20px;
+    border: 1px solid #000000;
+    /* Viền đen */
+    border-radius: 15px;
+    /* Bo góc mềm mại */
+    box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
+    /* Đổ bóng đen nhạt */
+    padding: 25px;
     text-align: center;
     height: 100%;
     transition: transform 0.3s ease-in-out;
@@ -408,7 +408,8 @@ body {
 
 .perfume-card:hover {
     transform: scale(1.05);
-    /* Phóng to nhẹ khi hover */
+    box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.3);
+    /* Hiệu ứng bóng đen đậm hơn khi hover */
 }
 
 .perfume-card img {
@@ -416,90 +417,101 @@ body {
     height: auto;
     margin-bottom: 20px;
     border-radius: 10px;
+    border: 2px solid #000000;
+    /* Viền ảnh đen */
 }
 
 .logo {
     font-family: 'Times New Roman', Times, serif;
-    font-size: 24px;
-    color: #333;
-    /* Màu chữ tối hơn để dễ đọc */
+    font-size: 26px;
+    color: #000000;
+    /* Màu đen cho logo */
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .title {
     font-family: 'Dancing Script', cursive;
-    font-size: 28px;
-    color: #333;
+    font-size: 30px;
+    color: #000000;
+    /* Màu đen cho tiêu đề */
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .subtitle {
     font-family: 'Montserrat', sans-serif;
     font-size: 18px;
     font-weight: bold;
-    color: #666;
-    /* Màu xám đậm */
-    margin-bottom: 10px;
+    color: #000000;
+    /* Màu đen cho phụ đề */
+    margin-bottom: 15px;
 }
 
 .description {
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
-    color: #444;
-    line-height: 1.5;
+    color: #000000;
+    /* Màu đen cho mô tả */
+    line-height: 1.6;
     margin-bottom: 20px;
 }
 
 /* Nút Xem chi tiết */
 .details-btn {
     display: inline-block;
-    padding: 10px 20px;
-    background-color: #007bff;
-    /* Màu xanh dương của Bootstrap */
-    color: white;
+    padding: 12px 25px;
+    background-color: #000000;
+    /* Màu đen cho nút */
+    color: #ffffff;
+    /* Chữ trắng */
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 8px;
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
     font-weight: bold;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .details-btn:hover {
-    background-color: #0056b3;
-    /* Màu xanh đậm hơn khi hover */
+    background-color: #333333;
+    /* Màu xám đậm gần đen khi hover */
+    transform: translateY(-2px);
+    /* Nút hơi nâng lên khi hover */
 }
 
 /* Tùy chỉnh nền */
 .spring-bg {
     background: url('spring-bg.jpg') center center/cover;
-    border-radius: 10px;
+    /* Ảnh nền mùa xuân */
+    border-radius: 15px;
 }
 
 .wood-bg {
     background: url('wood-bg.jpg') center center/cover;
-    border-radius: 10px;
+    /* Ảnh nền gỗ */
+    border-radius: 15px;
 }
 
 .valentine-bg {
     background: url('valentine-bg.jpg') center center/cover;
-    border-radius: 10px;
+    /* Ảnh nền valentine */
+    border-radius: 15px;
 }
   </style>
-  </head>
 
   <body>
       <div class="container py-5">
+          <div class="text-center mb-4">
+              <h2 class="section-title px-5"><span class="px-2">Bài viết</span></h2>
+          </div>
           <div class="row">
-
-
+              <!-- Card 1 -->
               <div class="col-12 col-md-4 mb-4">
                   <div class="perfume-card spring-bg">
+                      <img src="{{asset('')}}" alt="Spring Perfume" class="img-fluid">
                       <div class="logo">ARMAF</div>
                       <div class="title">NƯỚC HOA MÙA XUÂN</div>
-                      <img src="{{asset('')}}" alt="Spring Perfume" class="img-fluid">
                       <div class="subtitle">LẮC VÀO VƯƠNG HOA CỦA ARMAF – SỰ THANH LỊCH VÀ CUỐN HÚT</div>
                       <div class="description">
                           Nhóm hương Floral (Hoa cỏ) là một trong những nhóm hương lịch sử và cuốn hút tự nhiên, hương
@@ -509,16 +521,39 @@ body {
                   </div>
               </div>
 
+              <!-- Card 2 -->
+              <div class="col-12 col-md-4 mb-4">
+                  <div class="perfume-card wood-bg">
+                      <img src="{{asset('')}}" alt="Wood Perfume" class="img-fluid">
+                      <div class="logo">ARMAF</div>
+                      <div class="title">NƯỚC HOA GỖ</div>
+                      <div class="subtitle">SỰ ẤM ÁP VÀ MẠNH MẼ TỪ THIÊN NHIÊN</div>
+                      <div class="description">
+                          Nhóm hương Woody (Gỗ) mang đến cảm giác ấm áp, sâu lắng và nam tính, phù hợp với những ai yêu
+                          thích sự tinh tế…
+                      </div>
+                      <a href="#" class="details-btn">Xem chi tiết</a>
+                  </div>
+              </div>
 
-
-
-
+              <!-- Card 3 -->
+              <div class="col-12 col-md-4 mb-4">
+                  <div class="perfume-card valentine-bg">
+                      <img src="{{asset('')}}" alt="Valentine Perfume" class="img-fluid">
+                      <div class="logo">ARMAF</div>
+                      <div class="title">NƯỚC HOA VALENTINE</div>
+                      <div class="subtitle">HƯƠNG THƠM NGỌT NGÀO CHO TÌNH YÊU</div>
+                      <div class="description">
+                          Nhóm hương ngọt ngào kết hợp hoa và trái cây, mang đến sự lãng mạn và quyến rũ cho những
+                          khoảnh khắc đặc biệt…
+                      </div>
+                      <a href="#" class="details-btn">Xem chi tiết</a>
+                  </div>
+              </div>
           </div>
       </div>
 
       <!-- Bootstrap JS (optional) -->
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   </body>
-
-  </html>
   @endsection

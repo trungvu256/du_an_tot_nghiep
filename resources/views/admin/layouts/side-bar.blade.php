@@ -1,21 +1,35 @@
-<div class="app-menu navbar-menu">
+<style>
+.logo-sm img {
+    max-height: 250px;
+    /* Logo nhỏ lớn hơn */
+}
+
+.logo-lg img {
+    max-height: 300px;
+    /* Logo lớn hơn */
+}
+</style>
+<div class="app-menu navbar-menu ">
     <div class="navbar-brand-box">
         <a href="index.html" class="logo logo-dark">
             <span class="logo-sm">
-                <img src="{{ asset('template/admin/velzon/assets/images/logo-sm.png') }}" alt="" height="22">
+                <img src="{{ asset('template/admin/velzon/assets/images/logo06.JPG') }}" alt="" height="22">
             </span>
             <span class="logo-lg">
-                <img src="{{ asset('template/admin/velzon/assets/images/logo-dark.png') }}" alt="" height="17">
+                <img src="{{ asset('template/admin/velzon/assets/images/logo06.JPG') }}" alt="" height="17">
             </span>
         </a>
-        <a href="index.html" class="logo logo-light">
+        <a href="index.html" class="logo logo-light d-flex flex-column align-items-center">
             <span class="logo-sm">
-                <img src="{{ asset('template/admin/velzon/assets/images/logo-sm.png') }}" alt="" height="22">
+                <img src="{{ asset('template/admin/velzon/assets/images/logo05.JPG') }}" alt="Logo nhỏ"
+                    class="img-fluid" style="max-height: 150px;">
             </span>
             <span class="logo-lg">
-                <img src="{{ asset('template/admin/velzon/assets/images/logo-light.png') }}" alt="" height="17">
+                <img src="{{ asset('template/admin/velzon/assets/images/logo05.JPG') }}" alt="Logo lớn"
+                    class="img-fluid" style="max-height: 250px;">
             </span>
         </a>
+
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
             id="vertical-hover">
             <i class="ri-record-circle-line"></i>

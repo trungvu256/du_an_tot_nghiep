@@ -16,7 +16,7 @@
             <div class="info">
                 <a href="#" class="d-block">@if (Auth::check())
                     {{Auth::user()->email}}
-                @endif</a>
+                    @endif</a>
                 <a href="{{ route('logout') }}" class="btn btn-danger mt-3">Logout</a>
             </div>
 
@@ -25,15 +25,14 @@
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                data-accordion="false">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
        with font-awesome or any other icon font library -->
                 <li class="nav-item">
                     <a href="{{ route('admin.cate') }}" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
-                          Category
+                            Category
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -57,7 +56,7 @@
                     <a href="{{ route('admin.product') }}" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
-                          Product
+                            Product
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -81,7 +80,7 @@
                     <a href="{{ route('admin.user') }}" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
-                          User
+                            User
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -104,7 +103,7 @@
                     <a href="" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
-                          Order
+                            Order
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -122,7 +121,7 @@
                     <a href="" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
-                          Blog
+                            Blog
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -146,7 +145,7 @@
                     <a href="" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
-                          Contact
+                            Contact
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -164,7 +163,7 @@
                     <a href="" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
-                          Comment
+                            Comment
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
