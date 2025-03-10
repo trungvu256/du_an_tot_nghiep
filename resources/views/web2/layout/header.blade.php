@@ -20,87 +20,74 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="{{asset('website/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('website/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{{ asset('website/css/style.css') }}" rel="stylesheet">
-    <link href="{{asset('website/css/style.min.css')}}">
+    <link href="{{ asset('website/css/style.min.css') }}" rel="stylesheet">
 </head>
 
 <body>
     <div class="container-fluid">
+        <!-- Top Bar -->
         <div class="row bg-secondary py-2 px-xl-5">
             <div class="col-lg-6 d-none d-lg-block">
                 <div class="d-inline-flex align-items-center">
-                    <a class="text-dark" href="">FAQs</a>
+                    <a class="text-dark" href="#">FAQs</a>
                     <span class="text-muted px-2">|</span>
-                    <a class="text-dark" href="">Help</a>
+                    <a class="text-dark" href="#">Help</a>
                     <span class="text-muted px-2">|</span>
-                    <a class="text-dark" href="">Support</a>
+                    <a class="text-dark" href="#">Support</a>
                 </div>
             </div>
             <div class="col-lg-6 text-center text-lg-right">
                 <div class="d-inline-flex align-items-center">
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a class="text-dark pl-2" href="">
-                        <i class="fab fa-youtube"></i>
-                    </a>
+                    <a class="text-dark px-2" href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a class="text-dark px-2" href="#"><i class="fab fa-twitter"></i></a>
+                    <a class="text-dark px-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a class="text-dark px-2" href="#"><i class="fab fa-instagram"></i></a>
+                    <a class="text-dark pl-2" href="#"><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
         </div>
+
+        <!-- Header -->
         <div class="row align-items-center py-3 px-xl-5">
+            <!-- Logo -->
             <div class="col-lg-3 d-none d-lg-block">
-                <a href="" class="text-decoration-none">
-                    <h1 class="m-0 display-5 font-weight-semi-bold"><span
-                            class="text-primary font-weight-bold border px-3 mr-1">Ethereal</span>Noir</h1>
+                <a href="#" class="text-decoration-none">
+                    <h1 class="m-0 display-5 font-weight-semi-bold">
+                        <span class="text-primary font-weight-bold border px-3 mr-1">Ethereal</span>Noir
+                    </h1>
                 </a>
             </div>
-            <div class="col-lg-6 col-6 text-left">
-                <form action="">
+
+            <!-- Search Bar -->
+            <div class="col-lg-6 col-8">
+                <form action="#">
                     <div class="input-group">
-
-                    </div><input type="text" class="form-control" placeholder="Search for products">
-                    <div class="input-group-append">
-                        <span class="input-group-text bg-transparent text-primary">
-                            <i class="fa fa-search"></i>
-                        </span>
+<input type="text" class="form-control" placeholder="Search for products">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
                     </div>
+                </form>
             </div>
-            </form>
-        </div>
-        <div class="col-lg-3 col-6 text-right">
-            @auth
-            <div class="dropdown d-inline">
-                <a href="#" class="btn border dropdown-toggle" data-toggle="dropdown">
-                    <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('uploads/avatars/default.png') }}"
-                        alt="Avatar" class="rounded-circle" width="40" height="40">
 
+            <!-- Wishlist & Cart -->
+            <div class="col-lg-3 col-4 text-right d-flex justify-content-end">
+                <a href="#" class="btn border mx-2">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span class="badge bg-primary text-white">0</span>
                 </a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{ route('profile') }}">Thông tin cá nhân</a>
-                    <a class="dropdown-item" href="{{ route('web.logout') }}">Đăng xuất</a>
-                </div>
+                <a href="#" class="btn border">
+                    <i class="fas fa-shopping-cart text-primary"></i>
+                    <span class="badge bg-primary text-white">0</span>
+                </a>
             </div>
-            @endauth
-            <a href="" class="btn border">
-                <i class="fas fa-heart text-primary"></i>
-                <span class="badge">0</span>
-            </a>
-            <a href="" class="btn border">
-                <i class="fas fa-shopping-cart text-primary"></i>
-                <span class="badge">0</span>
-            </a>
         </div>
     </div>
-    </div>
+</body>
+</html>

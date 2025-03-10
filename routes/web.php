@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Web\HomeController;
@@ -65,6 +66,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
             route::get('/create', [CommentController::class, 'create'])->name('create.comment');
             route::post('/store', [CommentController::class, 'store'])->name('store.comment');
             route::patch('/showhidden/{id}', [CommentController::class, 'Hide_comments'])->name('admin.comment.showhidden');
+        });
+
+        /// order
+
+        Route::prefix('order')->group(function () {
+            route::get('/order', [OrderController::class, 'index'])->name('admin.order');
+            route::get('/order/{id}', [OrderController::class, 'show'])->name('admin.show.order');
+            route::post('/orders/{id}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
         });
         Route::prefix('product')->group(function () {
             route::get('/', [ProductController::class, 'index'])->name('admin.product');
