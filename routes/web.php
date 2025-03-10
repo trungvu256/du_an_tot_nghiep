@@ -31,6 +31,7 @@ Route::prefix('admin')->group(function () {
     Route::post('/login', [LoginController::class, 'loginAdmin'])->name('admin.login.store');
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 });
+Route::get('/admin/unban-user/{id}', [UserController::class, 'unbanUser'])->name('admin.unban.user');
 
 Route::middleware(['auth'])->group(function () {
 
