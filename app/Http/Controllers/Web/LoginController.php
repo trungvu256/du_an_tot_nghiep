@@ -8,8 +8,11 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\VarDumper\Caster\RdKafkaCaster;
+use Illuminate\Support\Facades\Validator;
+
 
 class LoginController extends Controller
 {
@@ -45,13 +48,45 @@ class LoginController extends Controller
     }
     public function registerStore(Request $request)
     {
-        $newMenber = new User();
-        $newMenber->name = $request->name;
-        $newMenber->email = $request->email;
-        $newMenber->password = bcrypt($request->password);
-        $newMenber->is_admin = 0;
-        $newMenber->save();
+        
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+            'phone' => 'nullable|string|max:255',
+            'address' => 'nullable|string|max:255',
+            'gender' => 'required|string|in:Male,Female,Other',
+            'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'agree_terms' => 'accepted',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->first()], 400);
+        }
+
+        
+        $avatarPath = null;
+        if ($request->hasFile('avatar')) {
+            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+        }
+
+      
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->phone = $request->phone;
+        $user->address = $request->address;
+        $user->gender = $request->gender;
+        $user->avatar = $avatarPath;
+        $user->status = 1;
+        $user->is_admin = 0;
+        $user->save();
+
+        return redirect()->route('web.login')->with('success', 'Created User Successful');
     }
+
+
     public function logout()
     {
         
