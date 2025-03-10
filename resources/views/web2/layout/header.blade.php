@@ -79,6 +79,16 @@
                 </form>
             </div>
             <div class="col-lg-3 col-6 text-right">
+            <div class="dropdown d-inline">
+                <a href="#" class="btn border dropdown-toggle" data-toggle="dropdown">
+                  <img src="{{ Auth::user()->avatar ? asset('uploads/avatars/' . Auth::user()->avatar) : asset('uploads/avatars/default.png') }}" 
+                       alt="Avatar" class="rounded-circle" width="40" height="40">
+                </a>
+                <div class="dropdown-menu">
+                <a class="dropdown-item" href="{{ route('profile') }}">Thông tin cá nhân</a>
+                  <a class="dropdown-item" href="{{ route('logout') }}">Đăng xuất</a>
+                </div>
+                  </div>
                 <a href="" class="btn border">
                     <i class="fas fa-heart text-primary"></i>
                     <span class="badge">0</span>
