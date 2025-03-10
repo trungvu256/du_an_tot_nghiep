@@ -58,3 +58,103 @@
 .upload-box input {
     display: none;
 }
+/* //// category *//* Toàn bộ khung danh mục */
+.category-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Tiêu đề danh mục */
+h3 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Nút chức năng */
+.btn-warning {
+    background-color: #ffc107;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    display: inline-block;
+    font-size: 16px;
+}
+
+/* Danh sách danh mục */
+.category-list {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+/* Mỗi danh mục */
+.category-item {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease-in-out;
+    width: 100%;
+}
+
+/* Hiệu ứng hover */
+.category-item:hover {
+    background: #e9ecef;
+}
+
+/* Nội dung danh mục */
+.category-content {
+    display: flex;
+    align-items: center;
+}
+
+/* Ảnh danh mục */
+.category-content img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+}
+
+/* Danh mục con */
+.sub-category {
+    list-style: none;
+    margin-left: 30px;
+    padding-left: 15px;
+    border-left: 3px solid #ddd;
+    display: none;
+    width: 100%;
+}
+
+/* Hành động (chỉnh sửa, xóa) */
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Nút nhỏ */
+.btn-sm {
+    padding: 8px 12px;
+    font-size: 14px;
+}
+
+/* Ô chọn danh mục */
+.form-select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+}
