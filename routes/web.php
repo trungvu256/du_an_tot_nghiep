@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\LoginController as WebLoginController;
+use App\Http\Controllers\Web\ProfileController;
 use App\Models\Category;
 use App\Http\Controllers\Web\WebController;
 
@@ -33,7 +34,7 @@ Route::prefix('admin')->group(function () {
 });
 Route::get('/admin/unban-user/{id}', [UserController::class, 'unbanUser'])->name('admin.unban.user');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::prefix('admin')->group(function () {
         Route::get('/', [MainController::class, 'index'])->name('admin.dashboard');
@@ -113,7 +114,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/profile/confirm-password', [ProfileController::class, 'checkPassword'])->name('profile.check_password');
     Route::get('/profile/edit', [ProfileController::class, 'editProfile'])->name('profile.edit');
     Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
-});
+}
+
+);
 //Login web
 Route::get('/login', [WebLoginController::class, 'index'])->name('web.login');
 Route::post('/login', [WebLoginController::class, 'store'])->name('login.store.web');
