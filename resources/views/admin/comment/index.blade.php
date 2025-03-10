@@ -18,7 +18,7 @@
         <tr>
             <td>{{$comment->id}}</td>
             <td>{{$comment->name}}</td>
-            <td>{{$comment->comment}}</td>
+            <td>{{$comment->content}}</td>
             <td>{{$comment->id_product}}</td>
             <td>
                 @if ($comment->is_blog)
