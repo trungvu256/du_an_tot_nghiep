@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('phone')->nullable();       // Thêm số điện thoại
             $table->string('address')->nullable();     // Thêm địa chỉ
             $table->tinyInteger('status')->default(1);
-            $table->string('gender')
+            $table->string('gender');
             $table->boolean('is_admin')->default(0); // Thêm cột is_admin mặc định là 0 (người dùng thường)
             $table->string('avatar')->nullable();
             $table->rememberToken();

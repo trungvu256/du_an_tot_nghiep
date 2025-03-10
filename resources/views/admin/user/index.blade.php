@@ -1,3 +1,5 @@
+@extends('admin.layouts.main')
+@section('content')
 <table class="table">
     @if (session('success'))
     <div class="alert alert-success">
@@ -58,3 +60,4 @@
         @endforeach
     </tbody>
 </table>
+@endsection
