@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\WalletController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\LoginController as WebLoginController;
 use App\Http\Controllers\Web\ProfileController;
@@ -75,6 +76,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
             route::get('/order/{id}', [OrderController::class, 'show'])->name('admin.show.order');
             route::post('/orders/{id}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
             route::post('/orders/{id}/updatePaymenStatus', [OrderController::class, 'updatePaymenStatus'])->name('orders.updatePaymenStatus');
+            route::post('/orders/{order}/refund', [WalletController::class, 'refund'])->name('wallet.refund');
+            
         });
         Route::prefix('product')->group(function () {
             route::get('/', [ProductController::class, 'index'])->name('admin.product');
