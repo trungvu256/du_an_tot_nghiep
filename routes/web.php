@@ -76,8 +76,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
             route::get('/order/{id}', [OrderController::class, 'show'])->name('admin.show.order');
             route::post('/orders/{id}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
             route::post('/orders/{id}/updatePaymenStatus', [OrderController::class, 'updatePaymenStatus'])->name('orders.updatePaymenStatus');
-            route::post('/orders/{order}/refund', [WalletController::class, 'refund'])->name('wallet.refund');
             
+        });
+
+        // ví điện tử
+        Route::prefix('wallet')->group(function () {
+            route::get('/wallet', [WalletController::class, 'show'])->name('wallet.show');
+            route::post('/wallet/{order}/refund', [WalletController::class, 'refund'])->name('wallet.refund');
+            route::post('/wallet/deposit', [WalletController::class, 'deposit'])->name('wallet.deposit');
         });
         Route::prefix('product')->group(function () {
             route::get('/', [ProductController::class, 'index'])->name('admin.product');

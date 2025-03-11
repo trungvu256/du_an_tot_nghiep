@@ -15,18 +15,18 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable()->change();
+            $table->string('name')->nullable();
             $table->string('email');
             $table->string('phone');
             $table->string('address');
-            $table->bigInteger('id_user')->unsigned();
-            $table->decimal('total_price', 10, 2)->default(0); // Tổng tiền
-            $table->string('payment_status')->default('pending'); // Trạng thái thanh toán
-            $table->tinyInteger('status')->default(0); // Trạng thái đơn hàng
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Chỉ cần khai báo 1 lần
+
+            $table->decimal('total_price', 10, 2)->default(0);
+            $table->tinyInteger('payment_status')->default(0); // Chuyển thành số (0: Chưa thanh toán, 1: Đã thanh toán)
+            $table->tinyInteger('status')->default(0);
+
             $table->timestamps();
         });
-        
     }
 
     /**

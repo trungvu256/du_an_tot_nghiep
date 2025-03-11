@@ -5,7 +5,8 @@
                 <img src="{{ asset('template/admin/velzon/assets/images/logo-sm.png') }}" alt="" height="22">
             </span>
             <span class="logo-lg">
-                <img src="{{ asset('template/admin/velzon/assets/images/logo-dark.png') }}" alt="" height="17">
+                <img src="{{ asset('template/admin/velzon/assets/images/logo-dark.png') }}" alt=""
+                    height="17">
             </span>
         </a>
         <a href="index.html" class="logo logo-light">
@@ -13,7 +14,8 @@
                 <img src="{{ asset('template/admin/velzon/assets/images/logo-sm.png') }}" alt="" height="22">
             </span>
             <span class="logo-lg">
-                <img src="{{ asset('template/admin/velzon/assets/images/logo-light.png') }}" alt="" height="17">
+                <img src="{{ asset('template/admin/velzon/assets/images/logo-light.png') }}" alt=""
+                    height="17">
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
@@ -30,7 +32,8 @@
 
                 <!--dashboard-->
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="{{ route('admin.dashboard') }}" data-bs-toggle="" role="button">
+                    <a class="nav-link menu-link" href="{{ route('admin.dashboard') }}" data-bs-toggle=""
+                        role="button">
                         <i class="ri-file-list-line"></i> <span>Dashboard</span>
                     </a>
                 </li>
@@ -83,19 +86,20 @@
                     </div>
                 </li>
 
-                <!-- order -->
+                <!-- Order -->
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#menuComment" data-bs-toggle="collapse" role="button">
-                        <i class="ri-chat-3-line"></i> <span>Order</span>
+                    <a href="{{ route('admin.order') }}" class="nav-link menu-link">
+                        <i class="ri-shopping-bag-3-line"></i> <span>Đơn Hàng</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="menuComment">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.order') }}" class="nav-link">Order</a>
-                            </li>
-                        </ul>
-                    </div>
                 </li>
+
+                <!-- Ví Tiền -->
+                <li class="nav-item">
+                    <a href="{{ route('wallet.show') }}" class="nav-link menu-link">
+                        <i class="ri-wallet-3-line"></i> <span>Ví Tiền</span>
+                    </a>
+                </li>
+
 
                 <!-- Blog -->
                 <li class="nav-item">
