@@ -27,26 +27,31 @@
                 <th>Trạng thái</th>
                 <td>
                     @switch($order->status)
-                        @case(0)
-                            <span class="badge bg-warning">Chờ xử lý</span>
+                    @case(0)
+                        <span class="badge bg-warning">Chờ xử lý</span>
                         @break
-
-                        @case(1)
-                            <span class="badge bg-primary">Đã xác nhận</span>
+                    @case(1)
+                        <span class="badge bg-info">Đã xác nhận</span>
                         @break
-
-                        @case(2)
-                            <span class="badge bg-info">Đang giao</span>
+                    @case(2)
+                        <span class="badge bg-secondary">Đang chuẩn bị hàng</span>
                         @break
-
-                        @case(3)
-                            <span class="badge bg-success">Đã giao</span>
+                    @case(3)
+                        <span class="badge bg-primary">Đang giao</span>
                         @break
-
-                        @case(4)
-                            <span class="badge bg-danger">Đã hủy</span>
+                    @case(4)
+                        <span class="badge bg-success">Đã giao</span>
                         @break
-                    @endswitch
+                    @case(5)
+                        <span class="badge bg-dark">Hoàn tất (Đã nhận hàng)</span>
+                        @break
+                    @case(6)
+                        <span class="badge bg-danger">Đã hủy</span>
+                        @break
+                    @case(7)
+                        <span class="badge bg-warning">Hoàn trả</span>
+                        @break
+                @endswitch
                 </td>
             </tr>
         </table>
