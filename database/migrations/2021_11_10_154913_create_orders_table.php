@@ -20,11 +20,13 @@ class CreateOrdersTable extends Migration
             $table->string('phone');
             $table->string('address');
             $table->bigInteger('id_user')->unsigned();
-            $table->decimal('total_price', 10, 2)->default(0);//thêm tổng tiền
-            $table->foreign('id_user')->references('id')->on('users')
-                ->onDelete('cascade');
+            $table->decimal('total_price', 10, 2)->default(0); // Tổng tiền
+            $table->string('payment_status')->default('pending'); // Trạng thái thanh toán
+            $table->tinyInteger('status')->default(0); // Trạng thái đơn hàng
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
+        
     }
 
     /**

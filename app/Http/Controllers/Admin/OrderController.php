@@ -29,4 +29,17 @@ class OrderController extends Controller
 
         return view('admin.order.detailOder', compact('order'));
     }
+
+    public function updatePaymenStatus (Request $request,  $id) {
+        $order = Order::findOrFail($id);
+
+    if (!isset($request->payment_status)) {
+        return back()->with('error', 'Trạng thái thanh toán không hợp lệ.');
+    }
+
+    $order->payment_status = $request->payment_status;
+    $order->save();
+
+    return redirect()->route('admin.order')->with('success', 'Cập nhật trạng thái thanh toán thành công!');
+       }
 }
