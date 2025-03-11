@@ -9,6 +9,7 @@ class Order extends Model
 {
     use HasFactory;
 
+
     protected $table = 'orders';
     protected $fillable = [
         'name',
@@ -17,9 +18,10 @@ class Order extends Model
         'address',
         'id_user',
         'total_price',
-        'status'       
+        'status',
+        'payment_status'       
     ];
-
+   
     // lk với User
     public function user()
     {
