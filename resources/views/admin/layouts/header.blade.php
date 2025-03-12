@@ -6,23 +6,21 @@
                 <div class="navbar-brand-box horizontal-logo">
                     <a href="index.html" class="logo logo-dark">
                         <span class="logo-sm">
-                            <img src="{{ asset('template/admin/velzon/assets/images/logo-sm.png') }}" alt=""
-                                height="22">
+                            <img src="{{ asset('template/admin/velzon/assets/images/logo04.JPG') }}" alt="" height="50">
                         </span>
                         <span class="logo-lg">
-                            <img src="{{ asset('template/admin/velzon/assets/images/logo-dark.png') }}" alt=""
-                                height="17">
+                            <img src="{{ asset('template/admin/velzon/assets/images/logo04.JPG') }}" alt=""
+                                height="150">
                         </span>
                     </a>
 
                     <a href="index.html" class="logo logo-light">
                         <span class="logo-sm">
-                            <img src="{{ asset('template/admin/velzon/assets/images/logo-sm.png') }}" alt=""
-                                height="22">
+                            <img src="{{ asset('template/admin/velzon/assets/images/logo03.JPG') }}" alt="" height="50">
                         </span>
                         <span class="logo-lg">
-                            <img src="{{ asset('template/admin/velzon/assets/images/logo-light.png') }}" alt=""
-                                height="17">
+                            <img src="{{ asset('template/admin/velzon/assets/images/logo03.JPG') }}" alt=""
+                                height="150">
                         </span>
                     </a>
                 </div>
@@ -69,7 +67,7 @@
                             <span class="text-start ms-xl-2">
                                 <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
                                     @if (Auth::check())
-                                        {{ Auth::user()->name }}
+                                    {{ Auth::user()->name }}
                                     @endif
                                 </span>
                                 <span

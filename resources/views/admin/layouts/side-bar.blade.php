@@ -2,20 +2,18 @@
     <div class="navbar-brand-box">
         <a href="index.html" class="logo logo-dark">
             <span class="logo-sm">
-                <img src="{{ asset('template/admin/velzon/assets/images/logo-sm.png') }}" alt="" height="22">
+                <img src="{{ asset('template/admin/velzon/assets/images/logo04.JPG') }}" alt="" height="50">
             </span>
             <span class="logo-lg">
-                <img src="{{ asset('template/admin/velzon/assets/images/logo-dark.png') }}" alt=""
-                    height="17">
+                <img src="{{ asset('template/admin/velzon/assets/images/logo04.JPG') }}" alt="" height="150">
             </span>
         </a>
         <a href="index.html" class="logo logo-light">
             <span class="logo-sm">
-                <img src="{{ asset('template/admin/velzon/assets/images/logo-sm.png') }}" alt="" height="22">
+                <img src="{{ asset('template/admin/velzon/assets/images/logo03.JPG') }}" alt="" height="60">
             </span>
             <span class="logo-lg">
-                <img src="{{ asset('template/admin/velzon/assets/images/logo-light.png') }}" alt=""
-                    height="17">
+                <img src="{{ asset('template/admin/velzon/assets/images/logo03.JPG') }}" alt="" height="170">
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
@@ -32,8 +30,7 @@
 
                 <!--dashboard-->
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="{{ route('admin.dashboard') }}" data-bs-toggle=""
-                        role="button">
+                    <a class="nav-link menu-link" href="{{ route('admin.dashboard') }}" data-bs-toggle="" role="button">
                         <i class="ri-file-list-line"></i> <span>Dashboard</span>
                     </a>
                 </li>
