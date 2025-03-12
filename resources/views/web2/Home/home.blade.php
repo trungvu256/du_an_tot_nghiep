@@ -68,19 +68,19 @@
                           <a href="{{route('user.contact')}}" class="nav-item nav-link">Contact</a>
                       </div>
                       <div class="navbar-nav ml-auto py-0">
-                        @auth
-                        <div class="dropdown d-inline">
-                            <a href="#" class="btn border dropdown-toggle" data-toggle="dropdown">
-                                <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('uploads/avatars/default.png') }}"
-                                    alt="Avatar" class="rounded-circle" width="40" height="40">
-            
-                            </a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="{{ route('profile') }}">Thông tin cá nhân</a>
-                                <a class="dropdown-item" href="{{ route('web.logout') }}">Đăng xuất</a>
-                            </div>
-                        </div>
-                        @endauth
+                          @auth
+                          <div class="dropdown d-inline">
+                              <a href="#" class="btn border dropdown-toggle" data-toggle="dropdown">
+                                  <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('uploads/avatars/default.png') }}"
+                                      alt="Avatar" class="rounded-circle" width="40" height="40">
+
+                              </a>
+                              <div class="dropdown-menu">
+                                  <a class="dropdown-item" href="{{ route('profile') }}">Thông tin cá nhân</a>
+                                  <a class="dropdown-item" href="{{ route('web.logout') }}">Đăng xuất</a>
+                              </div>
+                          </div>
+                          @endauth
                       </div>
                   </div>
               </nav>
@@ -357,6 +357,146 @@
 
   </div>
   <!-- Products End -->
+  <!-- bài viết -->
+
+
+
+
+  <style>
+body {
+    background-color: #ffffff;
+    font-family: 'Arial', sans-serif;
+}
+
+.perfume-card {
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 15px;
+    box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
+    padding: 25px;
+    text-align: center;
+    height: 100%;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.perfume-card:hover {
+    transform: scale(1.05);
+    box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.3);
+}
+
+.perfume-card img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: 2px solid #000000;
+}
+
+.logo {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 26px;
+    color: #000000;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 30px;
+    color: #000000;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.subtitle {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 15px;
+}
+
+.description {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    color: #000000;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.details-btn {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #000000;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.details-btn:hover {
+    background-color: #333333;
+    transform: translateY(-2px);
+    color: #ffffff;
+}
+
+.spring-bg {
+    background: url('spring-bg.jpg') center center/cover no-repeat;
+    border-radius: 15px;
+}
+
+.wood-bg {
+    background: url('wood-bg.jpg') center center/cover no-repeat;
+    border-radius: 15px;
+}
+
+.valentine-bg {
+    background: url('valentine-bg.jpg') center center/cover no-repeat;
+    border-radius: 15px;
+}
+
+.section-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 32px;
+    color: #000000;
+    font-weight: bold;
+}
+  </style>
+
+  <body>
+      <div class="container py-5">
+          <div class="text-center mb-4">
+              <h2 class="section-title px-5"><span class="px-2">Bài viết</span></h2>
+          </div>
+          <div class="row">
+              <!-- Card 1 -->
+              <div class="col-12 col-md-4 mb-4">
+                  <div class="perfume-card spring-bg">
+                      <img src="path/to/spring-perfume.jpg" alt="Spring Perfume" class="img-fluid">
+                      <div class="logo">ARMAF</div>
+                      <div class="title">NƯỚC HOA MÙA XUÂN</div>
+                      <div class="subtitle">LẮC VÀO VƯƠNG HOA CỦA ARMAF – SỰ THANH LỊCH VÀ CUỐN HÚT</div>
+                      <div class="description">
+                          Nhóm hương Floral (Hoa cỏ) là một trong những nhóm hương lịch sử và cuốn hút tự nhiên, hương
+                          thơm nhẹ nhàng và thanh thoát.
+                      </div>
+                      <a href="#" class="details-btn">Xem chi tiết</a>
+                  </div>
+              </div>
+
+
+
+
+          </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+
+  </html>
 
 
   <!-- Vendor Start -->
