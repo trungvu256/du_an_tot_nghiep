@@ -1,4 +1,4 @@
-<<<<<<< Updated upstream
+{{-- <<<<<<< Updated upstream
   @extends('web2.layout.master')
   @section('content')
   <!-- Navbar Start -->
@@ -125,7 +125,7 @@
       </div>
   </div>
   <!-- Navbar End -->
-=======
+======= --}}
 @extends('web2.layout.master')
 @section('content')
     <!-- Navbar Start -->
@@ -489,7 +489,7 @@
             @endforeach
         </div>
 
-<<<<<<< Updated upstream
+
   </div>
   <!-- Products End -->
   <!-- bài viết -->
@@ -632,10 +632,10 @@ body {
   </body>
 
   </html>
-=======
+
     </div>
     <!-- Products End -->
->>>>>>> Stashed changes
+
 
 
     <!-- Vendor Start -->

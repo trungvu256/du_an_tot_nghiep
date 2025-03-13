@@ -114,9 +114,9 @@
             </div>
         </div>
     </div>
-<<<<<<< Updated upstream
+
 </header>
-=======
+
 </header>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -127,4 +127,4 @@
 });
 
 </script>
->>>>>>> Stashed changes
+
