@@ -68,7 +68,7 @@ class HomeController extends Controller
         $categories_3 = Category::all();
         return view('web.category', compact('products', 'category', 'products_all', 'categories', 'categories_2', 'categories_3'));
     }
-  
+
     public function singleShow($slug)
     {
         $product = Product::where('slug', $slug)->first();
@@ -222,26 +222,7 @@ class HomeController extends Controller
         $products = Product::where('name', 'LIKE', '%' . $request->key . '%')->get();
         return view('web.load', compact('products'));
     }
-    public function redirectToGoogle()
-    {
-        return Socialite::driver('google')->redirect();
-    }
-    public function handleGoogleCallback()
-    {
-       
-        if(isset($_GET['checkout']) && $_GET['checkout'] == 'login') {
-            $user = Socialite::driver('google')->user();
-            $this->_registerOrLoginUser($user);
-            return redirect()->route('web.checkout');
-        } else {
-            $user = Socialite::driver('google')->user();
-            $this->_registerOrLoginUser($user);
-            return redirect()->route('web.index');
-        }
-
-        // Return home after login
-      
-    }
+    
     protected function _registerOrLoginUser($data)
     {
         $user = User::where('email', '=', $data->email)->first();
@@ -256,5 +237,5 @@ class HomeController extends Controller
         }
         Auth::login($user);
     }
- 
+
 }

@@ -58,12 +58,12 @@
 
 
                 <div class="dropdown ms-sm-3 header-item topbar-user">
-                    <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
+                    <button class="btn dropdown-toggle" type="button" id="page-header-user-dropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false">
                         <span class="d-flex align-items-center">
                             <img class="rounded-circle header-profile-user"
                                 src="{{ asset('template/admin/velzon/assets/images/users/avatar-1.jpg') }}"
-                                alt="Header Avatar">
+                                alt="Header Avatar" width="40" height="40">
                             <span class="text-start ms-xl-2">
                                 <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
                                     @if (Auth::check())
@@ -74,8 +74,13 @@
                                     class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">{{ Auth::user()->is_admin ? 'admin' : 'user' }}</span>
                             </span>
                         </span>
+
                     </button>
-                    <div class="dropdown-menu dropdown-menu-end">
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="page-header-user-dropdown">
+                        <li><a class="dropdown-item" href="{{ route('profile') }}">Hồ sơ</a></li>
+                        <li><a class="dropdown-item text-danger" href="{{ route('logout') }}">Đăng xuất</a></li>
+                    </ul>
+                    {{-- <div class="dropdown-menu dropdown-menu-end">
                         <!-- item-->
                         <h6 class="dropdown-header">Welcome Anna!</h6>
                         <a class="dropdown-item" href="pages-profile.html"><i
@@ -104,9 +109,22 @@
                         <a class="dropdown-item" href="{{ route('logout') }}"><i
                                 class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span
                                 class="align-middle" data-key="t-logout">Logout</span></a>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
     </div>
+<<<<<<< Updated upstream
 </header>
+=======
+</header>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
+    var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+        return new bootstrap.Dropdown(dropdownToggleEl);
+    });
+});
+
+</script>
+>>>>>>> Stashed changes
