@@ -31,7 +31,7 @@
         @endphp
 
         {{-- Form cập nhật trạng thái --}}
-        <form action="{{ route('orders.updateStatus') }}" method="post" id="bulk-update-form">
+        <form action="{{ route('orders.updateStatus') }}" method="POST" id="bulk-update-form">
             @csrf
             <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap">
                 {{-- Tabs chuyển trạng thái --}}
@@ -106,7 +106,7 @@
                 @foreach ($orders as $order)
                     <tr>
                         <td>
-                            <input type="checkbox" name="order_checkbox" value="{{ $order->id }}" class="order-checkbox">
+                            <input type="checkbox" name="order_ids[]" value="{{ $order->id }}" class="order-checkbox">
                         </td>
                         <td><a href="{{ route('admin.show.order', $order->id) }}">WD{{ $order->id }}</a></td>
                         <td>{{ $order->created_at ? $order->created_at->format('d/m/Y H:i') : '---' }}</td>
@@ -172,5 +172,35 @@
         document.getElementById('selected-orders').value = selectedOrders.join(',');
     }
 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const checkboxes = document.querySelectorAll(".order-checkbox");
+        const selectedOrdersInput = document.getElementById("selected-orders");
+        const form = document.getElementById("bulk-update-form");
+    
+        // Khi form submit, cập nhật danh sách đơn hàng đã chọn
+        form.addEventListener("submit", function (event) {
+            const selectedOrderIds = [];
+    
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    selectedOrderIds.push(checkbox.value);
+                }
+            });
+    
+            if (selectedOrderIds.length === 0) {
+                alert("❌ Vui lòng chọn ít nhất một đơn hàng để cập nhật!");
+                event.preventDefault(); // Ngăn chặn submit form
+                return;
+            }
+    
+            // Cập nhật danh sách order_ids vào input ẩn
+            selectedOrdersInput.value = selectedOrderIds.join(",");
+        });
+    });
+    </script>
+
+
 
 @endsection

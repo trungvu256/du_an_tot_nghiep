@@ -57,4 +57,35 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function refreshUnfinishedOrders() {
+        $.ajax({
+            url: "{{ route('admin.orders.unfinished') }}",
+            type: "GET",
+            success: function (data) {
+                $("#unfinished-orders").html($(data).find("#unfinished-orders").html());
+            }
+        });
+    }
+
+    // Gọi hàm refresh sau khi cập nhật đơn hàng
+    $(document).on("click", ".update-order-status", function () {
+        let orderId = $(this).data("id");
+        let newStatus = 5; // Đơn hàng hoàn tất
+
+        $.ajax({
+            url: "/admin/orders/update-status/" + orderId,
+            type: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                status: newStatus
+            },
+            success: function () {
+                refreshUnfinishedOrders();
+            }
+        });
+    });
+</script>
+
 @endsection

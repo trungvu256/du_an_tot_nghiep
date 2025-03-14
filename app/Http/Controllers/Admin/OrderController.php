@@ -70,17 +70,35 @@ class OrderController extends Controller
 
     public function updateStatus(Request $request)
     {
-        $orderIds = $request->input('order_ids', []); // Mặc định là mảng rỗng
+        // Lấy danh sách ID đơn hàng và trạng thái
+        $orderIds = $request->input('order_ids', []);
         $status = $request->input('status');
-
-        if (!is_array($orderIds)) {
-            $orderIds = explode(',', $orderIds); // Chuyển chuỗi thành mảng nếu cần
+    
+        // Nếu không có đơn hàng nào được chọn -> báo lỗi
+        if (empty($orderIds)) {
+            return redirect()->back()->with('error', '❌ Vui lòng chọn ít nhất một đơn hàng để cập nhật!');
         }
-
-        Order::whereIn('id', $orderIds)->update(['status' => $status]);
-
-        return redirect()->back()->with('success', 'Cập nhật trạng thái thành công!');
+    
+        // Nếu trạng thái không hợp lệ -> báo lỗi
+        if ($status === null || $status === '') {
+            return redirect()->back()->with('error', '❌ Vui lòng chọn trạng thái!');
+        }
+    
+        // Đảm bảo orderIds là mảng (tránh lỗi khi gửi dữ liệu không đúng)
+        if (!is_array($orderIds)) {
+            $orderIds = explode(',', $orderIds);
+        }
+    
+        // Cập nhật trạng thái đơn hàng
+        $updated = Order::whereIn('id', $orderIds)->update(['status' => $status]);
+    
+        if ($updated > 0) {
+            return redirect()->back()->with('success', '✅ Cập nhật trạng thái thành công!');
+        } else {
+            return redirect()->back()->with('error', '⚠️ Không có đơn hàng nào được cập nhật!');
+        }
     }
+    
     //   Trả hàng
 
     public function requestReturn($id)
@@ -96,11 +114,10 @@ class OrderController extends Controller
         return redirect()->back()->with('success', 'Đơn hàng hoàn trả đã được gửi');
     }
     public function unfinishedOrders()
-    {
-        $orders = Order::where('status', '<', 5) // Chưa hoàn tất
-            ->orWhere('payment_status', 0) // Chưa thanh toán
-            ->paginate(10);
+{
+    $orders = Order::where('status', '<', 5) // Chỉ lấy đơn chưa hoàn tất
+                   ->paginate(10);
 
-        return view('admin.order.unfinished', compact('orders'));
-    }
+    return view('admin.order.unfinished', compact('orders'));
+}
 }
