@@ -28,94 +28,152 @@
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
 
-                <!--dashboard-->
+                <!-- Khách hàng -->
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="{{ route('admin.dashboard') }}" data-bs-toggle="" role="button">
-                        <i class="ri-file-list-line"></i> <span>Dashboard</span>
+                    <a class="nav-link menu-link" href="#khachhang" data-bs-toggle="collapse" role="button">
+                        <i class="ri-user-line"></i> <span>Khách hàng</span>
                     </a>
-                </li>
-
-                <!-- User -->
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#menuUser" data-bs-toggle="collapse" role="button">
-                        <i class="ri-user-line"></i> <span>User</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="menuUser">
+                    <div class="collapse menu-dropdown" id="khachhang" data-bs-parent="#accordionSidebar">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.user') }}" class="nav-link">List User</a>
+                                <a href="{{ route('admin.user') }}" class="nav-link">Khách hàng</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">Nhóm khách hàng</a>
                             </li>
                         </ul>
                     </div>
                 </li>
 
-                <!-- Category -->
+
+                <!-- Thống kê -->
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#menuCategory" data-bs-toggle="collapse" role="button">
-                        <i class="ri-dashboard-2-line"></i> <span>Category</span>
+                    <a class="nav-link menu-link" href="{{ route('admin.dashboard') }}">
+                        <i class="ri-bar-chart-box-line"></i> <span>Thống kê</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="menuCategory">
+                </li>
+
+                <!-- Đơn hàng -->
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#donhang" data-bs-toggle="collapse" role="button">
+                        <i class="ri-shopping-bag-line"></i> <span>Đơn hàng</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="donhang" data-bs-parent="#accordionSidebar">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.create.cate') }}" class="nav-link">Add Category</a>
+                                <a href="{{route('admin.order')}}" class="nav-link">Danh sách đơn hàng</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.cate') }}" class="nav-link">List Category</a>
+                                <a href="{{route('admin.return.index')}}" class="nav-link">Trả hàng</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('admin.orders.unfinished')}}" class="nav-link">Đơn chưa hoàn tất</a>
                             </li>
                         </ul>
                     </div>
                 </li>
+                <!-- Vận chuyển -->
+                
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#menuShipping" data-bs-toggle="collapse" role="button">
+                        <i class="ri-truck-line"></i> <span>Vận chuyển</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="menuShipping">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.shipping.overview') }}" class="nav-link">Tổng quan</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.shipping.orders') }}" class="nav-link">Vận đơn</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                
 
-                <!-- Product -->
+                <!-- Sản phẩm (Gộp cả danh mục) -->
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#menuProduct" data-bs-toggle="collapse" role="button">
-                        <i class="ri-shopping-cart-line"></i> <span>Product</span>
+                        <i class="ri-archive-line"></i> <span>Sản phẩm</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="menuProduct">
+                    <div class="collapse menu-dropdown" id="menuProduct" data-bs-parent="#accordionSidebar">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('admin.add.product') }}" class="nav-link">Add Product</a>
+                                <a href="{{ route('admin.product') }}" class="nav-link">Danh sách sản phẩm</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('admin.product') }}" class="nav-link">List Product</a>
+                                <a href="{{ route('admin.cate') }}" class="nav-link">Danh mục sản phẩm</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">Bảng giá</a>
                             </li>
                         </ul>
                     </div>
                 </li>
 
-                <!-- Order -->
+                <!-- Quản lý kho -->
                 <li class="nav-item">
-                    <a href="{{ route('admin.order') }}" class="nav-link menu-link">
-                        <i class="ri-shopping-bag-3-line"></i> <span>Đơn Hàng</span>
+                    <a class="nav-link menu-link" href="#menuWarehouse" data-bs-toggle="collapse" role="button">
+                        <i class="ri-home-gear-line"></i> <span>Quản lý kho</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="menuWarehouse" data-bs-parent="#accordionSidebar">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.product') }}" class="nav-link">Tồn kho</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.cate') }}" class="nav-link">Đặt hàng nhập</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">Nhập hàng</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">Trả hàng nhập</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">Chuyển kho</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">Nhà cung cấp</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- Khuyến mại -->
+                <li class="nav-item">
+                    <a href="" class="nav-link menu-link">
+                        <i class="ri-gift-line"></i> <span>Khuyến mại</span>
                     </a>
                 </li>
 
                 <!-- Ví Tiền -->
                 <li class="nav-item">
                     <a href="{{ route('wallet.show') }}" class="nav-link menu-link">
-                        <i class="ri-wallet-3-line"></i> <span>Ví Tiền</span>
+                        <i class="ri-wallet-line"></i> <span>Sổ quỹ</span>
                     </a>
                 </li>
 
-
-                <!-- Blog -->
+                <!-- Bài viết -->
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#menuBlog" data-bs-toggle="collapse" role="button">
-                        <i class="ri-file-list-line"></i> <span>Blog</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="menuBlog">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.create.blog') }}" class="nav-link">Add Blog</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.blog') }}" class="nav-link">List Blog</a>
-                            </li>
-                        </ul>
-                    </div>
+                    <a href="{{ route('admin.blog') }}" class="nav-link"><i class="ri-file-list-line"></i> Bài
+                        viết</a>
+                </li>
                 </li>
             </ul>
         </div>
     </div>
+
+
     <div class="sidebar-background"></div>
 </div>
+<style>
+    .nav-link::after {
+        content: none !important;
+    }
+
+    .nav-sm {
+        list-style: none;
+        padding-left: 0;
+    }
+</style>

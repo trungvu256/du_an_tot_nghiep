@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ReturnOrderController;
+use App\Http\Controllers\Admin\ShippingController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WalletController;
 use App\Http\Controllers\Auth\LoginGoogleController;
@@ -17,6 +19,7 @@ use App\Http\Controllers\Web\LoginController as WebLoginController;
 use App\Http\Controllers\Web\ProfileController;
 use App\Models\Category;
 use App\Http\Controllers\Web\WebController;
+use App\Services\GHTKService;
 
 /*
 |--------------------------------------------------------------------------
@@ -123,6 +126,55 @@ Route::middleware(['auth', 'admin'])->group(
 
 
 
+        //Bình luận
+        Route::prefix('comment')->group(function () {
+            route::get('/', [CommentController::class, 'index'])->name('admin.comment');
+            route::get('/create', [CommentController::class, 'create'])->name('create.comment');
+            route::post('/store', [CommentController::class, 'store'])->name('store.comment');
+            route::patch('/showhidden/{id}', [CommentController::class, 'Hide_comments'])->name('admin.comment.showhidden');
+            Route::post('/admin/orders/{id}/ship', [OrderController::class, 'shipOrder'])->name('admin.order.ship');
+
+        });
+
+        /// order
+
+        Route::prefix('order')->group(function () {
+            route::get('/order', [OrderController::class, 'index'])->name('admin.order');
+            route::get('/order/{id}', [OrderController::class, 'show'])->name('admin.show.order');
+            route::post('/orders/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+            route::post('/orders/{id}/updatePaymenStatus', [OrderController::class, 'updatePaymenStatus'])->name('orders.updatePaymenStatus');
+            route::get('/admin/orders/unfinished', [OrderController::class, 'unfinishedOrders'])->name('admin.orders.unfinished');
+            
+
+            
+        });
+
+        // Trả hàng
+        Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
+            Route::get('/returns', [ReturnOrderController::class, 'index'])->name('admin.return.index');
+            Route::post('/returns/{id}/update', [ReturnOrderController::class, 'update'])->name('admin.returns.update');
+        });
+
+        // ví điện tử
+        Route::prefix('wallet')->group(function () {
+            route::get('/wallet', [WalletController::class, 'show'])->name('wallet.show');
+            route::post('/wallet/{order}/refund', [WalletController::class, 'refund'])->name('wallet.refund');
+            route::post('/wallet/deposit', [WalletController::class, 'deposit'])->name('wallet.deposit');
+        });
+        Route::prefix('product')->group(function () {
+            route::get('/', [ProductController::class, 'index'])->name('admin.product');
+            route::get('/add', [ProductController::class, 'create'])->name('admin.add.product');
+            route::post('/add', [ProductController::class, 'store'])->name('admin.store.product');
+            route::get('/show/{id}', [ProductController::class, 'show'])->name('admin.show.product');
+            route::get('/edit/{id}', [ProductController::class, 'edit'])->name('admin.edit.product');
+            route::post('/update/{id}', [ProductController::class, 'update'])->name('admin.update.product');
+            route::delete('/delete/{id}', [ProductController::class, 'delete'])->name('admin.delete.product');
+            Route::get('/del-image/{id}', [ProductController::class, 'delete_img'])->name('admin.delete_img.product');
+            route::get('/admin/product/trash', [ProductController::class, 'trash'])->name('admin.trash.product');
+            route::post('/admin/product/restore/{id}', [ProductController::class, 'restore'])->name('admin.restore.product');
+            route::delete('/admin/product/fore-delete/{id}', [ProductController::class, 'foreDelete'])->name('admin.foreDelete.product');
+
+
         });
 
         Route::prefix('user')->group(function () {
@@ -130,12 +182,48 @@ Route::middleware(['auth', 'admin'])->group(
             Route::get('/checkout', [WebController::class, 'checkout'])->name('user.checkout');
             Route::get('/contact', [WebController::class, 'contact'])->name('user.contact');
         });
+
+
+        //dasboard
+        Route::get('/admin/revenue-data', [DashboardController::class, 'getRevenueData']);
+        Route::get('/admin/best-selling-products', [DashboardController::class, 'getBestSellingProducts']);
+
+
+
+    });
+
+    ///Giao hàng tiết kiệm
+    Route::prefix('admin')->group(function () {
+        Route::get('shipping/overview', [ShippingController::class, 'overview'])->name('admin.shipping.overview');
+        Route::get('shipping/orders', [ShippingController::class, 'orders'])->name('admin.shipping.orders');
+        Route::post('shipping/calculate-fee', [ShippingController::class, 'calculateFee'])->name('admin.shipping.calculate_fee');
+        Route::post('shipping/update-status/{id}', [ShippingController::class, 'updateStatus'])->name('admin.shipping.update_status');
+        Route::post('/shipping/webhook', [ShippingController::class, 'webhookUpdate'])->name('shipping.webhook');
+        Route::post('/admin/shipping/ship-order/{id}', [ShippingController::class, 'shipOrder'])->name('shipping.shipOrder');
+
+
+
+    });
+
+    Route::prefix('user')->group(function () {
+        Route::get('/cart', [WebController::class, 'cart'])->name('user.cart');
+        Route::get('/checkout', [WebController::class, 'checkout'])->name('user.checkout');
+        Route::get('/contact', [WebController::class, 'contact'])->name('user.contact');
+    });
+    Route::get('/profile', [ProfileController::class, 'showProfile'])->name('profile');
+    Route::get('/profile/confirm-password', [ProfileController::class, 'confirmPassword'])->name('profile.confirm_password');
+    Route::post('/profile/confirm-password', [ProfileController::class, 'checkPassword'])->name('profile.check_password');
+    Route::get('/profile/edit', [ProfileController::class, 'editProfile'])->name('profile.edit');
+    Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
+}
+
         Route::get('/profile', [ProfileController::class, 'showProfile'])->name('profile');
         Route::get('/profile/confirm-password', [ProfileController::class, 'confirmPassword'])->name('profile.confirm_password');
         Route::post('/profile/confirm-password', [ProfileController::class, 'checkPassword'])->name('profile.check_password');
         Route::get('/profile/edit', [ProfileController::class, 'editProfile'])->name('profile.edit');
         Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
     }
+
 
 );
 //Login web
