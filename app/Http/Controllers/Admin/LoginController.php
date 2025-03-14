@@ -18,7 +18,7 @@ class LoginController extends Controller
            'password'=>'required|min:6',
        ]);
        if(Auth::attempt(['email' => $request->email, 'password' => $request->password],$request->remenber)) {
-            return redirect()->route('admin.main');
+            return redirect()->route('admin.dashboard');
        } else {
            return back()->with('error','Email or Password is not corrected');
        }

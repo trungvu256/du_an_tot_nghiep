@@ -26,7 +26,7 @@
         <div class="container-fluid">
             <div id="two-column-menu"></div>
             <ul class="navbar-nav" id="navbar-nav">
-                <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                <li class="menu-title"><span data-key="t-menu">DANH SÁCH</span></li>
 
                 <!-- Khách hàng -->
                 <li class="nav-item">
@@ -73,7 +73,7 @@
                     </div>
                 </li>
                 <!-- Vận chuyển -->
-                
+
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#menuShipping" data-bs-toggle="collapse" role="button">
                         <i class="ri-truck-line"></i> <span>Vận chuyển</span>
@@ -89,7 +89,7 @@
                         </ul>
                     </div>
                 </li>
-                
+
 
                 <!-- Sản phẩm (Gộp cả danh mục) -->
                 <li class="nav-item">
@@ -156,8 +156,9 @@
 
                 <!-- Bài viết -->
                 <li class="nav-item">
-                    <a href="{{ route('admin.blog') }}" class="nav-link"><i class="ri-file-list-line"></i> Bài
-                        viết</a>
+                    <a href="{{ route('admin.blog') }}" class="nav-link menu-link"><i class="ri-file-list-line"></i>
+                        <span>Bài
+                            viết</span></a>
                 </li>
                 </li>
             </ul>
@@ -168,12 +169,12 @@
     <div class="sidebar-background"></div>
 </div>
 <style>
-    .nav-link::after {
-        content: none !important;
-    }
+.nav-link::after {
+    content: none !important;
+}
 
-    .nav-sm {
-        list-style: none;
-        padding-left: 0;
-    }
+.nav-sm {
+    list-style: none;
+    padding-left: 0;
+}
 </style>
