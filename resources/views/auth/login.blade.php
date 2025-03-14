@@ -30,7 +30,7 @@
                         </ul>
                     </div>
                 @endif
-                <form action="{{ route('admin.login.store') }}" method="post">
+                <form action="{{ route('login') }}" method="post">
                     @csrf
                     <div class="input-group mb-3">
                         <input type="email" name="email" class="form-control" placeholder="Enter Your Email">
