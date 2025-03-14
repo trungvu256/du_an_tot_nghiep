@@ -104,11 +104,11 @@
             </thead>
             <tbody>
                 @foreach ($orders as $order)
-                    <tr>
+                <tr onclick="window.location='{{ route('admin.show.order', $order->id) }}';" style="cursor: pointer;">
                         <td>
                             <input type="checkbox" name="order_ids[]" value="{{ $order->id }}" class="order-checkbox">
                         </td>
-                        <td><a href="{{ route('admin.show.order', $order->id) }}">WD{{ $order->id }}</a></td>
+                        <td>WD{{ $order->id }}</a></td>
                         <td>{{ $order->created_at ? $order->created_at->format('d/m/Y H:i') : '---' }}</td>
                         <td>{{ $order->user->name ?? '---' }}</td>
                         <td>{{ number_format($order->total_price, 0, ',', '.') }}₫</td>

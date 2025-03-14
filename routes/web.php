@@ -70,6 +70,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
             route::get('/create', [CommentController::class, 'create'])->name('create.comment');
             route::post('/store', [CommentController::class, 'store'])->name('store.comment');
             route::patch('/showhidden/{id}', [CommentController::class, 'Hide_comments'])->name('admin.comment.showhidden');
+            Route::post('/admin/orders/{id}/ship', [OrderController::class, 'shipOrder'])->name('admin.order.ship');
+
         });
 
         /// order
@@ -80,6 +82,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
             route::post('/orders/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
             route::post('/orders/{id}/updatePaymenStatus', [OrderController::class, 'updatePaymenStatus'])->name('orders.updatePaymenStatus');
             route::get('/admin/orders/unfinished', [OrderController::class, 'unfinishedOrders'])->name('admin.orders.unfinished');
+            
 
             
         });
@@ -136,12 +139,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     ///Giao hàng tiết kiệm
     Route::prefix('admin')->group(function () {
-        Route::get('shipping', [ShippingController::class, 'index'])->name('admin.shipping.index');
         Route::get('shipping/overview', [ShippingController::class, 'overview'])->name('admin.shipping.overview');
         Route::get('shipping/orders', [ShippingController::class, 'orders'])->name('admin.shipping.orders');
         Route::post('shipping/calculate-fee', [ShippingController::class, 'calculateFee'])->name('admin.shipping.calculate_fee');
         Route::post('shipping/update-status/{id}', [ShippingController::class, 'updateStatus'])->name('admin.shipping.update_status');
         Route::post('/shipping/webhook', [ShippingController::class, 'webhookUpdate'])->name('shipping.webhook');
+        Route::post('/admin/shipping/ship-order/{id}', [ShippingController::class, 'shipOrder'])->name('shipping.shipOrder');
+
 
 
     });

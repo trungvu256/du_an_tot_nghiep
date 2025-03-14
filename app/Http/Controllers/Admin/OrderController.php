@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Shipping;
 use App\Services\GHTKService;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -47,11 +49,12 @@ class OrderController extends Controller
 
     // show order
     public function show($id)
-    {
-        $order = Order::with('orderDetails.product')->find($id);
+{
+    $order = Order::with(['orderDetails.product', 'shippingInfo'])->findOrFail($id);
 
-        return view('admin.order.detailOder', compact('order'));
-    }
+    return view('admin.order.detailOder', compact('order'));
+}
+
 
     public function updatePaymenStatus(Request $request,  $id)
     {
@@ -120,4 +123,45 @@ class OrderController extends Controller
 
     return view('admin.order.unfinished', compact('orders'));
 }
+
+public function ship($id)
+{
+    $order = Order::with(['orderItems.product', 'history'])->findOrFail($id);
+    return view('admin.order.order', compact('order'));
+}
+
+
+// Bàn giao cho bên giao hàng
+public function shipOrder(Request $request, $id)
+{
+    $order = Order::findOrFail($id);
+
+    // Cập nhật thông tin vận chuyển
+    $order->shipping_provider = $request->shipping_provider;
+    $order->status = 3; // Cập nhật trạng thái thành "Đang giao"
+    $order->tracking_number = 'TRK' . time(); // Tạo mã vận đơn giả định
+    $order->save();
+
+    return redirect()->back()->with('success', 'Đơn hàng đã được gửi đến đơn vị vận chuyển!');
+}
+
+
+public function pushToShipping(Request $request, $orderId)
+{
+    $order = Order::find($orderId);
+    if (!$order) {
+        return response()->json(['error' => 'Đơn hàng không tồn tại'], 404);
+    }
+
+    $order->status = 'waiting_for_pickup'; // Chờ lấy hàng
+    $order->shipping_provider = 'GHTK';
+    $order->tracking_number = 'GHTK' . time();
+
+    $order->save();
+
+    Log::info('Đã đẩy đơn hàng', ['id' => $orderId, 'status' => $order->status]);
+
+    return response()->json(['message' => 'Đơn hàng đã đẩy sang vận chuyển']);
+}
+
 }

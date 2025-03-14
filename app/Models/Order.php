@@ -22,7 +22,9 @@ class Order extends Model
         'status',
         'payment_status',
         'return_status',
-        'return_reason'
+        'return_reason',
+        'branch',
+        'region', 'shipping_provider', 'tracking_number'
     ];
     const STATUS_PENDING = 0; // Chờ xử lý
     const STATUS_CONFIRMED = 1; // Đã xác nhận
@@ -61,5 +63,8 @@ class Order extends Model
 {
     return $this->hasOne(ReturnOrder::class, 'order_id');
 }
-
+public function shippingInfo()
+{
+    return $this->hasOne(Shipping::class); // Nếu bạn có bảng shipping riêng
+}
 }

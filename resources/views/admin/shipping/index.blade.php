@@ -19,7 +19,7 @@
     </div>
 
     <!-- Thống kê vận chuyển -->
-    <div class="row">
+    <div class="row" id="shipping-summary">
         @php
             $statuses = [
                 'waiting_for_pickup' => 'Chờ lấy hàng',
@@ -36,14 +36,13 @@
                 <div class="card text-center">
                     <div class="card-body">
                         <h6>{{ $label }}</h6>
-                        <h3>{{ $summary[$key] ?? 0 }}</h3>
+                        <h3 class="summary-count" data-status="{{ $key }}">{{ $summary[$key] ?? 0 }}</h3>
                         <p><i class="fas fa-money-bill-wave"></i> COD: 0₫</p>
                     </div>
                 </div>
             </div>
         @endforeach
     </div>
-    
 
     <!-- Biểu đồ dữ liệu -->
     <div class="row mt-4">
@@ -68,32 +67,60 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const labels = ['Chờ lấy hàng', 'Đã lấy hàng', 'Đang giao hàng', 'Chờ giao lại', 'Đang hoàn hàng', 'Đã hoàn hàng'];
-            const data = @json($summary);
-            const values = Object.values(data);
+            function updateCharts(data) {
+                const labels = ['Chờ lấy hàng', 'Đã lấy hàng', 'Đang giao hàng', 'Chờ giao lại', 'Đang hoàn hàng', 'Đã hoàn hàng'];
+                const values = Object.values(data);
 
-            new Chart(document.getElementById('successRateChart'), {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Số lượng đơn hàng',
-                        data: values,
-                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']
-                    }]
-                }
-            });
+                new Chart(document.getElementById('successRateChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Số lượng đơn hàng',
+                            data: values,
+                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']
+                        }]
+                    }
+                });
 
-            new Chart(document.getElementById('orderProportionChart'), {
-                type: 'pie',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: values,
-                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']
-                    }]
-                }
+                new Chart(document.getElementById('orderProportionChart'), {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: values,
+                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']
+                        }]
+                    }
+                });
+            }
+
+            // Gọi API khi nhấn nút lọc
+            document.getElementById('filter-button').addEventListener('click', function () {
+                let date = document.getElementById('date-filter').value;
+                let branch = document.getElementById('branch-filter').value;
+                let region = document.getElementById('region-filter').value;
+
+                fetch("{{ route('admin.shipping.overview') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({ date, branch, region })
+                })
+                .then(response => response.json())
+    .then(data => {
+        document.querySelectorAll(".summary-count").forEach(el => {
+            let status = el.dataset.status;
+            el.textContent = data.summary[status] ?? 0;
+        });
+                    // Cập nhật biểu đồ
+                    updateCharts(data.summary);
+                })
+                .catch(error => console.error("Lỗi cập nhật:", error));
             });
         });
     </script>
+    
 @endsection
