@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ShippingController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WalletController;
 use App\Http\Controllers\Web\HomeController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\Web\LoginController as WebLoginController;
 use App\Http\Controllers\Web\ProfileController;
 use App\Models\Category;
 use App\Http\Controllers\Web\WebController;
+use App\Services\GHTKService;
 
 /*
 |--------------------------------------------------------------------------
@@ -119,6 +121,18 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/admin/revenue-data', [DashboardController::class, 'getRevenueData']);
         Route::get('/admin/best-selling-products', [DashboardController::class, 'getBestSellingProducts']);
 
+
+
+    });
+
+    ///Giao hàng tiết kiệm
+    Route::prefix('admin')->group(function () {
+        Route::get('shipping', [ShippingController::class, 'index'])->name('admin.shipping.index');
+        Route::get('shipping/overview', [ShippingController::class, 'overview'])->name('admin.shipping.overview');
+        Route::get('shipping/orders', [ShippingController::class, 'orders'])->name('admin.shipping.orders');
+        Route::post('shipping/calculate-fee', [ShippingController::class, 'calculateFee'])->name('admin.shipping.calculate_fee');
+        Route::post('shipping/update-status/{id}', [ShippingController::class, 'updateStatus'])->name('admin.shipping.update_status');
+        Route::post('/shipping/webhook', [ShippingController::class, 'webhookUpdate'])->name('shipping.webhook');
 
 
     });

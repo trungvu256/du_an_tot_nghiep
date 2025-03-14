@@ -5,23 +5,33 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Models\Shipping;
+use App\Services\GHTKService;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::orderBy('created_at', 'desc')->get();
+        $query = Order::query();
+    
+        // Lọc theo trạng thái nếu có
+        if ($request->has('status')) {
+            $query->where('status', $request->status);
+        }
+    
+        // Lọc theo tìm kiếm nếu có
+        if ($request->has('search')) {
+            $query->where('id', 'like', '%' . $request->search . '%')
+                  ->orWhere('customer_name', 'like', '%' . $request->search . '%');
+        }
+    
+        // Lấy danh sách đơn hàng với phân trang
+        $orders = $query->orderBy('created_at', 'desc')->paginate(10);
+    
         return view('admin.order.index', compact('orders'));
     }
-
-    // Cập nhật trạng thái
-    public function updateStatus (Request $request,  $id) {
-     $order = Order::findOrFail($id);
-     $order->status = $request->status;
-     $order->save();
-
-     return redirect()->route('admin.order')->with('success', 'Cập nhật trạng thái thành công!');
-    }
+    
+    
     
     // show order
     public function show ($id) {
@@ -42,4 +52,7 @@ class OrderController extends Controller
 
     return redirect()->route('admin.order')->with('success', 'Cập nhật trạng thái thanh toán thành công!');
        }
+
+
+
 }
