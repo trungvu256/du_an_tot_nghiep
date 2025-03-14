@@ -11,6 +11,7 @@ class Order extends Model
 
 
     protected $table = 'orders';
+
     protected $fillable = [
         'name',
         'email',
@@ -19,7 +20,9 @@ class Order extends Model
         'id_user',
         'total_price',
         'status',
-        'payment_status'       
+        'payment_status',
+        'return_status',
+        'return_reason'
     ];
     const STATUS_PENDING = 0; // Chờ xử lý
     const STATUS_CONFIRMED = 1; // Đã xác nhận
@@ -30,10 +33,17 @@ class Order extends Model
     const STATUS_COMPLETED = 5; // Hoàn tất
     const STATUS_CANCELED = 6; // Đã hủy
     const STATUS_RETURNED = 7; // Hoàn trả
+
+//    Trạng thái trả hàng
+    const RETURN_NONE = 0; // Không có yêu cầu trả hàng
+    const RETURN_REQUESTED = 1; // Đang yêu cầu trả hàng
+    const RETURN_APPROVED = 2; // Đã duyệt trả hàng
+    const RETURN_DECLINED = 3; // Từ chối trả hàng
+    const RETURN_COMPLETED = 4; // Hoàn tất trả hàng
     // lk với User
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     // lk với OrderDetail
@@ -43,7 +53,13 @@ class Order extends Model
     }
     // Liên kết với product
 
-    public function product() {
+    public function product()
+    {
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
+    public function returnOrder()
+{
+    return $this->hasOne(ReturnOrder::class, 'order_id');
+}
+
 }

@@ -64,13 +64,10 @@
                                 <a href="{{route('admin.order')}}" class="nav-link">Danh sách đơn hàng</a>
                             </li>
                             <li class="nav-item">
-                                <a href="" class="nav-link">Đơn hàng nháp</a>
+                                <a href="{{route('admin.return.index')}}" class="nav-link">Trả hàng</a>
                             </li>
                             <li class="nav-item">
-                                <a href="" class="nav-link">Trả hàng</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="" class="nav-link">Đơn chưa hoàn tất</a>
+                                <a href="{{route('admin.orders.unfinished')}}" class="nav-link">Đơn chưa hoàn tất</a>
                             </li>
                         </ul>
                     </div>

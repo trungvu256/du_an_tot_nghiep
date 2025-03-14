@@ -13,46 +13,94 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $query = Order::query();
-    
-        // Lọc theo trạng thái nếu có
-        if ($request->has('status')) {
-            $query->where('status', $request->status);
+
+        // Lọc theo trạng thái giao hàng
+        if ($request->filled('status')) {
+            $query->where('status', $request->input('status'));
         }
-    
-        // Lọc theo tìm kiếm nếu có
-        if ($request->has('search')) {
-            $query->where('id', 'like', '%' . $request->search . '%')
-                  ->orWhere('customer_name', 'like', '%' . $request->search . '%');
+
+        // Lọc theo trạng thái thanh toán
+        if ($request->filled('payment_status')) {
+            $query->where('payment_status', $request->input('payment_status'));
         }
-    
-        // Lấy danh sách đơn hàng với phân trang
-        $orders = $query->orderBy('created_at', 'desc')->paginate(10);
-    
+
+        // Tìm kiếm theo mã đơn hàng hoặc số điện thoại
+        if ($request->filled('query')) {
+            $search = strtolower($request->input('query')); // Chuyển về chữ thường
+
+            $query->where(function ($q) use ($search) {
+                if (str_starts_with($search, 'wd')) { // Chấp nhận cả "WD" và "wd"
+                    $numericId = (int) substr($search, 2); // Lấy số ID sau "WD"
+                    $q->where('id', $numericId);
+                } elseif (is_numeric($search)) {
+                    $q->where('id', $search);
+                } else {
+                    $q->orWhereRaw('LOWER(phone) LIKE ?', ["%$search%"]);
+                }
+            });
+        }
+
+        $orders = $query->paginate(10);
+
         return view('admin.order.index', compact('orders'));
     }
-    
-    
-    
+
     // show order
-    public function show ($id) {
+    public function show($id)
+    {
         $order = Order::with('orderDetails.product')->find($id);
 
         return view('admin.order.detailOder', compact('order'));
     }
 
-    public function updatePaymenStatus (Request $request,  $id) {
+    public function updatePaymenStatus(Request $request,  $id)
+    {
         $order = Order::findOrFail($id);
 
-    if (!isset($request->payment_status)) {
-        return back()->with('error', 'Trạng thái thanh toán không hợp lệ.');
+        if (!isset($request->payment_status)) {
+            return back()->with('error', 'Trạng thái thanh toán không hợp lệ.');
+        }
+
+        $order->payment_status = $request->payment_status;
+        $order->save();
+
+        return redirect()->route('admin.order')->with('success', 'Cập nhật trạng thái thanh toán thành công!');
     }
 
-    $order->payment_status = $request->payment_status;
-    $order->save();
 
-    return redirect()->route('admin.order')->with('success', 'Cập nhật trạng thái thanh toán thành công!');
-       }
+    public function updateStatus(Request $request)
+    {
+        $orderIds = $request->input('order_ids', []); // Mặc định là mảng rỗng
+        $status = $request->input('status');
 
+        if (!is_array($orderIds)) {
+            $orderIds = explode(',', $orderIds); // Chuyển chuỗi thành mảng nếu cần
+        }
 
+        Order::whereIn('id', $orderIds)->update(['status' => $status]);
 
+        return redirect()->back()->with('success', 'Cập nhật trạng thái thành công!');
+    }
+    //   Trả hàng
+
+    public function requestReturn($id)
+    {
+        $order = Order::findOrFail($id);
+
+        if ($order->return_status !== 0) {
+            return redirect()->back()->with('error', 'Đơn hàng đã có yêu cầu hoàn trả.');
+        }
+
+        $order->update(['return_status' => 1]);
+
+        return redirect()->back()->with('success', 'Đơn hàng hoàn trả đã được gửi');
+    }
+    public function unfinishedOrders()
+    {
+        $orders = Order::where('status', '<', 5) // Chưa hoàn tất
+            ->orWhere('payment_status', 0) // Chưa thanh toán
+            ->paginate(10);
+
+        return view('admin.order.unfinished', compact('orders'));
+    }
 }

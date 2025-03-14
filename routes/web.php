@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ReturnOrderController;
 use App\Http\Controllers\Admin\ShippingController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WalletController;
@@ -76,9 +77,17 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::prefix('order')->group(function () {
             route::get('/order', [OrderController::class, 'index'])->name('admin.order');
             route::get('/order/{id}', [OrderController::class, 'show'])->name('admin.show.order');
-            route::post('/orders/{id}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+            route::post('/orders/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
             route::post('/orders/{id}/updatePaymenStatus', [OrderController::class, 'updatePaymenStatus'])->name('orders.updatePaymenStatus');
+            route::get('/admin/orders/unfinished', [OrderController::class, 'unfinishedOrders'])->name('admin.orders.unfinished');
+
             
+        });
+
+        // Trả hàng
+        Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
+            Route::get('/returns', [ReturnOrderController::class, 'index'])->name('admin.return.index');
+            Route::post('/returns/{id}/update', [ReturnOrderController::class, 'update'])->name('admin.returns.update');
         });
 
         // ví điện tử
