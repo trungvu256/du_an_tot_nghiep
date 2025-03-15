@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\VarDumper\Caster\RdKafkaCaster;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 
 class LoginController extends Controller
@@ -48,31 +49,37 @@ class LoginController extends Controller
     }
     public function registerStore(Request $request)
     {
-        
         $validator = Validator::make($request->all(), [
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'name' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'phone' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|regex:/^(0[1-9][0-9]{8,9})$/',
             'address' => 'nullable|string|max:255',
             'gender' => 'required|string|in:Male,Female,Other',
             'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'agree_terms' => 'accepted',
         ]);
-
+    
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()->first()], 400);
+            return response()->json([
+                'message' => 'Vui lòng kiểm tra lại thông tin!',
+                'errors' => $validator->errors()
+            ], 400);
         }
-
-        
+    
+        // Xử lý ảnh đại diện nếu có
         $avatarPath = null;
         if ($request->hasFile('avatar')) {
             $avatarPath = $request->file('avatar')->store('avatars', 'public');
         }
-
-      
+    
+        // Lưu vào database
         $user = new User();
-        $user->name = $request->name;
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->name = $request->first_name . ' ' . $request->last_name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->phone = $request->phone;
@@ -82,9 +89,14 @@ class LoginController extends Controller
         $user->status = 1;
         $user->is_admin = 0;
         $user->save();
-
-        return redirect()->route('web.login')->with('success', 'Created User Successful');
+    
+        return response()->json([
+            'message' => 'Tạo tài khoản thành công!',
+            'redirect' => route('web.login')
+        ], 200);
     }
+    
+
 
 
     public function logout()

@@ -23,16 +23,18 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name',
+        'first_name', // Thêm Họ
+        'last_name',  // Thêm Tên
+        'name',       
         'email',
         'password',
         'is_admin',
         'provider_id',
-        'status',   // Trạng thái tài khoản (hoạt động/bị khóa)
-        'gender',   // Giới tính
-        'phone',    // Số điện thoại
-        'address',  // Địa chỉ
-        'avatar',   // Ảnh đại diện
+        'status',   
+        'gender',   
+        'phone',    
+        'address',  
+        'avatar',   
     ];
 
     /**
