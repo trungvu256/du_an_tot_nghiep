@@ -40,7 +40,17 @@
                         </td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        <td>{{ ucfirst($user->gender) }}</td>
+                        <td>
+                            @if ($user->gender == 'Male')
+                            Nam
+                            @elseif ($user->gender == 'Female')
+                            Nữ
+                            @elseif ($user->gender == 'Other')
+                            Khác
+                            @else
+                            Không xác định
+                            @endif
+                        </td>
                         <td>{{ $user->phone }}</td>
                         <td>{{ $user->address }}</td>
                         <td>
