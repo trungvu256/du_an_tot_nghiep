@@ -91,7 +91,11 @@
                 </li>
 
 
+
                 <!-- Sản phẩm (Gộp cả danh mục) -->
+
+                <!--Product-->
+
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#menuProduct" data-bs-toggle="collapse" role="button">
                         <i class="ri-archive-line"></i> <span>Sản phẩm</span>
@@ -111,35 +115,6 @@
                     </div>
                 </li>
 
-                <!-- Quản lý kho -->
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#menuWarehouse" data-bs-toggle="collapse" role="button">
-                        <i class="ri-home-gear-line"></i> <span>Quản lý kho</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="menuWarehouse" data-bs-parent="#accordionSidebar">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.product') }}" class="nav-link">Tồn kho</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.cate') }}" class="nav-link">Đặt hàng nhập</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="" class="nav-link">Nhập hàng</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="" class="nav-link">Trả hàng nhập</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="" class="nav-link">Chuyển kho</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="" class="nav-link">Nhà cung cấp</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
                 <!-- Khuyến mại -->
                 <li class="nav-item">
                     <a href="" class="nav-link menu-link">
@@ -147,12 +122,13 @@
                     </a>
                 </li>
 
-                <!-- Ví Tiền -->
+                <!--Ví Tiền-->
                 <li class="nav-item">
                     <a href="{{ route('wallet.show') }}" class="nav-link menu-link">
                         <i class="ri-wallet-line"></i> <span>Sổ quỹ</span>
                     </a>
                 </li>
+
 
                 <!-- Bài viết -->
                 <li class="nav-item">
@@ -160,7 +136,75 @@
                         <span>Bài
                             viết</span></a>
                 </li>
+
+
+                <!-- Blog -->
+                {{-- <li class="nav-item">
+                    <a class="nav-link menu-link" href="#menuBlog" data-bs-toggle="collapse" role="button">
+                        <i class="ri-file-list-line"></i> <span>Blog</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="menuBlog">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.create.blog') }}" class="nav-link">Add Blog</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.blog') }}" class="nav-link">List Blog</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li> --}}
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#menuBlog" data-bs-toggle="collapse" role="button">
+                        <i class="ri-newspaper-line"></i> <span>Bài viết</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="menuBlog">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.create.blog') }}" class="nav-link">Thêm mới bài viết</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.blog') }}" class="nav-link">Danh sách bài viết</a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
+
+                <!--Discount-->
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#menuPromotions&Discounts" data-bs-toggle="collapse" role="button">
+                        <i class="ri-ticket-line"></i> <span>Khuyến mại</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="menuPromotions&Discounts" data-bs-parent="#accordionSidebar">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('promotions.index') }}" class="nav-link">Mã Giảm Giá</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('discounts.index') }}" class="nav-link">Danh Mục & Sản Phẩm</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+
+                {{-- <li class="nav-item">
+                    <a class="nav-link menu-link" href="#menuPromotions&Discounts" data-bs-toggle="collapse" role="button">
+                        <i class="ri-ticket-line"></i> <span>Khuyến mại</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="menuPromotions&Discounts">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('promotions.index') }}" class="nav-link">Mã Giảm Giá</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('discounts.index') }}" class="nav-link">Danh Mục & Sản Phẩm</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </li> --}}
             </ul>
         </div>
     </div>
@@ -168,6 +212,7 @@
 
     <div class="sidebar-background"></div>
 </div>
+
 <style>
 .nav-link::after {
     content: none !important;
@@ -178,3 +223,4 @@
     padding-left: 0;
 }
 </style>
+
