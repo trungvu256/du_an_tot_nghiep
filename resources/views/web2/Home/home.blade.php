@@ -231,7 +231,6 @@
     </div>
 </div>
 <!-- Navbar End -->
->>>>>>> Stashed changes
 
 
 <!-- Featured Start -->
@@ -472,107 +471,107 @@
 
 
 <style>
-body {
-    background-color: #ffffff;
-    font-family: 'Arial', sans-serif;
-}
+    body {
+        background-color: #ffffff;
+        font-family: 'Arial', sans-serif;
+    }
 
-.perfume-card {
-    background-color: #ffffff;
-    border: 1px solid #000000;
-    border-radius: 15px;
-    box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
-    padding: 25px;
-    text-align: center;
-    height: 100%;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-}
+    .perfume-card {
+        background-color: #ffffff;
+        border: 1px solid #000000;
+        border-radius: 15px;
+        box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
+        padding: 25px;
+        text-align: center;
+        height: 100%;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
 
-.perfume-card:hover {
-    transform: scale(1.05);
-    box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.3);
-}
+    .perfume-card:hover {
+        transform: scale(1.05);
+        box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.3);
+    }
 
-.perfume-card img {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    border: 2px solid #000000;
-}
+    .perfume-card img {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        border: 2px solid #000000;
+    }
 
-.logo {
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 26px;
-    color: #000000;
-    font-weight: bold;
-    margin-bottom: 12px;
-}
+    .logo {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 26px;
+        color: #000000;
+        font-weight: bold;
+        margin-bottom: 12px;
+    }
 
-.title {
-    font-family: 'Dancing Script', cursive;
-    font-size: 30px;
-    color: #000000;
-    font-weight: bold;
-    margin-bottom: 12px;
-}
+    .title {
+        font-family: 'Dancing Script', cursive;
+        font-size: 30px;
+        color: #000000;
+        font-weight: bold;
+        margin-bottom: 12px;
+    }
 
-.subtitle {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 18px;
-    font-weight: bold;
-    color: #000000;
-    margin-bottom: 15px;
-}
+    .subtitle {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 18px;
+        font-weight: bold;
+        color: #000000;
+        margin-bottom: 15px;
+    }
 
-.description {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
-    color: #000000;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
+    .description {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 14px;
+        color: #000000;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
 
-.details-btn {
-    display: inline-block;
-    padding: 12px 25px;
-    background-color: #000000;
-    color: #ffffff;
-    text-decoration: none;
-    border-radius: 8px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
+    .details-btn {
+        display: inline-block;
+        padding: 12px 25px;
+        background-color: #000000;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 8px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 14px;
+        font-weight: bold;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
 
-.details-btn:hover {
-    background-color: #333333;
-    transform: translateY(-2px);
-    color: #ffffff;
-}
+    .details-btn:hover {
+        background-color: #333333;
+        transform: translateY(-2px);
+        color: #ffffff;
+    }
 
-.spring-bg {
-    background: url('spring-bg.jpg') center center/cover no-repeat;
-    border-radius: 15px;
-}
+    .spring-bg {
+        background: url('spring-bg.jpg') center center/cover no-repeat;
+        border-radius: 15px;
+    }
 
-.wood-bg {
-    background: url('wood-bg.jpg') center center/cover no-repeat;
-    border-radius: 15px;
-}
+    .wood-bg {
+        background: url('wood-bg.jpg') center center/cover no-repeat;
+        border-radius: 15px;
+    }
 
-.valentine-bg {
-    background: url('valentine-bg.jpg') center center/cover no-repeat;
-    border-radius: 15px;
-}
+    .valentine-bg {
+        background: url('valentine-bg.jpg') center center/cover no-repeat;
+        border-radius: 15px;
+    }
 
-.section-title {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 32px;
-    color: #000000;
-    font-weight: bold;
-}
+    .section-title {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 32px;
+        color: #000000;
+        font-weight: bold;
+    }
 </style>
 
 <body>
@@ -582,19 +581,24 @@ body {
         </div>
         <div class="row">
             <!-- Card 1 -->
+            @if(isset($blogs) && $blogs->count() > 0)
+            @foreach ($blogs as $blog)
             <div class="col-12 col-md-4 mb-4">
                 <div class="perfume-card spring-bg">
-                    <img src="path/to/spring-perfume.jpg" alt="Spring Perfume" class="img-fluid">
-                    <div class="logo">ARMAF</div>
-                    <div class="title">NƯỚC HOA MÙA XUÂN</div>
-                    <div class="subtitle">LẮC VÀO VƯƠNG HOA CỦA ARMAF – SỰ THANH LỊCH VÀ CUỐN HÚT</div>
+                    <img src="{{ asset('blog/' . $blog->image) }}" alt="{{ $blog->title }}" class="img-fluid">
+                    <div class="logo">{{ $blog->author }}</div>
+                    <div class="title">{{ Str::limit($blog->title, 10, '...') }}</div>
+                    <div class="subtitle">{{ Str::limit($blog->preview, 10, '...') }}</div>
                     <div class="description">
-                        Nhóm hương Floral (Hoa cỏ) là một trong những nhóm hương lịch sử và cuốn hút tự nhiên, hương
-                        thơm nhẹ nhàng và thanh thoát.
+                        {{ Str::limit(strip_tags($blog->content), 50, '...') }}
                     </div>
-                    <a href="#" class="details-btn">Xem chi tiết</a>
+                    <a href="{{route('web.detaiWebBlog.blog', $blog->id)}}" class="details-btn">Xem chi tiết</a>
                 </div>
             </div>
+            @endforeach
+            @else
+            <p>Không có bài viết nào.</p>
+            @endif
 
 
 
