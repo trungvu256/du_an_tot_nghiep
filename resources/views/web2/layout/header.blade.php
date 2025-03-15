@@ -82,22 +82,30 @@
                 <div class="d-flex flex-column align-items-start me-4">
                     <!-- Dropdown tài khoản -->
                     <div class="dropdown">
-                        <a href="#" class="text-dark text-decoration-none dropdown-toggle" data-toggle="dropdown">
-                            <strong class="text-primary">Tài khoản</strong>
-                        </a>
-                        <div class="dropdown-menu">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown"
+                            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             @auth
-                            <a class="dropdown-item" href="{{ route('profile') }}">Thông tin cá nhân</a>
-                            <a class="dropdown-item" href="{{ route('web.logout') }}">Đăng xuất</a>
+                                <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('default-avatar.png') }}"
+                                    class="rounded-circle" width="40" height="40" alt="Avatar">
+                                <span class="ml-2">Chào, {{ Auth::user()->name }}!</span>
                             @else
-                            <a class="dropdown-item" href="{{ route('web.login') }}">Đăng nhập</a>
-                            <a class="dropdown-item" href="{{ route('web.register') }}">Đăng ký</a>
+                                <img src="default-avatar.png" class="rounded-circle" width="40" height="40" alt="Avatar">
+                            @endauth
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                            @auth
+                                <a class="dropdown-item" href="{{ route('profile') }}">Thông tin cá nhân</a>
+                                <a class="dropdown-item" href="{{ route('wallet.show') }}">Ví điện tử</a>
+                                <a class="dropdown-item" href="{{ route('profile') }}">Lịch sử mua hàng</a>
+                                <a class="dropdown-item" href="{{ route('web.logout') }}">Đăng xuất</a>
+                            @else
+                                <a class="dropdown-item" href="{{ route('web.login') }}">Đăng nhập</a>
+                                <a class="dropdown-item" href="{{ route('web.register') }}">Đăng ký</a>
                             @endauth
                         </div>
                     </div>
 
                     <!-- Lịch sử mua hàng (nằm ngay dưới tài khoản) -->
-                    <a class="text-dark mt-1" href="#">Lịch sử mua hàng</a>
                 </div>
 
                 <!-- Giỏ hàng đặt bên phải -->

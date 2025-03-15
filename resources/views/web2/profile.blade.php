@@ -65,7 +65,7 @@
         <div class="col-md-3">
             <div class="card p-3">
                 <div class="text-center">
-                    <img src="{{ Auth::user()->avatar ? asset('uploads/avatars/' . Auth::user()->avatar) : asset('images/anhlogin.jpg') }}"
+                    <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('images/anhlogin.jpg') }}"
                         width="50" height="50" class="rounded-circle border" style="object-fit: cover;">
                     <p>Xin chào</p>
                     <h5 class="mt-2"><strong>{{ Auth::user()->name }}</strong></h5>
@@ -93,7 +93,7 @@
             <div class="card p-4">
                 <h4 class="text-center">THÔNG TIN TÀI KHOẢN</h4>
                 <div class="text-center">
-                    <img src="{{ Auth::user()->avatar ? asset('uploads/avatars/' . Auth::user()->avatar) : asset('images/anhlogin.jpg') }}"
+                    <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('images/anhlogin.jpg') }}"
                         width="120" height="120" class="rounded-circle border" style="object-fit: cover;">
 
                 </div>
