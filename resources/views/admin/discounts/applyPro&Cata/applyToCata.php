@@ -40,16 +40,21 @@
                         @if ($catalogue->discounts->isNotEmpty())
                         <span class="badge bg-success">Đang được giảm giá</span>
                         <select name="discount_id" class="form-select mt-2" disabled>
-                            @foreach ($catalogue->discounts as $discount)
                             <option value="{{ $discount->id }}" selected>
-                                {{ $discount->type == 'percentage' ? 'Phần trăm' : 'Số tiền cố định' }}
-                                - {{ number_format($discount->discount_value, 0, ',', '.') }} VNĐ
+                                @if ($discount->type === 'percentage')
+                                Phần trăm
+                                @elseif ($discount->type === 'fixed')
+                                Số tiền cố định
+                                @else
+                                Không xác định
+                                @endif
+                                - {{ number_format($discount->discount_value, 0, ',', '.') }}
                                 ({{ \Carbon\Carbon::parse($discount->start_date)->format('d/m/Y') }} -
                                 {{ \Carbon\Carbon::parse($discount->end_date)->format('d/m/Y') }})
                             </option>
+
                             @endforeach
                         </select>
-
 
                         <!-- Tính toán ngày còn lại của đợt giảm giá -->
                         @php
