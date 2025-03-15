@@ -66,7 +66,7 @@
             <div class="col-lg-6 col-8">
                 <form action="#">
                     <div class="input-group">
-<input type="text" class="form-control" placeholder="Search for products">
+                        <input type="text" class="form-control" placeholder="Search for products">
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="submit">
                                 <i class="fa fa-search"></i>
@@ -77,17 +77,42 @@
             </div>
 
             <!-- Wishlist & Cart -->
-            <div class="col-lg-3 col-4 text-right d-flex justify-content-end">
-                <a href="#" class="btn border mx-2">
-                    <i class="fas fa-heart text-primary"></i>
-                    <span class="badge bg-primary text-white">0</span>
-                </a>
-                <a href="#" class="btn border">
-                    <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge bg-primary text-white">0</span>
-                </a>
+            <div class="col-lg-3 col-4 text-right d-flex align-items-center justify-content-end ms-4">
+                <!-- Bọc phần tài khoản & lịch sử mua hàng vào 1 div để giữ bố cục -->
+                <div class="d-flex flex-column align-items-start me-4">
+                    <!-- Dropdown tài khoản -->
+                    <div class="dropdown">
+                        <a href="#" class="text-dark text-decoration-none dropdown-toggle" data-toggle="dropdown">
+                            <strong class="text-primary">Tài khoản</strong>
+                        </a>
+                        <div class="dropdown-menu">
+                            @auth
+                            <a class="dropdown-item" href="{{ route('profile') }}">Thông tin cá nhân</a>
+                            <a class="dropdown-item" href="{{ route('web.logout') }}">Đăng xuất</a>
+                            @else
+                            <a class="dropdown-item" href="{{ route('web.login') }}">Đăng nhập</a>
+                            <a class="dropdown-item" href="{{ route('web.register') }}">Đăng ký</a>
+                            @endauth
+                        </div>
+                    </div>
+
+                    <!-- Lịch sử mua hàng (nằm ngay dưới tài khoản) -->
+                    <a class="text-dark mt-1" href="#">Lịch sử mua hàng</a>
+                </div>
+
+                <!-- Giỏ hàng đặt bên phải -->
+                <div class="position-relative">
+                    <a href="#" class="text-dark">
+                        <i class="fas fa-shopping-cart fa-lg"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            0
+                            <!-- Thay số này bằng số lượng sản phẩm trong giỏ -->
+                        </span>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </body>
+
 </html>
