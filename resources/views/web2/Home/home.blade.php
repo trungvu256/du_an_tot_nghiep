@@ -231,7 +231,6 @@
     </div>
 </div>
 <!-- Navbar End -->
->>>>>>> Stashed changes
 
 
 <!-- Featured Start -->
