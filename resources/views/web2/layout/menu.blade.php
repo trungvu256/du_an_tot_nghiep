@@ -12,4 +12,5 @@
 
     </div>
     <a href="{{route('user.contact')}}" class="nav-item nav-link">Contact</a>
+    <a href="{{route('web.listBlog.blog')}}" class="nav-item nav-link">Blog</a>
 </div>
