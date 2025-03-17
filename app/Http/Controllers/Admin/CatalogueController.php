@@ -180,7 +180,7 @@ class CatalogueController extends Controller
         $count = $catalogue->products()->count();
         if ($count > 0) {
             return redirect()->route('catalogues.index')
-                ->with('error', 'Không thể xóa danh mục này vì có '.$count .' sản phẩm đang thuộc danh mục.');
+                ->with('error', 'Không thể xóa danh mục này vì có ' . $count . ' sản phẩm đang thuộc danh mục.');
         }
 
         DB::beginTransaction();
@@ -208,7 +208,17 @@ class CatalogueController extends Controller
         DB::beginTransaction();
 
         try {
-            $catalogue = Catalogue::withTrashed()->findOrFail($id);
+            // Chỉ lấy danh mục đã xóa mềm
+            $catalogue = Catalogue::onlyTrashed()->findOrFail($id);
+
+            // Kiểm tra nếu danh mục cha bị xóa thì khôi phục cả danh mục cha trước
+            if ($catalogue->parent_id) {
+                $parentCatalogue = Catalogue::onlyTrashed()->find($catalogue->parent_id);
+                if ($parentCatalogue) {
+                    $parentCatalogue->restore();
+                }
+            }
+
             $catalogue->restore();
             DB::commit();
 
@@ -219,13 +229,19 @@ class CatalogueController extends Controller
         }
     }
 
+
     public function forceDelete($id)
     {
         $catalogue = Catalogue::onlyTrashed()->findOrFail($id);
 
+        // Kiểm tra nếu danh mục có danh mục con
         if (Catalogue::where('parent_id', $catalogue->id)->exists()) {
-            return redirect()->route('catalogues.trash')
-                ->with('error', 'Không thể xóa cứng danh mục này vì nó là danh mục cha của một hoặc nhiều danh mục khác.');
+            return redirect()->route('catalogues.trash')->with('error', 'Không thể xóa cứng danh mục này vì nó là danh mục cha của một hoặc nhiều danh mục khác.');
+        }
+
+        // Kiểm tra nếu danh mục có sản phẩm
+        if ($catalogue->products()->exists()) {
+            return redirect()->route('catalogues.trash')->with('error', 'Không thể xóa cứng danh mục này vì nó chứa sản phẩm.');
         }
 
         DB::beginTransaction();
@@ -240,4 +256,5 @@ class CatalogueController extends Controller
             return redirect()->route('catalogues.trash')->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
         }
     }
+
 }

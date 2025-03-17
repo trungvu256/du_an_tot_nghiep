@@ -318,8 +318,9 @@ class ProductController extends Controller
     }
     public function trash()
     {
-        $products = Product::onlyTrashed()->paginate(10);
+        $products = Product::onlyTrashed()->with('catalogue')->paginate(10);
         return view('admin.product.trash', compact('products'));
+
     }
     public function restore($id)
     {

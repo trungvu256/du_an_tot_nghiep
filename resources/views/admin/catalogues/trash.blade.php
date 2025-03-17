@@ -37,12 +37,14 @@
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $catalogue->name }}</td>
                                         <td>
-                                            @if ($catalogue->image)
-                                                <img src="{{ asset('storage/' . $catalogue->image) }}"
-                                                    alt="{{ $catalogue->name }}" style="width: 70px;">
+                                            @if ($catalogue->image && file_exists(public_path('storage/' . $catalogue->image)))
+                                                <img src="{{ asset('storage/' . $catalogue->image) }}" alt="{{ $catalogue->name }}"
+                                                    style="width: 70px;">
                                             @else
-                                                Không có hình
+                                                <img src="{{ asset('images/no-image.png') }}" alt="Không có hình"
+                                                    style="width: 70px;">
                                             @endif
+
                                         </td>
                                         <td>{{ $catalogue->deleted_at ? $catalogue->deleted_at->format('d-m-Y') : 'Chưa xóa' }}
                                         </td>
@@ -50,16 +52,15 @@
                                             <form action="{{ route('catalogues.restore', $catalogue->id) }}" method="POST"
                                                 style="display:inline;" class="restore-form">
                                                 @csrf
-                                                <button type="button" class="restore-btn"
+                                                <button type="submit" class="restore-btn"
                                                     style="background: none; border: none; padding: 0; margin-right: 15px;"
                                                     title="Khôi phục">
-                                                    <i class="bi bi-arrow-repeat text-success"
-                                                        style="font-size: 1.8em;"></i>
+                                                    <i class="bi bi-arrow-repeat text-success" style="font-size: 1.8em;"></i>
                                                 </button>
                                             </form>
 
-                                            <form action="{{ route('catalogues.forceDelete', $catalogue->id) }}"
-                                                method="POST" style="display:inline;" class="force-delete-form">
+                                            <form action="{{ route('catalogues.forceDelete', $catalogue->id) }}" method="POST"
+                                                style="display:inline;" class="force-delete-form">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="force-delete-btn"
@@ -89,7 +90,7 @@
 
     <script>
         document.querySelectorAll('.force-delete-btn').forEach(button => {
-            button.addEventListener('click', function(e) {
+            button.addEventListener('click', function (e) {
                 e.preventDefault();
                 const form = this.closest('.force-delete-form');
                 Swal.fire({
@@ -113,7 +114,7 @@
         });
 
         document.querySelectorAll('.restore-btn').forEach(button => {
-            button.addEventListener('click', function(e) {
+            button.addEventListener('click', function (e) {
                 e.preventDefault();
                 const form = this.closest('.restore-form');
                 Swal.fire({
@@ -140,14 +141,14 @@
     @if (session()->has('restoreCatalogue'))
         <script>
             Swal.fire({
-                position: "top",
+                position: "top-end",
                 icon: "success",
-                toast: true,
                 title: "Khôi phục danh mục thành công",
                 showConfirmButton: false,
                 timerProgressBar: true,
                 timer: 3500
             });
+
         </script>
     @endif
 
@@ -174,8 +175,7 @@
                 title: "{{ session('error') }}",
                 showConfirmButton: false,
                 timerProgressBar: true,
-                timer: 2
-                3500
+                timer: 3500
             });
         </script>
     @endif
