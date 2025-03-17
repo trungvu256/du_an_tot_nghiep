@@ -103,6 +103,9 @@
                                 <a class="dropdown-item" href="{{ route('web.register') }}">Đăng ký</a>
                             @endauth
                         </div>
+                        <div>
+
+                        </div>
                     </div>
 
                     <!-- Lịch sử mua hàng (nằm ngay dưới tài khoản) -->
