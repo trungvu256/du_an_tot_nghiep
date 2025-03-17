@@ -27,7 +27,7 @@
             <th>{{ $product->id }}</th>
             <td>{{ $product->name }}</td>
             <td><img src="{{ asset('storage/'. $product->image) }}" width="70px" alt=""></td>
-            <td>{{ $product->catalogue->name }}</td>
+            <td>{{ isset($product->catalogue) ? $product->catalogue->name : 'Không có danh mục' }}</td>
             <td>
                 <form action="{{ route('admin.restore.product', $product->id) }}" method="POST" style="display:inline;">
                     @csrf
