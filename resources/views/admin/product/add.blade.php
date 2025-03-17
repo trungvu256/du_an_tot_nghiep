@@ -18,16 +18,16 @@
                 @enderror
             </div>
             <div class="col-6">
-                <label>Category</label>
-                <select name="category_id" class="form-control">
-                    <option value="">-- Select Category --</option>
-                    @foreach ($categories as $category)
-                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                        {{ $category->name }}
+                <label>Danh mục</label>
+                <select name="catalogue_id" class="form-control">
+                    <option value="">-- Chọn danh mục --</option>
+                    @foreach ($catalogues as $catalogue)
+                    <option value="{{ $catalogue->id }}" {{ old('catalogue_id') == $catalogue->id ? 'selected' : '' }}>
+                        {{ $catalogue->name }}
                     </option>
                     @endforeach
                 </select>
-                @error('category_id')
+                @error('catalogue_id')
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>

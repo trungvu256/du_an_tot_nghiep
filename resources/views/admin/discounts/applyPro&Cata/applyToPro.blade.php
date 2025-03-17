@@ -157,7 +157,7 @@
                 </td>
                 <td class="price-cell">{{ number_format($product->price, 0, ',', '.') }}₫</td>
                 <td class="discount-price-cell">
-                    {{ $product->discount_price ? number_format($product->discount_price, 0, ',', '.') : '-' }}₫
+                    {{ $product->price_sale ? number_format($product->price_sale, 0, ',', '.') : '-' }}₫
                 </td>
                 <td class="discount-time-cell">
                     @if (isset($product->remaining_time))

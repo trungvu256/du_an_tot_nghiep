@@ -15,6 +15,7 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('catalogue_id')->constrained('catalogues')->onDelete('cascade');
             $table->string('product_code')->unique();
             $table->string('name');
             $table->string('slug');
@@ -30,11 +31,9 @@ class CreateProductsTable extends Migration
             $table->string('style'); // Phong cách
             $table->string('fragrance_group'); // Nhóm hương
             $table->integer('stock_quantity')->default(0);
-            $table->bigInteger('category_id')->unsigned();
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();
         });
-        
+
     }
 
     /**

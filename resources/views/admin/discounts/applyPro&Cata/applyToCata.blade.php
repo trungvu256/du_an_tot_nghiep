@@ -38,62 +38,42 @@
                     <td>{{ $catalogue->name }}</td>
                     <td>
                         @if ($catalogue->discounts->isNotEmpty())
-                        <span class="badge bg-success">Đang được giảm giá</span>
-                        <select name="discount_id" class="form-select mt-2" disabled>
-                            <option value="{{ $discount->id }}" selected>
-                                @if ($discount->type === 'percentage')
-                                Phần trăm
-                                @elseif ($discount->type === 'fixed')
-                                Số tiền cố định
-                                @else
-                                Không xác định
-                                @endif
-                                - {{ number_format($discount->discount_value, 0, ',', '.') }}
-                                ({{ \Carbon\Carbon::parse($discount->start_date)->format('d/m/Y') }} -
-                                {{ \Carbon\Carbon::parse($discount->end_date)->format('d/m/Y') }})
-                            </option>
-
-                            @endforeach
-                        </select>
-
-                        <!-- Tính toán ngày còn lại của đợt giảm giá -->
-                        @php
-                        $now = \Carbon\Carbon::now();
-                        $endDate = \Carbon\Carbon::parse($discount->end_date);
-                        $daysLeft = $now->diffInDays($endDate, false); // Số ngày còn lại (có thể là số âm)
-                        @endphp
-                        @if ($daysLeft > 0)
-                        <span class="badge bg-info mt-2">Còn {{ $daysLeft }} ngày nữa</span>
-                        @else
-                        <span class="badge bg-danger mt-2">Giảm giá đã hết hạn</span>
-                        @endif
-
-                        <!-- Nút hủy giảm giá -->
-                        <form action="{{ route('admin.catalogues.removeDiscount', $catalogue->id) }}" method="POST"
-                            class="mt-3">
-                            @csrf
-
-                            <button type="submit" class="btn btn-danger">Hủy giảm giá</button>
-                        </form>
-                        @else
-                        <!-- Form để áp dụng giảm giá mới -->
-                        <form action="{{ route('admin.catalogues.applyDiscount', $catalogue->id) }}" method="POST">
-                            @csrf
-                            <select name="discount_id" class="form-select mt-2">
-                                <option value="">-- Chọn đợt giảm giá --</option>
-                                @foreach ($discounts as $discount)
-                                <option value="{{ $discount->id }}">
-                                    {{ $discount->type }} - {{ $discount->discount_value }}
-                                    ({{ \Carbon\Carbon::parse($discount->start_date)->format('d/m/Y') }} -
-                                    {{ \Carbon\Carbon::parse($discount->end_date)->format('d/m/Y') }})
+                            @php
+                                $discount = $catalogue->discounts->first();
+                            @endphp
+                            <span class="badge bg-success">Đang được giảm giá</span>
+                            <select name="discount_id" class="form-select mt-2" disabled>
+                                <option value="{{ $discount->id }}" selected>
+                                    @if ($discount->type === 'percentage')
+                                        Phần trăm
+                                    @elseif ($discount->type === 'fixed')
+                                        Số tiền cố định
+                                    @else
+                                        Không xác định
+                                    @endif
+                                    - {{ number_format($discount->discount_value, 0, ',', '.') }}
+                                    ({{ \Carbon\Carbon::parse($discount->start_date)->format('d/m/Y') }} - {{ \Carbon\Carbon::parse($discount->end_date)->format('d/m/Y') }})
                                 </option>
-                                @endforeach
                             </select>
-                            <button type="submit" class="btn btn-success mt-2">Áp Dụng</button>
-                        </form>
-                        @endif
 
+                            <!-- Form để áp dụng giảm giá mới -->
+                            <form action="{{ route('admin.catalogues.applyDiscount', $catalogue->id) }}" method="POST">
+                                @csrf
+                                <select name="discount_id" class="form-select mt-2">
+                                    <option value="">-- Chọn đợt giảm giá --</option>
+                                    @foreach ($discounts as $discount)
+                                    <option value="{{ $discount->id }}">
+                                        {{ $discount->type }} - {{ $discount->discount_value }}
+                                        ({{ \Carbon\Carbon::parse($discount->start_date)->format('d/m/Y') }} -
+                                        {{ \Carbon\Carbon::parse($discount->end_date)->format('d/m/Y') }})
+                                    </option>
+                                    @endforeach
+                                </select>
+                                <button type="submit" class="btn btn-success mt-2">Áp Dụng</button>
+                            </form>
+                        @endif 
                     </td>
+
 
                     <td>
                         @if ($catalogue->discounts->isNotEmpty())
@@ -117,9 +97,9 @@
                                 @foreach ($catalogue->products as $product)
     <li>
                                     {{ $product->name }}:
-                                    @if ($product->discount_price)
+                                    @if ($product->price_sale)
     <span style="text-decoration: line-through;">{{ number_format($product->price, 0, ',', '.') }}₫</span>
-                                    {{ number_format($product->discount_price, 0, ',', '.') }}₫
+                                    {{ number_format($product->price_sale, 0, ',', '.') }}₫
 @else
     {{ number_format($product->price, 0, ',', '.') }}₫
     @endif

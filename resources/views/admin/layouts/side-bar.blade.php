@@ -90,9 +90,20 @@
                     </div>
                 </li>
 
-
-
-                <!-- Sản phẩm (Gộp cả danh mục) -->
+                <!--Danh mục -->
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#menuCata" data-bs-toggle="collapse" role="button">
+                        <i class="bi bi-list-check"></i> <span>Danh mục</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="menuCata" data-bs-parent="#accordionSidebar">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('catalogues.index') }}" class="nav-link">Danh sách danh mục</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                {{-- <!-- Sản phẩm (Gộp cả danh mục) --> --}}
 
                 <!--Product-->
 
@@ -105,9 +116,9 @@
                             <li class="nav-item">
                                 <a href="{{ route('admin.product') }}" class="nav-link">Danh sách sản phẩm</a>
                             </li>
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a href="{{ route('admin.cate') }}" class="nav-link">Danh mục sản phẩm</a>
-                            </li>
+                            </li> --}}
                             <li class="nav-item">
                                 <a href="" class="nav-link">Bảng giá</a>
                             </li>
@@ -116,11 +127,11 @@
                 </li>
 
                 <!-- Khuyến mại -->
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="" class="nav-link menu-link">
                         <i class="ri-gift-line"></i> <span>Khuyến mại</span>
                     </a>
-                </li>
+                </li> --}}
 
                 <!--Ví Tiền-->
                 <li class="nav-item">
@@ -155,7 +166,7 @@
                     </div>
                 </li> --}}
 
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link menu-link" href="#menuBlog" data-bs-toggle="collapse" role="button">
                         <i class="ri-newspaper-line"></i> <span>Bài viết</span>
                     </a>
@@ -169,7 +180,7 @@
                             </li>
                         </ul>
                     </div>
-                </li>
+                </li> --}}
 
                 <!--Discount-->
                 <li class="nav-item">
