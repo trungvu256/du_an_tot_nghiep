@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Catalogue;
 use App\Models\Images;
 use App\Models\Product;
-use App\Models\Category;
+// use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -17,7 +18,7 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::with('variants', 'category', 'comments');
+        $query = Product::with('variants', 'catalogue', 'comments');
         if ($request->filled('variant_name')) {
             $query->whereHas('variants', function ($q) use ($request) {
                 $q->where('name', 'LIKE', '%' . $request->variant_name . '%');
@@ -39,8 +40,8 @@ class ProductController extends Controller
     public function create()
     {
         $title = 'Add Product';
-        $categories = Category::all();
-        return view('admin.product.add', compact('title', 'categories'));
+        $catalogues = Catalogue::all();
+        return view('admin.product.add', compact('title', 'catalogues'));
     }
     public function store(Request $request)
     {
@@ -58,7 +59,7 @@ class ProductController extends Controller
             'style' => 'required|string|max:100',
             'fragrance_group' => 'required|string|max:100',
             'stock_quantity' => 'required|integer|min:0',
-            'category_id' => 'required|exists:categories,id',
+            'catalogue_id' => 'required|exists:catalogues,id',
             'images' => 'nullable|array',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
 
@@ -81,7 +82,7 @@ class ProductController extends Controller
             'style.required' => 'Phong cách không được để trống.',
             'fragrance_group.required' => 'Nhóm hương không được để trống.',
             'stock_quantity.required' => 'Số lượng tồn kho không được để trống.',
-            'category_id.exists' => 'Danh mục sản phẩm không hợp lệ.',
+            'catalogue_id.exists' => 'Danh mục sản phẩm không hợp lệ.',
             'variants.*.name.required' => 'Tên biến thể không được để trống.',
             'variants.*.price.required' => 'Giá biến thể không được để trống.',
         ]);
@@ -138,7 +139,7 @@ class ProductController extends Controller
             'style' => $validatedData['style'],
             'fragrance_group' => $validatedData['fragrance_group'],
             'stock_quantity' => $validatedData['stock_quantity'],
-            'category_id' => $validatedData['category_id'],
+            'catalogue_id' => $validatedData['catalogue_id'],
         ]);
 
 
@@ -169,20 +170,20 @@ class ProductController extends Controller
     public function show($id)
     {
         $title = 'Detail Product';
-        $categories = Category::all();
-        $product = Product::with(['category', 'comments.user'])->find($id);
+        $catalogues = Catalogue::all();
+        $product = Product::with(['catalogue', 'comments.user'])->find($id);
         $description_images = Images::where('product_id', $id)->get();
         $variants = Variant::where('product_id', $id)->get();
 
-        return view('admin.product.show', compact('product', 'categories', 'description_images', 'variants', 'title'));
+        return view('admin.product.show', compact('product', 'catalogues', 'description_images', 'variants', 'title'));
     }
 
     public function edit($id)
     {
         $title = 'Edit Product';
-        $categories = Category::all();
+        $catalogues = Catalogue::all();
         $product = Product::find($id);
-        return view('admin.product.edit', compact('product', 'categories', 'title'));
+        return view('admin.product.edit', compact('product', 'catalogues', 'title'));
     }
 
 
@@ -202,7 +203,7 @@ class ProductController extends Controller
             'style' => 'required|string|max:100',
             'fragrance_group' => 'required|string|max:100',
             'stock_quantity' => 'required|integer|min:0',
-            'category_id' => 'required|exists:categories,id',
+            'catalogue_id' => 'required|exists:catalogues,id',
             'images' => 'nullable|array',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
 
@@ -242,7 +243,7 @@ class ProductController extends Controller
             'style' => $validatedData['style'],
             'fragrance_group' => $validatedData['fragrance_group'],
             'stock_quantity' => $validatedData['stock_quantity'],
-            'category_id' => $validatedData['category_id'],
+            'catalogue_id' => $validatedData['catalogue_id'],
         ]);
 
 

@@ -27,7 +27,7 @@
             <th>{{ $product->id }}</th>
             <td>{{ $product->name }}</td>
             <td><img src="{{ asset('storage/'. $product->image) }}" width="70px" alt=""></td>
-            <td>{{ $product->category->name }}</td>
+            <td>{{ $product->catalogue->name }}</td>
             <td>
                 <form action="{{ route('admin.restore.product', $product->id) }}" method="POST" style="display:inline;">
                     @csrf

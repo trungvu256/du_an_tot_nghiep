@@ -41,7 +41,7 @@
                             <h4>{{$product->name}}</h4>
                             <div class="hstack gap-3 flex-wrap">
                                 <div class="vr"></div>
-                                <div class="text-muted">Thể loại : <span class="text-body fw-medium">{{ $product->category->name }}</span></div>
+                                <div class="text-muted">Thể loại : <span class="text-body fw-medium">{{ $product->catalogue->name }}</span></div>
                                 <div class="vr"></div>
                                 <div class="text-muted">Ngày đăng : <span class="text-body fw-medium">{{ $product->created_at }}</span></div>
                             </div>

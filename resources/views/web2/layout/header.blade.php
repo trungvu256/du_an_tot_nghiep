@@ -102,6 +102,9 @@
                             <a class="btn btn-success" href="{{ route('web.register') }}">Đăng ký</a>
                             @endauth
                         </div>
+                        <div>
+
+                        </div>
                     </div>
 
                     <!-- Giỏ hàng đặt gần hơn -->

@@ -16,7 +16,7 @@ class Category extends Model
         'parent_id',
         'image'
     ];
-    
+
     protected $dates = ['deleted_at'];
     public function products() {
         return $this->hasMany(Product::class);
@@ -36,5 +36,20 @@ class Category extends Model
                 $category->parent_id = null;
             }
         });
+    }
+
+    public function scopeByLevel($query, $level)
+    {
+        if ($level == 0) {
+            return $query->whereNull('parent_id');
+        } elseif ($level == 1) {
+            return $query->where('parent_id', '!=', null);
+        } else {
+            // Xử lý các cấp độ tiếp theo nếu cần
+            return $query->where('parent_id', '!=', null)
+                         ->whereHas('parent', function ($q) use ($level) {
+                             $q->where('parent_id', '!=', null);
+                         });
+        }
     }
 }

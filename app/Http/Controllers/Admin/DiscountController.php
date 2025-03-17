@@ -186,9 +186,9 @@ class DiscountController extends Controller
         }
         // $products = Product::where('catelogue_id', '=', $catalogueId);
         // foreach ($products as $product){
-        //     $discount_price = $product->getDiscountPrice();
-        //     // dd($discount_price);
-        //     // Product::update('discount_price', $discount_price);
+        //     $price_sale = $product->getDiscountPrice();
+        //     // dd($price_sale);
+        //     // Product::update('price_sale', $price_sale);
         // }
         // 3. Áp dụng giảm giá cho danh mục
         // Kết nối bảng catalogue_discounts
@@ -199,10 +199,10 @@ class DiscountController extends Controller
             if ($discount->type === 'percentage') {
                 // Áp dụng giảm giá theo phần trăm
                 $discountAmount = ($product->price * $discount->discount_value) / 100;
-                $product->discount_price = $product->price - $discountAmount;
+                $product->price_sale = $product->price - $discountAmount;
             } else {
                 // Áp dụng giảm giá cố định
-                $product->discount_price = max(0, $product->price - $discount->discount_value);
+                $product->price_sale = max(0, $product->price - $discount->discount_value);
             }
 
             // Lưu thay đổi giá sản phẩm
@@ -227,8 +227,8 @@ class DiscountController extends Controller
             }
             // Cập nhật lại giá của các sản phẩm trong danh mục về giá gốc
             foreach ($catalogue->products as $product) {
-                // Đặt lại discount_price về giá gốc (price)
-                $product->discount_price = $product->price;
+                // Đặt lại price_sale về giá gốc (price)
+                $product->price_sale = $product->price;
                 $product->save();
             }
 
@@ -372,12 +372,12 @@ class DiscountController extends Controller
             if ($discount->type === 'percentage') {
                 // Giảm giá theo phần trăm
                 $discountAmount = $product->price * ($discount->discount_value / 100);
-                $product->discount_price = $product->price - $discountAmount;
+                $product->price_sale = $product->price - $discountAmount;
             } else {
                 // Giảm giá theo tiền cứng
-                $product->discount_price = $product->price - $discount->discount_value;
+                $product->price_sale = $product->price - $discount->discount_value;
             }
-            if ($product->discount_price <= 0) {
+            if ($product->price_sale <= 0) {
                 return redirect()->back()->with('error', 'Giảm giá lớn hơn số tiền của sản phẩm. Vui lòng dùng giảm giá khác');
             }
             $product->save();
@@ -452,7 +452,7 @@ class DiscountController extends Controller
             }
 
             // Cập nhật lại giá gốc
-            $product->discount_price = $product->price;
+            $product->price_sale = $product->price;
             $product->save();
 
             // Hủy liên kết giảm giá

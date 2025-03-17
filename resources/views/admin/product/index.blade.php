@@ -20,10 +20,17 @@
         <div class="col-md-3">
             <input type="number" name="variant_price" class="form-control" placeholder="Nhập giá" value="{{ request('variant_price') }}">
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 d-flex align-items-center gap-2">
             <button type="submit" class="btn btn-primary">Lọc</button>
             <a href="{{ route('admin.product') }}" class="btn btn-secondary">Reset</a>
+            <a href="{{ route('admin.add.product') }}" class="btn btn-success btn-sm btn-rounded d-inline-flex align-items-center gap-1">
+                <i class="bi bi-plus-circle"></i> Thêm Mới
+            </a>
         </div>
+
+
+
+
     </div>
 </form>
 
@@ -51,7 +58,7 @@
                 <th>{{ $product->id }}</th>
                 <td>{{ $product->name }}</td>
                 <td><img src="{{ asset('storage/'. $product->image) }}" width="70px" alt=""></td>
-                <td>{{ isset($product->category) ? $product->category->name : 'Không có danh mục' }}</td>
+                <td>{{ isset($product->catalogue) ? $product->catalogue->name : 'Không có danh mục' }}</td>
 
                 <td>
                     @if ($product->variants->isNotEmpty())

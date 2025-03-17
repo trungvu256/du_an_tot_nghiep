@@ -28,7 +28,7 @@ class Product extends Model
         'style',
         'fragrance_group',
         'stock_quantity',
-        'category_id',
+        'catalogue_id',
         'created_at',
         'updated_at',
     ];
@@ -46,10 +46,44 @@ class Product extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function category()
+    // public function category()
+    // {
+    //     return $this->belongsTo(Category::class);
+    // }
+
+    public function catalogue()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Catalogue::class);
     }
+
+    public function getDiscountPrice()
+    {
+        $price = $this->price; // Giá gốc của sản phẩm
+        $discountAmount = 0; // Biến lưu giá trị giảm giá
+
+        // Lấy danh sách các mã giảm giá liên quan đến danh mục của sản phẩm
+        $discounts = $this->category->discounts;
+
+        // Duyệt qua tất cả các mã giảm giá của danh mục
+        foreach ($discounts as $discount) {
+            if ($discount->type == 'fixed') {
+                // Nếu là giảm giá cố định, trừ trực tiếp giá trị `value` vào giá gốc
+                $discountAmount = $discount->value; // Set discountAmount là giá trị giảm
+            } elseif ($discount->type == 'percentage') {
+                // Nếu là giảm giá phần trăm, tính giá trị giảm theo tỷ lệ phần trăm
+                $discountAmount = $price * ($discount->value / 100); // Tính giá trị giảm theo phần trăm
+            }
+
+            // Sau khi tính được discountAmount, thoát vòng lặp vì chúng ta chỉ lấy 1 mã giảm giá cho mỗi sản phẩm
+            break;
+        }
+
+        // Tính giá sau giảm và gán vào trường price_sale
+        $discountPrice = $price - $discountAmount;
+
+        return $discountPrice; // Trả về giá sau khi giảm
+    }
+
     public function images()
     {
         return $this->hasMany(Images::class, 'product_id');
