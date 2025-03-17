@@ -11,35 +11,43 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label for="first_name" class="form-label fw-semibold">Họ</label>
-                        <input type="text" class="form-control rounded-3" id="first_name" name="first_name" placeholder="Nguyễn" required>
+                        <input type="text" class="form-control rounded-3" id="first_name" name="first_name"
+                            placeholder="Nguyễn" required>
                     </div>
                     <div class="col-md-6">
                         <label for="last_name" class="form-label fw-semibold">Tên</label>
-                        <input type="text" class="form-control rounded-3" id="last_name" name="last_name" placeholder="Văn A" required>
+                        <input type="text" class="form-control rounded-3" id="last_name" name="last_name"
+                            placeholder="Văn A" required>
                     </div>
                     <div class="col-md-12">
                         <label for="name" class="form-label fw-semibold">Tên Đăng Nhập</label>
-                        <input type="text" class="form-control rounded-3" id="name" name="name" placeholder="nguyenvana" required>
+                        <input type="text" class="form-control rounded-3" id="name" name="name" placeholder="nguyenvana"
+                            required>
                     </div>
                     <div class="col-md-12">
                         <label for="email" class="form-label fw-semibold">Địa Chỉ Email</label>
-                        <input type="email" class="form-control rounded-3" id="email" name="email" placeholder="example@mail.com" required>
+                        <input type="email" class="form-control rounded-3" id="email" name="email"
+                            placeholder="example@mail.com" required>
                     </div>
                     <div class="col-md-6">
                         <label for="password" class="form-label fw-semibold">Mật Khẩu</label>
-                        <input type="password" class="form-control rounded-3" id="password" name="password" placeholder="********" required>
+                        <input type="password" class="form-control rounded-3" id="password" name="password"
+                            placeholder="********" required>
                     </div>
                     <div class="col-md-6">
                         <label for="password_confirm" class="form-label fw-semibold">Xác Nhận Mật Khẩu</label>
-                        <input type="password" class="form-control rounded-3" id="password_confirm" name="password_confirmation" placeholder="********" required>
+                        <input type="password" class="form-control rounded-3" id="password_confirm"
+                            name="password_confirmation" placeholder="********" required>
                     </div>
                     <div class="col-md-6">
                         <label for="phone" class="form-label fw-semibold">Số Điện Thoại</label>
-                        <input type="text" class="form-control rounded-3" id="phone" name="phone" placeholder="0123 456 789">
+                        <input type="text" class="form-control rounded-3" id="phone" name="phone"
+                            placeholder="0123 456 789">
                     </div>
                     <div class="col-md-6">
                         <label for="address" class="form-label fw-semibold">Địa Chỉ</label>
-                        <input type="text" class="form-control rounded-3" id="address" name="address" placeholder="123 Đường ABC, TP.HCM">
+                        <input type="text" class="form-control rounded-3" id="address" name="address"
+                            placeholder="123 Đường ABC, TP.HCM">
                     </div>
                     <div class="col-md-6">
                         <label for="gender" class="form-label fw-semibold">Giới Tính</label>
@@ -56,12 +64,15 @@
                     </div>
                     <div class="col-12">
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="agree_terms" name="agree_terms" value="1" required>
-                            <label class="form-check-label text-muted" for="agree_terms">Tôi đồng ý với tất cả điều khoản</label>
+                            <input type="checkbox" class="form-check-input" id="agree_terms" name="agree_terms"
+                                value="1" required>
+                            <label class="form-check-label text-muted" for="agree_terms">Tôi đồng ý với tất cả điều
+                                khoản</label>
                         </div>
                     </div>
                     <div class="col-12">
-                        <button type="submit" id="registerBtn" class="btn btn-primary w-100 rounded-3 fw-bold">Đăng Ký</button>
+                        <button type="submit" id="registerBtn" class="btn btn-primary w-100 rounded-3 fw-bold">Đăng
+                            Ký</button>
                     </div>
                 </div>
             </form>
@@ -71,7 +82,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script>$(document).ready(function() {
+<script>
+$(document).ready(function() {
     $('#form_register').submit(function(e) {
         e.preventDefault();
 
@@ -160,7 +172,7 @@
                     timer: 2000,
                     showConfirmButton: false
                 }).then(() => {
-                    window.location.href = "{{ route('web.login') }}"; 
+                    window.location.href = "{{ route('web.login') }}";
                 });
             },
             error: function(xhr) {
@@ -184,7 +196,6 @@
         });
     });
 });
-
 </script>
 
 @endsection

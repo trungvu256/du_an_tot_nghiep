@@ -77,30 +77,29 @@
             </div>
 
             <!-- Wishlist & Cart -->
+            <!-- Wishlist & Cart -->
             <div class="col-lg-3 col-4 text-right d-flex align-items-center justify-content-end ms-4">
                 <!-- Bọc phần tài khoản & lịch sử mua hàng vào 1 div để giữ bố cục -->
-                <div class="d-flex flex-column align-items-start me-4">
-                    <!-- Dropdown tài khoản -->
-                    <div class="dropdown">
-                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown"
-                            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="d-flex align-items-center justify-content-end w-100">
+                    <!-- Khu vực tài khoản -->
+                    <div class="d-flex flex-column align-items-start me-3">
+                        <div class="dropdown">
                             @auth
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown"
+                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('default-avatar.png') }}"
                                     class="rounded-circle" width="40" height="40" alt="Avatar">
                                 <span class="ml-2">Chào, {{ Auth::user()->name }}!</span>
-                            @else
-                                <img src="default-avatar.png" class="rounded-circle" width="40" height="40" alt="Avatar">
-                            @endauth
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                            @auth
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="{{ route('profile') }}">Thông tin cá nhân</a>
                                 <a class="dropdown-item" href="{{ route('wallet.show') }}">Ví điện tử</a>
                                 <a class="dropdown-item" href="{{ route('profile') }}">Lịch sử mua hàng</a>
                                 <a class="dropdown-item" href="{{ route('web.logout') }}">Đăng xuất</a>
+                            </div>
                             @else
-                                <a class="dropdown-item" href="{{ route('web.login') }}">Đăng nhập</a>
-                                <a class="dropdown-item" href="{{ route('web.register') }}">Đăng ký</a>
+                            <a class="btn btn-primary me-2" href="{{ route('web.login') }}">Đăng nhập</a>
+                            <a class="btn btn-success" href="{{ route('web.register') }}">Đăng ký</a>
                             @endauth
                         </div>
                         <div>
@@ -108,19 +107,19 @@
                         </div>
                     </div>
 
-                    <!-- Lịch sử mua hàng (nằm ngay dưới tài khoản) -->
+                    <!-- Giỏ hàng đặt gần hơn -->
+                    <div class="position-relative me-3">
+                        <a href="#" class="text-dark">
+                            <i class="fas fa-shopping-cart fa-lg"></i>
+                            <span
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                0
+                                <!-- Thay số này bằng số lượng sản phẩm trong giỏ -->
+                            </span>
+                        </a>
+                    </div>
                 </div>
 
-                <!-- Giỏ hàng đặt bên phải -->
-                <div class="position-relative">
-                    <a href="#" class="text-dark">
-                        <i class="fas fa-shopping-cart fa-lg"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            0
-                            <!-- Thay số này bằng số lượng sản phẩm trong giỏ -->
-                        </span>
-                    </a>
-                </div>
             </div>
         </div>
     </div>
