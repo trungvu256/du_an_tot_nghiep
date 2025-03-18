@@ -25,7 +25,7 @@
             <input type="file" class="form-control-file" name="avatar">
             <br>
             @if($user->avatar)
-                <img src="{{ asset('uploads/avatars/' . $user->avatar) }}" width="100" class="img-thumbnail">
+                <img src="{{ asset('storage/avatars/' . $user->avatar) }}" width="100" class="img-thumbnail">
             @endif
         </div>
 

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -43,36 +44,47 @@ class ProfileController extends Controller
     }
 
     public function updateProfile(Request $request)
-    {
-        if (!session('password_confirmed')) {
-            return redirect()->route('profile.confirm_password')->with('error', 'Bạn cần xác nhận mật khẩu trước.');
-        }
-
-        $user = Auth::user();
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'avatar' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
-        ]);
-
-        $user->name = $request->name;
-        $user->email = $request->email;
-
-        if ($request->hasFile('avatar')) {
-            if ($user->avatar && file_exists(public_path('uploads/avatars/' . $user->avatar))) {
-                unlink(public_path('uploads/avatars/' . $user->avatar));
-            }
-
-            $file = $request->file('avatar');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/avatars'), $filename);
-            $user->avatar = $filename;
-        }
-
-        $user->save();
-        session()->forget('password_confirmed');
-
-        return redirect()->route('profile')->with('success', 'Cập nhật thông tin thành công!');
+{
+    if (!session('password_confirmed')) {
+        return redirect()->route('profile.confirm_password')->with('error', 'Bạn cần xác nhận mật khẩu trước.');
     }
+
+    $user = Auth::user();
+
+    // Xác thực dữ liệu đầu vào
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email,' . $user->id,
+        'avatar' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
+    ]);
+
+    // Cập nhật thông tin người dùng
+    $user->name = $request->name;
+    $user->email = $request->email;
+
+    // Xử lý ảnh đại diện
+    if ($request->hasFile('avatar')) {
+        // Kiểm tra xem có ảnh cũ không, nếu có thì xóa
+        if ($user->avatar && Storage::exists('public/avatars/' . $user->avatar)) {
+            Storage::delete('public/avatars/' . $user->avatar);
+        }
+
+        // Lưu ảnh mới
+        $file = $request->file('avatar');
+        $filename = time() . '.' . $file->getClientOriginalExtension();
+        $file->storeAs('public/avatars', $filename); // Lưu vào storage/app/public/avatars
+
+        // Cập nhật tên file vào database
+        $user->avatar = $filename;
+    }
+
+    // Lưu thông tin người dùng
+    $user->save();
+
+    // Xóa xác thực mật khẩu sau khi cập nhật
+    session()->forget('password_confirmed');
+
+    return redirect()->route('profile')->with('success', 'Cập nhật thông tin thành công!');
+}
+
 }
