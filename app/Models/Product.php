@@ -11,6 +11,7 @@ class Product extends Model
     use SoftDeletes;
     use HasFactory;
     protected $dates = ['deleted_at'];
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'product_code',
