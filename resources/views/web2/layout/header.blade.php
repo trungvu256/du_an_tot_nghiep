@@ -30,26 +30,7 @@
 <body>
     <div class="container-fluid">
         <!-- Top Bar -->
-        <div class="row bg-secondary py-2 px-xl-5">
-            <div class="col-lg-6 d-none d-lg-block">
-                <div class="d-inline-flex align-items-center">
-                    <a class="text-dark" href="#">FAQs</a>
-                    <span class="text-muted px-2">|</span>
-                    <a class="text-dark" href="#">Help</a>
-                    <span class="text-muted px-2">|</span>
-                    <a class="text-dark" href="#">Support</a>
-                </div>
-            </div>
-            <div class="col-lg-6 text-center text-lg-right">
-                <div class="d-inline-flex align-items-center">
-                    <a class="text-dark px-2" href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a class="text-dark px-2" href="#"><i class="fab fa-twitter"></i></a>
-                    <a class="text-dark px-2" href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a class="text-dark px-2" href="#"><i class="fab fa-instagram"></i></a>
-                    <a class="text-dark pl-2" href="#"><i class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-        </div>
+
 
         <!-- Header -->
         <div class="row align-items-center py-3 px-xl-5">
@@ -80,47 +61,58 @@
             <!-- Wishlist & Cart -->
             <div class="col-lg-3 col-4 text-right d-flex align-items-center justify-content-end ms-4">
                 <!-- Bọc phần tài khoản & lịch sử mua hàng vào 1 div để giữ bố cục -->
-                <div class="d-flex align-items-center justify-content-end w-100">
-                    <!-- Khu vực tài khoản -->
-                    <div class="d-flex flex-column align-items-start me-3">
-                        <div class="dropdown">
-                            @auth
-                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown"
-                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('default-avatar.png') }}"
-                                    class="rounded-circle" width="40" height="40" alt="Avatar">
-                                <span class="ml-2">Chào, {{ Auth::user()->name }}!</span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{{ route('profile') }}">Thông tin cá nhân</a>
-                                <a class="dropdown-item" href="{{ route('wallet.show') }}">Ví điện tử</a>
-                                <a class="dropdown-item" href="{{ route('profile') }}">Lịch sử mua hàng</a>
-                                <a class="dropdown-item" href="{{ route('web.logout') }}">Đăng xuất</a>
-                            </div>
-                            @else
-                            <a class="btn btn-primary me-2" href="{{ route('web.login') }}">Đăng nhập</a>
-                            <a class="btn btn-success" href="{{ route('web.register') }}">Đăng ký</a>
-                            @endauth
-                        </div>
-                        <div>
+                <div class="d-flex align-items-center justify-content-end w-100 gap-4">
+                    <!-- Thêm gap-4 để giãn cách -->
 
-                        </div>
+                    <!-- Tài khoản -->
+                    <div class="dropdown">
+                        @auth
+                        <a class="nav-link dropdown-toggle p-0 text-dark" href="#" id="userDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user fa-lg"></i> <!-- Icon người dùng -->
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="{{ route('profile') }}"><i
+                                        class="fas fa-user me-2"></i>Thông tin cá nhân</a></li>
+                            <li><a class="dropdown-item" href="{{ route('wallet.show') }}"><i
+                                        class="fas fa-wallet me-2"></i>Ví điện tử</a></li>
+                            <li><a class="dropdown-item" href="{{ route('profile') }}"><i
+                                        class="fas fa-history me-2"></i>Lịch sử mua hàng</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item text-danger" href="{{ route('web.logout') }}"><i
+                                        class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a></li>
+                        </ul>
+                        @else
+                        <a class="nav-link dropdown-toggle p-0 text-dark" href="#" id="guestDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user fa-lg"></i> <!-- Icon người dùng -->
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="guestDropdown">
+                            <li><a class="dropdown-item" href="{{ route('web.login') }}"><i
+                                        class="fas fa-sign-in-alt me-2"></i>Đăng nhập</a></li>
+                            <li><a class="dropdown-item" href="{{ route('web.register') }}"><i
+                                        class="fas fa-user-plus me-2"></i>Đăng ký</a></li>
+                        </ul>
+                        @endauth
                     </div>
 
-                    <!-- Giỏ hàng đặt gần hơn -->
-                    <div class="position-relative me-3">
+                    <!-- Giỏ hàng -->
+                    <div class="position-relative">
                         <a href="#" class="text-dark">
                             <i class="fas fa-shopping-cart fa-lg"></i>
                             <span
                                 class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                 0
-                                <!-- Thay số này bằng số lượng sản phẩm trong giỏ -->
                             </span>
                         </a>
                     </div>
-                </div>
 
+                </div>
             </div>
+
         </div>
     </div>
 </body>

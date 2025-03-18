@@ -1,47 +1,65 @@
-@extends('web.layouts.master')
-@section('content')
-    <div class="breadcrumbs">
-        <div class="container">
-            <ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
-                <li><a href="/"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Trang Chủ</a></li>
-                <li class="active">Trang Đăng Nhập</li>
-            </ol>
-        </div>
-    </div>
+@extends('web2.layout.master')
 
-    <div class="login">
-        <div class="container">
-            <h3 class="animated wow zoomIn" data-wow-delay=".5s">Đăng Nhập</h3>
-            <div class="login-form-grids animated wow slideInUp" data-wow-delay=".5s">
+@section('content')
+<div class="breadcrumbs">
+    <div class="container">
+        <ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
+            <li><a href="/"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Trang Chủ</a></li>
+            <li class="active fw-bold">/ Đăng Nhập</li>
+        </ol>
+    </div>
+</div>
+
+<div class="login py-5">
+    <div class="container d-flex justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-lg border-0 rounded-4 p-4">
+                <h3 class="text-center mb-4 fw-bold text-primary">Đăng Nhập</h3>
+
                 @if ($errors->any())
-                    <div class="alert alert-warning">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
+                <div class="alert alert-danger fw-bold">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
                 @endif
+
                 <form action="{{ route('login.store.web') }}" method="POST">
                     @csrf
-                    <input type="email" name="email" placeholder="Địa chỉ Email">
-                    <input type="password" name="password" placeholder="Mật khẩu">
-                    <input type="submit" value="Đăng Nhập">
+                    <div class="mb-3">
+                        <label for="email" class="form-label fw-bold">📧 Địa chỉ Email</label>
+                        <input type="email" name="email" class="form-control rounded-3 shadow-sm fw-bold"
+                            placeholder="Nhập email của bạn" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label fw-bold">🔑 Mật khẩu</label>
+                        <input type="password" name="password" class="form-control rounded-3 shadow-sm fw-bold"
+                            placeholder="Nhập mật khẩu" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 rounded-3 fw-bold shadow-sm"
+                        style="transition: 0.3s;">
+                        Đăng Nhập
+                    </button>
                 </form>
-                
-                <a class="btn btn-outline-dark" href="{{ route('login.google') }}" role="button" style="text-transform:none;margin-left: 130px;">
-                    <img width="20px" style="margin-bottom:3px; margin-right:5px" alt="Google sign-in"
-                        src="{{ asset('images/search.png') }}" />
-                    Đăng nhập với Google
-                </a>
+
+                <hr>
+
+                <div class="text-center fw-bold">
+                    <p class="mb-2">Dành cho người dùng mới?
+                        <a href="{{ route('web.register') }}" class="text-primary fw-bold text-decoration-none">Đăng ký
+                            ngay</a>
+                    </p>
+                    <p>
+                        <a href="{{ route('web.forget') }}" class="text-danger text-decoration-none">🔄 Quên mật
+                            khẩu?</a>
+                    </p>
+                </div>
             </div>
         </div>
-
-        <h4 class="animated wow slideInUp" data-wow-delay=".5s">Dành cho người dùng mới</h4>
-        <p class="animated wow slideInUp" data-wow-delay=".5s">
-            <a href="{{ route('web.register') }}">Đăng ký ngay</a>
-            (Hoặc) quay lại <a href="{{ route('web.forget') }}">Quên mật khẩu<span
-                    class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
-        </p>
     </div>
+</div>
 @endsection
