@@ -39,7 +39,7 @@
                                 <a href="{{ route('admin.user') }}" class="nav-link">Khách hàng</a>
                             </li>
                             <li class="nav-item">
-                                <a href="" class="nav-link">Nhóm khách hàng</a>
+                                <a href="{{route('customer.index')}}" class="nav-link">Nhóm khách hàng</a>
                             </li>
                         </ul>
                     </div>

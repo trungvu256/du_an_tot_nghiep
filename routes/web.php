@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CommentController;
+use App\Http\Controllers\Admin\CustomerGroupController;
 use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\MainController;
@@ -123,6 +124,34 @@ Route::middleware(['auth', 'admin'])->group(function () {
                 route::get('/soft-delete/{id}', [BlogController::class, 'softDelete'])->name('admin.softdelete.blog');
                 route::get('/restore/{id}', [BlogController::class, 'restore'])->name('admin.restore.blog');
                 route::delete('/force-delete/{id}', [BlogController::class, 'forceDelete'])->name('admin.forceDelete.blog');
+            });
+            Route::prefix('customer-groups')->group(function () {
+
+                // Route để hiển thị danh sách nhóm khách hàng
+                Route::get('/customer', [CustomerGroupController::class, 'index'])->name('customer.index');
+    
+                // Route để tạo nhóm khách hàng mới
+                Route::get('/customercreate', [CustomerGroupController::class, 'create'])->name('customer.create');
+                Route::post('/customer', [CustomerGroupController::class, 'store'])->name('customer.store');
+    
+                // Route để chỉnh sửa nhóm khách hàng
+                Route::get('/{group}/edit', [CustomerGroupController::class, 'edit'])->name('customer.edit');
+                Route::put('/{group}', [CustomerGroupController::class, 'update'])->name('customer.update');
+    
+                // Route để xóa nhóm khách hàng
+                Route::delete('/{group}', [CustomerGroupController::class, 'destroy'])->name('customer.destroy');
+    
+                // Route để phân nhóm khách hàng (phân loại khách hàng)
+                Route::get('/assign', [CustomerGroupController::class, 'assignCustomerGroups'])->name('customer.assign');
+                // Hiển thị form đưa khách hàng vào nhóm
+                Route::get('customer-groups/{groupId}/assign', [CustomerGroupController::class, 'assignCustomers'])->name('customer.assign_customers');
+    
+                // Lưu khách hàng vào nhóm
+                Route::post('customer-groups/{groupId}/assign', [CustomerGroupController::class, 'storeAssignedCustomers'])->name('customer.store_assigned_customers');
+    
+    
+                // show
+                Route::get('customer-groups/{group}/customers', [CustomerGroupController::class, 'show'])->name('customer.show_customers');
             });
             //Discount
             // Route::prefix('discounts')->group(function () {
