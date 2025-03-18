@@ -75,34 +75,32 @@
 
 <!-- Shop Detail Start -->
 <div class="container-fluid py-5">
-    <div class="row px-xl-5">
-        <div class="col-lg-5 pb-5">
-            <div id="product-carousel" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner border">
-                    <div class="carousel-item active">
-                        <img class="w-100 h-100" src="img/product-1.jpg" alt="Image">
+         <div class="row px-xl-5">
+          
+            <div class="col-lg-5 pb-5">
+                <div id="product-carousel" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner border">
+                        @foreach ($description_images as $key => $image)
+                            <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                                <img class="w-100 h-100" src="{{ asset('storage/'.$image->image) }}" alt="Image">
+                            </div>
+                        @endforeach
                     </div>
-                    <div class="carousel-item">
-                        <img class="w-100 h-100" src="img/product-2.jpg" alt="Image">
-                    </div>
-                    <div class="carousel-item">
-                        <img class="w-100 h-100" src="img/product-3.jpg" alt="Image">
-                    </div>
-                    <div class="carousel-item">
-                        <img class="w-100 h-100" src="img/product-4.jpg" alt="Image">
-                    </div>
+                    <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
+                        <i class="fa fa-2x fa-angle-left text-dark"></i>
+                    </a>
+                    <a class="carousel-control-next" href="#product-carousel" data-slide="next">
+                        <i class="fa fa-2x fa-angle-right text-dark"></i>
+                    </a>
                 </div>
-                <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
-                    <i class="fa fa-2x fa-angle-left text-dark"></i>
-                </a>
-                <a class="carousel-control-next" href="#product-carousel" data-slide="next">
-                    <i class="fa fa-2x fa-angle-right text-dark"></i>
-                </a>
-            </div>
+                
         </div>
 
         <div class="col-lg-7 pb-5">
-            <h3 class="font-weight-semi-bold">Colorful Stylish Shirt</h3>
+            
+            <h3 class="font-weight-semi-bold">{{$detailproduct->name}}</h3>
+       
+        
             <div class="d-flex mb-3">
                 <div class="text-primary mr-2">
                     <small class="fas fa-star"></small>
@@ -113,11 +111,9 @@
                 </div>
                 <small class="pt-1">(50 Reviews)</small>
             </div>
-            <h3 class="font-weight-semi-bold mb-4">$150.00</h3>
-            <p class="mb-4">Volup erat ipsum diam elitr rebum et dolor. Est nonumy elitr erat diam stet sit clita ea.
-                Sanc invidunt ipsum et, labore clita lorem magna lorem ut. Erat lorem duo dolor no sea nonumy. Accus
-                labore stet, est lorem sit diam sea et justo, amet at lorem et eirmod ipsum diam et rebum kasd rebum.
-            </p>
+            <h3 class="font-weight-semi-bold mb-4">{{$detailproduct->price}}</h3>
+            <div class="mb-4">{!! $detailproduct->description !!}
+            </div>
             <div class="d-flex mb-3">
                 <p class="text-dark font-weight-medium mb-0 mr-3">Sizes:</p>
                 <form>
@@ -203,125 +199,13 @@
             </div>
         </div>
     </div>
+
     <div class="row px-xl-5">
         <div class="col">
             <div class="nav nav-tabs justify-content-center border-secondary mb-4">
                 <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Description</a>
                 <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">Information</a>
                 <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Reviews (0)</a>
-            </div>
-            <div class="tab-content">
-                <div class="tab-pane fade show active" id="tab-pane-1">
-                    <h4 class="mb-3">Product Description</h4>
-                    <p>Eos no lorem eirmod diam diam, eos elitr et gubergren diam sea. Consetetur vero aliquyam invidunt
-                        duo dolores et duo sit. Vero diam ea vero et dolore rebum, dolor rebum eirmod consetetur
-                        invidunt sed sed et, lorem duo et eos elitr, sadipscing kasd ipsum rebum diam. Dolore diam stet
-                        rebum sed tempor kasd eirmod. Takimata kasd ipsum accusam sadipscing, eos dolores sit no ut diam
-                        consetetur duo justo est, sit sanctus diam tempor aliquyam eirmod nonumy rebum dolor accusam,
-                        ipsum kasd eos consetetur at sit rebum, diam kasd invidunt tempor lorem, ipsum lorem elitr
-                        sanctus eirmod takimata dolor ea invidunt.</p>
-                    <p>Dolore magna est eirmod sanctus dolor, amet diam et eirmod et ipsum. Amet dolore tempor
-                        consetetur sed lorem dolor sit lorem tempor. Gubergren amet amet labore sadipscing clita clita
-                        diam clita. Sea amet et sed ipsum lorem elitr et, amet et labore voluptua sit rebum. Ea erat sed
-                        et diam takimata sed justo. Magna takimata justo et amet magna et.</p>
-                </div>
-                <div class="tab-pane fade" id="tab-pane-2">
-                    <h4 class="mb-3">Additional Information</h4>
-                    <p>Eos no lorem eirmod diam diam, eos elitr et gubergren diam sea. Consetetur vero aliquyam invidunt
-                        duo dolores et duo sit. Vero diam ea vero et dolore rebum, dolor rebum eirmod consetetur
-                        invidunt sed sed et, lorem duo et eos elitr, sadipscing kasd ipsum rebum diam. Dolore diam stet
-                        rebum sed tempor kasd eirmod. Takimata kasd ipsum accusam sadipscing, eos dolores sit no ut diam
-                        consetetur duo justo est, sit sanctus diam tempor aliquyam eirmod nonumy rebum dolor accusam,
-                        ipsum kasd eos consetetur at sit rebum, diam kasd invidunt tempor lorem, ipsum lorem elitr
-                        sanctus eirmod takimata dolor ea invidunt.</p>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item px-0">
-                                    Sit erat duo lorem duo ea consetetur, et eirmod takimata.
-                                </li>
-                                <li class="list-group-item px-0">
-                                    Amet kasd gubergren sit sanctus et lorem eos sadipscing at.
-                                </li>
-                                <li class="list-group-item px-0">
-                                    Duo amet accusam eirmod nonumy stet et et stet eirmod.
-                                </li>
-                                <li class="list-group-item px-0">
-                                    Takimata ea clita labore amet ipsum erat justo voluptua. Nonumy.
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item px-0">
-                                    Sit erat duo lorem duo ea consetetur, et eirmod takimata.
-                                </li>
-                                <li class="list-group-item px-0">
-                                    Amet kasd gubergren sit sanctus et lorem eos sadipscing at.
-                                </li>
-                                <li class="list-group-item px-0">
-                                    Duo amet accusam eirmod nonumy stet et et stet eirmod.
-                                </li>
-                                <li class="list-group-item px-0">
-                                    Takimata ea clita labore amet ipsum erat justo voluptua. Nonumy.
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="tab-pane-3">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h4 class="mb-4">1 review for "Colorful Stylish Shirt"</h4>
-                            <div class="media mb-4">
-                                <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
-                                <div class="media-body">
-                                    <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
-                                    <div class="text-primary mb-2">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        <i class="far fa-star"></i>
-                                    </div>
-                                    <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum et no
-                                        at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <h4 class="mb-4">Leave a review</h4>
-                            <small>Your email address will not be published. Required fields are marked *</small>
-                            <div class="d-flex my-3">
-                                <p class="mb-0 mr-2">Your Rating * :</p>
-                                <div class="text-primary">
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                </div>
-                            </div>
-                            <form>
-                                <div class="form-group">
-                                    <label for="message">Your Review *</label>
-                                    <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Your Name *</label>
-                                    <input type="text" class="form-control" id="name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Your Email *</label>
-                                    <input type="email" class="form-control" id="email">
-                                </div>
-                                <div class="form-group mb-0">
-                                    <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -331,106 +215,221 @@
 
 <!-- Products Start -->
 <div class="container-fluid py-5">
-    <div class="text-center mb-4">
-        <h2 class="section-title px-5"><span class="px-2">You May Also Like</span></h2>
+    <div class="mb-3 ml-5">
+        <h2 class="mt-5">Sản phẩm có thể thích</h2>
     </div>
-    <div class="row px-xl-5">
-        <div class="col">
-            <div class="owl-carousel related-carousel">
-                <div class="card product-item border-0">
-                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="img/product-1.jpg" alt="">
-                    </div>
-                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                        <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                        <div class="d-flex justify-content-center">
-                            <h6>$123.00</h6>
-                            <h6 class="text-muted ml-2"><del>$123.00</del></h6>
+
+    @if ($relatedProducts->isNotEmpty())
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                @foreach ($relatedProducts as $relatedProduct)
+                    <div class="swiper-slide">
+                        <div class="card product-item border-0 shadow-sm">
+                            <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                                <img class="img-fluid w-100" src="{{ asset('storage/'.$relatedProduct->image) }}" alt="{{ $relatedProduct->name }}">
+                            </div>
+                            <div class="card-body text-center p-3">
+                                <h6 class="text-truncate mb-3">{{ $relatedProduct->name }}</h6>
+                                <div class="d-flex justify-content-center">
+                                    <h6 class="text-danger font-weight-bold">{{ number_format($relatedProduct->price) }}₫</h6>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-light border-top d-flex justify-content-center">
+                                <a href="{{ route('web.shop-detail', ['id' => $relatedProduct->id]) }}" class="btn btn-outline-primary btn-sm mr-2">
+                                    <i class="fas fa-eye"></i> Xem chi tiết
+                                </a>
+                                <a href="#" class="btn btn-outline-success btn-sm">
+                                    <i class="fas fa-shopping-cart"></i> Mua ngay
+                                </a>
+                            </div>
                         </div>
                     </div>
-                    <div class="card-footer d-flex justify-content-between bg-light border">
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
-                            Detail</a>
-                        <a href="" class="btn btn-sm text-dark p-0"><i
-                                class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                    </div>
-                </div>
-                <div class="card product-item border-0">
-                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="img/product-2.jpg" alt="">
-                    </div>
-                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                        <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                        <div class="d-flex justify-content-center">
-                            <h6>$123.00</h6>
-                            <h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-between bg-light border">
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
-                            Detail</a>
-                        <a href="" class="btn btn-sm text-dark p-0"><i
-                                class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                    </div>
-                </div>
-                <div class="card product-item border-0">
-                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="img/product-3.jpg" alt="">
-                    </div>
-                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                        <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                        <div class="d-flex justify-content-center">
-                            <h6>$123.00</h6>
-                            <h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-between bg-light border">
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
-                            Detail</a>
-                        <a href="" class="btn btn-sm text-dark p-0"><i
-                                class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                    </div>
-                </div>
-                <div class="card product-item border-0">
-                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="img/product-4.jpg" alt="">
-                    </div>
-                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                        <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                        <div class="d-flex justify-content-center">
-                            <h6>$123.00</h6>
-                            <h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-between bg-light border">
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
-                            Detail</a>
-                        <a href="" class="btn btn-sm text-dark p-0"><i
-                                class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                    </div>
-                </div>
-                <div class="card product-item border-0">
-                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="img/product-5.jpg" alt="">
-                    </div>
-                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                        <h6 class="text-truncate mb-3">Colorful Stylish Shirt</h6>
-                        <div class="d-flex justify-content-center">
-                            <h6>$123.00</h6>
-                            <h6 class="text-muted ml-2"><del>$123.00</del></h6>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-between bg-light border">
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
-                            Detail</a>
-                        <a href="" class="btn btn-sm text-dark p-0"><i
-                                class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                    </div>
-                </div>
+                @endforeach
             </div>
+
+            <!-- Navigation buttons -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+
+            <!-- Pagination -->
+            <div class="swiper-pagination"></div>
         </div>
-    </div>
+    @else
+        <div class="col-12">
+            <p class="text-center text-muted">Không có sản phẩm liên quan</p>
+        </div>
+    @endif
 </div>
+
+{{-- sản phẩm cùng phân khúc --}}
+<div class="container-fluid py-5">
+    <div class="mb-3 ml-5">
+        <h2 class="mt-5">Sản phẩm cùng phân khúc</h2>
+    </div>
+
+    @if ($similarProducts->isNotEmpty())
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                @foreach ($similarProducts as $relatedProduct)
+                    <div class="swiper-slide">
+                        <div class="card product-item border-0 shadow-sm">
+                            <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                                <img class="img-fluid w-100" src="{{ asset('storage/'.$relatedProduct->image) }}" alt="{{ $relatedProduct->name }}">
+                            </div>
+                            <div class="card-body text-center p-3">
+                                <h6 class="text-truncate mb-3">{{ $relatedProduct->name }}</h6>
+                                <div class="d-flex justify-content-center">
+                                    <h6 class="text-danger font-weight-bold">{{ number_format($relatedProduct->price) }}₫</h6>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-light border-top d-flex justify-content-center">
+                                <a href="{{ route('web.shop-detail', ['id' => $relatedProduct->id]) }}" class="btn btn-outline-primary btn-sm mr-2">
+                                    <i class="fas fa-eye"></i> Xem chi tiết
+                                </a>
+                                <a href="#" class="btn btn-outline-success btn-sm">
+                                    <i class="fas fa-shopping-cart"></i> Mua ngay
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <!-- Navigation buttons -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+
+            <!-- Pagination -->
+            <div class="swiper-pagination"></div>
+        </div>
+    @else
+        <div class="col-12">
+            <p class="text-center text-muted">Không có sản phẩm liên quan</p>
+        </div>
+    @endif
+</div>
+
+{{-- sản phẩm đã xem --}}
+
+<div class="container-fluid py-5">
+    <div class="mb-3 ml-5">
+        <h2 class="mt-5">Sản phẩm đã xem</h2>
+    </div>
+
+    @if ($viewedProducts->isNotEmpty())
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                @foreach ($viewedProducts as $relatedProduct)
+                    <div class="swiper-slide">
+                        <div class="card product-item border-0 shadow-sm">
+                            <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                                <img class="img-fluid w-100" src="{{ asset('storage/'.$relatedProduct->image) }}" alt="{{ $relatedProduct->name }}">
+                            </div>
+                            <div class="card-body text-center p-3">
+                                <h6 class="text-truncate mb-3">{{ $relatedProduct->name }}</h6>
+                                <div class="d-flex justify-content-center">
+                                    <h6 class="text-danger font-weight-bold">{{ number_format($relatedProduct->price) }}₫</h6>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-light border-top d-flex justify-content-center">
+                                <a href="{{ route('web.shop-detail', ['id' => $relatedProduct->id]) }}" class="btn btn-outline-primary btn-sm mr-2">
+                                    <i class="fas fa-eye"></i> Xem chi tiết
+                                </a>
+                                <a href="#" class="btn btn-outline-success btn-sm">
+                                    <i class="fas fa-shopping-cart"></i> Mua ngay
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <!-- Navigation buttons -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+
+            <!-- Pagination -->
+            <div class="swiper-pagination"></div>
+        </div>
+    @else
+        <div class="col-12">
+            <p class="text-center text-muted">Không có sản phẩm liên quan</p>
+        </div>
+    @endif
+</div>
+
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+
+<script>
+    var swiper = new Swiper(".mySwiper", {
+        slidesPerView: 2,
+        spaceBetween: 10,
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        breakpoints: {
+            768: { slidesPerView: 3 },
+            1024: { slidesPerView: 4 }
+        }
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var swiper = new Swiper(".mySwiper", {
+            slidesPerView: 4,  // Hiển thị 4 sản phẩm cùng lúc
+            spaceBetween: 20,  // Khoảng cách giữa các sản phẩm
+            loop: true,        // Vòng lặp slider
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            breakpoints: { // Responsive (hiển thị số sản phẩm khác nhau trên từng màn hình)
+                320: { slidesPerView: 1 },
+                768: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 },
+                1200: { slidesPerView: 4 }
+            }
+        });
+    });
+</script>
+
+<style>
+    /* Tùy chỉnh nút điều hướng */
+.swiper-button-next, 
+.swiper-button-prev {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.8); /* Nền trắng trong suốt */
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Căn chỉnh vị trí nút */
+.swiper-button-next {
+    right: -10px; /* Đẩy nút sang phải */
+}
+
+.swiper-button-prev {
+    left: -10px; /* Đẩy nút sang trái */
+}
+
+/* Tùy chỉnh icon */
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    font-size: 18px;
+    color: black; /* Đổi màu icon */
+}
+
+</style>
 <!-- Products End -->
 
 @endsection

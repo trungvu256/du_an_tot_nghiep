@@ -54,4 +54,11 @@ class Catalogue extends Model
         return $this->belongsToMany(Discount::class, 'catelogue_discounts', 'catalogue_id', 'discount_id');
     }
 
+
+    // liên kết với bảng categori
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
 }

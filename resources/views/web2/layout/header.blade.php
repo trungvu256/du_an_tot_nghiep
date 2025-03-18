@@ -11,7 +11,7 @@
         rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    <link href="{{ asset('website/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
     <link href="{{ asset('website/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('website/css/style.min.css') }}" rel="stylesheet">
 
@@ -83,7 +83,7 @@
                         <ul class="navbar-nav">
                             <li class="nav-item"><a class="nav-link active" href="{{ route('web.home') }}">Home</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('web.shop') }}">Shop</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ route('web.shop-detail') }}">Shop
+                            <li class="nav-item"><a class="nav-link" href="">Shop
                                     Detail</a></li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Pages</a>
