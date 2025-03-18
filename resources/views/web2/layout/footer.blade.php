@@ -9,55 +9,46 @@
 
             <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>13 P.Trịnh Văn Bô, Xuân Phương, Nam
                 Từ Liêm, Hà Nội</p>
-            <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i></p>
-            <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
+            <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>etherealnoirwd04@gmail.com</p>
+            <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+84 338889364</p>
         </div>
         <div class="col-lg-8 col-md-12">
             <div class="row">
                 <div class="col-md-4 mb-5">
-                    <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
+                    <h5 class="font-weight-bold text-dark mb-4">SẢN PHẨM</h5>
                     <div class="d-flex flex-column justify-content-start">
-                        <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                        <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                        <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop
-                            Detail</a>
-                        <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping
-                            Cart</a>
-                        <a class="text-dark mb-2" href="checkout.html"><i
-                                class="fa fa-angle-right mr-2"></i>Checkout</a>
-                        <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                        <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Nước hoa
+                            nam</a>
+                        <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Nước hoa nữ</a>
+
                     </div>
                 </div>
                 <div class="col-md-4 mb-5">
-                    <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
+                    <h5 class="font-weight-bold text-dark mb-4">MUA SẮM VÀ ƯU ĐÃI</h5>
                     <div class="d-flex flex-column justify-content-start">
-                        <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                        <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                        <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop
-                            Detail</a>
-                        <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping
-                            Cart</a>
-                        <a class="text-dark mb-2" href="checkout.html"><i
-                                class="fa fa-angle-right mr-2"></i>Checkout</a>
-                        <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                        <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Trang chủ</a>
+                        <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Nước hoa</a>
+                        <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Bài viết</a>
+                        <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Liên hệ
+                        </a>
+
                     </div>
                 </div>
                 <div class="col-md-4 mb-5">
-                    <h5 class="font-weight-bold text-dark mb-4">Newsletter</h5>
+                    <h5 class="fw-bold text-dark mb-4">ĐĂNG KÝ NHẬN TIN</h5>
                     <form action="">
-                        <div class="form-group">
-                            <input type="text" class="form-control border-0 py-4" placeholder="Your Name"
-                                required="required" />
-                        </div>
-                        <div class="form-group">
-                            <input type="email" class="form-control border-0 py-4" placeholder="Your Email"
-                                required="required" />
+                        <div class="mb-3">
+                            <input type="email"
+                                class="form-control border border-secondary rounded-3 shadow-sm py-3 px-3"
+                                placeholder="Nhập email của bạn" required />
                         </div>
                         <div>
-                            <button class="btn btn-primary btn-block border-0 py-3" type="submit">Subscribe Now</button>
+                            <button class="btn btn-primary w-100 rounded-3 py-3 shadow-sm" type="submit">Đăng ký
+                                ngay</button>
                         </div>
                     </form>
                 </div>
+
             </div>
         </div>
     </div>

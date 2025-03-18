@@ -1,177 +1,10 @@
-{{-- <<<<<<< Updated upstream
-  @extends('web2.layout.master')
-  @section('content')
-  <!-- Navbar Start -->
-  <div class="container-fluid mb-5">
-      <div class="row border-top px-xl-5">
-          <div class="col-lg-3 d-none d-lg-block">
-              <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100"
-                  data-toggle="collapse" href="#navbar-vertical"
-                  style="height: 65px; margin-top: -1px; padding: 0 30px;">
-                  <h6 class="m-0">Danh mục </h6>
-                  <i class="fa fa-angle-down text-dark"></i>
-              </a>
-              <nav class="collapse show navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0"
-                  id="navbar-vertical">
-                  <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
-                      <div class="nav-item dropdown">
-                          <a href="#" class="nav-link" data-toggle="dropdown">Nam <i
-                                  class="fa fa-angle-down float-right mt-1"></i></a>
-                          <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
-                              <a href="" class="dropdown-item">Dior</a>
-                              <a href="" class="dropdown-item">Gucci</a>
-                              <a href="" class="dropdown-item">LV</a>
-                          </div>
-                      </div>
-                      <div class="nav-item dropdown">
-                          <a href="#" class="nav-link" data-toggle="dropdown">Nữ <i
-                                  class="fa fa-angle-down float-right mt-1"></i></a>
-                          <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
-                              <a href="" class="dropdown-item">Dior</a>
-                              <a href="" class="dropdown-item">Gucci</a>
-                              <a href="" class="dropdown-item">LV</a>
-                          </div>
-                      </div>
-                      <div class="nav-item dropdown">
-                          <a href="#" class="nav-link" data-toggle="dropdown">Thương hiệu <i
-                                  class="fa fa-angle-down float-right mt-1"></i></a>
-                          <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
-                              <a href="" class="dropdown-item">Dior</a>
-                              <a href="" class="dropdown-item">Gucci</a>
-                              <a href="" class="dropdown-item">LV</a>
-                          </div>
-                      </div>
-
-                  </div>
-              </nav>
-          </div>
-          <div class="col-lg-9">
-              <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
-                  <a href="" class="text-decoration-none d-block d-lg-none">
-                      <h1 class="m-0 display-5 font-weight-semi-bold"><span
-                              class="text-primary font-weight-bold border px-3 mr-1">Ethereal</span>Noir</h1>
-                  </a>
-                  <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                      <span class="navbar-toggler-icon"></span>
-                  </button>
-                  <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                      <div class="navbar-nav mr-auto py-0">
-                          <a href="{{route('web.home')}}" class="nav-item nav-link active">Home</a>
-<a href="{{route('web.shop')}}" class="nav-item nav-link">Shop</a>
-<a href="{{route('web.shop-detail')}}" class="nav-item nav-link">Shop Detail</a>
-<div class="nav-item dropdown">
-    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
-    <div class="dropdown-menu rounded-0 m-0">
-        <a href="{{route('user.cart')}}" class="dropdown-item">Shopping Cart</a>
-        <a href="{{route('user.checkout')}}" class="dropdown-item">Checkout</a>
-    </div>
-</div>
-<a href="{{route('user.contact')}}" class="nav-item nav-link">Contact</a>
-</div>
-<div class="navbar-nav ml-auto py-0">
-    @auth
-    <div class="dropdown d-inline">
-        <a href="#" class="btn border dropdown-toggle" data-toggle="dropdown">
-            <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('uploads/avatars/default.png') }}"
-                alt="Avatar" class="rounded-circle" width="40" height="40">
-
-        </a>
-        <div class="dropdown-menu">
-            <a class="dropdown-item" href="{{ route('profile') }}">Thông tin cá nhân</a>
-            <a class="dropdown-item" href="{{ route('web.logout') }}">Đăng xuất</a>
-        </div>
-    </div>
-    @endauth
-</div>
-</div>
-</nav>
-<div id="header-carousel" class="carousel slide" data-ride="carousel">
-    <div class="carousel-inner">
-        <div class="carousel-item active" style="height: 410px;">
-            <img class="img-fluid" src="{{ asset('/images/Banner/banner02.png') }}" alt="Image">
-            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                <div class="p-3" style="max-width: 700px;">
-                    <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order
-                    </h4>
-                    <h3 class="display-4 text-white font-weight-semi-bold mb-4">Fashionable Dress</h3>
-                    <a href="" class="btn btn-light py-2 px-3">Shop Now</a>
-                </div>
-            </div>
-        </div>
-        <div class="carousel-item" style="height: 410px;">
-            <img class="img-fluid" src="{{ asset('/images/Banner/banner01.jpg') }}" alt="Image">
-            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                <div class="p-3" style="max-width: 700px;">
-                    <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order
-                    </h4>
-                    <h3 class="display-4 text-white font-weight-semi-bold mb-4">Reasonable Price</h3>
-                    <a href="" class="btn btn-light py-2 px-3">Shop Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
-        <div class="btn btn-dark" style="width: 45px; height: 45px;">
-            <span class="carousel-control-prev-icon mb-n2"></span>
-        </div>
-    </a>
-    <a class="carousel-control-next" href="#header-carousel" data-slide="next">
-        <div class="btn btn-dark" style="width: 45px; height: 45px;">
-            <span class="carousel-control-next-icon mb-n2"></span>
-        </div>
-    </a>
-</div>
-</div>
-</div>
-</div>
-<!-- Navbar End -->
-======= --}}
 @extends('web2.layout.master')
 @section('content')
 <!-- Navbar Start -->
 <div class="container-fluid mb-5">
     <div class="row border-top px-xl-5">
-        <div class="col-lg-3 d-none d-lg-block">
-            <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100"
-                data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
-                <h6 class="m-0">Danh mục </h6>
-                <i class="fa fa-angle-down text-dark"></i>
-            </a>
-            <nav class="collapse show navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0"
-                id="navbar-vertical">
-                <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link" data-toggle="dropdown">Nam <i
-                                class="fa fa-angle-down float-right mt-1"></i></a>
-                        <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
-                            <a href="" class="dropdown-item">Dior</a>
-                            <a href="" class="dropdown-item">Gucci</a>
-                            <a href="" class="dropdown-item">LV</a>
-                        </div>
-                    </div>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link" data-toggle="dropdown">Nữ <i
-                                class="fa fa-angle-down float-right mt-1"></i></a>
-                        <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
-                            <a href="" class="dropdown-item">Dior</a>
-                            <a href="" class="dropdown-item">Gucci</a>
-                            <a href="" class="dropdown-item">LV</a>
-                        </div>
-                    </div>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link" data-toggle="dropdown">Thương hiệu <i
-                                class="fa fa-angle-down float-right mt-1"></i></a>
-                        <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
-                            <a href="" class="dropdown-item">Dior</a>
-                            <a href="" class="dropdown-item">Gucci</a>
-                            <a href="" class="dropdown-item">LV</a>
-                        </div>
-                    </div>
 
-                </div>
-            </nav>
-        </div>
-        <div class="col-lg-9">
+        <div class="container-fluid">
             <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
                 <a href="" class="text-decoration-none d-block d-lg-none">
                     <h1 class="m-0 display-5 font-weight-semi-bold"><span
@@ -181,7 +14,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                    @include('web2.layout.menu')
+                    {{-- @include('web2.layout.menu') --}}
 
                     <div class="navbar-nav ml-auto py-0">
 
@@ -191,9 +24,9 @@
                     </div>
                 </div>
             </nav>
-            <div id="header-carousel" class="carousel slide" data-ride="carousel">
+            <div id="header-carousel" class="containerfluid carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
-                    <div class="carousel-item active" style="height: 410px;">
+                    <div class="carousel-item active" style="height: 550px;">
                         <img class="img-fluid" src="{{ asset('/images/Banner/banner02.png') }}" alt="Image">
                         <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                             <div class="p-3" style="max-width: 700px;">
@@ -204,7 +37,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="carousel-item" style="height: 410px;">
+                    <div class="carousel-item" style="height: 550px;">
                         <img class="img-fluid" src="{{ asset('/images/Banner/banner01.jpg') }}" alt="Image">
                         <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                             <div class="p-3" style="max-width: 700px;">
@@ -471,107 +304,107 @@
 
 
 <style>
-    body {
-        background-color: #ffffff;
-        font-family: 'Arial', sans-serif;
-    }
+body {
+    background-color: #ffffff;
+    font-family: 'Arial', sans-serif;
+}
 
-    .perfume-card {
-        background-color: #ffffff;
-        border: 1px solid #000000;
-        border-radius: 15px;
-        box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
-        padding: 25px;
-        text-align: center;
-        height: 100%;
-        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    }
+.perfume-card {
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 15px;
+    box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
+    padding: 25px;
+    text-align: center;
+    height: 100%;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
 
-    .perfume-card:hover {
-        transform: scale(1.05);
-        box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.3);
-    }
+.perfume-card:hover {
+    transform: scale(1.05);
+    box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.3);
+}
 
-    .perfume-card img {
-        max-width: 100%;
-        height: auto;
-        margin-bottom: 20px;
-        border-radius: 10px;
-        border: 2px solid #000000;
-    }
+.perfume-card img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: 2px solid #000000;
+}
 
-    .logo {
-        font-family: 'Times New Roman', Times, serif;
-        font-size: 26px;
-        color: #000000;
-        font-weight: bold;
-        margin-bottom: 12px;
-    }
+.logo {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 26px;
+    color: #000000;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
 
-    .title {
-        font-family: 'Dancing Script', cursive;
-        font-size: 30px;
-        color: #000000;
-        font-weight: bold;
-        margin-bottom: 12px;
-    }
+.title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 30px;
+    color: #000000;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
 
-    .subtitle {
-        font-family: 'Montserrat', sans-serif;
-        font-size: 18px;
-        font-weight: bold;
-        color: #000000;
-        margin-bottom: 15px;
-    }
+.subtitle {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 15px;
+}
 
-    .description {
-        font-family: 'Montserrat', sans-serif;
-        font-size: 14px;
-        color: #000000;
-        line-height: 1.6;
-        margin-bottom: 20px;
-    }
+.description {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    color: #000000;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
 
-    .details-btn {
-        display: inline-block;
-        padding: 12px 25px;
-        background-color: #000000;
-        color: #ffffff;
-        text-decoration: none;
-        border-radius: 8px;
-        font-family: 'Montserrat', sans-serif;
-        font-size: 14px;
-        font-weight: bold;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-    }
+.details-btn {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #000000;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
 
-    .details-btn:hover {
-        background-color: #333333;
-        transform: translateY(-2px);
-        color: #ffffff;
-    }
+.details-btn:hover {
+    background-color: #333333;
+    transform: translateY(-2px);
+    color: #ffffff;
+}
 
-    .spring-bg {
-        background: url('spring-bg.jpg') center center/cover no-repeat;
-        border-radius: 15px;
-    }
+.spring-bg {
+    background: url('spring-bg.jpg') center center/cover no-repeat;
+    border-radius: 15px;
+}
 
-    .wood-bg {
-        background: url('wood-bg.jpg') center center/cover no-repeat;
-        border-radius: 15px;
-    }
+.wood-bg {
+    background: url('wood-bg.jpg') center center/cover no-repeat;
+    border-radius: 15px;
+}
 
-    .valentine-bg {
-        background: url('valentine-bg.jpg') center center/cover no-repeat;
-        border-radius: 15px;
-    }
+.valentine-bg {
+    background: url('valentine-bg.jpg') center center/cover no-repeat;
+    border-radius: 15px;
+}
 
-    .section-title {
-        font-family: 'Montserrat', sans-serif;
-        font-size: 32px;
-        color: #000000;
-        font-weight: bold;
-    }
+.section-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 32px;
+    color: #000000;
+    font-weight: bold;
+}
 </style>
 
 <body>
