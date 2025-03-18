@@ -66,5 +66,51 @@ class CustomerGroupController extends Controller
         return redirect()->route('customer.index')->with('success', 'Nhóm khách hàng đã được cập nhật!');
     }
 
-    
+    // Hiển thị form đưa khách hàng vào nhóm
+    public function assignCustomers($groupId)
+    {
+        $group = CustomerGroup::findOrFail($groupId); // Lấy nhóm khách hàng theo ID
+
+        // Lấy tất cả khách hàng không phải admin và phân trang
+        $users = User::where('is_admin', '<', 1)
+            ->withCount('orders') // Đếm số đơn hàng của mỗi khách hàng
+            ->withSum('orders', 'total_price') // Tính tổng số tiền chi tiêu của mỗi khách hàng
+            ->paginate(20); // Phân trang, hiển thị 20 khách hàng mỗi trang
+
+        return view('admin.customer.adduserGroup', compact('group', 'users'));
+    }
+
+
+    public function storeAssignedCustomers(Request $request, $groupId)
+    {
+        // Xác thực dữ liệu
+        $request->validate([
+            'users' => 'required|array',
+            'users.*' => 'exists:users,id',
+        ]);
+
+        // Lấy nhóm khách hàng
+        $group = CustomerGroup::findOrFail($groupId);
+
+        // Lấy danh sách user đã có trong nhóm
+        $existingUsers = $group->users()->pluck('users.id')->toArray();
+
+        // Tách user mới và user đã tồn tại
+        $newUsers = array_diff($request->users, $existingUsers);
+        $alreadyAssignedUsers = array_intersect($request->users, $existingUsers);
+
+        // Thêm user mới vào nhóm
+        if (!empty($newUsers)) {
+            $group->users()->attach($newUsers);
+        }
+
+        // Thông báo
+        $message = 'Khách hàng đã được thêm vào nhóm!';
+        if (!empty($alreadyAssignedUsers)) {
+            $existingUserNames = User::whereIn('id', $alreadyAssignedUsers)->pluck('name')->toArray();
+            $message .= ' Các khách hàng sau đã thuộc nhóm này: ' . implode(', ', $existingUserNames);
+        }
+
+        return redirect()->route('customer.index')->with('success', $message);
+    }
 }
