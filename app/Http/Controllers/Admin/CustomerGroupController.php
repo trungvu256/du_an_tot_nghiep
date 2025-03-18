@@ -11,13 +11,37 @@ use Illuminate\Http\Request;
 class CustomerGroupController extends Controller
 {
     public function index()
-{
-    $customerGroups = CustomerGroup::all(); // Lấy tất cả nhóm khách hàng
-    
-    $completedUsers = User::whereHas('orders', function ($query) {
-        $query->where('status', Order::STATUS_COMPLETED); // Lọc đơn hàng hoàn tất
-    })->get();
+    {
+        $customerGroups = CustomerGroup::withCount('users')->get();
 
-    return view('admin.customer.index', compact('customerGroups', 'completedUsers'));
-}
+        return view('admin.customer.index', compact('customerGroups'));
+    }
+
+    // Hiển thị form tạo nhóm khách hàng
+    public function create()
+    {
+        return view('admin.customer.add');
+    }
+
+    public function store(Request $request)
+    {
+        // Xác thực dữ liệu
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'min_order_value' => 'required|numeric',
+            'min_order_count' => 'required|integer',
+            'description' => 'nullable|string',
+        ]);
+
+        // Lưu nhóm khách hàng mới
+        CustomerGroup::create([
+            'name' => $request->name,
+            'min_order_value' => $request->min_order_value,
+            'min_order_count' => $request->min_order_count,
+            'description' => $request->description,
+        ]);
+
+        // Chuyển hướng trở lại trang danh sách nhóm khách hàng với thông báo thành công
+        return redirect()->route('customer.index')->with('success', 'Nhóm khách hàng đã được thêm thành công!');
+    }
 }
