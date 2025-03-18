@@ -71,4 +71,9 @@ class User extends Authenticatable
     public function wallet() {
         return $this->hasOne(Wallet::class);
     }
+
+    public function customerGroups()
+    {
+        return $this->belongsToMany(CustomerGroup::class, 'customer_group_user', 'user_id', 'customer_group_id');
+    }
 }

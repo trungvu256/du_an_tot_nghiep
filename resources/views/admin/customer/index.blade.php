@@ -18,8 +18,7 @@
                 <tr>
                     <th>#</th>
                     <th><i class="bi bi-list-stars"></i> Tên nhóm</th>
-                    <th><i class="bi bi-cash-stack"></i> Giá trị đơn tối thiểu</th>
-                    <th><i class="bi bi-cart-check"></i> Số lượng đơn tối thiểu</th>
+                   <th> Số lượng</th>
                     <th><i class="bi bi-info-circle"></i> Mô tả</th>
                     <th><i class="bi bi-tools"></i> Thao tác</th>
                 </tr>
@@ -34,8 +33,7 @@
                             </a>
                         </td>
                         
-                        <td>{{ number_format($group->min_order_value, 2) }} VNĐ</td>
-                        <td>{{ $group->min_order_count }}</td>
+                        <td>{{ $group->users_count }}</td>
                         <td>{{ $group->description }}</td>
                         <td>
                             <div class="d-flex gap-2">
@@ -51,10 +49,10 @@
                                     <button type="submit" class="btn btn-danger btn-sm d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
                                         <i class="bi bi-trash-fill fs-5"></i>
                                     </button>
-</form>
+                                </form>
                             
                                 <!-- Thêm khách hàng vào nhóm -->
-                                <a href="{{ route('customer.assign_customers', $group->id) }}" class="btn btn-info btn-sm d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+<a href="{{ route('customer.assign_customers', $group->id) }}" class="btn btn-info btn-sm d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
                                     <i class="bi bi-person-plus-fill fs-5"></i>
                                 </a>
                             </div>
