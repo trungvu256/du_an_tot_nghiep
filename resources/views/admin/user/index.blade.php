@@ -66,22 +66,30 @@
                             <span class="badge bg-danger"><i class="fas fa-ban"></i> Đã khóa</span>
                             @endif
                         </td>
-                        <td>
-                            <a href="{{ route('admin.edit.user', $user->id) }}" class="btn btn-warning btn-sm">
-                                <i class="fas fa-edit"></i> Chỉnh sửa
-                            </a>
-                            @if($user->status == 0)
-                            <a href="{{ route('admin.delete.user', $user->id) }}" class="btn btn-danger btn-sm"
-                                onclick="return confirm('Bạn có chắc chắn muốn khóa người dùng này không?')">
-                                <i class="fas fa-lock"></i> Khóa
-                            </a>
-                            @else
-                            <a href="{{ route('admin.unban.user', $user->id) }}" class="btn btn-success btn-sm"
-                                onclick="return confirm('Bạn có muốn bỏ khóa người dùng này không?')">
-                                <i class="fas fa-unlock"></i> Bỏ khóa
-                            </a>
-                            @endif
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center align-items-center gap-2">
+                                <a href="{{ route('admin.edit.user', $user->id) }}" 
+                                    class="btn btn-warning btn-sm d-flex align-items-center justify-content-center px-3"
+                                    style="min-width: 100px; height: 30px; margin-top: 10px;">
+                                     <i class="fas fa-edit me-1"></i> Chỉnh sửa
+                                 </a>
+                                
+                                @if($user->status == 0)
+                                    <a href="{{ route('admin.delete.user', $user->id) }}" 
+                                       class="btn btn-danger btn-sm d-flex align-items-center px-3"
+                                       onclick="return confirm('Bạn có chắc chắn muốn khóa người dùng này không?')">
+                                        <i class="fas fa-lock me-1"></i> Khóa
+                                    </a>
+                                @else
+                                    <a href="{{ route('admin.unban.user', $user->id) }}" 
+                                       class="btn btn-success btn-sm d-flex align-items-center px-3"
+                                       onclick="return confirm('Bạn có muốn bỏ khóa người dùng này không?')">
+                                        <i class="fas fa-unlock me-1"></i> Bỏ khóa
+                                    </a>
+                                @endif
+                            </div>
                         </td>
+                        
                     </tr>
                     @endforeach
                 </tbody>
