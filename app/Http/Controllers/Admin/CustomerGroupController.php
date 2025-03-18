@@ -132,4 +132,10 @@ class CustomerGroupController extends Controller
 
         return view('admin.customer.show', compact('group', 'completedOrdersUsers'));
     }
+
+    public function destroy(CustomerGroup $group)
+    {
+        $group->delete(); // Xóa nhóm khách hàng
+        return redirect()->route('customer.index')->with('success', 'Nhóm khách hàng đã được xóa!');
+    }
 }
