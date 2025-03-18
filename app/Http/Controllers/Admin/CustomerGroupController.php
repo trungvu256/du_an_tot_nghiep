@@ -7,6 +7,7 @@ use App\Models\CustomerGroup;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CustomerGroupController extends Controller
 {
@@ -112,5 +113,23 @@ class CustomerGroupController extends Controller
         }
 
         return redirect()->route('customer.index')->with('success', $message);
+    }
+
+    public function show($groupId)
+    {
+        $group = CustomerGroup::findOrFail($groupId);
+
+        $minOrderValue = $group->min_order_value;
+        $minOrderCount = $group->min_order_count;
+
+        DB::enableQueryLog(); // Debug SQL
+
+        $completedOrdersUsers = User::whereHas('customerGroups', function ($query) use ($groupId) {
+            $query->where('customer_group_id', $groupId);
+        })->whereDoesntHave('customerGroups', function ($query) use ($groupId) {
+            $query->where('customer_group_id', '!=', $groupId);
+        })->with('customerGroups')->get();
+
+        return view('admin.customer.show', compact('group', 'completedOrdersUsers'));
     }
 }
