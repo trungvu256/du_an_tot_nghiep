@@ -14,8 +14,16 @@
     <div class="container d-flex justify-content-center">
         <div class="col-md-5">
             <div class="card shadow-lg border-0 rounded-4 p-4">
-                <h3 class="text-center mb-4 fw-bold text-primary">Đăng Nhập</h3>
+                <h3 class="text-center mb-4 fw-bold text-primary">🔑 Đăng Nhập</h3>
 
+                {{-- Hiển thị thông báo lỗi từ session --}}
+                @if (session('error'))
+                <div class="alert alert-danger fw-bold text-center">
+                    {{ session('error') }}
+                </div>
+                @endif
+
+                {{-- Hiển thị lỗi validate --}}
                 @if ($errors->any())
                 <div class="alert alert-danger fw-bold">
                     <ul class="mb-0">
@@ -31,31 +39,29 @@
                     <div class="mb-3">
                         <label for="email" class="form-label fw-bold">📧 Địa chỉ Email</label>
                         <input type="email" name="email" class="form-control rounded-3 shadow-sm fw-bold"
-                            placeholder="Nhập email của bạn" required>
+                            placeholder="Nhập email của bạn" required autofocus>
                     </div>
 
                     <div class="mb-3">
-                        <label for="password" class="form-label fw-bold">🔑 Mật khẩu</label>
+                        <label for="password" class="form-label fw-bold">🔒 Mật khẩu</label>
                         <input type="password" name="password" class="form-control rounded-3 shadow-sm fw-bold"
                             placeholder="Nhập mật khẩu" required>
                     </div>
 
                     <button type="submit" class="btn btn-primary w-100 rounded-3 fw-bold shadow-sm"
                         style="transition: 0.3s;">
-                        Đăng Nhập
+                        🚀 Đăng Nhập
                     </button>
                 </form>
 
                 <hr>
 
                 <div class="text-center fw-bold">
-                    <p class="mb-2">Dành cho người dùng mới?
-                        <a href="{{ route('web.register') }}" class="text-primary fw-bold text-decoration-none">Đăng ký
-                            ngay</a>
+                    <p class="mb-2">Bạn chưa có tài khoản?
+                        <a href="{{ route('web.register') }}" class="text-primary fw-bold text-decoration-none">Đăng ký ngay</a>
                     </p>
                     <p>
-                        <a href="{{ route('web.forget') }}" class="text-danger text-decoration-none">🔄 Quên mật
-                            khẩu?</a>
+                        <a href="{{ route('web.forget') }}" class="text-danger text-decoration-none">🔄 Quên mật khẩu?</a>
                     </p>
                 </div>
             </div>

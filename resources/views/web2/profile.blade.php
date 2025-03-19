@@ -1,12 +1,6 @@
 @extends('web2.layout.master')
-
 @section('content')
-
-<!-- Navbar End -->
-
-
 <div class="container mt-4">
-
     <div class="row">
         <!-- Cột bên trái: Thông tin tài khoản -->
         <div class="col-md-3">
@@ -14,12 +8,12 @@
                 <div class="text-center">
                     <img src="{{ Auth::user()->avatar ? asset('storage/avatars/' . Auth::user()->avatar) : asset('images/anhlogin.jpg') }}"
                         width="50" height="50" class="rounded-circle border" style="object-fit: cover;">
-
+                    <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('images/anhlogin.jpg') }}"
+                    width="50" height="50" class="rounded-circle border" style="object-fit: cover;">
                     <p>Xin chào</p>
                     <h5 class="mt-2"><strong>{{ Auth::user()->name }}</strong></h5>
                     <p class="text-muted">Member</p>
                 </div>
-
                 <hr>
                 <ul class="list-unstyled">
                     <li class="mb-2"><i class="fas fa-user-circle"></i> <a href="#"
@@ -42,6 +36,7 @@
                 <h4 class="text-center">THÔNG TIN TÀI KHOẢN</h4>
                 <div class="text-center">
                     <img src="{{ Auth::user()->avatar ? asset('storage/avatars/' . Auth::user()->avatar) : asset('images/anhlogin.jpg') }}"
+                   <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('images/anhlogin.jpg') }}"
                         width="120" height="120" class="rounded-circle border" style="object-fit: cover;">
 
                 </div>
