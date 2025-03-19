@@ -14,7 +14,81 @@
     <link href="{{ asset('website/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
     <link href="{{ asset('website/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('website/css/style.min.css') }}" rel="stylesheet">
+    <style>
+    /* Định dạng chung cho các thẻ <a> */
+    .nav-link {
+        position: relative;
+        font-size: 14px;
+        font-family: 'Poppins', sans-serif;
+        text-decoration: none;
+        padding-bottom: 5px;
+        transition: color 0.3s ease-in-out;
+    }
+    </style>
 
+
+    <style>
+    /* Màu sắc khi menu được chọn (active) */
+    .nav-link.active {
+        color: #D19C97 !important;
+        /* Đổi thành màu xanh */
+        font-weight: bold;
+        position: relative;
+    }
+
+    /* Gạch chân khi active */
+    </style>
+
+    <style>
+    /* Dropdown menu cải tiến */
+    .dropdown-menu {
+        min-width: 200px;
+        background: white;
+        border-radius: 10px;
+        /* Bo góc */
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        /* Đổ bóng */
+        transform: translateY(10px);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* Hiển thị dropdown khi hover hoặc click */
+    .dropdown:hover .dropdown-menu,
+    .dropdown.show .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    /* Hiệu ứng hover từng item */
+    .dropdown-item {
+        font-size: 14px;
+        font-weight: 500;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    }
+
+    /* Hover đẹp hơn */
+    .dropdown-item:hover {
+
+        color: #D19C97;
+    }
+    </style>
+
+    <style>
+    .icon-menu {
+        max-width: 150px;
+        display: flex;
+        margin-left: 200px;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .dropdown {
+        margin-left: 30px;
+    }
+    </style>
     <style>
     /* Thanh tìm kiếm che menu */
     .search-bar {
@@ -70,50 +144,62 @@
         <div class="row align-items-center py-3 px-xl-5">
             <!-- Logo -->
             <div class="col-lg-3 text-start">
-                <h1 class="m-0 font-weight-semi-bold">Ethereal Noir</h1>
+                <a href="/" class="text-decoration-none">
+                    <h1 class="m-0 display-5 font-weight-semi-bold" style="font-family: 'Montserrat', sans-serif;">
+                        <span class="text-primary font-weight-bold px-3 mr-1">Ethereal</span>Noir
+                    </h1>
+                </a>
+
             </div>
 
             <!-- MENU NAV -->
-            <div class="col-lg-6">
+
+
+            <div class="col-lg-6 ">
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                        <ul class="navbar-nav">
-                            <li class="nav-item"><a class="nav-link active" href="{{ route('web.home') }}">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ route('web.shop') }}">Shop</a></li>
-                            <li class="nav-item"><a class="nav-link" href="">Shop
-                                    Detail</a></li>
+                        <ul class="navbar-nav position-relative" id="navbar-menu">
+                            <li class="nav-item px-3">
+                                <a class="nav-link {{ request()->routeIs('web.home') ? 'active' : '' }}"
+                                    href="{{ route('web.home') }}">TRANG CHỦ</a>
+                            </li>
+                            <li class="nav-item px-2">
+                                <a class="nav-link {{ request()->routeIs('web.shop') ? 'active' : '' }}"
+                                    href="{{ route('web.shop') }}">SẢN PHẨM</a>
+                            </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Pages</a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{{ route('user.cart') }}">Shopping Cart</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('user.checkout') }}">Checkout</a></li>
+                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#"
+                                    data-bs-toggle="dropdown">
+                                    NƯỚC HOA
+
+                                </a>
+                                <ul class="dropdown-menu shadow border-0 rounded-3 p-2 animate-dropdown">
+                                    <li><a class="dropdown-item py-2 px-3 rounded-2" href="#">Nước hoa nam</a></li>
+                                    <li><a class="dropdown-item py-2 px-3 rounded-2" href="#">Nước hoa nữ</a></li>
                                 </ul>
                             </li>
-                            <li class="nav-item"><a class="nav-link" href="{{ route('user.contact') }}">Contact</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ route('web.listBlog.blog') }}">Blog</a>
+
+
+
+                            <li class="nav-item px-2">
+                                <a class="nav-link {{ request()->routeIs('web.listBlog.blog') ? 'active' : '' }}"
+                                    href="{{ route('web.listBlog.blog') }}">BÀI VIẾT</a>
+                            </li>
+                            <li class="nav-item px-2">
+                                <a class="nav-link {{ request()->routeIs('user.contact') ? 'active' : '' }}"
+                                    href="{{ route('user.contact') }}">LIÊN HỆ</a>
                             </li>
                         </ul>
                     </div>
+
+
                 </nav>
             </div>
 
 
-            <style>
-            .icon-menu {
-                max-width: 150px;
-                display: flex;
-                margin-left: 200px;
-                align-items: center;
-                justify-content: space-between;
-            }
-
-            .dropdown {
-                margin-left: 30px;
-            }
-            </style>
             <!-- ICONS -->
             <div class="col-lg-3">
                 <div class="icon-menu">
@@ -164,6 +250,7 @@
         <input type="text" class="form-control w-50" placeholder="Tìm kiếm...">
     </div>
 
+
     <script>
     // Xử lý mở/đóng thanh tìm kiếm
     document.getElementById("searchIcon").addEventListener("click", function(event) {
@@ -189,3 +276,4 @@
     </body>
 
 </html>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
