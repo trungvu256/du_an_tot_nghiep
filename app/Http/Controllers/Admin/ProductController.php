@@ -46,17 +46,19 @@ class ProductController extends Controller
             'style' => 'nullable|string|max:255',
             'fragrance_group' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048', // Ảnh chính
+            'images.*' => 'nullable|image|mimes:jpg,png,jpeg|max:2048', // Ảnh phụ
             'variants' => 'nullable|string',
         ]);
-
-        // Xử lý hình ảnh sản phẩm chính
+    
+        // 📸 Xử lý ảnh chính
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('products', 'public');
         } else {
             $imagePath = null;
         }
-
+    
+        // 🔥 Tạo sản phẩm
         $product = Product::create([
             'product_code' => $request->product_code,
             'name' => $request->name,
@@ -68,21 +70,31 @@ class ProductController extends Controller
             'fragrance_group' => $request->fragrance_group,
             'description' => $request->description,
             'image' => $imagePath,
-            'gender' => $request->gender,
-            'fragrance_group' => $request->fragrance_group ?? 'Unknown',
+            'gender' => $request->gender ?? null,
         ]);
-
-        // 🛑 Kiểm tra xem có lỗi khi tạo sản phẩm không
+    
         if (!$product) {
             return redirect()->back()->with('error', 'Lỗi khi tạo sản phẩm');
         }
-
-        // 🔥 Kiểm tra dữ liệu biến thể có đúng không
+    
+        // 🖼️ Xử lý ảnh phụ
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $subImage) {
+                if ($subImage->isValid()) { // Kiểm tra file hợp lệ
+                    $subImagePath = $subImage->store('product_images', 'public'); // Lưu ảnh vào storage
+    
+                    Images::create([
+                        'product_id' => $product->id,
+                        'image' => $subImagePath, // ✅ Đảm bảo cột `image` có giá trị
+                    ]);
+                }
+            }
+        }
+    
+        // 🔍 Kiểm tra & xử lý biến thể
         Log::info('Dữ liệu biến thể:', ['variants' => $request->variants]);
-
-        // Xử lý biến thể (ProductVariant)
+    
         $variants = json_decode($request->variants, true);
-
         if ($variants && is_array($variants)) {
             foreach ($variants as $variant) {
                 ProductVariant::create([
@@ -98,9 +110,11 @@ class ProductController extends Controller
         } else {
             Log::error('Dữ liệu biến thể không hợp lệ:', ['variants' => $variants]);
         }
-
+    
         return redirect()->route('admin.product')->with('success', 'Thêm sản phẩm thành công');
     }
+    
+    
 
     public function show($id)
     {

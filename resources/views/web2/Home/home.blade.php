@@ -218,11 +218,19 @@ body {
                 <div class="card-body text-center p-3">
                     <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
                     <div class="d-flex justify-content-center align-items-center">
-                        <h6 class="text-danger font-weight-bold">{{ number_format($product->price) }}₫</h6>
-                        @if ($product->price_sale)
-                        <h6 class="text-muted ml-2"><del>{{ number_format($product->price_sale) }}₫</del></h6>
-                        @endif
+                        @php
+                            $minPrice = $product->variants->min('price');
+                            $maxPrice = $product->variants->max('price');
+                        @endphp
+                    
+                        <h6 class="text-danger font-weight-bold">
+                            {{ number_format($minPrice) }}₫
+                            @if ($minPrice !== $maxPrice)
+                                - {{ number_format($maxPrice) }}₫
+                            @endif
+                        </h6>
                     </div>
+                    
                 </div>
                 <div class="card-footer bg-light border-top d-flex justify-content-between">
                     <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
@@ -300,14 +308,19 @@ body {
                     <div class="card-body text-center p-3">
                         <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
                         <div class="d-flex justify-content-center align-items-center">
+                            @php
+                                $minPrice = $product->variants->min('price');
+                                $maxPrice = $product->variants->max('price');
+                            @endphp
+                        
                             <h6 class="text-danger font-weight-bold">
-                                {{ number_format($product->price) }}₫</h6>
-                            @if ($product->price_sale)
-                            <h6 class="text-muted ml-2">
-                                <del>{{ number_format($product->price_sale) }}₫</del>
+                                {{ number_format($minPrice) }}₫
+                                @if ($minPrice !== $maxPrice)
+                                    - {{ number_format($maxPrice) }}₫
+                                @endif
                             </h6>
-                            @endif
                         </div>
+                        
                     </div>
                     <div class="card-footer bg-light border-top d-flex justify-content-between">
                         <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
@@ -367,14 +380,19 @@ body {
                     <div class="card-body text-center p-3">
                         <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
                         <div class="d-flex justify-content-center align-items-center">
+                            @php
+                                $minPrice = $product->variants->min('price');
+                                $maxPrice = $product->variants->max('price');
+                            @endphp
+                        
                             <h6 class="text-danger font-weight-bold">
-                                {{ number_format($product->price) }}₫</h6>
-                            @if ($product->price_sale)
-                            <h6 class="text-muted ml-2">
-                                <del>{{ number_format($product->price_sale) }}₫</del>
+                                {{ number_format($minPrice) }}₫
+                                @if ($minPrice !== $maxPrice)
+                                    - {{ number_format($maxPrice) }}₫
+                                @endif
                             </h6>
-                            @endif
                         </div>
+                        
                     </div>
                     <div class="card-footer bg-light border-top d-flex justify-content-between">
                         <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
