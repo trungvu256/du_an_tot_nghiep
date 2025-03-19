@@ -56,7 +56,8 @@
                                                 @method('DELETE')
                                                 <button type="submit" class="delete-btn"
                                                     style="background: none; border: none; padding: 0;"
-                                                    title="Xóa vĩnh viễn">
+                                                    title="Xóa vĩnh viễn"
+                                                    onclick="return confirm('Bạn có chắc chắn muốn xóa không?')">
                                                     <i class="bi bi-trash text-danger" style="font-size: 1.8em;"></i>
                                                 </button>
                                             </form>
