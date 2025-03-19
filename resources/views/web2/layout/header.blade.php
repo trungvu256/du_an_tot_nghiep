@@ -235,7 +235,7 @@
 
                     <!-- Icon giỏ hàng -->
                     <div class="cart-icon">
-                        <a href="#" class="text-dark">
+                        <a href="{{ route('user.cart') }}" class="text-dark">
                             <i class="fas fa-shopping-cart fa-lg"></i>
                             <span class="cart-badge">0</span>
                         </a>

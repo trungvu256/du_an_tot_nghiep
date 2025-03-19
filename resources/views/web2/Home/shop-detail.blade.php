@@ -129,10 +129,14 @@
                         </button>
                     </div>
                 </div>
-                <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Thêm vào giỏ </button>
+                <a href="{{ route('user.cart') }}"> <button class="btn btn-primary px-3"><i
+                            class="fa fa-shopping-cart mr-1"></i> Thêm vào giỏ </button></a>
+
 
             </div>
-            <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Mua ngay</button>
+            <a href="{{ route('user.checkout') }}"> <button class="btn btn-primary px-3"><i
+                        class="fa fa-shopping-cart mr-1"></i> Mua ngay</button></a>
+
             <div class="d-flex pt-2">
                 <p class="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
                 <div class="d-inline-flex">
@@ -193,7 +197,7 @@
                             class="btn btn-outline-primary btn-sm mr-2">
                             <i class="fas fa-eye"></i> Xem chi tiết
                         </a>
-                        <a href="#" class="btn btn-outline-success btn-sm">
+                        <a href="{{ route('user.cart') }}" class="btn btn-outline-success btn-sm">
                             <i class="fas fa-shopping-cart"></i> Mua ngay
                         </a>
                     </div>
@@ -243,7 +247,7 @@
                             class="btn btn-outline-primary btn-sm mr-2">
                             <i class="fas fa-eye"></i> Xem chi tiết
                         </a>
-                        <a href="#" class="btn btn-outline-success btn-sm">
+                        <a href="{{ route('user.cart') }}" class="btn btn-outline-success btn-sm">
                             <i class="fas fa-shopping-cart"></i> Mua ngay
                         </a>
                     </div>
@@ -294,7 +298,7 @@
                             class="btn btn-outline-primary btn-sm mr-2">
                             <i class="fas fa-eye"></i> Xem chi tiết
                         </a>
-                        <a href="#" class="btn btn-outline-success btn-sm">
+                        <a href="{{ route('user.cart') }}" class="btn btn-outline-success btn-sm">
                             <i class="fas fa-shopping-cart"></i> Mua ngay
                         </a>
                     </div>
