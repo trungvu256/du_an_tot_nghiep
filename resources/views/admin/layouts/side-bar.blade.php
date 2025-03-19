@@ -122,6 +122,23 @@
                             <li class="nav-item">
                                 <a href="" class="nav-link">Bảng giá</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('attributes.index') }}" class="nav-link">Thuộc tính</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!--Thương hiệu-->
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#menuBrands" data-bs-toggle="collapse" role="button">
+                        <i class="bi bi-tag"></i> <span>Thương hiệu</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="menuBrands" data-bs-parent="#accordionSidebar">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('brands.index') }}" class="nav-link">Danh sách thương hiệu</a>
+                            </li>
                         </ul>
                     </div>
                 </li>

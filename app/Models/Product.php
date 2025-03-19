@@ -16,18 +16,20 @@ class Product extends Model
         'product_code',
         'name',
         'slug',
+        'sku',
         'description',
         'price',
         'price_sale',
         'image',
         'gender',
-        'brand',
+        'brand_id',
         'longevity',
         'concentration',
         'origin',
         'style',
         'fragrance_group',
-        'stock_quantity',
+        'stock',
+        'is_active',
         'catalogue_id',
         'created_at',
         'updated_at',
@@ -90,8 +92,37 @@ class Product extends Model
     }
     public function variants()
     {
-        return $this->hasMany(Variant::class);
+        return $this->hasMany(ProductVariant::class);
     }
+    /**
+     * Lấy danh sách thuộc tính có trong các biến thể của sản phẩm này.
+     */
+    // public function attributes()
+    // {
+    //     return $this->hasManyThrough(
+    //         Attribute::class,
+    //         ProductVariantAttribute::class,
+    //         'product_variant_id',  // Khóa ngoại trong product_variant_attributes
+    //         'id',                  // Khóa chính trong attributes
+    //         'id',                  // Khóa chính trong products
+    //         'attribute_id'          // Khóa ngoại trong product_variant_attributes
+    //     )->distinct();
+    // }
+
+    /**
+     * Lấy danh sách giá trị thuộc tính có trong các biến thể của sản phẩm này.
+     */
+    // public function attributeValues()
+    // {
+    //     return $this->hasManyThrough(
+    //         AttributeValue::class,
+    //         ProductVariantAttribute::class,
+    //         'product_variant_id',
+    //         'id',
+    //         'id',
+    //         'attribute_value_id'
+    //     )->distinct();
+    // }
     public function comments()
     {
         return $this->hasMany(Comment::class, 'id_product');
@@ -100,5 +131,28 @@ class Product extends Model
     public function discounts()
     {
         return $this->belongsToMany(Discount::class, 'discounted_products');
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function calculateTotalStock()
+    {
+        return $this->variants()->sum('stock');
+    }
+
+    // cập nhật lại tồn kho sản phẩm
+    public function updateTotalStock()
+    {
+        $this->stock = $this->calculateTotalStock();
+        $this->save();
+    }
+    public function updateTotalStock2()
+    {
+        $totalStock = $this->stock = $this->calculateTotalStock();
+        $this->save();
+        return $totalStock;
     }
 }

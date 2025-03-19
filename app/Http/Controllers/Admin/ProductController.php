@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
-use App\Models\Variant;
+use App\Models\ProductVariant;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -30,7 +30,7 @@ class ProductController extends Controller
             });
         }
         $products = $query->paginate(10);
-        $variantNames = Variant::distinct()->pluck('name');
+        $variantNames = ProductVariant::distinct()->pluck('name');
 
         return view('admin.product.index', compact('products', 'variantNames'));
     }
@@ -43,50 +43,9 @@ class ProductController extends Controller
         $catalogues = Catalogue::all();
         return view('admin.product.add', compact('title', 'catalogues'));
     }
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'price' => 'required|numeric|min:0|max:999999999999',
-            'price_sale' => 'nullable|numeric|min:0|max:999999999999|lte:price',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'gender' => 'required|string|max:50',
-            'brand' => 'required|string|max:100',
-            'longevity' => 'required|string|max:100',
-            'concentration' => 'required|string|max:100',
-            'origin' => 'required|string|max:100',
-            'style' => 'required|string|max:100',
-            'fragrance_group' => 'required|string|max:100',
-            'stock_quantity' => 'required|integer|min:0',
-            'catalogue_id' => 'required|exists:catalogues,id',
-            'images' => 'nullable|array',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-
-            'variants' => 'nullable|array',
-            'variants.*.name' => 'required|string|max:100',
-            'variants.*.price' => 'required|numeric|min:0|max:999999999999',
-        ], [
-            'name.required' => 'Tên sản phẩm không được để trống.',
-            'description.required' => 'Mô tả sản phẩm không được để trống.',
-            'price.required' => 'Giá sản phẩm không được để trống.',
-            'image.required' => 'Ảnh sản phẩm không được để trống.',
-            'image.image' => 'File tải lên phải là hình ảnh.',
-            'image.mimes' => 'Ảnh phải có định dạng jpeg, png, jpg, hoặc gif.',
-            'image.max' => 'Dung lượng ảnh tối đa là 2MB.',
-            'gender.required' => 'Giới tính sản phẩm không được để trống.',
-            'brand.required' => 'Thương hiệu không được để trống.',
-            'longevity.required' => 'Độ lưu hương không được để trống.',
-            'concentration.required' => 'Nồng độ không được để trống.',
-            'origin.required' => 'Xuất xứ không được để trống.',
-            'style.required' => 'Phong cách không được để trống.',
-            'fragrance_group.required' => 'Nhóm hương không được để trống.',
-            'stock_quantity.required' => 'Số lượng tồn kho không được để trống.',
-            'catalogue_id.exists' => 'Danh mục sản phẩm không hợp lệ.',
-            'variants.*.name.required' => 'Tên biến thể không được để trống.',
-            'variants.*.price.required' => 'Giá biến thể không được để trống.',
-        ]);
-
+        $validatedData = $request->validated();
 
         if (!empty($request->variants)) {
             $variantsWithSize = collect($request->variants)->map(function ($variant) {
@@ -156,7 +115,7 @@ class ProductController extends Controller
 
         if (!empty($request->variants)) {
             foreach ($request->variants as $variant) {
-                Variant::create([
+                ProductVariant::create([
                     'product_id' => $product->id,
                     'name' => $variant['name'],
                     'price' => $variant['price'],
@@ -173,7 +132,7 @@ class ProductController extends Controller
         $catalogues = Catalogue::all();
         $product = Product::with(['catalogue', 'comments.user'])->find($id);
         $description_images = Images::where('product_id', $id)->get();
-        $variants = Variant::where('product_id', $id)->get();
+        $variants = ProductVariant::where('product_id', $id)->get();
 
         return view('admin.product.show', compact('product', 'catalogues', 'description_images', 'variants', 'title'));
     }
@@ -268,7 +227,7 @@ class ProductController extends Controller
 
         if (!empty($request->variants)) {
 
-            Variant::where('product_id', $product->id)->delete();
+            ProductVariant::where('product_id', $product->id)->delete();
 
 
             $variantsWithSize = collect($request->variants)->map(function ($variant) {
@@ -296,7 +255,7 @@ class ProductController extends Controller
 
 
             foreach ($request->variants as $variant) {
-                Variant::create([
+                ProductVariant::create([
                     'product_id' => $product->id,
                     'name' => $variant['name'],
                     'price' => $variant['price'],

@@ -141,7 +141,7 @@
         </div>
 
         <!-- Variants -->
-        <div class="mb-3">
+        {{-- <div class="mb-3">
             <label>Variants</label>
             <div id="variant-container">
                 @if(old('variants'))
@@ -177,7 +177,7 @@
                 @endif
             </div>
             <button type="button" class="btn btn-success mt-2" id="add-variant">Add Variant</button>
-        </div>
+        </div> --}}
 
         <div class="mb-3 mt-3">
             <button type="submit" class="btn btn-primary">Submit</button>
