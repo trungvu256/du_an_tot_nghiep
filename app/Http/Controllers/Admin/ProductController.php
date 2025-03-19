@@ -20,11 +20,11 @@ use Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {
     public function index(Request $request)
-{
-    $products = Product::with(['brand', 'catalogue', 'variants'])->get();
+    {
+        $products = Product::with(['brand', 'catalogue', 'variants'])->get();
 
-    return view('admin.product.index', compact('products'));
-}
+        return view('admin.product.index', compact('products'));
+    }
 
 
 
@@ -49,14 +49,14 @@ class ProductController extends Controller
             'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'variants' => 'nullable|string',
         ]);
-    
+
         // Xử lý hình ảnh sản phẩm chính
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('products', 'public');
         } else {
             $imagePath = null;
         }
-    
+
         $product = Product::create([
             'product_code' => $request->product_code,
             'name' => $request->name,
@@ -71,18 +71,18 @@ class ProductController extends Controller
             'gender' => $request->gender,
             'fragrance_group' => $request->fragrance_group ?? 'Unknown',
         ]);
-    
+
         // 🛑 Kiểm tra xem có lỗi khi tạo sản phẩm không
         if (!$product) {
             return redirect()->back()->with('error', 'Lỗi khi tạo sản phẩm');
         }
-    
+
         // 🔥 Kiểm tra dữ liệu biến thể có đúng không
         Log::info('Dữ liệu biến thể:', ['variants' => $request->variants]);
-    
+
         // Xử lý biến thể (ProductVariant)
         $variants = json_decode($request->variants, true);
-    
+
         if ($variants && is_array($variants)) {
             foreach ($variants as $variant) {
                 ProductVariant::create([
@@ -98,10 +98,10 @@ class ProductController extends Controller
         } else {
             Log::error('Dữ liệu biến thể không hợp lệ:', ['variants' => $variants]);
         }
-    
+
         return redirect()->route('admin.product')->with('success', 'Thêm sản phẩm thành công');
     }
-    
+
     public function show($id)
     {
         $title = 'Detail Product';
@@ -117,130 +117,102 @@ class ProductController extends Controller
     {
         $title = 'Edit Product';
         $catalogues = Catalogue::all();
-        $product = Product::find($id);
-        return view('admin.product.edit', compact('product', 'catalogues', 'title'));
+        $brands = Brand::all();
+        $product = Product::findOrFail($id);
+
+        // Get the variants associated with the product
+        $variants = ProductVariant::where('product_id', $id)->get(); // Fetch the variants
+
+        return view('admin.product.edit', compact('product', 'catalogues', 'brands', 'variants', 'title')); // Pass variants to the view
     }
 
 
     public function update(Request $request, $id)
     {
-        $validatedData = $request->validate([
+        $request->validate([
+            'product_code' => 'required|unique:products,product_code,' . $id,
             'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'price' => 'required|numeric|min:0|max:999999999999',
-            'price_sale' => 'nullable|numeric|min:0|max:999999999999|lte:price',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'gender' => 'required|string|max:50',
-            'brand' => 'required|string|max:100',
-            'longevity' => 'required|string|max:100',
-            'concentration' => 'required|string|max:100',
-            'origin' => 'required|string|max:100',
-            'style' => 'required|string|max:100',
-            'fragrance_group' => 'required|string|max:100',
-            'stock_quantity' => 'required|integer|min:0',
+            'brand_id' => 'required|exists:brands,id',
             'catalogue_id' => 'required|exists:catalogues,id',
-            'images' => 'nullable|array',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-
-            'variants' => 'nullable|array',
-            'variants.*.name' => 'required|string|max:100',
-            'variants.*.price' => 'required|numeric|min:0|max:999999999999',
+            'origin' => 'nullable|string|max:255',
+            'style' => 'nullable|string|max:255',
+            'fragrance_group' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'additional_images' => 'nullable|array',  // New validation rule for additional images
+            'additional_images.*' => 'image|mimes:jpg,png,jpeg|max:2048',  // Validate each additional image
+            'variants' => 'nullable|string',
         ]);
 
+        // Tìm sản phẩm theo ID
         $product = Product::findOrFail($id);
 
-
+        // Xử lý hình ảnh sản phẩm chính (nếu có)
         if ($request->hasFile('image')) {
-
+            // Xóa ảnh cũ nếu có
             if ($product->image) {
                 Storage::delete('public/' . $product->image);
             }
-
-
-            $imagePath = $request->file('image')->store('images/products', 'public');
+            // Lưu ảnh mới
+            $imagePath = $request->file('image')->store('products', 'public');
         } else {
+            // Giữ nguyên ảnh cũ nếu không có ảnh mới
             $imagePath = $product->image;
         }
 
-
+        // Cập nhật thông tin sản phẩm
         $product->update([
-            'name' => $validatedData['name'],
-            'slug' => Str::slug($validatedData['name']),
-            'description' => $validatedData['description'],
-            'price' => $validatedData['price'],
-            'price_sale' => $validatedData['price_sale'],
+            'product_code' => $request->product_code,
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+            'brand_id' => $request->brand_id,
+            'catalogue_id' => $request->catalogue_id,
+            'origin' => $request->origin,
+            'style' => $request->style,
+            'fragrance_group' => $request->fragrance_group ?? 'Unknown',
+            'description' => $request->description,
             'image' => $imagePath,
-            'gender' => $validatedData['gender'],
-            'brand' => $validatedData['brand'],
-            'longevity' => $validatedData['longevity'],
-            'concentration' => $validatedData['concentration'],
-            'origin' => $validatedData['origin'],
-            'style' => $validatedData['style'],
-            'fragrance_group' => $validatedData['fragrance_group'],
-            'stock_quantity' => $validatedData['stock_quantity'],
-            'catalogue_id' => $validatedData['catalogue_id'],
+            'gender' => $request->gender,
         ]);
 
-
-        if ($request->hasFile('images')) {
-
-            $oldImages = Images::where('product_id', $product->id)->get();
-            foreach ($oldImages as $oldImage) {
-                Storage::delete('public/' . $oldImage->image);
-                $oldImage->delete();
-            }
-
-
-            foreach ($request->file('images') as $image) {
-                $imagePath = $image->store('images/products/descriptions', 'public');
-                Images::create([
-                    'product_id' => $product->id,
-                    'image' => $imagePath,
+        // Xử lý ảnh phụ (nếu có)
+        if ($request->hasFile('additional_images')) {
+            foreach ($request->file('additional_images') as $image) {
+                $additionalImagePath = $image->store('product_images', 'public');
+                // Lưu thông tin ảnh phụ vào cơ sở dữ liệu
+                $product->images()->create([
+                    'image_path' => $additionalImagePath,
                 ]);
             }
         }
 
+        // Kiểm tra và xử lý dữ liệu biến thể
+        Log::info('Dữ liệu biến thể:', ['variants' => $request->variants]);
 
-        if (!empty($request->variants)) {
+        $variants = json_decode($request->variants, true);
 
-            ProductVariant::where('product_id', $product->id)->delete();
-
-
-            $variantsWithSize = collect($request->variants)->map(function ($variant) {
-                preg_match('/\d+/', $variant['name'], $matches);
-                return [
-                    'name' => $variant['name'],
-                    'size' => isset($matches[0]) ? (int) $matches[0] : null,
-                    'price' => $variant['price'],
-                ];
-            });
-
-            $sortedVariants = $variantsWithSize->sortBy('size')->values();
-            $previousVariant = null;
-
-            foreach ($sortedVariants as $variant) {
-                if ($previousVariant !== null) {
-                    if ($variant['size'] > $previousVariant['size'] && $variant['price'] < $previousVariant['price']) {
-                        return back()->withErrors([
-                            'variants' => "Giá của biến thể {$variant['name']} không thể thấp hơn biến thể {$previousVariant['name']}.",
-                        ])->withInput();
-                    }
-                }
-                $previousVariant = $variant;
+        if ($variants && is_array($variants)) {
+            foreach ($variants as $variant) {
+                ProductVariant::updateOrCreate(
+                    ['product_id' => $product->id, 'id' => $variant['id'] ?? null],
+                    [
+                        'size' => $variant['size'],
+                        'concentration' => $variant['concentration'],
+                        'special_edition' => $variant['special_edition'] ?? null,
+                        'price' => $variant['price'],
+                        'price_sale' => $variant['sale_price'] ?? null,
+                        'stock_quantity' => $variant['stock'],
+                    ]
+                );
             }
-
-
-            foreach ($request->variants as $variant) {
-                ProductVariant::create([
-                    'product_id' => $product->id,
-                    'name' => $variant['name'],
-                    'price' => $variant['price'],
-                ]);
-            }
+        } else {
+            Log::error('Dữ liệu biến thể không hợp lệ:', ['variants' => $variants]);
         }
 
-        return redirect()->route('admin.product')->with('success', 'Cập nhật sản phẩm thành công.');
+        return redirect()->route('admin.product')->with('success', 'Cập nhật sản phẩm thành công');
     }
+
+
 
     public function delete($id)
     {

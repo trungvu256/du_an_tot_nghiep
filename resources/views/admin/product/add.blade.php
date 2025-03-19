@@ -137,11 +137,12 @@
                     <div class="col-md-2">
                         <label class="form-label">Nồng độ tinh dầu</label>
                         <select class="form-select" id="variant_concentration">
-                            <option value="EDP">EDP</option>
-                            <option value="EDT">EDT</option>
-                            <option value="EDC">EDC</option>
-                            <option value="Fraiche">Fraiche</option>
-                            <option value="Parfum">Parfum</option>
+                            <option value="1%">1%</option>
+                            <option value="5%">5%</option>
+                            <option value="10%">10%</option>
+                            <option value="20%">20%</option>
+                            <option value="30%">30%</option>
+                            
                         </select>
                     </div>
                     <div class="col-md-2">
