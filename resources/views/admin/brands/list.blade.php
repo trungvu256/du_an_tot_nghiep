@@ -73,7 +73,8 @@
                                                         @method('DELETE')
                                                         <button type="submit" class="delete-btn"
                                                             style="background: none; border: none; padding: 0;"
-                                                            title="Xóa">
+                                                            title="Xóa"
+                                                            onclick="return confirm('Bạn có chắc chắn muốn đưa vào thùng rác không?')">
                                                             <i class="bi bi-trash text-danger"
                                                                 style="font-size: 1.8em;"></i>
                                                         </button>
