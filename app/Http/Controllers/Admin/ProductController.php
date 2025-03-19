@@ -38,7 +38,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'product_code' => 'required|unique:products,product_code',
+            // 'product_code' => 'required|unique:products,product_code',
             'name' => 'required|string|max:255',
             'brand_id' => 'required|exists:brands,id',
             'catalogue_id' => 'required|exists:catalogues,id',
@@ -57,8 +57,10 @@ class ProductController extends Controller
             $imagePath = null;
         }
 
+        $product_code = 'SP' . date('YmdHis') . strtoupper(substr(uniqid(), -4));
+
         $product = Product::create([
-            'product_code' => $request->product_code,
+            'product_code' => $product_code,
             'name' => $request->name,
             'slug' => Str::slug($request->name),
             'brand_id' => $request->brand_id,
