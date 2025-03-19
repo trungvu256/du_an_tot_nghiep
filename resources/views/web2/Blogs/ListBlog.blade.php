@@ -1,7 +1,16 @@
 @extends('web2.layout.master')
 
 @section('content')
-
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Bài viết</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="">Trang chủ</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Bài viết</p>
+        </div>
+    </div>
+</div>
 <!-- Navbar End -->
 <div class="container mt-4">
     <div class="row">
@@ -13,7 +22,8 @@
             <div class="text-center mt-3">
                 @if ($blogs->hasMorePages())
                 <button id="load-more-btn" class="btn btn-primary" data-page="{{ $blogs->currentPage() + 1 }}">
-                    Xem thêm {{ $blogs->total() - $blogs->perPage() }}
+                    Xem thêm
+                    <!-- {{ $blogs->total() - $blogs->perPage() }} -->
                 </button>
                 @endif
             </div>

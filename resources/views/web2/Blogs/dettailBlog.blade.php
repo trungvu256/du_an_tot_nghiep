@@ -3,7 +3,18 @@
 @section('content')
 
 <!-- Navbar End -->
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Bài viết</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="">Trang chủ</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Bài viết</p>
+        </div>
+    </div>
+</div>
 <div class="container mt-4">
+
     <!-- Nội dung bài viết -->
     <div class="row justify-content-center">
         <div class="col-lg-9">

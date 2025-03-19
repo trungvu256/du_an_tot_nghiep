@@ -400,6 +400,7 @@ body {
 
 
     <body>
+
         <div class="container py-5">
             <div class="text-center mb-4">
                 <h2 class="section-title px-5"><span class="px-2">Bài viết</span></h2>
