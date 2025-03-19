@@ -5,57 +5,7 @@
 
 
 <!-- Navbar Start -->
-<div class="container-fluid">
-    <div class="row border-top px-xl-5">
-        <div class="col-lg-3 d-none d-lg-block">
-            <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100"
-                data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
-                <h6 class="m-0">Categories</h6>
-                <i class="fa fa-angle-down text-dark"></i>
-            </a>
-            <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light"
-                id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
-                <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link" data-toggle="dropdown">Dresses <i
-                                class="fa fa-angle-down float-right mt-1"></i></a>
-                        <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
-                            <a href="" class="dropdown-item">Men's Dresses</a>
-                            <a href="" class="dropdown-item">Women's Dresses</a>
-                            <a href="" class="dropdown-item">Baby's Dresses</a>
-                        </div>
-                    </div>
-                    <a href="" class="nav-item nav-link">Shirts</a>
-                    <a href="" class="nav-item nav-link">Jeans</a>
-                    <a href="" class="nav-item nav-link">Swimwear</a>
-                    <a href="" class="nav-item nav-link">Sleepwear</a>
-                    <a href="" class="nav-item nav-link">Sportswear</a>
-                    <a href="" class="nav-item nav-link">Jumpsuits</a>
-                    <a href="" class="nav-item nav-link">Blazers</a>
-                    <a href="" class="nav-item nav-link">Jackets</a>
-                    <a href="" class="nav-item nav-link">Shoes</a>
-                </div>
-            </nav>
-        </div>
-        <div class="col-lg-9">
-            <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
-                <a href="" class="text-decoration-none d-block d-lg-none">
-                    <h1 class="m-0 display-5 font-weight-semi-bold"><span
-                            class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
-                </a>
-                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                    @include('web2.layout.menu')
-                    <div class="navbar-nav ml-auto py-0">
 
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </div>
-</div>
 <!-- Navbar End -->
 
 
@@ -75,32 +25,32 @@
 
 <!-- Shop Detail Start -->
 <div class="container-fluid py-5">
-         <div class="row px-xl-5">
-          
-            <div class="col-lg-5 pb-5">
-                <div id="product-carousel" class="carousel slide" data-ride="carousel">
-                    <div class="carousel-inner border">
-                        @foreach ($description_images as $key => $image)
-                            <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                                <img class="w-100 h-100" src="{{ asset('storage/'.$image->image) }}" alt="Image">
-                            </div>
-                        @endforeach
+    <div class="row px-xl-5">
+
+        <div class="col-lg-5 pb-5">
+            <div id="product-carousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner border">
+                    @foreach ($description_images as $key => $image)
+                    <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                        <img class="w-100 h-100" src="{{ asset('storage/'.$image->image) }}" alt="Image">
                     </div>
-                    <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
-                        <i class="fa fa-2x fa-angle-left text-dark"></i>
-                    </a>
-                    <a class="carousel-control-next" href="#product-carousel" data-slide="next">
-                        <i class="fa fa-2x fa-angle-right text-dark"></i>
-                    </a>
+                    @endforeach
                 </div>
-                
+                <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
+                    <i class="fa fa-2x fa-angle-left text-dark"></i>
+                </a>
+                <a class="carousel-control-next" href="#product-carousel" data-slide="next">
+                    <i class="fa fa-2x fa-angle-right text-dark"></i>
+                </a>
+            </div>
+
         </div>
 
         <div class="col-lg-7 pb-5">
-            
+
             <h3 class="font-weight-semi-bold">{{$detailproduct->name}}</h3>
-       
-        
+
+
             <div class="d-flex mb-3">
                 <div class="text-primary mr-2">
                     <small class="fas fa-star"></small>
@@ -220,44 +170,46 @@
     </div>
 
     @if ($relatedProducts->isNotEmpty())
-        <div class="swiper mySwiper">
-            <div class="swiper-wrapper">
-                @foreach ($relatedProducts as $relatedProduct)
-                    <div class="swiper-slide">
-                        <div class="card product-item border-0 shadow-sm">
-                            <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                <img class="img-fluid w-100" src="{{ asset('storage/'.$relatedProduct->image) }}" alt="{{ $relatedProduct->name }}">
-                            </div>
-                            <div class="card-body text-center p-3">
-                                <h6 class="text-truncate mb-3">{{ $relatedProduct->name }}</h6>
-                                <div class="d-flex justify-content-center">
-                                    <h6 class="text-danger font-weight-bold">{{ number_format($relatedProduct->price) }}₫</h6>
-                                </div>
-                            </div>
-                            <div class="card-footer bg-light border-top d-flex justify-content-center">
-                                <a href="{{ route('web.shop-detail', ['id' => $relatedProduct->id]) }}" class="btn btn-outline-primary btn-sm mr-2">
-                                    <i class="fas fa-eye"></i> Xem chi tiết
-                                </a>
-                                <a href="#" class="btn btn-outline-success btn-sm">
-                                    <i class="fas fa-shopping-cart"></i> Mua ngay
-                                </a>
-                            </div>
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+            @foreach ($relatedProducts as $relatedProduct)
+            <div class="swiper-slide">
+                <div class="card product-item border-0 shadow-sm">
+                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                        <img class="img-fluid w-100" src="{{ asset('storage/'.$relatedProduct->image) }}"
+                            alt="{{ $relatedProduct->name }}">
+                    </div>
+                    <div class="card-body text-center p-3">
+                        <h6 class="text-truncate mb-3">{{ $relatedProduct->name }}</h6>
+                        <div class="d-flex justify-content-center">
+                            <h6 class="text-danger font-weight-bold">{{ number_format($relatedProduct->price) }}₫</h6>
                         </div>
                     </div>
-                @endforeach
+                    <div class="card-footer bg-light border-top d-flex justify-content-center">
+                        <a href="{{ route('web.shop-detail', ['id' => $relatedProduct->id]) }}"
+                            class="btn btn-outline-primary btn-sm mr-2">
+                            <i class="fas fa-eye"></i> Xem chi tiết
+                        </a>
+                        <a href="#" class="btn btn-outline-success btn-sm">
+                            <i class="fas fa-shopping-cart"></i> Mua ngay
+                        </a>
+                    </div>
+                </div>
             </div>
-
-            <!-- Navigation buttons -->
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-
-            <!-- Pagination -->
-            <div class="swiper-pagination"></div>
+            @endforeach
         </div>
+
+        <!-- Navigation buttons -->
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+
+        <!-- Pagination -->
+        <div class="swiper-pagination"></div>
+    </div>
     @else
-        <div class="col-12">
-            <p class="text-center text-muted">Không có sản phẩm liên quan</p>
-        </div>
+    <div class="col-12">
+        <p class="text-center text-muted">Không có sản phẩm liên quan</p>
+    </div>
     @endif
 </div>
 
@@ -268,44 +220,46 @@
     </div>
 
     @if ($similarProducts->isNotEmpty())
-        <div class="swiper mySwiper">
-            <div class="swiper-wrapper">
-                @foreach ($similarProducts as $relatedProduct)
-                    <div class="swiper-slide">
-                        <div class="card product-item border-0 shadow-sm">
-                            <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                <img class="img-fluid w-100" src="{{ asset('storage/'.$relatedProduct->image) }}" alt="{{ $relatedProduct->name }}">
-                            </div>
-                            <div class="card-body text-center p-3">
-                                <h6 class="text-truncate mb-3">{{ $relatedProduct->name }}</h6>
-                                <div class="d-flex justify-content-center">
-                                    <h6 class="text-danger font-weight-bold">{{ number_format($relatedProduct->price) }}₫</h6>
-                                </div>
-                            </div>
-                            <div class="card-footer bg-light border-top d-flex justify-content-center">
-                                <a href="{{ route('web.shop-detail', ['id' => $relatedProduct->id]) }}" class="btn btn-outline-primary btn-sm mr-2">
-                                    <i class="fas fa-eye"></i> Xem chi tiết
-                                </a>
-                                <a href="#" class="btn btn-outline-success btn-sm">
-                                    <i class="fas fa-shopping-cart"></i> Mua ngay
-                                </a>
-                            </div>
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+            @foreach ($similarProducts as $relatedProduct)
+            <div class="swiper-slide">
+                <div class="card product-item border-0 shadow-sm">
+                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                        <img class="img-fluid w-100" src="{{ asset('storage/'.$relatedProduct->image) }}"
+                            alt="{{ $relatedProduct->name }}">
+                    </div>
+                    <div class="card-body text-center p-3">
+                        <h6 class="text-truncate mb-3">{{ $relatedProduct->name }}</h6>
+                        <div class="d-flex justify-content-center">
+                            <h6 class="text-danger font-weight-bold">{{ number_format($relatedProduct->price) }}₫</h6>
                         </div>
                     </div>
-                @endforeach
+                    <div class="card-footer bg-light border-top d-flex justify-content-center">
+                        <a href="{{ route('web.shop-detail', ['id' => $relatedProduct->id]) }}"
+                            class="btn btn-outline-primary btn-sm mr-2">
+                            <i class="fas fa-eye"></i> Xem chi tiết
+                        </a>
+                        <a href="#" class="btn btn-outline-success btn-sm">
+                            <i class="fas fa-shopping-cart"></i> Mua ngay
+                        </a>
+                    </div>
+                </div>
             </div>
-
-            <!-- Navigation buttons -->
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-
-            <!-- Pagination -->
-            <div class="swiper-pagination"></div>
+            @endforeach
         </div>
+
+        <!-- Navigation buttons -->
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+
+        <!-- Pagination -->
+        <div class="swiper-pagination"></div>
+    </div>
     @else
-        <div class="col-12">
-            <p class="text-center text-muted">Không có sản phẩm liên quan</p>
-        </div>
+    <div class="col-12">
+        <p class="text-center text-muted">Không có sản phẩm liên quan</p>
+    </div>
     @endif
 </div>
 
@@ -317,44 +271,46 @@
     </div>
 
     @if ($viewedProducts->isNotEmpty())
-        <div class="swiper mySwiper">
-            <div class="swiper-wrapper">
-                @foreach ($viewedProducts as $relatedProduct)
-                    <div class="swiper-slide">
-                        <div class="card product-item border-0 shadow-sm">
-                            <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                <img class="img-fluid w-100" src="{{ asset('storage/'.$relatedProduct->image) }}" alt="{{ $relatedProduct->name }}">
-                            </div>
-                            <div class="card-body text-center p-3">
-                                <h6 class="text-truncate mb-3">{{ $relatedProduct->name }}</h6>
-                                <div class="d-flex justify-content-center">
-                                    <h6 class="text-danger font-weight-bold">{{ number_format($relatedProduct->price) }}₫</h6>
-                                </div>
-                            </div>
-                            <div class="card-footer bg-light border-top d-flex justify-content-center">
-                                <a href="{{ route('web.shop-detail', ['id' => $relatedProduct->id]) }}" class="btn btn-outline-primary btn-sm mr-2">
-                                    <i class="fas fa-eye"></i> Xem chi tiết
-                                </a>
-                                <a href="#" class="btn btn-outline-success btn-sm">
-                                    <i class="fas fa-shopping-cart"></i> Mua ngay
-                                </a>
-                            </div>
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+            @foreach ($viewedProducts as $relatedProduct)
+            <div class="swiper-slide">
+                <div class="card product-item border-0 shadow-sm">
+                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                        <img class="img-fluid w-100" src="{{ asset('storage/'.$relatedProduct->image) }}"
+                            alt="{{ $relatedProduct->name }}">
+                    </div>
+                    <div class="card-body text-center p-3">
+                        <h6 class="text-truncate mb-3">{{ $relatedProduct->name }}</h6>
+                        <div class="d-flex justify-content-center">
+                            <h6 class="text-danger font-weight-bold">{{ number_format($relatedProduct->price) }}₫</h6>
                         </div>
                     </div>
-                @endforeach
+                    <div class="card-footer bg-light border-top d-flex justify-content-center">
+                        <a href="{{ route('web.shop-detail', ['id' => $relatedProduct->id]) }}"
+                            class="btn btn-outline-primary btn-sm mr-2">
+                            <i class="fas fa-eye"></i> Xem chi tiết
+                        </a>
+                        <a href="#" class="btn btn-outline-success btn-sm">
+                            <i class="fas fa-shopping-cart"></i> Mua ngay
+                        </a>
+                    </div>
+                </div>
             </div>
-
-            <!-- Navigation buttons -->
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-
-            <!-- Pagination -->
-            <div class="swiper-pagination"></div>
+            @endforeach
         </div>
+
+        <!-- Navigation buttons -->
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+
+        <!-- Pagination -->
+        <div class="swiper-pagination"></div>
+    </div>
     @else
-        <div class="col-12">
-            <p class="text-center text-muted">Không có sản phẩm liên quan</p>
-        </div>
+    <div class="col-12">
+        <p class="text-center text-muted">Không có sản phẩm liên quan</p>
+    </div>
     @endif
 </div>
 
@@ -365,70 +321,85 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 
 <script>
+var swiper = new Swiper(".mySwiper", {
+    slidesPerView: 2,
+    spaceBetween: 10,
+    navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+    },
+    breakpoints: {
+        768: {
+            slidesPerView: 3
+        },
+        1024: {
+            slidesPerView: 4
+        }
+    }
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
     var swiper = new Swiper(".mySwiper", {
-        slidesPerView: 2,
-        spaceBetween: 10,
+        slidesPerView: 4, // Hiển thị 4 sản phẩm cùng lúc
+        spaceBetween: 20, // Khoảng cách giữa các sản phẩm
+        loop: true, // Vòng lặp slider
         navigation: {
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",
         },
-        breakpoints: {
-            768: { slidesPerView: 3 },
-            1024: { slidesPerView: 4 }
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+        breakpoints: { // Responsive (hiển thị số sản phẩm khác nhau trên từng màn hình)
+            320: {
+                slidesPerView: 1
+            },
+            768: {
+                slidesPerView: 2
+            },
+            1024: {
+                slidesPerView: 3
+            },
+            1200: {
+                slidesPerView: 4
+            }
         }
     });
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var swiper = new Swiper(".mySwiper", {
-            slidesPerView: 4,  // Hiển thị 4 sản phẩm cùng lúc
-            spaceBetween: 20,  // Khoảng cách giữa các sản phẩm
-            loop: true,        // Vòng lặp slider
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
-            breakpoints: { // Responsive (hiển thị số sản phẩm khác nhau trên từng màn hình)
-                320: { slidesPerView: 1 },
-                768: { slidesPerView: 2 },
-                1024: { slidesPerView: 3 },
-                1200: { slidesPerView: 4 }
-            }
-        });
-    });
+});
 </script>
 
 <style>
-    /* Tùy chỉnh nút điều hướng */
-.swiper-button-next, 
+/* Tùy chỉnh nút điều hướng */
+.swiper-button-next,
 .swiper-button-prev {
     width: 40px;
     height: 40px;
-    background: rgba(255, 255, 255, 0.8); /* Nền trắng trong suốt */
+    background: rgba(255, 255, 255, 0.8);
+    /* Nền trắng trong suốt */
     border-radius: 50%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 /* Căn chỉnh vị trí nút */
 .swiper-button-next {
-    right: -10px; /* Đẩy nút sang phải */
+    right: -10px;
+    /* Đẩy nút sang phải */
 }
 
 .swiper-button-prev {
-    left: -10px; /* Đẩy nút sang trái */
+    left: -10px;
+    /* Đẩy nút sang trái */
 }
 
 /* Tùy chỉnh icon */
 .swiper-button-next::after,
 .swiper-button-prev::after {
     font-size: 18px;
-    color: black; /* Đổi màu icon */
+    color: black;
+    /* Đổi màu icon */
 }
-
 </style>
 <!-- Products End -->
 
