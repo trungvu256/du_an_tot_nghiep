@@ -101,71 +101,33 @@
 <!-- Categories Start -->
 <div class="container-fluid pt-5">
     <div class="row px-xl-5 pb-3">
-        <div class="col-lg-4 col-md-6 pb-1">
-            <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
-                <p class="text-right"></p>
-                <a href="{{route('web.shop-detail')}}" class="cat-img position-relative overflow-hidden mb-3">
-                    <img class="img-fluid"
-                        src="{{ asset('images/sp1/Armaf Club De Nuit Intense Man Eau De Toilette.webp') }}" alt="">
-                </a>
-                <a href="{{route('web.shop-detail')}}">
-                    <p class="m-0"
-                        style="font-family: 'Times New Roman', serif; font-size: 18px; font-weight: 500; color: black; text-align: center;">
-                        Armaf Club De Nuit Intense Man Eau
-                    </p>
-                </a>
-                <p
-                    style="font-family: 'Times New Roman', serif; font-size: 20px; font-weight: bold; color: red; margin-top: 5px;text-align: center;">
-                    1.250.000₫
-                </p>
+        @foreach ($products as $product)
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <div class="card product-item border-0 shadow-sm rounded">
+                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                    <img class="img-fluid w-100" src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }}">
+                </div>
+                <div class="card-body text-center p-3">
+                    <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <h6 class="text-danger font-weight-bold">{{ number_format($product->price) }}₫</h6>
+                        @if ($product->price_sale)
+                            <h6 class="text-muted ml-2"><del>{{ number_format($product->price_sale) }}₫</del></h6>
+                        @endif
+                    </div>
+                </div>
+                <div class="card-footer bg-light border-top d-flex justify-content-between">
+                    <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-eye"></i> Xem chi tiết
+                    </a>
+                    <a href="{{ route('user.cart') }}" class="btn btn-outline-success btn-sm">
+                        <i class="fas fa-shopping-cart"></i> Mua ngay
+                    </a>
+                </div>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6 pb-1">
-            <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
-                <p class="text-right"></p>
-                <a href="{{route('web.shop-detail')}}" class="cat-img position-relative overflow-hidden mb-3">
-                    <img class="img-fluid"
-                        src="{{ asset('images/sp1/Armaf Club De Nuit Intense Man Eau De Toilette.webp') }}" alt="">
-                </a>
-                <a href="{{route('web.shop-detail')}}">
-                    <p class="m-0"
-                        style="font-family: 'Times New Roman', serif; font-size: 18px; font-weight: 500; color: black; text-align: center;">
-                        Armaf Club De Nuit Intense Man Eau
-                    </p>
-                </a>
-                <p
-                    style="font-family: 'Times New Roman', serif; font-size: 20px; font-weight: bold; color: red; margin-top: 5px;text-align: center;">
-                    1.250.000₫
-                </p>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-6 pb-1">
-            <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
-                <p class="text-right"></p>
-                <a href="{{route('web.shop-detail')}}" class="cat-img position-relative overflow-hidden mb-3">
-                    <img class="img-fluid"
-                        src="{{ asset('images/sp1/Armaf Club De Nuit Intense Man Eau De Toilette.webp') }}" alt="">
-                </a>
-                <a href="{{route('web.shop-detail')}}">
-                    <p class="m-0"
-                        style="font-family: 'Times New Roman', serif; font-size: 18px; font-weight: 500; color: black; text-align: center;">
-                        Armaf Club De Nuit Intense Man Eau
-                    </p>
-                </a>
-                <p
-                    style="font-family: 'Times New Roman', serif; font-size: 20px; font-weight: bold; color: red; margin-top: 5px;text-align: center;">
-                    1.250.000₫
-                </p>
-            </div>
-        </div>
-
-
-
-
-
+        @endforeach
     </div>
-
-
 </div>
 <!-- Categories End -->
 
@@ -208,35 +170,37 @@
     <div class="text-center mb-4">
         <h2 class="section-title px-5"><span class="px-2">Sản phẩm mới</span></h2>
     </div>
+    
     <div class="row px-xl-5 pb-3">
-
-        @foreach ($list_product as $list_product)
-        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
-            <div class="card product-item border-0 mb-4">
+        @foreach ($list_product as $product)
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <div class="card product-item border-0 shadow-sm rounded">
                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                    <img class="img-fluid w-70" src="Storage/{{ $list_product->image }}" alt="">
+                    <img class="img-fluid w-100" src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }}">
                 </div>
-                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                    <h6 class="text-truncate mb-3">{{$list_product->name }}</h6>
-                    <div class="d-flex justify-content-center">
-                        <h6>{{number_format($list_product->price) }}₫</h6>
-                        <h6 class="text-muted ml-2"><del>{{number_format($list_product->price_sale) }}₫</del></h6>
+                <div class="card-body text-center p-3">
+                    <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <h6 class="text-danger font-weight-bold">{{ number_format($product->price) }}₫</h6>
+                        @if ($product->price_sale)
+                            <h6 class="text-muted ml-2"><del>{{ number_format($product->price_sale) }}₫</del></h6>
+                        @endif
                     </div>
                 </div>
-                <div class="card-footer d-flex justify-content-between bg-light border">
-                    <a href="{{route('web.shop-detail')}}" class="btn btn-sm text-dark p-0"><i
-                            class="fas fa-eye text-primary mr-1"></i>View
-                        Detail</a>
-                    <a href="{{route('user.cart')}}" class="btn btn-sm text-dark p-0"><i
-                            class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                <div class="card-footer bg-light border-top d-flex justify-content-between">
+                    <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-eye"></i> Xem chi tiết
+                    </a>
+                    <a href="{{ route('user.cart') }}" class="btn btn-outline-success btn-sm">
+                        <i class="fas fa-shopping-cart"></i> Mua ngay
+                    </a>
                 </div>
             </div>
         </div>
-
         @endforeach
     </div>
-
 </div>
+
 <!-- Products End -->
 
 
@@ -267,36 +231,37 @@
     <div class="text-center mb-4">
         <h2 class="section-title px-5"><span class="px-2">Sản phẩm HOT</span></h2>
     </div>
+    
     <div class="row px-xl-5 pb-3">
-        @foreach ($list_product_new as $list_product_new)
-        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
-            <div class="card product-item border-0 mb-4">
+        @foreach ($list_product_new as $product)
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <div class="card product-item border-0 shadow-sm rounded">
                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                    <img class="img-fluid w-70" src="storage/{{ $list_product_new->image }}" alt="">
+                    <img class="img-fluid w-100" src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }}">
                 </div>
-                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                    <h6 class="text-truncate mb-3">{{ $list_product_new->name }}</h6>
-                    <div class="d-flex justify-content-center">
-                        <h6>{{number_format($list_product_new->price) }}₫</h6>
-                        <h6 class="text-muted ml-2"><del>{{number_format($list_product_new->price_sale) }}₫</del>
-                        </h6>
+                <div class="card-body text-center p-3">
+                    <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <h6 class="text-danger font-weight-bold">{{ number_format($product->price) }}₫</h6>
+                        @if ($product->price_sale)
+                            <h6 class="text-muted ml-2"><del>{{ number_format($product->price_sale) }}₫</del></h6>
+                        @endif
                     </div>
                 </div>
-                <div class="card-footer d-flex justify-content-between bg-light border">
-                    <a href="{{route('web.shop-detail')}}" class="btn btn-sm text-dark p-0"><i
-                            class="fas fa-eye text-primary mr-1"></i>View
-                        Detail</a>
-                    <a href="{{route('user.cart')}}" class="btn btn-sm text-dark p-0"><i
-                            class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                <div class="card-footer bg-light border-top d-flex justify-content-between">
+                    <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-eye"></i> Xem chi tiết
+                    </a>
+                    <a href="{{ route('user.cart') }}" class="btn btn-outline-success btn-sm">
+                        <i class="fas fa-shopping-cart"></i> Mua ngay
+                    </a>
                 </div>
             </div>
         </div>
-
         @endforeach
     </div>
-
-
 </div>
+
 <!-- Products End -->
 <!-- bài viết -->
 

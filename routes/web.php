@@ -26,7 +26,7 @@ use App\Http\Controllers\Admin\DiscountController as AdminDiscountController;
 use App\Http\Controllers\Admin\PromotionController;
 
 use App\Http\Controllers\Web\BlogController as WebBlogController;
-
+use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\LoginController as WebLoginController;
 use App\Http\Controllers\Web\ProfileController;
 use App\Models\Category;
@@ -192,6 +192,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::post('catalogues/{id}/restore', [CatalogueController::class, 'restore'])->name('catalogues.restore');
         Route::delete('catalogues/{id}/force-delete', [CatalogueController::class, 'forceDelete'])->name('catalogues.forceDelete');
 
+
         // Route Brand
         Route::resource('brands', BrandController::class);
         Route::get('brands-trash', [BrandController::class, 'trash'])->name('brands.trash');
@@ -214,6 +215,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
         // Route cho việc cập nhật biến thể
         Route::put('admin/products/{product}/variants/{variant}', [ProductVariantController::class, 'update'])->name('variants.update');
+
 
         //dasboard
         Route::get('/admin/revenue-data', [DashboardController::class, 'getRevenueData']);
@@ -436,6 +438,7 @@ Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->nam
 
 
 
+
 //Login web
 Route::get('/login', [WebLoginController::class, 'index'])->name('web.login');
 Route::post('/login', [WebLoginController::class, 'store'])->name('login.store.web');
@@ -460,9 +463,12 @@ Route::get('login/google/callback', [HomeController::class, 'handleGoogleCallbac
 //web
 Route::get('/', [WebController::class, 'index'])->name('web.home');
 Route::get('/shop', [WebController::class, 'shop'])->name('web.shop');
-Route::get('/shop/detail', [WebController::class, 'shopdetail'])->name('web.shop-detail');
 
+// Route::get('/product/detail/{id}' , [WebController::class, 'detail'])->name('web.product.detail');
 
 // blog
 Route::get('/home/blog', [WebBlogController::class, 'listBlog'])->name('web.listBlog.blog');
 Route::get('/home/blog/{id}', [WebBlogController::class, 'detaiWebBlog'])->name('web.detaiWebBlog.blog');
+
+// giỏ hàng
+Route::get('/shop/detail/{id}', [CartController::class, 'shopdetail'])->name('web.shop-detail');

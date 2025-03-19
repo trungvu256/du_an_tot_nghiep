@@ -12,22 +12,28 @@ class WebController extends Controller
     //
     public function index()
     {
+        $products = Product::all();
         $list_product = Product::with('category')->paginate(8);
         $list_product_new = Product::with('category')->orderBy('created_at', 'desc')->get();
-
         $blogs = Blog::latest()->take(3)->get();
-        return view('web2.Home.home', compact('list_product', 'list_product_new', 'blogs'));
+        return view('web2.Home.home', compact('list_product', 'list_product_new', 'blogs', 'products'));
     }
     public function shop()
     {
         return view('web2.Home.shop');
     }
 
-    public function shopdetail()
+    public function shopdetail($id)
     {
-        return view('web2.Home.shop-detail');
+        $detailproduct = Product::find($id);
+    
+        if (!$detailproduct) {
+            abort(404); // Hiển thị trang 404 nếu sản phẩm không tồn tại
+        }
+    
+        return view('web2.Home.shop-detail', compact('detailproduct'));
     }
-
+    
     public function cart()
     {
         return view('web2.Home.cart');
@@ -42,4 +48,10 @@ class WebController extends Controller
     {
         return view('web2.Home.contact');
     }
+
+
+    // public function detail($id) {
+    //     $detailproduct = Product::find($id);
+    //     return view('web2.Home.shop-detail', compact('detailproduct'));
+    // }
 }

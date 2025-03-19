@@ -52,4 +52,10 @@ class Category extends Model
                          });
         }
     }
+
+    public function catalogue()
+    {
+        return $this->belongsTo(Catalogue::class);
+    }
+
 }
