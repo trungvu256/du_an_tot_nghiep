@@ -131,26 +131,14 @@ body {
             <div id="header-carousel" class="containerfluid carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active" style="height: 550px;">
-                        <img class="img-fluid" src="{{ asset('/images/Banner/banner02.png') }}" alt="Image">
+                        <img class="img-fluid" src="{{ asset('/images/Banner/slider_2.jpg') }}" alt="Image">
                         <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                            <div class="p-3" style="max-width: 700px;">
-                                <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order
-                                </h4>
-                                <h3 class="display-4 text-white font-weight-semi-bold mb-4">Fashionable Dress</h3>
-                                <a href="" class="btn btn-light py-2 px-3">Shop Now</a>
-                            </div>
+
                         </div>
                     </div>
                     <div class="carousel-item" style="height: 550px;">
-                        <img class="img-fluid" src="{{ asset('/images/Banner/banner01.jpg') }}" alt="Image">
-                        <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                            <div class="p-3" style="max-width: 700px;">
-                                <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order
-                                </h4>
-                                <h3 class="display-4 text-white font-weight-semi-bold mb-4">Reasonable Price</h3>
-                                <a href="" class="btn btn-light py-2 px-3">Shop Now</a>
-                            </div>
-                        </div>
+                        <img class="img-fluid" src="{{ asset('/images/Banner/slider_1.jpg') }}" alt="Image">
+
                     </div>
                 </div>
                 <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
@@ -218,11 +206,19 @@ body {
                 <div class="card-body text-center p-3">
                     <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
                     <div class="d-flex justify-content-center align-items-center">
-                        <h6 class="text-danger font-weight-bold">{{ number_format($product->price) }}₫</h6>
-                        @if ($product->price_sale)
-                        <h6 class="text-muted ml-2"><del>{{ number_format($product->price_sale) }}₫</del></h6>
-                        @endif
+                        @php
+                            $minPrice = $product->variants->min('price');
+                            $maxPrice = $product->variants->max('price');
+                        @endphp
+                    
+                        <h6 class="text-danger font-weight-bold">
+                            {{ number_format($minPrice) }}₫
+                            @if ($minPrice !== $maxPrice)
+                                - {{ number_format($maxPrice) }}₫
+                            @endif
+                        </h6>
                     </div>
+                    
                 </div>
                 <div class="card-footer bg-light border-top d-flex justify-content-between">
                     <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
@@ -300,14 +296,19 @@ body {
                     <div class="card-body text-center p-3">
                         <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
                         <div class="d-flex justify-content-center align-items-center">
+                            @php
+                                $minPrice = $product->variants->min('price');
+                                $maxPrice = $product->variants->max('price');
+                            @endphp
+                        
                             <h6 class="text-danger font-weight-bold">
-                                {{ number_format($product->price) }}₫</h6>
-                            @if ($product->price_sale)
-                            <h6 class="text-muted ml-2">
-                                <del>{{ number_format($product->price_sale) }}₫</del>
+                                {{ number_format($minPrice) }}₫
+                                @if ($minPrice !== $maxPrice)
+                                    - {{ number_format($maxPrice) }}₫
+                                @endif
                             </h6>
-                            @endif
                         </div>
+                        
                     </div>
                     <div class="card-footer bg-light border-top d-flex justify-content-between">
                         <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
@@ -367,14 +368,19 @@ body {
                     <div class="card-body text-center p-3">
                         <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
                         <div class="d-flex justify-content-center align-items-center">
+                            @php
+                                $minPrice = $product->variants->min('price');
+                                $maxPrice = $product->variants->max('price');
+                            @endphp
+                        
                             <h6 class="text-danger font-weight-bold">
-                                {{ number_format($product->price) }}₫</h6>
-                            @if ($product->price_sale)
-                            <h6 class="text-muted ml-2">
-                                <del>{{ number_format($product->price_sale) }}₫</del>
+                                {{ number_format($minPrice) }}₫
+                                @if ($minPrice !== $maxPrice)
+                                    - {{ number_format($maxPrice) }}₫
+                                @endif
                             </h6>
-                            @endif
                         </div>
+                        
                     </div>
                     <div class="card-footer bg-light border-top d-flex justify-content-between">
                         <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"

@@ -11,7 +11,7 @@
     </div>
 
     @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+        <div class="alert alert-success alert-dismissible fade show mt-2 text-center" role="alert">
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
