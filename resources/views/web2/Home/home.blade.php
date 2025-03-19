@@ -1,5 +1,109 @@
 @extends('web2.layout.master')
 @section('content')
+
+<style>
+body {
+    background-color: #ffffff;
+    font-family: 'Arial', sans-serif;
+}
+
+.perfume-card {
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 15px;
+    box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
+    padding: 25px;
+    text-align: center;
+    height: 100%;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.perfume-card:hover {
+    transform: scale(1.05);
+    box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.3);
+}
+
+.perfume-card img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: 2px solid #000000;
+}
+
+.logo {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 26px;
+    color: #000000;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 30px;
+    color: #000000;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.subtitle {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 15px;
+}
+
+.description {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    color: #000000;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.details-btn {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #000000;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.details-btn:hover {
+    background-color: #333333;
+    transform: translateY(-2px);
+    color: #ffffff;
+}
+
+.spring-bg {
+    background: url('spring-bg.jpg') center center/cover no-repeat;
+    border-radius: 15px;
+}
+
+.wood-bg {
+    background: url('wood-bg.jpg') center center/cover no-repeat;
+    border-radius: 15px;
+}
+
+.valentine-bg {
+    background: url('valentine-bg.jpg') center center/cover no-repeat;
+    border-radius: 15px;
+}
+
+.section-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 32px;
+    color: #000000;
+    font-weight: bold;
+}
+</style>
 <!-- Navbar Start -->
 <div class="container-fluid mb-5">
     <div class="row border-top px-xl-5">
@@ -100,6 +204,9 @@
 
 <!-- Categories Start -->
 <div class="container-fluid pt-5">
+    <div class="text-center mb-4">
+        <h2 class="section-title px-5"><span class="px-2">Sản phẩm</span></h2>
+    </div>
     <div class="row px-xl-5 pb-3">
         @foreach ($products as $product)
         <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
@@ -149,27 +256,24 @@
         <div class="row px-xl-5">
             <div class="col-md-6 pb-4">
                 <div class="position-relative bg-secondary text-center text-md-right text-white mb-2 py-5 px-5">
-                    <img src="{{ asset('images/sp11/Calvin Klein CK One Shock For Him.webp') }}" alt=""
-                        style="width: 100%; height: auto; display: block;">
+                    <img src="" alt="" style="width: 100%; height: auto; display: block;">
 
                     <div class="position-relative" style="z-index: 1;">
                         <h class="text-uppercase text-primary mb-3">20% off the all order</h5>
                             <h1 class="mb-4 font-weight-semi-bold">Spring Collection</h1>
-                            <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Shop
-                                Now</a>
+                            <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Mua ngay</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 pb-4">
                 <div class="position-relative bg-secondary text-center text-md-right text-white mb-2 py-5 px-5">
-                    <img src="{{ asset('images/sp11/Calvin Klein CK One Shock For Him.webp') }}" alt=""
-                        style="width: 100%; height: auto; display: block;">
+                    <img src="" alt="" style="width: 100%; height: auto; display: block;">
 
                     <div class="position-relative" style="z-index: 1;">
                         <h class="text-uppercase text-primary mb-3">20% off the all order</h5>
                             <h1 class="mb-4 font-weight-semi-bold">Spring Collection</h1>
-                            <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Shop
-                                Now</a>
+                            <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Mua ngay
+                            </a>
                     </div>
                 </div>
             </div>
@@ -293,109 +397,7 @@
 
 
 
-    <style>
-    body {
-        background-color: #ffffff;
-        font-family: 'Arial', sans-serif;
-    }
 
-    .perfume-card {
-        background-color: #ffffff;
-        border: 1px solid #000000;
-        border-radius: 15px;
-        box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
-        padding: 25px;
-        text-align: center;
-        height: 100%;
-        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    }
-
-    .perfume-card:hover {
-        transform: scale(1.05);
-        box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    .perfume-card img {
-        max-width: 100%;
-        height: auto;
-        margin-bottom: 20px;
-        border-radius: 10px;
-        border: 2px solid #000000;
-    }
-
-    .logo {
-        font-family: 'Times New Roman', Times, serif;
-        font-size: 26px;
-        color: #000000;
-        font-weight: bold;
-        margin-bottom: 12px;
-    }
-
-    .title {
-        font-family: 'Dancing Script', cursive;
-        font-size: 30px;
-        color: #000000;
-        font-weight: bold;
-        margin-bottom: 12px;
-    }
-
-    .subtitle {
-        font-family: 'Montserrat', sans-serif;
-        font-size: 18px;
-        font-weight: bold;
-        color: #000000;
-        margin-bottom: 15px;
-    }
-
-    .description {
-        font-family: 'Montserrat', sans-serif;
-        font-size: 14px;
-        color: #000000;
-        line-height: 1.6;
-        margin-bottom: 20px;
-    }
-
-    .details-btn {
-        display: inline-block;
-        padding: 12px 25px;
-        background-color: #000000;
-        color: #ffffff;
-        text-decoration: none;
-        border-radius: 8px;
-        font-family: 'Montserrat', sans-serif;
-        font-size: 14px;
-        font-weight: bold;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-
-    .details-btn:hover {
-        background-color: #333333;
-        transform: translateY(-2px);
-        color: #ffffff;
-    }
-
-    .spring-bg {
-        background: url('spring-bg.jpg') center center/cover no-repeat;
-        border-radius: 15px;
-    }
-
-    .wood-bg {
-        background: url('wood-bg.jpg') center center/cover no-repeat;
-        border-radius: 15px;
-    }
-
-    .valentine-bg {
-        background: url('valentine-bg.jpg') center center/cover no-repeat;
-        border-radius: 15px;
-    }
-
-    .section-title {
-        font-family: 'Montserrat', sans-serif;
-        font-size: 32px;
-        color: #000000;
-        font-weight: bold;
-    }
-    </style>
 
     <body>
         <div class="container py-5">
@@ -439,40 +441,6 @@
     <!-- Products End -->
 
 
-
-    <!-- Vendor Start -->
-    <div class="container-fluid py-5">
-        <div class="row px-xl-5">
-            <div class="col">
-                <div class="owl-carousel vendor-carousel">
-                    <div class="vendor-item border p-4">
-                        <img src="img/vendor-1.jpg" alt="">
-                    </div>
-                    <div class="vendor-item border p-4">
-                        <img src="img/vendor-2.jpg" alt="">
-                    </div>
-                    <div class="vendor-item border p-4">
-                        <img src="img/vendor-3.jpg" alt="">
-                    </div>
-                    <div class="vendor-item border p-4">
-                        <img src="img/vendor-4.jpg" alt="">
-                    </div>
-                    <div class="vendor-item border p-4">
-                        <img src="img/vendor-5.jpg" alt="">
-                    </div>
-                    <div class="vendor-item border p-4">
-                        <img src="img/vendor-6.jpg" alt="">
-                    </div>
-                    <div class="vendor-item border p-4">
-                        <img src="img/vendor-7.jpg" alt="">
-                    </div>
-                    <div class="vendor-item border p-4">
-                        <img src="img/vendor-8.jpg" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <script>
     document.addEventListener("DOMContentLoaded", function() {
         const overlays = document.querySelectorAll(".hover-overlay");

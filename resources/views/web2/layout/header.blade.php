@@ -249,7 +249,7 @@
     <div class="search-bar" id="searchBar">
         <input type="text" class="form-control w-50" placeholder="Tìm kiếm...">
     </div>
-    @yield('content')
+
 
     <script>
     // Xử lý mở/đóng thanh tìm kiếm
