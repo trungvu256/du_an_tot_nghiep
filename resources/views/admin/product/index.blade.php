@@ -1,107 +1,120 @@
 @extends('admin.layouts.main')
+
 @section('content')
 
-<a href="{{ route('admin.trash.product') }}" class="btn btn-warning">
-    <i class="bi bi-trash"></i>
-</a>
-
-<form action="{{ route('admin.product') }}" method="GET">
-    <div class="row">
-        <div class="col-md-3">
-            <select name="variant_name" class="form-control">
-                <option value="">-- Chọn dung tích --</option>
-                @foreach ($variantNames as $variant)
-                    <option value="{{ $variant }}" {{ request('variant_name') == $variant ? 'selected' : '' }}>
-                        {{ $variant }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-3">
-            <input type="number" name="variant_price" class="form-control" placeholder="Nhập giá" value="{{ request('variant_price') }}">
-        </div>
-        <div class="col-md-3 d-flex align-items-center gap-2">
-            <button type="submit" class="btn btn-primary">Lọc</button>
-            <a href="{{ route('admin.product') }}" class="btn btn-secondary">Reset</a>
-            <a href="{{ route('admin.add.product') }}" class="btn btn-success btn-sm btn-rounded d-inline-flex align-items-center gap-1">
-                <i class="bi bi-plus-circle"></i> Thêm Mới
-            </a>
-        </div>
-
-
-
-
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Danh sách sản phẩm</h5>
+        <a href="{{ route('admin.add.product') }}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Thêm sản phẩm
+        </a>
     </div>
-</form>
 
-@if (session('success'))
-    <div class="alert alert-success mt-3">
-        {{ session('success') }}
-    </div>
-@endif
-
-@if ($products->count() > 0)
-    <table class="table mt-3">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Tên sản phẩm</th>
-                <th>Hình ảnh</th>
-                <th>Danh mục</th>
-                <th>Thể tích/Giá</th>
-                <th>Thao tác</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($products as $product)
-            <tr>
-                <th>{{ $product->id }}</th>
-                <td>{{ $product->name }}</td>
-                <td><img src="{{ asset('storage/'. $product->image) }}" width="70px" alt=""></td>
-                <td>{{ isset($product->catalogue) ? $product->catalogue->name : 'Không có danh mục' }}</td>
-
-                <td>
-                    @if ($product->variants->isNotEmpty())
-                        <ul>
-                            @foreach ($product->variants as $variant)
-                                @php
-                                    $matchName = empty(request('variant_name')) || $variant->name == request('variant_name');
-                                    $matchPrice = empty(request('variant_price')) || $variant->price == request('variant_price');
-                                @endphp
-                                @if ($matchName && $matchPrice)
-                                    <li>{{ $variant->name }} - {{ number_format($variant->price, 2) }} VND</li>
-                                @endif
-                            @endforeach
-                        </ul>
-                    @else
-                        <span class="text-muted">Không có biến thể</span>
-                    @endif
-                </td>
-                <td>
-                    <a href="{{ route('admin.show.product', $product->id)}}" class="btn btn-success"><i class="bi bi-eye-fill"></i></a>
-                    <a href="{{ route('admin.edit.product', $product->id) }}" class="btn btn-warning">
-                        <i class="bi bi-pencil-square"></i>
-                    </a>
-                    <form action="{{ route('admin.delete.product', $product->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn muốn xóa?')">
-                            <i class="bi bi-x-circle-fill"></i>
-                        </button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-
-    @if ($products instanceof \Illuminate\Pagination\LengthAwarePaginator)
-        {!! $products->links() !!}
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     @endif
-@else
-    <div class="alert alert-warning mt-3">
-        Không có sản phẩm nào phù hợp với bộ lọc.
+
+    <div class="card-body">
+        <table class="table table-bordered align-middle">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>ID</th>
+                    <th>Sản phẩm</th>
+                    <th>Thương hiệu</th>
+                    <th>Hình ảnh</th>
+                    <th>Danh mục</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($products as $product)
+                    <!-- Hàng hiển thị sản phẩm chính -->
+                    <tr class="product-row text-center" data-id="{{ $product->id }}">
+                        <td>{{ $product->id }}</td>
+                        <td class="fw-bold">{{ $product->name }}</td>
+                        <td>{{ $product->brand->name ?? 'Không có thương hiệu' }}</td>
+                        <td>
+                            @if ($product->image)
+                                <img src="{{ asset('storage/' . $product->image) }}" class="img-thumbnail" width="50px" alt="Ảnh sản phẩm">
+                            @else
+                                <span class="text-muted">Không có ảnh</span>
+                            @endif
+                        </td>
+                        <td>{{ $product->catalogue->name ?? 'Không có danh mục' }}</td>
+                        <td class="text-center">
+                            <div class="btn-group" role="group">
+                                <a href="{{ route('admin.show.product', $product->id) }}" class="btn btn-outline-success btn-sm" title="Xem">
+                                    <i class="bi bi-eye-fill"></i>
+                                </a>
+                                <a href="{{ route('admin.edit.product', $product->id) }}" class="btn btn-outline-warning btn-sm" title="Chỉnh sửa">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <form action="{{ route('admin.delete.product', $product->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="Xóa">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                        
+                    </tr>
+
+                    <!-- Hàng hiển thị biến thể con, ẩn mặc định -->
+                    @if ($product->product_variants->isNotEmpty())
+                        <tr class="variant-row" data-id="{{ $product->id }}" style="display: none;">
+                            <td colspan="6">
+                                <table class="table table-sm table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Dung tích</th>
+                                            <th>Nồng độ</th>
+                                            <th>Phiên bản đặc biệt</th>
+                                            <th>Giá</th>
+                                            <th>Tồn kho</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($product->product_variants as $product_variant)
+                                            <tr>
+                                                <td>{{ $product_variant->size }}</td>
+                                                <td>{{ $product_variant->concentration }}</td>
+                                                <td>{{ $product_variant->special_edition }}</td>
+                                                <td>{{ number_format($product_variant->price, 2) }} VND</td>
+                                                <td>{{ $product_variant->stock_quantity }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    @endif
+                @endforeach
+            </tbody>
+            <a href="{{route('admin.trash.product')}}" class="btn btn-warning"><i class="bi bi-trash-fill"></i></a>
+        </table>
+        {{-- {!! $products->links() !!} --}}
     </div>
-@endif
+</div>
+
+<!-- Script mở rộng sản phẩm khi click -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".product-row").forEach(row => {
+            row.addEventListener("click", function () {
+                let productId = this.getAttribute("data-id");
+                let variantRow = document.querySelector(`.variant-row[data-id="${productId}"]`);
+                
+                if (variantRow) {
+                    variantRow.style.display = variantRow.style.display === "none" ? "table-row" : "none";
+                }
+            });
+        });
+    });
+</script>
 
 @endsection

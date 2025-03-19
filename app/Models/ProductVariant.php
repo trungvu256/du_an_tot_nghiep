@@ -10,28 +10,17 @@ class ProductVariant extends Model
     use HasFactory;
 
     protected $fillable = [
-        'product_id',
-        'variant_name',
-        'price',
-        'weight',
-        'dimension',
-        'stock',
-        'sku',
-        'image_url',
-        'status'
+       'product_id',        // ID sản phẩm
+        'size',              // Dung tích
+        'concentration',     // Nồng độ tinh dầu
+        'special_edition',   // Phiên bản đặc biệt
+        'price',             // Giá gốc
+        'price_sale',        // Giá giảm (nếu có)
+        'stock_quantity',    // Số lượng tồn kho
     ];
 
     public function product()
     {
         return $this->belongsTo(Product::class);
-    }
-    public function attributeValues()
-    {
-        return $this->belongsToMany(AttributeValue::class, 'product_variant_attributes', 'product_variant_id', 'attribute_value_id');
-    }
-    public function attributes()
-    {
-        return $this->belongsToMany(Attribute::class, 'product_variant_attributes')
-                    ->withPivot('attribute_value_id');
     }
 }

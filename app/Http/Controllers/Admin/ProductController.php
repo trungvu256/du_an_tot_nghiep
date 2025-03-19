@@ -10,122 +10,98 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
+use App\Models\Brand;
 use App\Models\ProductVariant;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
     public function index(Request $request)
-    {
-        $query = Product::with('variants', 'catalogue', 'comments');
-        if ($request->filled('variant_name')) {
-            $query->whereHas('variants', function ($q) use ($request) {
-                $q->where('name', 'LIKE', '%' . $request->variant_name . '%');
-            });
-        }
-        if ($request->filled('variant_price')) {
-            $query->whereHas('variants', function ($q) use ($request) {
-                $q->where('price', $request->variant_price);
-            });
-        }
-        $products = $query->paginate(10);
-        $variantNames = ProductVariant::distinct()->pluck('name');
+{
+    $products = Product::with(['brand', 'catalogue', 'variants'])->get();
 
-        return view('admin.product.index', compact('products', 'variantNames'));
-    }
+    return view('admin.product.index', compact('products'));
+}
 
 
 
     public function create()
     {
         $title = 'Add Product';
+        $brands = Brand::all();
         $catalogues = Catalogue::all();
-        return view('admin.product.add', compact('title', 'catalogues'));
+        return view('admin.product.add', compact('title', 'catalogues', 'brands'));
     }
-    public function store(StoreProductRequest $request)
+    public function store(Request $request)
     {
-        $validatedData = $request->validated();
-
-        if (!empty($request->variants)) {
-            $variantsWithSize = collect($request->variants)->map(function ($variant) {
-                preg_match('/\d+/', $variant['name'], $matches);
-                return [
-                    'name' => $variant['name'],
-                    'size' => isset($matches[0]) ? (int) $matches[0] : null,
-                    'price' => $variant['price'],
-                ];
-            });
-
-            $sortedVariants = $variantsWithSize->sortBy('size')->values();
-            $previousVariant = null;
-
-            foreach ($sortedVariants as $variant) {
-                if ($previousVariant !== null) {
-
-                    if ($variant['size'] > $previousVariant['size'] && $variant['price'] < $previousVariant['price']) {
-                        return back()->withErrors([
-                            'variants' => "Giá của biến thể {$variant['name']} không thể thấp hơn biến thể {$previousVariant['name']}.",
-                        ])->withInput();
-                    }
-                }
-                $previousVariant = $variant;
-            }
-        }
-
-
-        $imagePath = $request->hasFile('image')
-            ? $request->file('image')->store('images/products', 'public')
-            : 'images/products/default.png';
-
-
-        $product_code = Str::random(4) . now()->format('YmdHis');
-
-
-        $product = Product::create([
-            'product_code' => $product_code,
-            'name' => $validatedData['name'],
-            'slug' => Str::slug($validatedData['name']),
-            'description' => $validatedData['description'],
-            'price' => $validatedData['price'],
-            'price_sale' => $validatedData['price_sale'],
-            'image' => $imagePath,
-            'gender' => $validatedData['gender'],
-            'brand' => $validatedData['brand'],
-            'longevity' => $validatedData['longevity'],
-            'concentration' => $validatedData['concentration'],
-            'origin' => $validatedData['origin'],
-            'style' => $validatedData['style'],
-            'fragrance_group' => $validatedData['fragrance_group'],
-            'stock_quantity' => $validatedData['stock_quantity'],
-            'catalogue_id' => $validatedData['catalogue_id'],
+        $request->validate([
+            'product_code' => 'required|unique:products,product_code',
+            'name' => 'required|string|max:255',
+            'brand_id' => 'required|exists:brands,id',
+            'catalogue_id' => 'required|exists:catalogues,id',
+            'origin' => 'nullable|string|max:255',
+            'style' => 'nullable|string|max:255',
+            'fragrance_group' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'variants' => 'nullable|string',
         ]);
-
-
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $imagePath = $image->store('images/products/descriptions', 'public');
-                Images::create([
-                    'product_id' => $product->id,
-                    'image' => $imagePath,
-                ]);
-            }
+    
+        // Xử lý hình ảnh sản phẩm chính
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+        } else {
+            $imagePath = null;
         }
-
-
-        if (!empty($request->variants)) {
-            foreach ($request->variants as $variant) {
+    
+        $product = Product::create([
+            'product_code' => $request->product_code,
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+            'brand_id' => $request->brand_id,
+            'catalogue_id' => $request->catalogue_id,
+            'origin' => $request->origin,
+            'style' => $request->style,
+            'fragrance_group' => $request->fragrance_group,
+            'description' => $request->description,
+            'image' => $imagePath,
+            'gender' => $request->gender,
+            'fragrance_group' => $request->fragrance_group ?? 'Unknown',
+        ]);
+    
+        // 🛑 Kiểm tra xem có lỗi khi tạo sản phẩm không
+        if (!$product) {
+            return redirect()->back()->with('error', 'Lỗi khi tạo sản phẩm');
+        }
+    
+        // 🔥 Kiểm tra dữ liệu biến thể có đúng không
+        Log::info('Dữ liệu biến thể:', ['variants' => $request->variants]);
+    
+        // Xử lý biến thể (ProductVariant)
+        $variants = json_decode($request->variants, true);
+    
+        if ($variants && is_array($variants)) {
+            foreach ($variants as $variant) {
                 ProductVariant::create([
                     'product_id' => $product->id,
-                    'name' => $variant['name'],
+                    'size' => $variant['size'],
+                    'concentration' => $variant['concentration'],
+                    'special_edition' => $variant['special_edition'] ?? null,
                     'price' => $variant['price'],
+                    'price_sale' => $variant['sale_price'] ?? null,
+                    'stock_quantity' => $variant['stock'],
                 ]);
             }
+        } else {
+            Log::error('Dữ liệu biến thể không hợp lệ:', ['variants' => $variants]);
         }
-
-        return redirect()->route('admin.product')->with('success', 'Thêm sản phẩm thành công.');
+    
+        return redirect()->route('admin.product')->with('success', 'Thêm sản phẩm thành công');
     }
-
+    
     public function show($id)
     {
         $title = 'Detail Product';
@@ -279,7 +255,6 @@ class ProductController extends Controller
     {
         $products = Product::onlyTrashed()->with('catalogue')->paginate(10);
         return view('admin.product.trash', compact('products'));
-
     }
     public function restore($id)
     {

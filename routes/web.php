@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Web\HomeController;
 
 use App\Http\Controllers\Admin\DiscountController as AdminDiscountController;
+use App\Http\Controllers\Admin\PerfumeVariantController;
 use App\Http\Controllers\Admin\PromotionController;
 
 use App\Http\Controllers\Web\BlogController as WebBlogController;
@@ -293,6 +294,17 @@ Route::middleware(['auth', 'admin'])->group(function () {
                     route::delete('/admin/product/fore-delete/{id}', [ProductController::class, 'foreDelete'])->name('admin.foreDelete.product');
                 });
 
+
+                // Sản phẩm biến thể
+                // Route::prefix('perfume_variants')->group(function () {
+                //     route::get('/', [PerfumeVariantController::class, 'index'])->name('admin.perfume_variants');
+                //     route::get('/add', [PerfumeVariantController::class, 'create'])->name('admin.create.perfume_variants');
+                //     route::post('/add', [PerfumeVariantController::class, 'store'])->name('admin.store.perfume_variants');
+                //     route::get('/show/{id}', [PerfumeVariantController::class, 'show'])->name('admin.show.perfume_variants');
+                //     route::get('/edit/{id}', [PerfumeVariantController::class, 'edit'])->name('admin.edit.perfume_variants');
+                //     route::post('/update/{id}', [PerfumeVariantController::class, 'update'])->name('admin.update.perfume_variants');
+                //     route::delete('/delete/{id}', [PerfumeVariantController::class, 'delete'])->name('admin.delete.perfume_variants');
+                // });
                 // Blog
                 Route::prefix('blog')->group(function () {
                     route::get('/', [BlogController::class, 'index'])->name('admin.blog');
@@ -330,93 +342,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
                 Route::get('/contact', [WebController::class, 'contact'])->name('user.contact');
             });
 
-
-            //Bình luận
-            // Route::prefix('comment')->group(function () {
-            //     route::get('/', [CommentController::class, 'index'])->name('admin.comment');
-            //     route::get('/create', [CommentController::class, 'create'])->name('create.comment');
-            //     route::post('/store', [CommentController::class, 'store'])->name('store.comment');
-            //     route::patch('/showhidden/{id}', [CommentController::class, 'Hide_comments'])->name('admin.comment.showhidden');
-            //     Route::post('/admin/orders/{id}/ship', [OrderController::class, 'shipOrder'])->name('admin.order.ship');
-
-            // });
-
-            /// order
-
-            // Route::prefix('order')->group(function () {
-            //     route::get('/order', [OrderController::class, 'index'])->name('admin.order');
-            //     route::get('/order/{id}', [OrderController::class, 'show'])->name('admin.show.order');
-            //     route::post('/orders/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
-            //     route::post('/orders/{id}/updatePaymenStatus', [OrderController::class, 'updatePaymenStatus'])->name('orders.updatePaymenStatus');
-            //     route::get('/admin/orders/unfinished', [OrderController::class, 'unfinishedOrders'])->name('admin.orders.unfinished');
-
-
-
-            // });
-
-            // Trả hàng
-            // Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
-            //     Route::get('/returns', [ReturnOrderController::class, 'index'])->name('admin.return.index');
-            //     Route::post('/returns/{id}/update', [ReturnOrderController::class, 'update'])->name('admin.returns.update');
-            // });
-
-            // ví điện tử
-            // Route::prefix('wallet')->group(function () {
-            //     route::get('/wallet', [WalletController::class, 'show'])->name('wallet.show');
-            //     route::post('/wallet/{order}/refund', [WalletController::class, 'refund'])->name('wallet.refund');
-            //     route::post('/wallet/deposit', [WalletController::class, 'deposit'])->name('wallet.deposit');
-            // });
-            // Route::prefix('product')->group(function () {
-            //     route::get('/', [ProductController::class, 'index'])->name('admin.product');
-            //     route::get('/add', [ProductController::class, 'create'])->name('admin.add.product');
-            //     route::post('/add', [ProductController::class, 'store'])->name('admin.store.product');
-            //     route::get('/show/{id}', [ProductController::class, 'show'])->name('admin.show.product');
-            //     route::get('/edit/{id}', [ProductController::class, 'edit'])->name('admin.edit.product');
-            //     route::post('/update/{id}', [ProductController::class, 'update'])->name('admin.update.product');
-            //     route::delete('/delete/{id}', [ProductController::class, 'delete'])->name('admin.delete.product');
-            //     Route::get('/del-image/{id}', [ProductController::class, 'delete_img'])->name('admin.delete_img.product');
-            //     route::get('/admin/product/trash', [ProductController::class, 'trash'])->name('admin.trash.product');
-            //     route::post('/admin/product/restore/{id}', [ProductController::class, 'restore'])->name('admin.restore.product');
-            //     route::delete('/admin/product/fore-delete/{id}', [ProductController::class, 'foreDelete'])->name('admin.foreDelete.product');
-            // });
-
-            // Blog
-            // Route::prefix('blog')->group(function () {
-            //     route::get('/', [BlogController::class, 'index'])->name('admin.blog');
-            //     route::get('/add', [BlogController::class, 'create'])->name('admin.create.blog');
-            //     route::post('/add', [BlogController::class, 'store'])->name('admin.store.blog');
-            //     route::get('/edit/{id}', [BlogController::class, 'edit'])->name('admin.edit.blog');
-            //     route::post('/update/{id}', [BlogController::class, 'update'])->name('admin.update.blog');
-            //     route::delete('/delete/{id}', [BlogController::class, 'delete'])->name('admin.delete.blog');
-            //     route::get('/show/{id}', [BlogController::class, 'show'])->name('admin.show.blog');
-            //     route::post('/admin/upload-image', [BlogController::class, 'uploadImage'])->name('admin.upload.image');
-            //     route::get('/trash', [BlogController::class, 'trash'])->name('admin.trash.blog');
-            //     route::get('/soft-delete/{id}', [BlogController::class, 'softDelete'])->name('admin.softdelete.blog');
-            //     route::get('/restore/{id}', [BlogController::class, 'restore'])->name('admin.restore.blog');
-            //     route::delete('/force-delete/{id}', [BlogController::class, 'forceDelete'])->name('admin.forceDelete.blog');
-            // });
-
-            //dasboard
-            // Route::get('/admin/revenue-data', [DashboardController::class, 'getRevenueData']);
-            // Route::get('/admin/best-selling-products', [DashboardController::class, 'getBestSellingProducts']);
-
-
-
         }
     );
 
-    ///Giao hàng tiết kiệm
-    // Route::prefix('admin')->group(function () {
-    //     Route::get('shipping/overview', [ShippingController::class, 'overview'])->name('admin.shipping.overview');
-    //     Route::get('shipping/orders', [ShippingController::class, 'orders'])->name('admin.shipping.orders');
-    //     Route::post('shipping/calculate-fee', [ShippingController::class, 'calculateFee'])->name('admin.shipping.calculate_fee');
-    //     Route::post('shipping/update-status/{id}', [ShippingController::class, 'updateStatus'])->name('admin.shipping.update_status');
-    //     Route::post('/shipping/webhook', [ShippingController::class, 'webhookUpdate'])->name('shipping.webhook');
-    //     Route::post('/admin/shipping/ship-order/{id}', [ShippingController::class, 'shipOrder'])->name('shipping.shipOrder');
-
-
-
-    // });
 
     Route::prefix('user')->group(function () {
         Route::get('/cart', [WebController::class, 'cart'])->name('user.cart');
