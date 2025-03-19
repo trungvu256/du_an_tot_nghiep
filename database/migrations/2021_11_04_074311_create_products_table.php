@@ -19,19 +19,13 @@ class CreateProductsTable extends Migration
             $table->foreignId('brand_id')->nullable()->constrained('brands')->onDelete('set null');
             $table->string('product_code')->unique();
             $table->string('name');
+            $table->string('image')->nullable();
             $table->string('slug');
             $table->text('description');
-            $table->integer('price');
-            $table->integer('price_sale')->nullable();
-            $table->string('image');
             $table->string('gender'); // Giới tính
-            $table->string('brand'); // Thương hiệu
-            $table->string('longevity'); // Độ lưu hương
-            $table->string('concentration'); // Nồng độ
             $table->string('origin'); // Xuất xứ
             $table->string('style'); // Phong cách
             $table->string('fragrance_group'); // Nhóm hương
-            $table->integer('stock_quantity')->default(0);
             $table->timestamps();
         });
 

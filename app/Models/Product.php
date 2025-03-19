@@ -14,24 +14,19 @@ class Product extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
+        'catalogue_id',
+        'brand_id',
         'product_code',
         'name',
-        'slug',
-        'sku',
-        'description',
-        'price',
-        'price_sale',
         'image',
+        'slug',
+        'description',
         'gender',
-        'brand_id',
-        'longevity',
-        'concentration',
         'origin',
         'style',
         'fragrance_group',
-        'stock',
+        'views',
         'is_active',
-        'catalogue_id',
         'created_at',
         'updated_at',
     ];
@@ -91,9 +86,13 @@ class Product extends Model
     {
         return $this->hasMany(Images::class, 'product_id');
     }
+    public function product_variants()
+    {
+        return $this->hasMany(ProductVariant::class, 'product_id', 'id');
+    }
     public function variants()
     {
-        return $this->hasMany(ProductVariant::class);
+        return $this->hasMany(ProductVariant::class, 'product_id', 'id');
     }
     /**
      * Lấy danh sách thuộc tính có trong các biến thể của sản phẩm này.
