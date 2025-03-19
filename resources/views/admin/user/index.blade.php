@@ -11,8 +11,6 @@
     <div class="card">
         <div class="card-header">
             <h4 class="mb-0"><i class="fa-solid fa-user"></i> Quản lý Người Dùng</h4>
-
-
         </div>
         <div class="card-body">
             <table class="table table-bordered text-center align-middle">
@@ -35,8 +33,7 @@
                     <tr>
                         <td>{{ $user->id }}</td>
                         <td>
-                            <img src="{{ asset('storage/' . $user->avatar) }}" class="rounded-circle" width="50"
-                                height="50">
+                            <img src="{{ asset('storage/' . $user->avatar) }}" class="rounded-circle" width="50" height="50">
                         </td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
@@ -75,21 +72,20 @@
                                  </a>
                                 
                                 @if($user->status == 0)
-                                    <a href="{{ route('admin.delete.user', $user->id) }}" 
-                                       class="btn btn-danger btn-sm d-flex align-items-center px-3"
-                                       onclick="return confirm('Bạn có chắc chắn muốn khóa người dùng này không?')">
-                                        <i class="fas fa-lock me-1"></i> Khóa
-                                    </a>
-                                @else
                                     <a href="{{ route('admin.unban.user', $user->id) }}" 
                                        class="btn btn-success btn-sm d-flex align-items-center px-3"
                                        onclick="return confirm('Bạn có muốn bỏ khóa người dùng này không?')">
                                         <i class="fas fa-unlock me-1"></i> Bỏ khóa
                                     </a>
+                                @else
+                                    <a href="{{ route('admin.delete.user', $user->id) }}" 
+                                       class="btn btn-danger btn-sm d-flex align-items-center px-3"
+                                       onclick="return confirm('Bạn có chắc chắn muốn khóa người dùng này không?')">
+                                        <i class="fas fa-lock me-1"></i> Khóa
+                                    </a>
                                 @endif
                             </div>
                         </td>
-                        
                     </tr>
                     @endforeach
                 </tbody>

@@ -37,16 +37,33 @@ class LoginController extends Controller
             'email' => 'required|email',
             'password' => 'required'
         ]);
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {    
-            if(isset($_GET['checkout']) && $_GET['checkout'] == 'lolo') {
-                
-            }
-            return redirect('/');
-        } 
-        else {
-            return redirect()->back();
+    
+        // Tìm user theo email
+        $user = User::where('email', $request->email)->first();
+    
+        if (!$user) {
+            return back()->with('error', 'Email hoặc mật khẩu không đúng.');
         }
+        if (!Hash::check($request->password, $user->password)) {
+            return back()->with('error', 'Email hoặc mật khẩu không đúng.');
+        }
+    
+    
+        // 🔥 Kiểm tra đúng thứ tự: Tài khoản có tồn tại => Check trạng thái => Kiểm tra mật khẩu
+        if ($user->status == 0) {
+            return back()->with('error', 'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ hỗ trợ.');
+        }
+    
+        // Nếu tài khoản không bị khóa, kiểm tra đăng nhập
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            return redirect('/');
+        }
+    
+        // Nếu mật khẩu sai, chỉ thông báo lỗi mật khẩu
+        return back()->with('error', 'Email hoặc mật khẩu không đúng.');
     }
+    
+
     public function registerStore(Request $request)
     {
         $validator = Validator::make($request->all(), [

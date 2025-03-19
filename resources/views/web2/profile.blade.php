@@ -1,7 +1,7 @@
 @extends('web2.layout.master')
 
-@section('content')
-<div class="container-fluid">
+<!-- @section('content') -->
+<!-- <div class="container-fluid">
     <div class="row border-top px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
             <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100"
@@ -54,7 +54,7 @@
             </nav>
         </div>
     </div>
-</div>
+</div> -->
 <!-- Navbar End -->
 
 
@@ -65,7 +65,7 @@
         <div class="col-md-3">
             <div class="card p-3">
                 <div class="text-center">
-                    <img src="{{ Auth::user()->avatar ? asset('storage/avatars/' . Auth::user()->avatar) : asset('images/anhlogin.jpg') }}"
+                    <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('images/anhlogin.jpg') }}"
                     width="50" height="50" class="rounded-circle border" style="object-fit: cover;">
                 
                     <p>Xin chào</p>
@@ -94,7 +94,7 @@
             <div class="card p-4">
                 <h4 class="text-center">THÔNG TIN TÀI KHOẢN</h4>
                 <div class="text-center">
-                   <img src="{{ Auth::user()->avatar ? asset('storage/avatars/' . Auth::user()->avatar) : asset('images/anhlogin.jpg') }}"
+                   <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('images/anhlogin.jpg') }}"
                         width="120" height="120" class="rounded-circle border" style="object-fit: cover;">
 
                 </div>
