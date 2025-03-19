@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ProductVariantController;
+use App\Http\Controllers\Admin\AttributeController;
+use App\Http\Controllers\Admin\AttributeValueController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ReturnOrderController;
 use App\Http\Controllers\Admin\ShippingController;
@@ -16,6 +19,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WalletController;
 use App\Http\Controllers\Auth\LoginGoogleController;
 use App\Http\Controllers\Admin\CatalogueController;
+use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Web\HomeController;
 
 use App\Http\Controllers\Admin\DiscountController as AdminDiscountController;
@@ -61,6 +65,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
             route::get('/admin/cate/trash', [CategoryController::class, 'trash'])->name('admin.trash.cate');
             route::post('/admin/cate/restore/{id}', [CategoryController::class, 'restore'])->name('admin.restore.cate');
             route::delete('/admin/cate/fore-delete/{id}', [CategoryController::class, 'foreDelete'])->name('admin.foreDelete.cate');
+
         });
         Route::prefix('user')->group(function () {
             route::get('/', [UserController::class, 'index'])->name('admin.user');
@@ -86,6 +91,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
             route::get('/order/{id}', [OrderController::class, 'show'])->name('admin.show.order');
             route::post('/orders/{id}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
             route::post('/orders/{id}/updatePaymenStatus', [OrderController::class, 'updatePaymenStatus'])->name('orders.updatePaymenStatus');
+
         });
 
         // ví điện tử
@@ -185,6 +191,31 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('catalogues-trash', [CatalogueController::class, 'trash'])->name('catalogues.trash');
         Route::post('catalogues/{id}/restore', [CatalogueController::class, 'restore'])->name('catalogues.restore');
         Route::delete('catalogues/{id}/force-delete', [CatalogueController::class, 'forceDelete'])->name('catalogues.forceDelete');
+
+
+        // Route Brand
+        Route::resource('brands', BrandController::class);
+        Route::get('brands-trash', [BrandController::class, 'trash'])->name('brands.trash');
+        Route::patch('brands/{id}/restore', [BrandController::class, 'restore'])->name('brands.restore');
+        Route::delete('brands/{id}/delete-permanently', [BrandController::class, 'deletePermanently'])->name('brands.delete-permanently');
+
+
+        // // Route cho chức năng kích hoạt lại trạng thái
+        Route::post('product-variants/{id}/activate', [ProductVariantController::class, 'activate'])->name('product-variants.activate');
+        Route::resource('attributes', AttributeController::class);
+        Route::resource('attributes.attribute_values', AttributeValueController::class);
+
+
+        Route::get('admin/products/{product}/variants', [ProductVariantController::class, 'index'])->name('products.variants.index');
+        Route::get('admin/products/{product}/variants/create', [ProductVariantController::class, 'create'])->name('products.variants.create');
+        Route::post('admin/products/{product}/variants', [ProductVariantController::class, 'store'])->name('variants.store');
+        Route::patch('admin/variants/{variant}/status', [ProductVariantController::class, 'updateStatus'])->name('variants.updateStatus');
+        // Route cho trang chỉnh sửa biến thể
+        Route::get('admin/products/{product}/variants/{variant}/edit', [ProductVariantController::class, 'edit'])->name('variants.edit');
+
+        // Route cho việc cập nhật biến thể
+        Route::put('admin/products/{product}/variants/{variant}', [ProductVariantController::class, 'update'])->name('variants.update');
+
 
         //dasboard
         Route::get('/admin/revenue-data', [DashboardController::class, 'getRevenueData']);
@@ -404,9 +435,6 @@ Route::get('/profile/confirm-password', [ProfileController::class, 'confirmPassw
 Route::post('/profile/confirm-password', [ProfileController::class, 'checkPassword'])->name('profile.check_password');
 Route::get('/profile/edit', [ProfileController::class, 'editProfile'])->name('profile.edit');
 Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
-
-
-
 
 
 

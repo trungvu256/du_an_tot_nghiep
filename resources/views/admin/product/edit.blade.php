@@ -151,7 +151,7 @@
         </div>
 
         <!-- Biến thể sản phẩm -->
-        <div class="mb-3">
+        {{-- <div class="mb-3">
             <label>Variants</label>
             <div id="variant-container">
                 @foreach ($product->variants as $index => $variant)
@@ -166,7 +166,7 @@
                 @endforeach
             </div>
             <button type="button" class="btn btn-success mt-2" id="add-variant">Add Variant</button>
-        </div>
+        </div> --}}
 
         <div class="mb-3 mt-3">
             <button type="submit" class="btn btn-primary">Update Product</button>
@@ -186,7 +186,7 @@
             console.error(error);
         });
 </script>
-<script>
+{{-- <script>
     let variantIndex = {
         {
             $product - > variants - > count()
@@ -205,6 +205,6 @@
         container.appendChild(newVariant);
         variantIndex++;
     });
-</script>
+</script> --}}
 
 @endsection

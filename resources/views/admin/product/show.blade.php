@@ -73,7 +73,7 @@
                         <!-- end col -->
                     </div>
 
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-xl-6">
                             <div class="mt-4">
                                 <h5 class="fs-14">Sizes :</h5>
@@ -91,7 +91,7 @@
 
 
                         <!-- end col -->
-                    </div>
+                    </div> --}}
                     <!-- end row -->
 
                     <div class="mt-4 text-muted">
