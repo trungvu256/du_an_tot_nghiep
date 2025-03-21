@@ -143,6 +143,8 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
+        $product = Product::findOrFail($id);
+    
         $request->validate([
             'product_code' => 'required|unique:products,product_code,' . $id,
             'name' => 'required|string|max:255',
@@ -153,28 +155,21 @@ class ProductController extends Controller
             'fragrance_group' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
-            'additional_images' => 'nullable|array',  // New validation rule for additional images
-            'additional_images.*' => 'image|mimes:jpg,png,jpeg|max:2048',  // Validate each additional image
+            'images.*' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'variants' => 'nullable|string',
         ]);
-
-        // Tìm sản phẩm theo ID
-        $product = Product::findOrFail($id);
-
-        // Xử lý hình ảnh sản phẩm chính (nếu có)
+    
+        // Xử lý ảnh chính
         if ($request->hasFile('image')) {
-            // Xóa ảnh cũ nếu có
             if ($product->image) {
-                Storage::delete('public/' . $product->image);
+                Storage::disk('public')->delete($product->image);
             }
-            // Lưu ảnh mới
             $imagePath = $request->file('image')->store('products', 'public');
         } else {
-            // Giữ nguyên ảnh cũ nếu không có ảnh mới
             $imagePath = $product->image;
         }
-
-        // Cập nhật thông tin sản phẩm
+    
+        // Cập nhật sản phẩm
         $product->update([
             'product_code' => $request->product_code,
             'name' => $request->name,
@@ -183,51 +178,71 @@ class ProductController extends Controller
             'catalogue_id' => $request->catalogue_id,
             'origin' => $request->origin,
             'style' => $request->style,
-            'fragrance_group' => $request->fragrance_group ?? 'Unknown',
+            'fragrance_group' => $request->fragrance_group,
             'description' => $request->description,
             'image' => $imagePath,
-            'gender' => $request->gender,
+            'gender' => $request->gender ?? null,
         ]);
-
-        // Xử lý ảnh phụ (nếu có)
-        if ($request->hasFile('additional_images')) {
-            foreach ($request->file('additional_images') as $image) {
-                $additionalImagePath = $image->store('product_images', 'public');
-                // Lưu thông tin ảnh phụ vào cơ sở dữ liệu
-                $product->images()->create([
-                    'image_path' => $additionalImagePath,
-                ]);
+    
+        // Xử lý ảnh phụ
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $subImage) {
+                if ($subImage->isValid()) {
+                    $subImagePath = $subImage->store('product_images', 'public');
+                    Images::create(['product_id' => $product->id, 'image' => $subImagePath]);
+                }
             }
         }
-
-        // Kiểm tra và xử lý dữ liệu biến thể
-        Log::info('Dữ liệu biến thể:', ['variants' => $request->variants]);
-
-        $variants = json_decode($request->variants, true);
-
-        if ($variants && is_array($variants)) {
-            foreach ($variants as $variant) {
-                ProductVariant::updateOrCreate(
-                    ['product_id' => $product->id, 'id' => $variant['id'] ?? null],
-                    [
-                        'size' => $variant['size'],
-                        'concentration' => $variant['concentration'],
-                        'special_edition' => $variant['special_edition'] ?? null,
-                        'price' => $variant['price'],
-                        'price_sale' => $variant['sale_price'] ?? null,
-                        'stock_quantity' => $variant['stock'],
-                    ]
-                );
+    
+        // Kiểm tra và xử lý biến thể
+        Log::info('Cập nhật biến thể - Dữ liệu nhận được:', ['variants' => $request->variants]);
+    
+        if (!empty($request->variants)) {
+            $variants = json_decode($request->variants, true);
+    
+            if (json_last_error() === JSON_ERROR_NONE && is_array($variants)) {
+                foreach ($variants as $variant) {
+                    if (isset($variant['id']) && !empty($variant['id'])) {
+                        // Cập nhật biến thể nếu đã tồn tại
+                        ProductVariant::where('id', $variant['id'])
+                            ->where('product_id', $product->id)
+                            ->update([
+                                'size' => $variant['size'],
+                                'concentration' => $variant['concentration'],
+                                'special_edition' => $variant['special_edition'] ?? null,
+                                'price' => $variant['price'],
+                                'price_sale' => $variant['sale_price'] ?? null,
+                                'stock_quantity' => $variant['stock'],
+                            ]);
+                    } else {
+                        // Thêm mới biến thể nếu chưa có ID
+                        ProductVariant::create([
+                            'product_id' => $product->id,
+                            'size' => $variant['size'],
+                            'concentration' => $variant['concentration'],
+                            'special_edition' => $variant['special_edition'] ?? null,
+                            'price' => $variant['price'],
+                            'price_sale' => $variant['sale_price'] ?? null,
+                            'stock_quantity' => $variant['stock'],
+                        ]);
+                    }
+                }
+    
+                // Xóa các biến thể không có trong request (nếu cần)
+                $variantIds = array_column($variants, 'id');
+                ProductVariant::where('product_id', $product->id)
+                    ->whereNotIn('id', $variantIds)
+                    ->delete();
+    
+            } else {
+                Log::error('Dữ liệu biến thể không hợp lệ:', ['variants' => $request->variants]);
             }
-        } else {
-            Log::error('Dữ liệu biến thể không hợp lệ:', ['variants' => $variants]);
         }
-
+    
         return redirect()->route('admin.product')->with('success', 'Cập nhật sản phẩm thành công');
     }
-
-
-
+    
+    
     public function delete($id)
     {
         $product = Product::findOrFail($id);

@@ -125,7 +125,7 @@ class Product extends Model
     // }
     public function comments()
     {
-        return $this->hasMany(Comment::class, 'id_product');
+        return $this->hasMany(Comment::class, 'product_id');
     }
 
     public function discounts()

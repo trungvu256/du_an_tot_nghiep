@@ -61,69 +61,36 @@
                     </div>
                     <small class="pt-1">(50 Reviews)</small>
                 </div>
-                @if ($detailproduct->variants->count() > 0)
-                    @php
-                        $minPrice = $detailproduct->variants->min('price');
-                        $maxPrice = $detailproduct->variants->max('price');
-                    @endphp
-                    <h3 class="font-weight-semi-bold mb-4">{{ number_format($minPrice) }}₫ - {{ number_format($maxPrice) }}₫
-                    </h3>
-                @else
-                    <h3 class="font-weight-semi-bold mb-4">{{ number_format($detailproduct->price) }}₫</h3>
-                @endif
+                <h3 class="font-weight-semi-bold mb-4">
+                    Giá: <span id="product-price">{{ number_format($detailproduct->variants->first()->price ?? $detailproduct->price) }}</span>₫
+                </h3>
                 <div class="mb-4">
                     <p class="text-dark font-weight-medium mb-0 mr-3">Mô tả:</p>{!! $detailproduct->description !!}
                 </div>
                 <div class="d-flex mb-3">
                     <p class="text-dark font-weight-medium mb-0 mr-3">ML:</p>
-                    <form>
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" id="size-1" name="size">
-                            <label class="custom-control-label" for="size-1">30</label>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" id="size-2" name="size">
-                            <label class="custom-control-label" for="size-2">40</label>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" id="size-3" name="size">
-                            <label class="custom-control-label" for="size-3">50</label>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" id="size-4" name="size">
-                            <label class="custom-control-label" for="size-4">60</label>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" id="size-5" name="size">
-                            <label class="custom-control-label" for="size-5">70</label>
-                        </div>
+                    <form id="variantForm">
+                        @foreach ($detailproduct->variants as $key => $variant)
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" class="custom-control-input" id="size-{{ $key }}" 
+                                       name="size" data-price="{{ $variant->price }}">
+                                <label class="custom-control-label" for="size-{{ $key }}">{{ $variant->size }}ml</label>
+                            </div>
+                        @endforeach
                     </form>
                 </div>
-                <!-- <div class="d-flex mb-4">
-                    <p class="text-dark font-weight-medium mb-0 mr-3">Colors:</p>
-                    <form>
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" id="color-1" name="color">
-                            <label class="custom-control-label" for="color-1">Black</label>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" id="color-2" name="color">
-                            <label class="custom-control-label" for="color-2">White</label>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" id="color-3" name="color">
-                            <label class="custom-control-label" for="color-3">Red</label>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" id="color-4" name="color">
-                            <label class="custom-control-label" for="color-4">Blue</label>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" id="color-5" name="color">
-                            <label class="custom-control-label" for="color-5">Green</label>
-                        </div>
-                    </form>
-                </div> -->
+            
+                <!-- Script cập nhật giá -->
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script>
+                    $(document).ready(function () {
+                        $('input[name="size"]').on('change', function () {
+                            var selectedPrice = $(this).data('price');
+                            $('#product-price').text(selectedPrice.toLocaleString('vi-VN'));
+                        });
+                    });
+                </script>
+                
                 <div class="d-flex align-items-center mb-4 pt-2">
                     <div class="input-group quantity mr-3" style="width: 130px;">
                         <div class="input-group-btn">
