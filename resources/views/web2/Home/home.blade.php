@@ -209,42 +209,42 @@ body {
     </div>
     <div class="row px-xl-5 pb-3">
         @foreach ($products as $product)
-        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-            <div class="card product-item border-0 shadow-sm rounded">
-                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                    <img class="img-fluid w-100" src="{{ asset('storage/'.$product->image) }}"
-                        alt="{{ $product->name }}">
-                </div>
-                <div class="card-body text-center p-3">
-                    <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
-                    <div class="d-flex justify-content-center align-items-center">
-                        @php
-                            $minPrice = $product->variants->min('price');
-                            $maxPrice = $product->variants->max('price');
-                        @endphp
-                    
-                        <h6 class="text-danger font-weight-bold">
-                            {{ number_format($minPrice) }}₫
-                            @if ($minPrice !== $maxPrice)
-                                - {{ number_format($maxPrice) }}₫
-                            @endif
-                        </h6>
+            <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
+                <div class="card product-item border-0 shadow-sm rounded">
+                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                        <img class="img-fluid w-100" src="{{ asset('storage/'.$product->image) }}"
+                            alt="{{ $product->name }}">
                     </div>
-                    
-                </div>
-                <div class="card-footer bg-light border-top d-flex justify-content-between">
-                    <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
-                        class="btn btn-outline-primary btn-sm">
-                        <i class="fas fa-eye"></i> Xem chi tiết
-                    </a>
-                    <a href="{{ route('user.cart') }}" class="btn btn-outline-success btn-sm">
-                        <i class="fas fa-shopping-cart"></i> Mua ngay
-                    </a>
+                    <div class="card-body text-center p-2">
+                        <h6 class="text-truncate mb-2">{{ $product->name }}</h6>
+                        <div class="d-flex justify-content-center align-items-center">
+                            @php
+                                $minPrice = $product->variants->min('price');
+                                $maxPrice = $product->variants->max('price');
+                            @endphp
+                        
+                            <h6 class="text-danger font-weight-bold">
+                                {{ number_format($minPrice) }}₫
+                                @if ($minPrice !== $maxPrice)
+                                    - {{ number_format($maxPrice) }}₫
+                                @endif
+                            </h6>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-light border-top d-flex justify-content-between p-2">
+                        <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
+                            class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <a href="{{ route('user.cart') }}" class="btn btn-outline-success btn-sm">
+                            <i class="fas fa-shopping-cart"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
         @endforeach
     </div>
+    
 </div>
 <!-- Categories End -->
 
