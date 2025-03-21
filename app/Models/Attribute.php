@@ -14,8 +14,20 @@ class Attribute extends Model
     /**
      * Quan hệ: Một thuộc tính có nhiều giá trị (AttributeValue)
      */
+    public function values()
+    {
+        return $this->hasMany(AttributeValue::class, 'attribute_id');
+    }
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+    public function attribute()
+    {
+        return $this->belongsTo(AttributeValue::class, 'attribute_id');
+    }
     public function attributeValues()
     {
-        return $this->hasMany(AttributeValue::class);
+        return $this->hasMany(AttributeValue::class, 'attribute_id');
     }
 }
