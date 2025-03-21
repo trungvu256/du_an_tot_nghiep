@@ -116,15 +116,15 @@
                             <li class="nav-item">
                                 <a href="{{ route('admin.product') }}" class="nav-link">Danh sách sản phẩm</a>
                             </li>
-                            {{-- <li class="nav-item">
-                                <a href="{{ route('admin.cate') }}" class="nav-link">Danh mục sản phẩm</a>
-                            </li> --}}
+                            <li class="nav-item">
+                                <a href="{{route('variant.create')}}" class="nav-link">Các thuộc tính</a>
+                            </li>
                             <li class="nav-item">
                                 <a href="" class="nav-link">Bảng giá</a>
                             </li>
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a href="{{ route('attributes.index') }}" class="nav-link">Thuộc tính</a>
-                            </li>
+                            </li> --}}
                         </ul>
                     </div>
                 </li>

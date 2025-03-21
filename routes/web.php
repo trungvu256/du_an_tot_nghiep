@@ -66,7 +66,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
             route::get('/admin/cate/trash', [CategoryController::class, 'trash'])->name('admin.trash.cate');
             route::post('/admin/cate/restore/{id}', [CategoryController::class, 'restore'])->name('admin.restore.cate');
             route::delete('/admin/cate/fore-delete/{id}', [CategoryController::class, 'foreDelete'])->name('admin.foreDelete.cate');
-
         });
         Route::prefix('user')->group(function () {
             route::get('/', [UserController::class, 'index'])->name('admin.user');
@@ -92,7 +91,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
             route::get('/order/{id}', [OrderController::class, 'show'])->name('admin.show.order');
             route::post('/orders/{id}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
             route::post('/orders/{id}/updatePaymenStatus', [OrderController::class, 'updatePaymenStatus'])->name('orders.updatePaymenStatus');
-
         });
 
         // ví điện tử
@@ -201,21 +199,19 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::delete('brands/{id}/delete-permanently', [BrandController::class, 'deletePermanently'])->name('brands.delete-permanently');
 
 
-        // // Route cho chức năng kích hoạt lại trạng thái
-        Route::post('product-variants/{id}/activate', [ProductVariantController::class, 'activate'])->name('product-variants.activate');
-        Route::resource('attributes', AttributeController::class);
-        Route::resource('attributes.attribute_values', AttributeValueController::class);
+        // Route cho chức năng kích hoạt lại trạng thái
+      
 
 
-        Route::get('admin/products/{product}/variants', [ProductVariantController::class, 'index'])->name('products.variants.index');
-        Route::get('admin/products/{product}/variants/create', [ProductVariantController::class, 'create'])->name('products.variants.create');
-        Route::post('admin/products/{product}/variants', [ProductVariantController::class, 'store'])->name('variants.store');
-        Route::patch('admin/variants/{variant}/status', [ProductVariantController::class, 'updateStatus'])->name('variants.updateStatus');
-        // Route cho trang chỉnh sửa biến thể
-        Route::get('admin/products/{product}/variants/{variant}/edit', [ProductVariantController::class, 'edit'])->name('variants.edit');
+        // Route::get('admin/products/{product}/variants', [ProductVariantController::class, 'index'])->name('products.variants.index');
+        // Route::get('admin/products/{product}/variants/create', [ProductVariantController::class, 'create'])->name('products.variants.create');
+        // Route::post('admin/products/{product}/variants', [ProductVariantController::class, 'store'])->name('variants.store');
+        // Route::patch('admin/variants/{variant}/status', [ProductVariantController::class, 'updateStatus'])->name('variants.updateStatus');
+        // // Route cho trang chỉnh sửa biến thể
+        // Route::get('admin/products/{product}/variants/{variant}/edit', [ProductVariantController::class, 'edit'])->name('variants.edit');
 
-        // Route cho việc cập nhật biến thể
-        Route::put('admin/products/{product}/variants/{variant}', [ProductVariantController::class, 'update'])->name('variants.update');
+        // // Route cho việc cập nhật biến thể
+        // Route::put('admin/products/{product}/variants/{variant}', [ProductVariantController::class, 'update'])->name('variants.update');
 
 
         //dasboard
@@ -294,17 +290,17 @@ Route::middleware(['auth', 'admin'])->group(function () {
                     route::delete('/admin/product/fore-delete/{id}', [ProductController::class, 'foreDelete'])->name('admin.foreDelete.product');
                 });
 
+                // Sản phẩm biến thể 
+                Route::get('admin/variant', [ProductVariantController::class, 'index'])->name('variant.index');
+                Route::get('admin/variant/add', [ProductVariantController::class, 'create'])->name('variant.create');
+                Route::post('admin/variant/add', [ProductVariantController::class, 'store'])->name('variant.store');
+                Route::post('admin/variant/add-attribute-value', [ProductVariantController::class, 'storeAttributeValue'])->name('variant.storeAttributeValue');
+                Route::get('admin/variant/update/{id}', [ProductVariantController::class, 'edit'])->name('variant.edit');
+                Route::post('admin/variant/update/{id}', [ProductVariantController::class, 'update'])->name('variant.update');
+                Route::delete('admin/variant/delete/{id}', [ProductVariantController::class, 'destroy'])->name('variant.destroy');
+                Route::delete('admin/variant/destroyAttributeValue/{id}', [ProductVariantController::class, 'destroyAttributeValue'])->name('variant.destroyAttributeValue');
+                
 
-                // Sản phẩm biến thể
-                // Route::prefix('perfume_variants')->group(function () {
-                //     route::get('/', [PerfumeVariantController::class, 'index'])->name('admin.perfume_variants');
-                //     route::get('/add', [PerfumeVariantController::class, 'create'])->name('admin.create.perfume_variants');
-                //     route::post('/add', [PerfumeVariantController::class, 'store'])->name('admin.store.perfume_variants');
-                //     route::get('/show/{id}', [PerfumeVariantController::class, 'show'])->name('admin.show.perfume_variants');
-                //     route::get('/edit/{id}', [PerfumeVariantController::class, 'edit'])->name('admin.edit.perfume_variants');
-                //     route::post('/update/{id}', [PerfumeVariantController::class, 'update'])->name('admin.update.perfume_variants');
-                //     route::delete('/delete/{id}', [PerfumeVariantController::class, 'delete'])->name('admin.delete.perfume_variants');
-                // });
                 // Blog
                 Route::prefix('blog')->group(function () {
                     route::get('/', [BlogController::class, 'index'])->name('admin.blog');
@@ -341,7 +337,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
                 Route::get('/checkout', [WebController::class, 'checkout'])->name('user.checkout');
                 Route::get('/contact', [WebController::class, 'contact'])->name('user.contact');
             });
-
         }
     );
 

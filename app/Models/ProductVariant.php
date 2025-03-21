@@ -8,19 +8,28 @@ use Illuminate\Database\Eloquent\Model;
 class ProductVariant extends Model
 {
     use HasFactory;
-
     protected $fillable = [
-       'product_id',        // ID sản phẩm
-        'size',              // Dung tích
-        'concentration',     // Nồng độ tinh dầu
-        'special_edition',   // Phiên bản đặc biệt
-        'price',             // Giá gốc
-        'price_sale',        // Giá giảm (nếu có)
-        'stock_quantity',    // Số lượng tồn kho
+        'product_id', 'parent_id', 'size', 'concentration', 'special_edition',
+        'price', 'price_sale', 'stock_quantity', 'sku', 'status'
     ];
 
     public function product()
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function parent()
+    {
+        return $this->belongsTo(ProductVariant::class, 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(ProductVariant::class, 'parent_id');
+    }
+    public function attributeValues()
+{
+    return $this->hasMany(AttributeValue::class, 'attribute_id'); 
+}
+
 }

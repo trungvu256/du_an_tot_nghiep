@@ -9,27 +9,10 @@ class AttributeValue extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['attribute_id', 'value'];
+    protected $fillable = ['attribute_id', 'value']; // Đảm bảo dùng 'value', không phải 'name'
 
-    protected $casts = [
-        'attribute_id' => 'integer',
-        'value' => 'string',
-    ];
-
-    /**
-     * Quan hệ: Một giá trị thuộc tính thuộc về một thuộc tính
-     */
     public function attribute()
     {
-        return $this->belongsTo(Attribute::class);
-    }
-
-    /**
-     * Quan hệ: Một giá trị thuộc tính có thể thuộc nhiều biến thể sản phẩm
-     */
-    public function productVariants()
-    {
-        return $this->belongsToMany(ProductVariant::class, 'product_variant_attributes')
-            ->withTimestamps();
+        return $this->belongsTo(Attribute::class, 'attribute_id');
     }
 }
