@@ -92,7 +92,7 @@ class Product extends Model
     }
     public function variants()
     {
-        return $this->hasMany(ProductVariant::class, 'product_id', 'id');
+        return $this->hasMany(ProductVariant::class);
     }
     /**
      * Lấy danh sách thuộc tính có trong các biến thể của sản phẩm này.
