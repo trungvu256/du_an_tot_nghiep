@@ -46,16 +46,16 @@
                         <td>{{ $product->catalogue->name ?? 'Không có danh mục' }}</td>
                         <td class="text-center">
                             <div class="btn-group" role="group">
-                                <a href="{{ route('admin.show.product', $product->id) }}" class="btn btn-outline-success btn-sm" title="Xem">
+                                <a href="{{ route('admin.show.product', $product->id) }}" class="btn btn-success btn-sm" title="Xem">
                                     <i class="bi bi-eye-fill"></i>
                                 </a>
-                                <a href="{{ route('admin.edit.product', $product->id) }}" class="btn btn-outline-warning btn-sm" title="Chỉnh sửa">
+                                <a href="{{ route('admin.edit.product', $product->id) }}" class="btn btn-warning btn-sm" title="Chỉnh sửa">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
                                 <form action="{{ route('admin.delete.product', $product->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="Xóa">
+                                    <button type="submit" class="btn btn-danger btn-sm" title="Xóa">
                                         <i class="bi bi-trash-fill"></i>
                                     </button>
                                 </form>
