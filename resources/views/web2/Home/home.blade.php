@@ -1,110 +1,55 @@
 @extends('web2.layout.master')
 @section('content')
 
+
+<!-- Navbar Start -->
 <style>
 body {
-    background-color: #ffffff;
+    background-color: #f8f9fa;
     font-family: 'Arial', sans-serif;
+    color: #333;
 }
 
-.perfume-card {
-    background-color: #ffffff;
-    border: 1px solid #000000;
-    border-radius: 15px;
-    box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
-    padding: 25px;
-    text-align: center;
-    height: 100%;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+.title-link {
+
+    color: #333;
+    /* Màu mặc định */
+    transition: color 0.3s ease-in-out;
+    /* Hiệu ứng mượt */
 }
 
-.perfume-card:hover {
-    transform: scale(1.05);
-    box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.3);
+.title-link:hover {
+    color: rgb(254, 115, 84);
+    /* Đổi sang màu cam khi hover */
+    text-decoration: none;
+    /* Đảm bảo không có gạch chân */
 }
 
-.perfume-card img {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    border: 2px solid #000000;
-}
-
-.logo {
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 26px;
-    color: #000000;
-    font-weight: bold;
-    margin-bottom: 12px;
+.custom-width {
+    width: 80%;
+    /* Hoặc 100% nếu muốn full */
+    max-width: 600px;
+    /* Giới hạn chiều rộng */
+    margin: 0 auto;
+    /* Căn giữa */
 }
 
 .title {
-    font-family: 'Dancing Script', cursive;
-    font-size: 30px;
-    color: #000000;
-    font-weight: bold;
-    margin-bottom: 12px;
-}
 
-.subtitle {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: bold;
-    color: #000000;
-    margin-bottom: 15px;
+    color: #222;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .description {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
-    color: #000000;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
-
-.details-btn {
-    display: inline-block;
-    padding: 12px 25px;
-    background-color: #000000;
-    color: #ffffff;
-    text-decoration: none;
-    border-radius: 8px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.details-btn:hover {
-    background-color: #333333;
-    transform: translateY(-2px);
-    color: #ffffff;
-}
-
-.spring-bg {
-    background: url('spring-bg.jpg') center center/cover no-repeat;
-    border-radius: 15px;
-}
-
-.wood-bg {
-    background: url('wood-bg.jpg') center center/cover no-repeat;
-    border-radius: 15px;
-}
-
-.valentine-bg {
-    background: url('valentine-bg.jpg') center center/cover no-repeat;
-    border-radius: 15px;
-}
-
-.section-title {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 32px;
-    color: #000000;
-    font-weight: bold;
+    font-size: 15px;
+    color: #222;
+    line-height: 1.5;
+    margin-bottom: 15px;
 }
 </style>
-<!-- Navbar Start -->
 <div class="container-fluid mb-5">
     <div class="row border-top px-xl-5">
 
@@ -197,42 +142,42 @@ body {
     </div>
     <div class="row px-xl-5 pb-3">
         @foreach ($products as $product)
-            <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
-                <div class="card product-item border-0 shadow-sm rounded">
-                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="{{ asset('storage/'.$product->image) }}"
-                            alt="{{ $product->name }}">
-                    </div>
-                    <div class="card-body text-center p-2">
-                        <h6 class="text-truncate mb-2">{{ $product->name }}</h6>
-                        <div class="d-flex justify-content-center align-items-center">
-                            @php
-                                $minPrice = $product->variants->min('price');
-                                $maxPrice = $product->variants->max('price');
-                            @endphp
-                        
-                            <h6 class="text-danger font-weight-bold">
-                                {{ number_format($minPrice) }}₫
-                                @if ($minPrice !== $maxPrice)
-                                    - {{ number_format($maxPrice) }}₫
-                                @endif
-                            </h6>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-light border-top d-flex justify-content-between p-2">
-                        <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
-                            class="btn btn-outline-primary btn-sm">
-                            <i class="fas fa-eye"></i>
-                        </a>
-                        <a href="{{ route('user.cart') }}" class="btn btn-outline-success btn-sm">
-                            <i class="fas fa-shopping-cart"></i>
-                        </a>
+        <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
+            <div class="card product-item border-0 shadow-sm rounded">
+                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                    <img class="img-fluid w-100" src="{{ asset('storage/'.$product->image) }}"
+                        alt="{{ $product->name }}">
+                </div>
+                <div class="card-body text-center p-2">
+                    <h6 class="text-truncate mb-2">{{ $product->name }}</h6>
+                    <div class="d-flex justify-content-center align-items-center">
+                        @php
+                        $minPrice = $product->variants->min('price');
+                        $maxPrice = $product->variants->max('price');
+                        @endphp
+
+                        <h6 class="text-danger font-weight-bold">
+                            {{ number_format($minPrice) }}₫
+                            @if ($minPrice !== $maxPrice)
+                            - {{ number_format($maxPrice) }}₫
+                            @endif
+                        </h6>
                     </div>
                 </div>
+                <div class="card-footer bg-light border-top d-flex justify-content-between p-2">
+                    <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
+                        class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    <a href="{{ route('user.cart') }}" class="btn btn-outline-success btn-sm">
+                        <i class="fas fa-shopping-cart"></i>
+                    </a>
+                </div>
             </div>
+        </div>
         @endforeach
     </div>
-    
+
 </div>
 <!-- Categories End -->
 
@@ -297,18 +242,18 @@ body {
                         <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
                         <div class="d-flex justify-content-center align-items-center">
                             @php
-                                $minPrice = $product->variants->min('price');
-                                $maxPrice = $product->variants->max('price');
+                            $minPrice = $product->variants->min('price');
+                            $maxPrice = $product->variants->max('price');
                             @endphp
-                        
+
                             <h6 class="text-danger font-weight-bold">
                                 {{ number_format($minPrice) }}₫
                                 @if ($minPrice !== $maxPrice)
-                                    - {{ number_format($maxPrice) }}₫
+                                - {{ number_format($maxPrice) }}₫
                                 @endif
                             </h6>
                         </div>
-                        
+
                     </div>
                     <div class="card-footer bg-light border-top d-flex justify-content-between">
                         <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
@@ -369,18 +314,18 @@ body {
                         <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
                         <div class="d-flex justify-content-center align-items-center">
                             @php
-                                $minPrice = $product->variants->min('price');
-                                $maxPrice = $product->variants->max('price');
+                            $minPrice = $product->variants->min('price');
+                            $maxPrice = $product->variants->max('price');
                             @endphp
-                        
+
                             <h6 class="text-danger font-weight-bold">
                                 {{ number_format($minPrice) }}₫
                                 @if ($minPrice !== $maxPrice)
-                                    - {{ number_format($maxPrice) }}₫
+                                - {{ number_format($maxPrice) }}₫
                                 @endif
                             </h6>
                         </div>
-                        
+
                     </div>
                     <div class="card-footer bg-light border-top d-flex justify-content-between">
                         <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
@@ -407,24 +352,39 @@ body {
 
     <body>
 
+
         <div class="container py-5">
             <div class="text-center mb-4">
-                <h2 class="section-title px-5"><span class="px-2">Bài viết</span></h2>
+                <h2 class="section-title px-5">
+                    <span class="px-2">
+                        <i class="fas fa-newspaper" style="color:rgb(29, 21, 35);"></i> Bài viết
+                    </span>
+                </h2>
             </div>
+
             <div class="row">
                 <!-- Card 1 -->
                 @if(isset($blogs) && $blogs->count() > 0)
                 @foreach ($blogs as $blog)
-                <div class="col-12 col-md-4 mb-4">
+                <div class="col-12 col-md-4 mb-4 custom-width">
+
                     <div class="perfume-card spring-bg">
-                        <img src="{{ asset('blog/' . $blog->image) }}" alt="{{ $blog->title }}" class="img-fluid">
-                        <div class="logo">{{ $blog->author }}</div>
-                        <div class="title">{{ Str::limit($blog->title, 10, '...') }}</div>
-                        <div class="subtitle">{{ Str::limit($blog->preview, 10, '...') }}</div>
-                        <div class="description">
-                            {{ Str::limit(strip_tags($blog->content), 50, '...') }}
+                        <a href="{{route('web.detaiWebBlog.blog', $blog->id)}}">
+                            <img src="{{ asset('blog/' . $blog->image) }}" alt="{{ $blog->title }}" class="img-fluid">
+                        </a>
+
+                        <!-- <div class="logo">{{ $blog->author }}</div> -->
+                        <div class="title">
+                            <a href="{{route('web.detaiWebBlog.blog', $blog->id)}}" class="title-link">
+                                {{ Str::limit($blog->title, 100, '...') }}
+                            </a>
                         </div>
-                        <a href="{{route('web.detaiWebBlog.blog', $blog->id)}}" class="details-btn">Xem chi tiết</a>
+
+                        <!-- <div class="subtitle">{{ Str::limit($blog->preview, 10, '...') }}</div> -->
+                        <div class="description">
+                            {{ Str::limit(strip_tags($blog->content), 76, '...') }}
+                        </div>
+                        <!-- <a href="{{route('web.detaiWebBlog.blog', $blog->id)}}" class="details-btn">Xem chi tiết</a> -->
                     </div>
                 </div>
                 @endforeach
@@ -442,10 +402,8 @@ body {
         </script>
     </body>
 
-    </html>
-
-    </div>
     <!-- Products End -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
 
     <script>
