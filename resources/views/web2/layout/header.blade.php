@@ -96,7 +96,7 @@
         top: 0;
         left: 0;
         width: 100%;
-        height: 80px;
+        height: 100px;
         /* Điều chỉnh độ cao theo menu */
         background: white;
         padding: 10px;
@@ -106,6 +106,12 @@
         justify-content: center;
         z-index: 1000;
     }
+
+    .search-bar {
+        flex-wrap: wrap;
+        /* Cho phép xuống hàng khi quá hẹp */
+    }
+
 
     .search-bar.show {
         display: flex;
@@ -137,6 +143,48 @@
         border-radius: 50%;
         padding: 2px 6px;
     }
+
+    .search-bar {
+        max-width: 100%;
+        padding: 10px 0;
+    }
+
+
+    .search-bar .search-container {
+        position: relative;
+        max-width: 600px;
+        margin-bottom: 0.5rem;
+        /* Khoảng cách với gợi ý */
+    }
+
+    .search-bar .search-input {
+        /* Ghi đè thêm nếu cần */
+        border-radius: 50px;
+        /* Thay vì .rounded-pill */
+        padding-right: 60px;
+        /* Chừa chỗ cho nút search */
+    }
+
+    .search-bar .search-button {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+
+    .search-bar .search-hints {
+        font-size: 0.875rem;
+        /* Tương đương .text-muted nhỏ */
+        color: #666;
+        margin-left: 0.5rem;
+    }
     </style>
 
     <!-- HEADER -->
@@ -155,48 +203,125 @@
             <!-- MENU NAV -->
 
 
-            <div class="col-lg-6 ">
+            <div class="col-lg-6">
                 <nav class="navbar navbar-expand-lg navbar-light">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                        <ul class="navbar-nav position-relative" id="navbar-menu">
+                        <ul class="navbar-nav d-flex flex-nowrap align-items-center overflow-auto" id="navbar-menu">
                             <li class="nav-item px-3">
-                                <a class="nav-link {{ request()->routeIs('web.home') ? 'active' : '' }}"
+                                <a class="nav-link text-nowrap {{ request()->routeIs('web.home') ? 'active' : '' }}"
                                     href="{{ route('web.home') }}">TRANG CHỦ</a>
                             </li>
-                            <li class="nav-item px-2">
-                                <a class="nav-link {{ request()->routeIs('web.shop') ? 'active' : '' }}"
+                            <li class="nav-item px-3">
+                                <a class="nav-link text-nowrap {{ request()->routeIs('web.shop') ? 'active' : '' }}"
                                     href="{{ route('web.shop') }}">SẢN PHẨM</a>
                             </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#"
+                            <li class="nav-item dropdown px-3">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center text-nowrap" href="#"
                                     data-bs-toggle="dropdown">
                                     NƯỚC HOA
-
                                 </a>
                                 <ul class="dropdown-menu shadow border-0 rounded-3 p-2 animate-dropdown">
                                     <li><a class="dropdown-item py-2 px-3 rounded-2" href="#">Nước hoa nam</a></li>
                                     <li><a class="dropdown-item py-2 px-3 rounded-2" href="#">Nước hoa nữ</a></li>
                                 </ul>
                             </li>
-
-
-
-                            <li class="nav-item px-2">
-                                <a class="nav-link {{ request()->routeIs('web.listBlog.blog') ? 'active' : '' }}"
+                            <li class="nav-item px-3">
+                                <a class="nav-link text-nowrap {{ request()->routeIs('web.listBlog.blog') ? 'active' : '' }}"
                                     href="{{ route('web.listBlog.blog') }}">BÀI VIẾT</a>
                             </li>
-                            <li class="nav-item px-2">
-                                <a class="nav-link {{ request()->routeIs('user.contact') ? 'active' : '' }}"
+                            <li class="nav-item px-3">
+                                <a class="nav-link text-nowrap {{ request()->routeIs('user.contact') ? 'active' : '' }}"
                                     href="{{ route('user.contact') }}">LIÊN HỆ</a>
                             </li>
                         </ul>
                     </div>
-
-
                 </nav>
+            </div>
+
+
+
+
+            <!-- Thanh tìm kiếm -->
+            <!-- Thanh tìm kiếm (bọc trong 1 div có ID nếu bạn cần JS ẩn/hiện) -->
+            <div class="search-bar" id="searchBar">
+                <div class="container-fluid px-3 py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <!-- Logo -->
+                        <div class="col-lg-3 text-start" style="margin-left: 20px;">
+                            <a href="/" class="text-decoration-none">
+                                <h1 class="m-0 display-5 font-weight-semi-bold"
+                                    style="font-family: 'Montserrat', sans-serif;">
+                                    <span class="text-primary font-weight-bold px-3 mr-1">Ethereal</span>Noir
+                                </h1>
+                            </a>
+                        </div>
+
+                        <!-- Thanh tìm kiếm -->
+                        <div class="flex-grow-1 d-flex justify-content-center mx-2">
+                            <div class="d-flex align-items-center border rounded-pill px-3 py-2 shadow-sm"
+                                style="max-width: 700px; width: 100%; height: 40px;">
+                                <input type="text" class="form-control border-0 shadow-none flex-grow-1"
+                                    placeholder="Tìm theo nội dung..."
+                                    style="outline: none; font-size: 14px; padding: 6px; height: 100%;">
+                                <button
+                                    class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center ms-2"
+                                    style="width: 35px; height: 35px;">
+                                    <i class="fa fa-search text-white"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Icon Menu -->
+                        <div class="d-flex align-items-center" style="margin-right: 80px;">
+                            <!-- Người dùng -->
+                            <div class="dropdown me-2">
+                                @auth
+                                <a class="nav-link dropdown-toggle p-0 text-dark" href="#" id="userDropdown"
+                                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user fa-lg"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li><a class="dropdown-item" href="{{ route('profile') }}">Thông tin cá nhân</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="{{ route('wallet.show') }}">Ví điện tử</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('profile') }}">Lịch sử mua hàng</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('web.logout') }}">Đăng xuất</a></li>
+                                </ul>
+                                @else
+                                <a class="nav-link dropdown-toggle p-0 text-dark" href="#" id="guestDropdown"
+                                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user fa-lg"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="guestDropdown">
+                                    <li><a class="dropdown-item" href="{{ route('web.login') }}"><i
+                                                class="fas fa-sign-in-alt me-2"></i>Đăng nhập</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('web.register') }}"><i
+                                                class="fas fa-user-plus me-2"></i>Đăng ký</a></li>
+                                </ul>
+                                @endauth
+                            </div>
+
+                            <!-- Giỏ hàng -->
+                            <div class="cart-icon">
+                                <a href="{{ route('user.cart') }}" class="text-dark position-relative">
+                                    <i class="fas fa-shopping-cart fa-lg"></i>
+                                    <span
+                                        class="cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
             </div>
 
 
@@ -205,6 +330,7 @@
                 <div class="icon-menu">
                     <!-- Icon tìm kiếm -->
                     <i class="fas fa-search fa-lg cursor-pointer" id="searchIcon"></i>
+
 
                     <!-- Icon người dùng -->
                     <div class="dropdown">
@@ -246,9 +372,6 @@
     </div>
 
     <!-- Thanh tìm kiếm -->
-    <div class="search-bar" id="searchBar">
-        <input type="text" class="form-control w-50" placeholder="Tìm kiếm...">
-    </div>
 
 
     <script>

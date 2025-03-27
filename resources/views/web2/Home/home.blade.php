@@ -1,133 +1,77 @@
 @extends('web2.layout.master')
 @section('content')
 
+
+<!-- Navbar Start -->
+<style>
+.feature-box {
+    transition: all 0.3s ease-in-out;
+    background: #f8f9fa;
+    cursor: pointer;
+}
+
+.feature-box:hover {
+    background: white;
+    color: white;
+    transform: translateY(-5px);
+}
+
+.feature-box:hover h1 {
+    color: white;
+}
+</style>
 <style>
 body {
-    background-color: #ffffff;
+    background-color: #f8f9fa;
     font-family: 'Arial', sans-serif;
+    color: #333;
 }
 
-.perfume-card {
-    background-color: #ffffff;
-    border: 1px solid #000000;
-    border-radius: 15px;
-    box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
-    padding: 25px;
-    text-align: center;
-    height: 100%;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+.title-link {
+
+    color: #333;
+    /* Màu mặc định */
+    transition: color 0.3s ease-in-out;
+    /* Hiệu ứng mượt */
 }
 
-.perfume-card:hover {
-    transform: scale(1.05);
-    box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.3);
+.title-link:hover {
+    color: rgb(254, 115, 84);
+    /* Đổi sang màu cam khi hover */
+    text-decoration: none;
+    /* Đảm bảo không có gạch chân */
 }
 
-.perfume-card img {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    border: 2px solid #000000;
-}
-
-.logo {
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 26px;
-    color: #000000;
-    font-weight: bold;
-    margin-bottom: 12px;
+.custom-width {
+    width: 80%;
+    /* Hoặc 100% nếu muốn full */
+    max-width: 600px;
+    /* Giới hạn chiều rộng */
+    margin: 0 auto;
+    /* Căn giữa */
 }
 
 .title {
-    font-family: 'Dancing Script', cursive;
-    font-size: 30px;
-    color: #000000;
-    font-weight: bold;
-    margin-bottom: 12px;
-}
 
-.subtitle {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: bold;
-    color: #000000;
-    margin-bottom: 15px;
+    color: #222;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .description {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
-    color: #000000;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
-
-.details-btn {
-    display: inline-block;
-    padding: 12px 25px;
-    background-color: #000000;
-    color: #ffffff;
-    text-decoration: none;
-    border-radius: 8px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.details-btn:hover {
-    background-color: #333333;
-    transform: translateY(-2px);
-    color: #ffffff;
-}
-
-.spring-bg {
-    background: url('spring-bg.jpg') center center/cover no-repeat;
-    border-radius: 15px;
-}
-
-.wood-bg {
-    background: url('wood-bg.jpg') center center/cover no-repeat;
-    border-radius: 15px;
-}
-
-.valentine-bg {
-    background: url('valentine-bg.jpg') center center/cover no-repeat;
-    border-radius: 15px;
-}
-
-.section-title {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 32px;
-    color: #000000;
-    font-weight: bold;
+    font-size: 15px;
+    color: #222;
+    line-height: 1.5;
+    margin-bottom: 15px;
 }
 </style>
-<!-- Navbar Start -->
 <div class="container-fluid mb-5">
     <div class="row border-top px-xl-5">
 
         <div class="container-fluid">
-            <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
-                <a href="/" class="text-decoration-none d-block d-lg-none">
-                    <h1 class="m-0 display-5 font-weight-semi-bold"><span
-                            class="text-primary font-weight-bold border px-3 mr-1">Ethereal</span>Noir</h1>
-                </a>
-                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                    {{-- @include('web2.layout.menu') --}}
 
-                    <div class="navbar-nav ml-auto py-0">
-
-                    </div>
-                    <div class="navbar-nav ml-auto py-0">
-
-                    </div>
-                </div>
-            </nav>
             <div id="header-carousel" class="containerfluid carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active" style="height: 550px;">
@@ -162,59 +106,69 @@ body {
 <div class="container-fluid pt-5">
     <div class="row px-xl-5 pb-3">
         <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
-            <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+            <div class="d-flex align-items-center border rounded shadow-sm p-4 feature-box">
                 <h1 class="fa fa-check text-primary m-0 mr-3"></h1>
-                <h5 class="font-weight-semi-bold m-0">Quality Product</h5>
+                <h5 class="font-weight-semi-bold m-0">Sản phẩm chất lượng</h5>
             </div>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
-            <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
-                <h1 class="fa fa-shipping-fast text-primary m-0 mr-2"></h1>
-                <h5 class="font-weight-semi-bold m-0">Free Shipping</h5>
+            <div class="d-flex align-items-center border rounded shadow-sm p-4 feature-box">
+                <h1 class="fa fa-shipping-fast text-primary m-0 mr-3"></h1>
+                <h5 class="font-weight-semi-bold m-0">Miễn phí vận chuyển</h5>
             </div>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
-            <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+            <div class="d-flex align-items-center border rounded shadow-sm p-4 feature-box">
                 <h1 class="fas fa-exchange-alt text-primary m-0 mr-3"></h1>
-                <h5 class="font-weight-semi-bold m-0">14-Day Return</h5>
+                <h5 class="font-weight-semi-bold m-0">Đổi trả trong 14 ngày</h5>
             </div>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
-            <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+            <div class="d-flex align-items-center border rounded shadow-sm p-4 feature-box">
                 <h1 class="fa fa-phone-volume text-primary m-0 mr-3"></h1>
-                <h5 class="font-weight-semi-bold m-0">24/7 Support</h5>
+                <h5 class="font-weight-semi-bold m-0">Hỗ trợ 24/7</h5>
             </div>
         </div>
     </div>
 </div>
+
+
+
+
 <!-- Featured End -->
 
 
 <!-- Categories Start -->
 <div class="container-fluid pt-5">
-    <div class="text-center mb-4">
-        <h2 class="section-title px-5"><span class="px-2">Sản phẩm</span></h2>
+    <div class="text-center mb-5">
+        <h3 class="text-3xl font-normal tracking-wide text-black uppercase">
+            BỘ SƯU TẬP MỚI
+        </h3>
     </div>
-    <div class="row px-xl-5 pb-3">
-        @foreach ($products as $product)
-            <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
+
+
+
+    <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 0 5px;">
+        <div class="row justify-content-center px-xl-5 pb-3">
+            @foreach ($products as $product)
+            <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
                 <div class="card product-item border-0 shadow-sm rounded">
                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="{{ asset('storage/'.$product->image) }}"
-                            alt="{{ $product->name }}">
+                        <img class="img-fluid w-100" style="height: 250px; object-fit: contain;"
+                            src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }}">
                     </div>
-                    <div class="card-body text-center p-2">
+                    <div class="card-body text-center p-3">
                         <h6 class="text-truncate mb-2">{{ $product->name }}</h6>
                         <div class="d-flex justify-content-center align-items-center">
                             @php
-                                $minPrice = $product->variants->min('price');
-                                $maxPrice = $product->variants->max('price');
+                            $minPrice = $product->variants->min('price');
+                            $maxPrice = $product->variants->max('price');
                             @endphp
-                        
+
                             <h6 class="text-danger font-weight-bold">
                                 {{ number_format($minPrice) }}₫
                                 @if ($minPrice !== $maxPrice)
-                                    - {{ number_format($maxPrice) }}₫
+                                - {{ number_format($maxPrice) }}₫
                                 @endif
                             </h6>
                         </div>
@@ -230,14 +184,70 @@ body {
                     </div>
                 </div>
             </div>
-        @endforeach
+            @endforeach
+        </div>
     </div>
-    
+
+
 </div>
 <!-- Categories End -->
+<!-- BST NEW -->
+<style>
+.responsive-img {
+    width: 100%;
+    /* Hình ảnh luôn chiếm toàn bộ chiều rộng của phần tử cha */
+    height: auto;
+    /* Giữ nguyên tỷ lệ khung hình, tránh méo ảnh */
+    max-width: 100%;
+    /* Không cho phép hình ảnh lớn hơn kích thước gốc */
+    object-fit: cover;
+    /* Đảm bảo ảnh không bị méo khi thu phóng */
+    display: block;
+    /* Loại bỏ khoảng trắng dư thừa xung quanh ảnh */
+}
+
+.view-details {
+    text-decoration: none;
+    /* Bỏ gạch chân */
+    color: black;
+    /* Màu chữ mặc định là đen */
+    font-weight: 200;
+    /* Làm chữ đậm nhẹ */
+    transition: color 0.3s ease-in-out;
+    /* Hiệu ứng chuyển đổi màu mượt mà */
+
+    /* Làm chữ đậm nhẹ */
+    font-size: 12px;
+
+}
+
+.view-details:hover {
+    color: gold;
+    /* Đổi màu thành vàng khi hover */
+    text-decoration: none;
+}
+</style>
+<div class="container-fluid pt-5">
+    <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 0 40px;">
+        <img src="{{ asset('/images/Banner/banner00.jpg') }}" alt="Perfume Image" class="perfume-image responsive-img">
 
 
+        <!-- Text section -->
+        <div class="text-center mb-5" style="margin-top: 20px;">
+            <h9 class="text-5xl font-black tracking-wide text-black uppercase">
+                BST SCENT OF SLAY – Nổi quy tụ những nét hương sáng tạo giúp bạn nâng tầm phong cách và tính riêng.
+                Với dòng sản phẩm mới, <span class="font-bold">ARMAF mang đến cho bạn “sát khí” của riêng mình,</span>
+                nổi bật mọi khoảnh khắc để trở thành spotlight cho bản tủy tột cùng sáng tạo.
+                Đừng để mùi hương, đây là khí chất để bạn kể câu chuyện riêng về hành trình chinh phục mọi ánh nhìn.
+            </h9>
+            <br>
+            <a href="#" class="view-details">Xem chi tiết →</a>
+        </div>
 
+        <!-- View Details link -->
+
+    </div>
+</div>
 
 
 
@@ -281,49 +291,55 @@ body {
 
     <!-- Products Start -->
     <div class="container-fluid pt-5">
-        <div class="text-center mb-4">
-            <h2 class="section-title px-5"><span class="px-2">Sản phẩm mới</span></h2>
+        <div class="text-center mb-5">
+            <h3 class="text-3xl font-normal tracking-wide text-black uppercase">
+                SẢN PHẨM HOT
+            </h3>
         </div>
+        <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 0 20px;">
 
-        <div class="row px-xl-5 pb-3">
-            @foreach ($list_product as $product)
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <div class="card product-item border-0 shadow-sm rounded">
-                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="{{ asset('storage/'.$product->image) }}"
-                            alt="{{ $product->name }}">
-                    </div>
-                    <div class="card-body text-center p-3">
-                        <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
-                        <div class="d-flex justify-content-center align-items-center">
-                            @php
+
+            <div class="row justify-content-center px-xl-5 pb-3">
+                @foreach ($list_product as $product)
+                <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
+                    <div class="card product-item border-0 shadow-sm rounded">
+                        <div
+                            class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                            <img class="img-fluid w-100" style="height: 250px; object-fit: contain;"
+                                src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }}">
+                        </div>
+                        <div class="card-body text-center p-3">
+                            <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
+                            <div class="d-flex justify-content-center align-items-center">
+                                @php
                                 $minPrice = $product->variants->min('price');
                                 $maxPrice = $product->variants->max('price');
-                            @endphp
-                        
-                            <h6 class="text-danger font-weight-bold">
-                                {{ number_format($minPrice) }}₫
-                                @if ($minPrice !== $maxPrice)
+                                @endphp
+
+                                <h6 class="text-danger font-weight-bold">
+                                    {{ number_format($minPrice) }}₫
+                                    @if ($minPrice !== $maxPrice)
                                     - {{ number_format($maxPrice) }}₫
-                                @endif
-                            </h6>
+                                    @endif
+                                </h6>
+                            </div>
                         </div>
-                        
-                    </div>
-                    <div class="card-footer bg-light border-top d-flex justify-content-between">
-                        <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
-                            class="btn btn-outline-primary btn-sm">
-                            <i class="fas fa-eye"></i> Xem chi tiết
-                        </a>
-                        <a href="{{ route('user.cart') }}" class="btn btn-outline-success btn-sm">
-                            <i class="fas fa-shopping-cart"></i> Mua ngay
-                        </a>
+                        <div class="card-footer bg-light border-top d-flex justify-content-between">
+                            <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
+                                class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-eye"></i> Xem chi tiết
+                            </a>
+                            <a href="{{ route('user.cart') }}" class="btn btn-outline-success btn-sm">
+                                <i class="fas fa-shopping-cart"></i> Mua ngay
+                            </a>
+                        </div>
                     </div>
                 </div>
+                @endforeach
             </div>
-            @endforeach
         </div>
     </div>
+
 
     <!-- Products End -->
 
@@ -369,18 +385,18 @@ body {
                         <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
                         <div class="d-flex justify-content-center align-items-center">
                             @php
-                                $minPrice = $product->variants->min('price');
-                                $maxPrice = $product->variants->max('price');
+                            $minPrice = $product->variants->min('price');
+                            $maxPrice = $product->variants->max('price');
                             @endphp
-                        
+
                             <h6 class="text-danger font-weight-bold">
                                 {{ number_format($minPrice) }}₫
                                 @if ($minPrice !== $maxPrice)
-                                    - {{ number_format($maxPrice) }}₫
+                                - {{ number_format($maxPrice) }}₫
                                 @endif
                             </h6>
                         </div>
-                        
+
                     </div>
                     <div class="card-footer bg-light border-top d-flex justify-content-between">
                         <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
@@ -407,24 +423,39 @@ body {
 
     <body>
 
+
         <div class="container py-5">
             <div class="text-center mb-4">
-                <h2 class="section-title px-5"><span class="px-2">Bài viết</span></h2>
+                <h2 class="section-title px-5">
+                    <span class="px-2">
+                        <i class="fas fa-newspaper" style="color:rgb(29, 21, 35);"></i> Bài viết
+                    </span>
+                </h2>
             </div>
+
             <div class="row">
                 <!-- Card 1 -->
                 @if(isset($blogs) && $blogs->count() > 0)
                 @foreach ($blogs as $blog)
-                <div class="col-12 col-md-4 mb-4">
+                <div class="col-12 col-md-4 mb-4 custom-width">
+
                     <div class="perfume-card spring-bg">
-                        <img src="{{ asset('blog/' . $blog->image) }}" alt="{{ $blog->title }}" class="img-fluid">
-                        <div class="logo">{{ $blog->author }}</div>
-                        <div class="title">{{ Str::limit($blog->title, 10, '...') }}</div>
-                        <div class="subtitle">{{ Str::limit($blog->preview, 10, '...') }}</div>
-                        <div class="description">
-                            {{ Str::limit(strip_tags($blog->content), 50, '...') }}
+                        <a href="{{route('web.detaiWebBlog.blog', $blog->id)}}">
+                            <img src="{{ asset('blog/' . $blog->image) }}" alt="{{ $blog->title }}" class="img-fluid">
+                        </a>
+
+                        <!-- <div class="logo">{{ $blog->author }}</div> -->
+                        <div class="title">
+                            <a href="{{route('web.detaiWebBlog.blog', $blog->id)}}" class="title-link">
+                                {{ Str::limit($blog->title, 100, '...') }}
+                            </a>
                         </div>
-                        <a href="{{route('web.detaiWebBlog.blog', $blog->id)}}" class="details-btn">Xem chi tiết</a>
+
+                        <!-- <div class="subtitle">{{ Str::limit($blog->preview, 10, '...') }}</div> -->
+                        <div class="description">
+                            {{ Str::limit(strip_tags($blog->content), 76, '...') }}
+                        </div>
+                        <!-- <a href="{{route('web.detaiWebBlog.blog', $blog->id)}}" class="details-btn">Xem chi tiết</a> -->
                     </div>
                 </div>
                 @endforeach
@@ -442,10 +473,8 @@ body {
         </script>
     </body>
 
-    </html>
-
-    </div>
     <!-- Products End -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
 
     <script>
