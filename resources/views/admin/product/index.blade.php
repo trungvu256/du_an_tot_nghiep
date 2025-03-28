@@ -5,7 +5,7 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Danh sách sản phẩm</h5>
-        <a href="{{ route('admin.add.product') }}" class="btn btn-primary">
+        <a href="{{ route('admin.add.product') }}" class="btn btn-success">
             <i class="bi bi-plus-lg"></i> Thêm sản phẩm
         </a>
     </div>
@@ -19,12 +19,12 @@
 
     <div class="card-body">
         <table class="table table-bordered align-middle">
-            <thead class="table-dark text-center">
+            <thead class="table-primary text-center">
                 <tr>
                     <th>ID</th>
-                    <th>Sản phẩm</th>
-                    <th>Thương hiệu</th>
+                    <th>Tên sản phẩm</th>
                     <th>Hình ảnh</th>
+                    <th>Thương hiệu</th>
                     <th>Danh mục</th>
                     <th>Thao tác</th>
                 </tr>
@@ -35,14 +35,14 @@
                     <tr class="product-row text-center" data-id="{{ $product->id }}">
                         <td>{{ $product->id }}</td>
                         <td class="fw-bold">{{ $product->name }}</td>
-                        <td>{{ $product->brand->name ?? 'Không có thương hiệu' }}</td>
                         <td>
                             @if ($product->image)
-                                <img src="{{ asset('storage/' . $product->image) }}" class="img-thumbnail" width="50px" alt="Ảnh sản phẩm">
+                                <img src="{{ asset('storage/' . $product->image) }}" width="50px" alt="Ảnh sản phẩm">
                             @else
                                 <span class="text-muted">Không có ảnh</span>
                             @endif
                         </td>
+                        <td>{{ $product->brand->name ?? 'Không có thương hiệu' }}</td>
                         <td>{{ $product->catalogue->name ?? 'Không có danh mục' }}</td>
                         <td class="text-center">
                             <div class="btn-group" role="group">
