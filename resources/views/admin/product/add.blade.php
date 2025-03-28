@@ -159,6 +159,7 @@
     </div>
 
     <script>
+        
         document.addEventListener("DOMContentLoaded", function() {
     let selectedAttributes = {}; // Lưu trữ các giá trị được chọn theo từng thuộc tính
     let variants = []; // Danh sách biến thể
@@ -167,6 +168,10 @@
     const attributeContainer = document.getElementById("attribute-values-container");
     const variantList = document.querySelector("#variant-list tbody");
     const variantsDataInput = document.getElementById("variants_data");
+    document.querySelector("form").addEventListener("submit", function(event) {
+    console.log("Dữ liệu gửi lên:", document.getElementById("variants_data").value);
+});
+
     const addVariantBtn = document.getElementById("add-variant-btn");
 
     // Khi chọn thuộc tính, hiển thị danh sách giá trị
@@ -232,7 +237,7 @@
                 variants.push({
                     attributes: combination,
                     price: 0,
-                    sale_price: 0,
+                    price_sale: 0,
                     stock: 0
                 });
             }
@@ -267,7 +272,7 @@
             let row = `<tr>
                 <td>${attributesStr}</td>
                 <td><input type="number" class="form-control price-input" data-index="${index}" placeholder="Giá" value="${variant.price}"></td>
-                <td><input type="number" class="form-control sale-price-input" data-index="${index}" placeholder="Giá giảm" value="${variant.sale_price}"></td>
+                <td><input type="number" class="form-control price-sale-input" data-index="${index}" placeholder="Giá giảm" value="${variant.price_sale}"></td>
                 <td><input type="number" class="form-control stock-input" data-index="${index}" placeholder="Tồn kho" value="${variant.stock}"></td>
                 <td><button class="btn btn-danger btn-sm" onclick="removeVariant(${index})">Xóa</button></td>
             </tr>`;
@@ -282,10 +287,10 @@
             });
         });
 
-        document.querySelectorAll(".sale-price-input").forEach(input => {
+        document.querySelectorAll(".price-sale-input").forEach(input => {
             input.addEventListener("change", function() {
                 let index = this.getAttribute("data-index");
-                variants[index].sale_price = parseFloat(this.value) || 0;
+                variants[index].price_sale = parseFloat(this.value) || 0;
                 saveVariants();
             });
         });
@@ -314,4 +319,5 @@
 });
 
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.js"></script>
 @endsection
