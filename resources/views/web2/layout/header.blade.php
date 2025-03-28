@@ -186,7 +186,20 @@
         margin-left: 0.5rem;
     }
     </style>
+    <style>
+    .icon-menu {
+        position: relative;
+        /* Đảm bảo nó không bị cố định */
+        right: 40px;
+        /* Dịch chuyển cả block sang phải */
+    }
 
+    .col-lg-3.text-start {
+        width: auto !important;
+        flex: unset !important;
+        padding-left: 0px !important;
+    }
+    </style>
     <!-- HEADER -->
     <div class="container-fluid bg-white">
         <div class="row align-items-center py-3 px-xl-5">
