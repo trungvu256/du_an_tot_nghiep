@@ -15,6 +15,7 @@ use App\Models\AttributeValue;
 use App\Models\Brand;
 use App\Models\ProductVariant;
 use App\Models\ProductVariantAttribute;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
@@ -44,7 +45,6 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'product_code' => 'required|unique:products,product_code',
             'name' => 'required|string|max:255',
             'brand_id' => 'required|exists:brands,id',
             'catalogue_id' => 'required|exists:catalogues,id',
@@ -57,6 +57,8 @@ class ProductController extends Controller
             'variants' => 'nullable|string',
         ]);
 
+        $product_code= 'SP' . Carbon::now()->format('YmdHis') . rand(100, 999);
+
         DB::beginTransaction();
         try {
             // 📸 Xử lý ảnh chính
@@ -64,7 +66,7 @@ class ProductController extends Controller
 
             // 🔥 Tạo sản phẩm
             $product = Product::create([
-                'product_code' => $request->product_code,
+                'product_code' => $product_code,
                 'name' => $request->name,
                 'slug' => Str::slug($request->name),
                 'brand_id' => $request->brand_id,

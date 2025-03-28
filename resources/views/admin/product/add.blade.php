@@ -1,127 +1,125 @@
 @extends('admin.layouts.main')
 @section('content')
-<div class="container mt-4">
-    <form action="{{ route('admin.store.product') }}" method="POST" enctype="multipart/form-data" class="card shadow p-4">
-        @csrf
+    <div class="container mt-4">
+        <form action="{{ route('admin.store.product') }}" method="POST" enctype="multipart/form-data" class="card shadow p-4">
+            @csrf
 
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
+            @if (session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
 
-        <h4 class="text-center mb-4">Thông tin sản phẩm</h4>
+            <h4 class="text-center mb-4">Thông tin sản phẩm</h4>
 
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <label class="form-label">Tên nước hoa</label>
-                <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="Nhập tên nước hoa">
-                @error('name')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Danh mục</label>
+                    <select name="catalogue_id" class="form-select">
+                        <option value="">-- Chọn danh mục --</option>
+                        @foreach ($catalogues as $catalogue)
+                            <option value="{{ $catalogue->id }}"
+                                {{ old('catalogue_id') == $catalogue->id ? 'selected' : '' }}>
+                                {{ $catalogue->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('catalogue_id')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Tên nước hoa</label>
+                    <input type="text" name="name" class="form-control" value="{{ old('name') }}"
+                        placeholder="Nhập tên nước hoa">
+                    @error('name')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
             </div>
 
-            <div class="col-md-4">
-                <label class="form-label">Mã sản phẩm</label>
-                <input type="text" name="product_code" class="form-control" value="{{ old('product_code') }}" placeholder="Nhập mã sản phẩm">
-                @error('product_code')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Hình ảnh sản phẩm</label>
+                    <input type="file" name="image" class="form-control">
+                    @error('image')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Ảnh mô tả sản phẩm</label>
+                    <input type="file" name="images[]" class="form-control" multiple>
+                    @error('images')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
             </div>
 
-            <div class="col-md-4">
-                <label class="form-label">Nhóm hương</label>
-                <input type="text" name="fragrance_group" class="form-control" value="{{ old('fragrance_group') }}" placeholder="Nhập nhóm hương">
-                @error('fragrance_group')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-        </div>
+            <div class="row mb-3">
 
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label class="form-label">Hình ảnh sản phẩm</label>
-                <input type="file" name="image" class="form-control">
-                @error('image')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Ảnh sản phẩm khác</label>
-                <input type="file" name="images[]" class="form-control" multiple>
-                @error('images')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-        </div>
 
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <label class="form-label">Danh mục</label>
-                <select name="catalogue_id" class="form-select">
-                    <option value="">-- Chọn danh mục --</option>
-                    @foreach ($catalogues as $catalogue)
-                        <option value="{{ $catalogue->id }}" {{ old('catalogue_id') == $catalogue->id ? 'selected' : '' }}>
-                            {{ $catalogue->name }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('catalogue_id')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
+                <div class="col-md-6">
+                    <label class="form-label">Thương hiệu</label>
+                    <select name="brand_id" class="form-select">
+                        <option value="">-- Chọn thương hiệu --</option>
+                        @foreach ($brands as $brand)
+                            <option value="{{ $brand->id }}" {{ old('brand_id') == $brand->id ? 'selected' : '' }}>
+                                {{ $brand->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('brand_id')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Xuất xứ</label>
+                    <input type="text" name="origin" class="form-control" value="{{ old('origin') }}"
+                        placeholder="Nhập nơi xuất xứ">
+                    @error('origin')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
             </div>
 
-            <div class="col-md-4">
-                <label class="form-label">Thương hiệu</label>
-                <select name="brand_id" class="form-select">
-                    <option value="">-- Chọn thương hiệu --</option>
-                    @foreach ($brands as $brand)
-                        <option value="{{ $brand->id }}" {{ old('brand_id') == $brand->id ? 'selected' : '' }}>
-                            {{ $brand->name }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('brand_id')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Phong cách</label>
+                    <input type="text" name="style" class="form-control" value="{{ old('style') }}"
+                        placeholder="Sang trọng, Quyến rũ, Thanh lịch...">
+                    @error('style')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Nhóm hương</label>
+                    <input type="text" name="fragrance_group" class="form-control" value="{{ old('fragrance_group') }}"
+                        placeholder="Nhập nhóm hương">
+                    @error('fragrance_group')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
             </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Giới tính</label>
+                    <select name="gender" class="form-select">
+                        <option value="Nam" {{ old('gender') == 'Nam' ? 'selected' : '' }}>Nam</option>
+                        <option value="Nữ" {{ old('gender') == 'Nữ' ? 'selected' : '' }}>Nữ</option>
+                        <option value="Unisex" {{ old('gender') == 'Unisex' ? 'selected' : '' }}>Unisex</option>
+                    </select>
+                    @error('gender')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
 
-            <div class="col-md-4">
-                <label class="form-label">Xuất xứ</label>
-                <input type="text" name="origin" class="form-control" value="{{ old('origin') }}" placeholder="Ví dụ: Pháp, Ý, Mỹ...">
-                @error('origin')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
+                <div class="col-md-6">
+                    <label class="form-label">Mô tả</label>
+                    <textarea name="description" class="form-control">{{ old('description') }}</textarea>
+                    @error('description')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
             </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <label class="form-label">Phong cách</label>
-                <input type="text" name="style" class="form-control" value="{{ old('style') }}" placeholder="Sang trọng, Quyến rũ, Thanh lịch...">
-                @error('style')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div class="col-md-4">
-                <label class="form-label">Giới tính</label>
-                <select name="gender" class="form-select">
-                    <option value="Nam" {{ old('gender') == 'Nam' ? 'selected' : '' }}>Nam</option>
-                    <option value="Nữ" {{ old('gender') == 'Nữ' ? 'selected' : '' }}>Nữ</option>
-                    <option value="Unisex" {{ old('gender') == 'Unisex' ? 'selected' : '' }}>Unisex</option>
-                </select>
-                @error('gender')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div class="col-md-4">
-                <label class="form-label">Mô tả</label>
-                <textarea name="description" class="form-control">{{ old('description') }}</textarea>
-                @error('description')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-        </div>
 
             <hr>
             <h4 class="text-center mb-3">Thêm biến thể</h4>
@@ -159,165 +157,167 @@
     </div>
 
     <script>
-        
         document.addEventListener("DOMContentLoaded", function() {
-    let selectedAttributes = {}; // Lưu trữ các giá trị được chọn theo từng thuộc tính
-    let variants = []; // Danh sách biến thể
+            let selectedAttributes = {}; // Lưu trữ các giá trị được chọn theo từng thuộc tính
+            let variants = []; // Danh sách biến thể
 
-    const attributeSelect = document.getElementById("attribute-select");
-    const attributeContainer = document.getElementById("attribute-values-container");
-    const variantList = document.querySelector("#variant-list tbody");
-    const variantsDataInput = document.getElementById("variants_data");
-    document.querySelector("form").addEventListener("submit", function(event) {
-    console.log("Dữ liệu gửi lên:", document.getElementById("variants_data").value);
-});
+            const attributeSelect = document.getElementById("attribute-select");
+            const attributeContainer = document.getElementById("attribute-values-container");
+            const variantList = document.querySelector("#variant-list tbody");
+            const variantsDataInput = document.getElementById("variants_data");
+            document.querySelector("form").addEventListener("submit", function(event) {
+                console.log("Dữ liệu gửi lên:", document.getElementById("variants_data").value);
+            });
 
-    const addVariantBtn = document.getElementById("add-variant-btn");
+            const addVariantBtn = document.getElementById("add-variant-btn");
 
-    // Khi chọn thuộc tính, hiển thị danh sách giá trị
-    attributeSelect.addEventListener("change", function() {
-        const selectedOption = attributeSelect.options[attributeSelect.selectedIndex];
-        const attributeId = selectedOption.value;
-        const attributeName = selectedOption.text;
-        const values = JSON.parse(selectedOption.getAttribute("data-values"));
-        
-        if (!attributeId || selectedAttributes[attributeId]) return;
+            // Khi chọn thuộc tính, hiển thị danh sách giá trị
+            attributeSelect.addEventListener("change", function() {
+                const selectedOption = attributeSelect.options[attributeSelect.selectedIndex];
+                const attributeId = selectedOption.value;
+                const attributeName = selectedOption.text;
+                const values = JSON.parse(selectedOption.getAttribute("data-values"));
 
-        selectedAttributes[attributeId] = []; // Khởi tạo mảng cho thuộc tính mới
+                if (!attributeId || selectedAttributes[attributeId]) return;
 
-        let html = `<div class='mb-3'><label class='form-label'>${attributeName}</label><div class='row'>`;
-        values.forEach(value => {
-            html += `
+                selectedAttributes[attributeId] = []; // Khởi tạo mảng cho thuộc tính mới
+
+                let html =
+                    `<div class='mb-3'><label class='form-label'>${attributeName}</label><div class='row'>`;
+                values.forEach(value => {
+                    html += `
                 <div class='col-md-3'>
                     <input type='checkbox' class='attribute-value' data-attribute-id='${attributeId}' data-attribute='${attributeName}' data-value='${value.value}'>
                     <label> ${value.value} </label>
                 </div>`;
-        });
-        html += `</div></div>`;
-
-        attributeContainer.innerHTML += html;
-    });
-
-    // Xử lý thêm biến thể vào danh sách khi nhấn nút
-    addVariantBtn.addEventListener("click", function() {
-        let checkedValues = document.querySelectorAll(".attribute-value:checked");
-
-        if (checkedValues.length === 0) {
-            alert("Vui lòng chọn ít nhất một giá trị thuộc tính!");
-            return;
-        }
-
-        // Reset danh sách thuộc tính đã chọn
-        selectedAttributes = {};
-
-        checkedValues.forEach(checkbox => {
-            let attributeId = checkbox.getAttribute("data-attribute-id");
-            let attributeName = checkbox.getAttribute("data-attribute");
-            let value = checkbox.getAttribute("data-value");
-
-            if (!selectedAttributes[attributeId]) {
-                selectedAttributes[attributeId] = {
-                    name: attributeName,
-                    values: []
-                };
-            }
-            selectedAttributes[attributeId].values.push(value);
-        });
-
-        // Tạo danh sách tất cả tổ hợp có thể
-        let attributeArrays = Object.values(selectedAttributes).map(attr => attr.values);
-        if (attributeArrays.length === 0) return;
-
-        let allVariants = generateCombinations(attributeArrays);
-
-        // Kiểm tra nếu biến thể đã tồn tại thì không thêm nữa
-        allVariants.forEach(combination => {
-            let exists = variants.some(variant => JSON.stringify(variant.attributes) === JSON.stringify(combination));
-            if (!exists) {
-                variants.push({
-                    attributes: combination,
-                    price: 0,
-                    price_sale: 0,
-                    stock: 0
                 });
-            }
-        });
+                html += `</div></div>`;
 
-        updateVariantTable();
-    });
-
-    // Hàm tạo tổ hợp biến thể
-    function generateCombinations(arrays) {
-        if (arrays.length === 0) return [];
-
-        let result = [[]];
-        arrays.forEach(array => {
-            let temp = [];
-            result.forEach(existingCombination => {
-                array.forEach(value => {
-                    temp.push([...existingCombination, value]);
-                });
+                attributeContainer.innerHTML += html;
             });
-            result = temp;
-        });
 
-        return result;
-    }
+            // Xử lý thêm biến thể vào danh sách khi nhấn nút
+            addVariantBtn.addEventListener("click", function() {
+                let checkedValues = document.querySelectorAll(".attribute-value:checked");
 
-    // Cập nhật bảng danh sách biến thể
-    function updateVariantTable() {
-        variantList.innerHTML = "";
-        variants.forEach((variant, index) => {
-            let attributesStr = variant.attributes.join(", ");
-            let row = `<tr>
+                if (checkedValues.length === 0) {
+                    alert("Vui lòng chọn ít nhất một giá trị thuộc tính!");
+                    return;
+                }
+
+                // Reset danh sách thuộc tính đã chọn
+                selectedAttributes = {};
+
+                checkedValues.forEach(checkbox => {
+                    let attributeId = checkbox.getAttribute("data-attribute-id");
+                    let attributeName = checkbox.getAttribute("data-attribute");
+                    let value = checkbox.getAttribute("data-value");
+
+                    if (!selectedAttributes[attributeId]) {
+                        selectedAttributes[attributeId] = {
+                            name: attributeName,
+                            values: []
+                        };
+                    }
+                    selectedAttributes[attributeId].values.push(value);
+                });
+
+                // Tạo danh sách tất cả tổ hợp có thể
+                let attributeArrays = Object.values(selectedAttributes).map(attr => attr.values);
+                if (attributeArrays.length === 0) return;
+
+                let allVariants = generateCombinations(attributeArrays);
+
+                // Kiểm tra nếu biến thể đã tồn tại thì không thêm nữa
+                allVariants.forEach(combination => {
+                    let exists = variants.some(variant => JSON.stringify(variant.attributes) ===
+                        JSON.stringify(combination));
+                    if (!exists) {
+                        variants.push({
+                            attributes: combination,
+                            price: 0,
+                            price_sale: 0,
+                            stock: 0
+                        });
+                    }
+                });
+
+                updateVariantTable();
+            });
+
+            // Hàm tạo tổ hợp biến thể
+            function generateCombinations(arrays) {
+                if (arrays.length === 0) return [];
+
+                let result = [
+                    []
+                ];
+                arrays.forEach(array => {
+                    let temp = [];
+                    result.forEach(existingCombination => {
+                        array.forEach(value => {
+                            temp.push([...existingCombination, value]);
+                        });
+                    });
+                    result = temp;
+                });
+
+                return result;
+            }
+
+            // Cập nhật bảng danh sách biến thể
+            function updateVariantTable() {
+                variantList.innerHTML = "";
+                variants.forEach((variant, index) => {
+                    let attributesStr = variant.attributes.join(", ");
+                    let row = `<tr>
                 <td>${attributesStr}</td>
                 <td><input type="number" class="form-control price-input" data-index="${index}" placeholder="Giá" value="${variant.price}"></td>
                 <td><input type="number" class="form-control price-sale-input" data-index="${index}" placeholder="Giá giảm" value="${variant.price_sale}"></td>
                 <td><input type="number" class="form-control stock-input" data-index="${index}" placeholder="Tồn kho" value="${variant.stock}"></td>
                 <td><button class="btn btn-danger btn-sm" onclick="removeVariant(${index})">Xóa</button></td>
             </tr>`;
-            variantList.innerHTML += row;
-        });
+                    variantList.innerHTML += row;
+                });
 
-        document.querySelectorAll(".price-input").forEach(input => {
-            input.addEventListener("change", function() {
-                let index = this.getAttribute("data-index");
-                variants[index].price = parseFloat(this.value) || 0;
+                document.querySelectorAll(".price-input").forEach(input => {
+                    input.addEventListener("change", function() {
+                        let index = this.getAttribute("data-index");
+                        variants[index].price = parseFloat(this.value) || 0;
+                        saveVariants();
+                    });
+                });
+
+                document.querySelectorAll(".price-sale-input").forEach(input => {
+                    input.addEventListener("change", function() {
+                        let index = this.getAttribute("data-index");
+                        variants[index].price_sale = parseFloat(this.value) || 0;
+                        saveVariants();
+                    });
+                });
+
+                document.querySelectorAll(".stock-input").forEach(input => {
+                    input.addEventListener("change", function() {
+                        let index = this.getAttribute("data-index");
+                        variants[index].stock = parseInt(this.value) || 0;
+                        saveVariants();
+                    });
+                });
+
                 saveVariants();
-            });
+            }
+
+            // Lưu biến thể vào input ẩn
+            function saveVariants() {
+                variantsDataInput.value = JSON.stringify(variants);
+            }
+
+            // Xóa biến thể
+            window.removeVariant = function(index) {
+                variants.splice(index, 1);
+                updateVariantTable();
+            };
         });
-
-        document.querySelectorAll(".price-sale-input").forEach(input => {
-            input.addEventListener("change", function() {
-                let index = this.getAttribute("data-index");
-                variants[index].price_sale = parseFloat(this.value) || 0;
-                saveVariants();
-            });
-        });
-
-        document.querySelectorAll(".stock-input").forEach(input => {
-            input.addEventListener("change", function() {
-                let index = this.getAttribute("data-index");
-                variants[index].stock = parseInt(this.value) || 0;
-                saveVariants();
-            });
-        });
-
-        saveVariants();
-    }
-
-    // Lưu biến thể vào input ẩn
-    function saveVariants() {
-        variantsDataInput.value = JSON.stringify(variants);
-    }
-
-    // Xóa biến thể
-    window.removeVariant = function(index) {
-        variants.splice(index, 1);
-        updateVariantTable();
-    };
-});
-
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.js"></script>
 @endsection
