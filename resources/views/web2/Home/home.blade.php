@@ -4,6 +4,27 @@
 
 <!-- Navbar Start -->
 <style>
+.custom-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    border: 1px solid black;
+    background-color: white;
+    color: black;
+    font-weight: normal;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: small;
+}
+
+.custom-btn:hover {
+    background-color: black;
+    color: white;
+    text-decoration: none;
+}
+</style>
+<style>
 .feature-box {
     transition: all 0.3s ease-in-out;
     background: #f8f9fa;
@@ -65,6 +86,41 @@ body {
     color: #222;
     line-height: 1.5;
     margin-bottom: 15px;
+}
+</style>
+<style>
+.responsive-img {
+    width: 100%;
+    /* Hình ảnh luôn chiếm toàn bộ chiều rộng của phần tử cha */
+    height: auto;
+    /* Giữ nguyên tỷ lệ khung hình, tránh méo ảnh */
+    max-width: 100%;
+    /* Không cho phép hình ảnh lớn hơn kích thước gốc */
+    object-fit: cover;
+    /* Đảm bảo ảnh không bị méo khi thu phóng */
+    display: block;
+    /* Loại bỏ khoảng trắng dư thừa xung quanh ảnh */
+}
+
+.view-details {
+    text-decoration: none;
+    /* Bỏ gạch chân */
+    color: black;
+    /* Màu chữ mặc định là đen */
+    font-weight: 200;
+    /* Làm chữ đậm nhẹ */
+    transition: color 0.3s ease-in-out;
+    /* Hiệu ứng chuyển đổi màu mượt mà */
+
+    /* Làm chữ đậm nhẹ */
+    font-size: 14px;
+
+}
+
+.view-details:hover {
+    color: gold;
+    /* Đổi màu thành vàng khi hover */
+    text-decoration: none;
 }
 </style>
 <div class="container-fluid mb-5">
@@ -187,46 +243,17 @@ body {
             @endforeach
         </div>
     </div>
+    <div class="text-center mt-5">
+        <a href="#" class="custom-btn">
+            XEM TẤT CẢ
+        </a>
+    </div>
 
 
 </div>
 <!-- Categories End -->
 <!-- BST NEW -->
-<style>
-.responsive-img {
-    width: 100%;
-    /* Hình ảnh luôn chiếm toàn bộ chiều rộng của phần tử cha */
-    height: auto;
-    /* Giữ nguyên tỷ lệ khung hình, tránh méo ảnh */
-    max-width: 100%;
-    /* Không cho phép hình ảnh lớn hơn kích thước gốc */
-    object-fit: cover;
-    /* Đảm bảo ảnh không bị méo khi thu phóng */
-    display: block;
-    /* Loại bỏ khoảng trắng dư thừa xung quanh ảnh */
-}
 
-.view-details {
-    text-decoration: none;
-    /* Bỏ gạch chân */
-    color: black;
-    /* Màu chữ mặc định là đen */
-    font-weight: 200;
-    /* Làm chữ đậm nhẹ */
-    transition: color 0.3s ease-in-out;
-    /* Hiệu ứng chuyển đổi màu mượt mà */
-
-    /* Làm chữ đậm nhẹ */
-    font-size: 12px;
-
-}
-
-.view-details:hover {
-    color: gold;
-    /* Đổi màu thành vàng khi hover */
-    text-decoration: none;
-}
-</style>
 <div class="container-fluid pt-5">
     <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 0 40px;">
         <img src="{{ asset('/images/Banner/banner00.jpg') }}" alt="Perfume Image" class="perfume-image responsive-img">
@@ -258,34 +285,7 @@ body {
 
 
     <!-- Offer Start -->
-    <div class="container-fluid offer pt-5">
-        <div class="row px-xl-5">
-            <div class="col-md-6 pb-4">
-                <div class="position-relative bg-secondary text-center text-md-right text-white mb-2 py-5 px-5">
-                    <img src="" alt="" style="width: 100%; height: auto; display: block;">
 
-                    <div class="position-relative" style="z-index: 1;">
-                        <h class="text-uppercase text-primary mb-3">20% off the all order</h5>
-                            <h1 class="mb-4 font-weight-semi-bold">Spring Collection</h1>
-                            <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Mua ngay</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 pb-4">
-                <div class="position-relative bg-secondary text-center text-md-right text-white mb-2 py-5 px-5">
-                    <img src="" alt="" style="width: 100%; height: auto; display: block;">
-
-                    <div class="position-relative" style="z-index: 1;">
-                        <h class="text-uppercase text-primary mb-3">20% off the all order</h5>
-                            <h1 class="mb-4 font-weight-semi-bold">Spring Collection</h1>
-                            <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Mua ngay
-                            </a>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
     <!-- Offer End -->
 
 
@@ -338,10 +338,66 @@ body {
                 @endforeach
             </div>
         </div>
+        <div class="text-center mt-5">
+            <a href="#" class="custom-btn">
+                XEM TẤT CẢ
+            </a>
+        </div>
     </div>
 
 
     <!-- Products End -->
+    <div class="container-fluid pt-5" style="padding-left: 84px; padding-right: 84px;">
+        <div class="row d-flex justify-content-center gap-4">
+            <div class="col-md-6">
+                <div class="container" style="max-width: 1400px; padding: 0;">
+                    <img src="{{ asset('/images/Banner/featured_coll_2_1_img.jpg') }}" alt="Perfume Image"
+                        class="perfume-image responsive-img">
+                    <div class="text-center mb-1" style="margin-top: 25px;">
+                        <h3 class="text-3xl font-black tracking-wide text-black uppercase">
+                            NƯỚC HOA CHO NAM
+                        </h3>
+                    </div>
+                    <!-- Text section -->
+                    <div class="text-center mb-3" style="margin-top: 5px ;">
+                        <h8 class="font-black tracking-wide text-black">
+                            Mỗi hương thơm mà ARMAF sáng tạo dành cho phái mạnh là một tuyên ngôn không lời giúp các
+                            chàng trai "ngầm" khẳng định chất riêng. Dù theo đuổi phong cách trẻ trung - năng động, mạnh
+                            mẽ - bản lĩnh hay lịch lãm - cổ điển, bạn sẽ luôn tìm thấy nốt hương tôn vinh sức hấp dẫn
+                            của bản thân ở bộ sưu tập nước hoa nam của ARMAF.
+                        </h8>
+                        <br>
+                        <a href="#" class="view-details" style="margin-top: 10px ;">Xem chi tiết →</a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="container" style="max-width: 1400px; padding: 0;">
+                    <img src="{{ asset('/images/Banner/featured_coll_2_2_img.jpg') }}" alt="Perfume Image"
+                        class="perfume-image responsive-img">
+                    <div class="text-center mb-1" style="margin-top: 25px;">
+                        <h3 class="text-3xl font-black tracking-wide text-black uppercase">
+                            NƯỚC HOA CHO NỮ
+                        </h3>
+                    </div>
+                    <!-- Text section -->
+                    <div class="text-center mb-3" style="margin-top: 5px ;">
+                        <h8 class="font-black tracking-wide text-black">
+                            Với bộ sưu tập nước hoa mới, ARMAF khéo léo nắm bắt mọi khía cạnh trong khuôn dung và nội
+                            hàm của phái nữ hiện đại. Dù là cô gái thời thượng - quyến rũ, ngọt ngào - nữ tính hay cá
+                            tính - năng động, bạn sẽ luôn tìm thấy mình ở những sáng tạo hương thơm cao cấp mang dấu ấn
+                            ARMAF.
+                        </h8>
+                        <br>
+                        <a href="#" class="view-details" style="margin-top: 10px ;">Xem chi tiết →</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 
     <!-- Subscribe Start -->
@@ -355,9 +411,11 @@ body {
                 </div>
                 <form action="">
                     <div class="input-group">
-                        <input type="text" class="form-control border-white p-4" placeholder="Nhập địa chỉ email">
+                        <input type="text" class="form-control border-white p-4 rounded-left"
+                            placeholder="Nhập địa chỉ email" style="border-radius: 25px 0 0 25px;">
                         <div class="input-group-append">
-                            <button class="btn btn-primary px-4">Đăng ký</button>
+                            <button class="btn btn-primary px-4 rounded-right"
+                                style="border-radius: 0 25px 25px 0;">Đăng ký</button>
                         </div>
                     </div>
                 </form>
@@ -368,7 +426,7 @@ body {
 
 
     <!-- Products Start -->
-    <div class="container-fluid pt-5">
+    <!-- <div class="container-fluid pt-5">
         <div class="text-center mb-4">
             <h2 class="section-title px-5"><span class="px-2">Sản phẩm HOT</span></h2>
         </div>
@@ -411,7 +469,7 @@ body {
             </div>
             @endforeach
         </div>
-    </div>
+    </div> -->
 
     <!-- Products End -->
     <!-- bài viết -->
@@ -422,16 +480,14 @@ body {
 
 
     <body>
-
-
         <div class="container py-5">
-            <div class="text-center mb-4">
-                <h2 class="section-title px-5">
-                    <span class="px-2">
-                        <i class="fas fa-newspaper" style="color:rgb(29, 21, 35);"></i> Bài viết
-                    </span>
-                </h2>
+            <div class="text-center mb-5">
+                <h3
+                    class="text-3xl font-black tracking-wide text-black uppercase flex items-center justify-center gap-2">
+                    <i class="fas fa-newspaper"></i> BÀI VIẾT
+                </h3>
             </div>
+
 
             <div class="row">
                 <!-- Card 1 -->
@@ -467,6 +523,16 @@ body {
 
 
             </div>
+
+
+            <div class="text-center mt-5">
+                <a href="#" class="custom-btn">
+                    XEM TẤT CẢ
+                </a>
+            </div>
+
+
+
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
