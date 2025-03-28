@@ -125,7 +125,7 @@
             <h4 class="text-center mb-3">Thêm biến thể</h4>
             <div class="mb-3">
                 <label class="form-label">Chọn thuộc tính</label>
-                <select id="attribute-select" class="form-select">
+                <select id="attribute-select" class="form-select text-center">
                     <option value="">-- Chọn thuộc tính --</option>
                     @foreach ($attributes as $attribute)
                         <option value="{{ $attribute->id }}" data-values='@json($attribute->values)'>
@@ -136,10 +136,10 @@
             </div>
             <div id="attribute-values-container" class="mb-3"></div>
 
-            <button type="button" id="add-variant-btn" class="btn btn-success mt-3">Thêm biến thể</button>
-            <h5>Danh sách biến thể:</h5>
+            <button type="button" id="add-variant-btn" class="btn btn-success">Thêm biến thể</button>
+            <h5 class="mt-3">Danh sách biến thể:</h5>
             <table class="table table-striped table-bordered mt-3" id="variant-list">
-                <thead class="table-dark">
+                <thead class="table-dark text-center">
                     <tr>
                         <th>Thuộc tính</th>
                         <th>Giá</th>
