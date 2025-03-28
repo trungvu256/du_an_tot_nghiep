@@ -208,10 +208,27 @@ body {
         <div class="row justify-content-center px-xl-5 pb-3">
             @foreach ($products as $product)
             <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
-                <div class="card product-item border-0 shadow-sm rounded">
+                <div class="card product-item border-0 shadow-sm rounded position-relative">
                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" style="height: 250px; object-fit: contain;"
+                        <img class="img-fluid w-100 product-image" style="height: 250px; object-fit: contain;"
                             src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }}">
+
+                        <!-- Thêm div chứa từng icon riêng biệt -->
+                        <div class="product-overlay">
+                            <div class="icon-box cart-icon">
+                                <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}" class="icon-link">
+                                    <i class="fas fa-eye"></i>
+                                    <span class="tooltip-text">Xem chi tiết</span>
+                                </a>
+                            </div>
+                            <div class="icon-box cart-icon">
+                                <a href="{{ route('user.cart') }}" class="icon-link">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <span class="tooltip-text">Thêm vào giỏ</span>
+                                </a>
+                            </div>
+
+                        </div>
                     </div>
                     <div class="card-body text-center p-3">
                         <h6 class="text-truncate mb-2">{{ $product->name }}</h6>
@@ -229,17 +246,11 @@ body {
                             </h6>
                         </div>
                     </div>
-                    <div class="card-footer bg-light border-top d-flex justify-content-between p-2">
-                        <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
-                            class="btn btn-outline-primary btn-sm">
-                            <i class="fas fa-eye"></i>
-                        </a>
-                        <a href="{{ route('user.cart') }}" class="btn btn-outline-success btn-sm">
-                            <i class="fas fa-shopping-cart"></i>
-                        </a>
-                    </div>
                 </div>
             </div>
+
+
+
             @endforeach
         </div>
     </div>
@@ -251,6 +262,103 @@ body {
 
 
 </div>
+<style>
+/* Tooltip (Chữ hiển thị khi hover) */
+.tooltip-text {
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: black;
+    color: white;
+    font-size: 12px;
+    padding: 5px 8px;
+    border-radius: 5px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Hiển thị tooltip khi hover vào icon */
+.cart-icon:hover .tooltip-text {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(-5px);
+}
+
+.product-img {
+    position: relative;
+    overflow: hidden;
+    width: 100% !important;
+    height: 250px !important;
+}
+
+.product-img img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    transition: transform 0.4s ease-in-out !important;
+}
+
+.product-item:hover .product-img img {
+    transform: scale(0.92) !important;
+}
+
+/* Hiệu ứng icon */
+.product-overlay {
+    position: absolute;
+    bottom: -50px;
+    /* Ẩn ban đầu */
+    left: 47%;
+    transform: translateX(-50%);
+    display: flex;
+
+    /* Giảm khoảng cách giữa các icon */
+    opacity: 0;
+    transition: all 0.4s ease-in-out;
+}
+
+.product-item:hover .product-overlay {
+    bottom: 10px;
+    /* Khi hover, icon trượt lên */
+    opacity: 1;
+}
+
+/* Tạo hộp riêng cho từng icon */
+.icon-box {
+    width: 28px;
+    /* Giảm kích thước icon box */
+    height: 28px;
+    /* Giảm kích thước icon box */
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    /* Bo góc nhẹ hơn */
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.15);
+    /* Giảm độ sâu */
+}
+
+/* Khi hover đổi nền thành xám */
+.icon-box:hover {
+    background: #e0e0e0;
+    transform: scale(1.05);
+    /* Nhẹ nhàng hơn */
+}
+
+/* Định dạng icon bên trong */
+.icon-link {
+    color: black !important;
+    /* Đổi màu icon thành đen */
+    font-size: 12px;
+    /* Giảm kích thước icon */
+    text-decoration: none;
+    /* Bỏ gạch chân */
+}
+</style>
 <!-- Categories End -->
 <!-- BST NEW -->
 
