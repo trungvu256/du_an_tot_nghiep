@@ -18,9 +18,24 @@ class AttributeValue extends Model
     }
 
     // Liên kết nhiều-nhiều với ProductVariant thông qua bảng trung gian variant_attribute_values
+    // public function productVariants()
+    // {
+    //     return $this->belongsToMany(ProductVariant::class, 'variant_attribute_values', 'attribute_value_id', 'variant_id')
+    //                 ->withTimestamps();
+    // }
+    public function variants()
+    {
+        return $this->belongsToMany(ProductVariant::class, 'product_variant_attributes');
+    }
     public function productVariants()
     {
-        return $this->belongsToMany(ProductVariant::class, 'variant_attribute_values', 'attribute_value_id', 'variant_id')
-                    ->withTimestamps();
+        return $this->hasManyThrough(
+            ProductVariant::class,
+            ProductVariantAttribute::class,
+            'attribute_value_id', // Liên kết với bảng product_variant_attributes
+            'id', // Liên kết với bảng product_variants
+            'id', // Khóa chính của bảng attribute_values
+            'product_variant_id' // Liên kết với bảng product_variant_attributes
+        );
     }
 }

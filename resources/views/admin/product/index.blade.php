@@ -65,34 +65,7 @@
                     </tr>
 
                     <!-- Hàng hiển thị biến thể con, ẩn mặc định -->
-                    @if ($product->product_variants->isNotEmpty())
-                        <tr class="variant-row" data-id="{{ $product->id }}" style="display: none;">
-                            <td colspan="6">
-                                <table class="table table-sm table-bordered">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Dung tích</th>
-                                            <th>Nồng độ</th>
-                                            <th>Phiên bản đặc biệt</th>
-                                            <th>Giá</th>
-                                            <th>Tồn kho</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($product->product_variants as $product_variant)
-                                            <tr>
-                                                <td>{{ $product_variant->size }}</td>
-                                                <td>{{ $product_variant->concentration }}</td>
-                                                <td>{{ $product_variant->special_edition }}</td>
-                                                <td>{{ number_format($product_variant->price, 2) }} VND</td>
-                                                <td>{{ $product_variant->stock_quantity }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-                    @endif
+                   
                 @endforeach
             </tbody>
             <a href="{{route('admin.trash.product')}}" class="btn btn-warning"><i class="bi bi-trash-fill"></i></a>
@@ -100,21 +73,4 @@
         {{-- {!! $products->links() !!} --}}
     </div>
 </div>
-
-<!-- Script mở rộng sản phẩm khi click -->
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll(".product-row").forEach(row => {
-            row.addEventListener("click", function () {
-                let productId = this.getAttribute("data-id");
-                let variantRow = document.querySelector(`.variant-row[data-id="${productId}"]`);
-                
-                if (variantRow) {
-                    variantRow.style.display = variantRow.style.display === "none" ? "table-row" : "none";
-                }
-            });
-        });
-    });
-</script>
-
 @endsection

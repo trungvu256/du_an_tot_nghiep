@@ -24,10 +24,20 @@ class Attribute extends Model
     }
     public function attribute()
     {
-        return $this->belongsTo(AttributeValue::class, 'attribute_id');
+        return $this->belongsTo(Attribute::class, 'attribute_id');
     }
-    public function attributeValues()
+    public function attributeValue()
     {
-        return $this->hasMany(AttributeValue::class, 'attribute_id');
+        return $this->belongsTo(AttributeValue::class, 'attribute_value_id');
     }
+    public function productVariants()
+    {
+        return $this->belongsToMany(
+            ProductVariant::class,
+            'product_variant_attributes',
+            'attribute_id',
+            'product_variant_id'
+        )->withPivot('attribute_value_id')->withTimestamps();
+    }
+
 }
