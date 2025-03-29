@@ -406,4 +406,15 @@ Route::middleware(['auth', 'user'])->group(function () {
         Route::post('/wallet/withdraw', [WebWalletController::class, 'withdraw'])->name('wallet.withdraw');
 
     });
+
+    // Giỏ hàng
+    Route::prefix('cart')->group(function () {
+        Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+        Route::get('/viewCart', [CartController::class, 'viewCart'])->name('cart.viewCart');
+        Route::post('/add/{id}', [CartController::class, 'createAddTocart'])->name('cart.create');
+        Route::post('/cart/update/{id}', [CartController::class, 'updateCart'])->name('cart.update');
+        Route::post('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+
+    });
 });
+

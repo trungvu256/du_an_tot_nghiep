@@ -304,6 +304,10 @@ body {
     <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 0 5px;">
         <div class="row justify-content-center px-xl-5 pb-3">
             @foreach ($products as $product)
+    @php
+        $minPrice = $product->variants->isNotEmpty() ? $product->variants->min('price') : $product->price;
+        $maxPrice = $product->variants->isNotEmpty() ? $product->variants->max('price') : $product->price;
+    @endphp
             <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
                 <div class="card product-item border-0 shadow-sm rounded position-relative">
                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
@@ -319,10 +323,18 @@ body {
                                 </a>
                             </div>
                             <div class="icon-box cart-icon">
-                                <a href="{{ route('user.cart') }}" class="icon-link">
-                                    <i class="fas fa-shopping-cart"></i>
-                                    <span class="tooltip-text">Thêm vào giỏ</span>
-                                </a>
+                                <form action="{{ route('cart.create', ['id' => $product->id]) }}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="quantity" value="1">
+                                    <input type="hidden" name="name" value="{{ $product->name }}">
+                                    <input type="hidden" name="price" value="{{ $product->variants->min('price') }}">
+                                    <input type="hidden" name="image" value="{{ $product->image }}">
+                                    <button type="submit" class="icon-link btn btn-link p-0">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        <span class="tooltip-text">Thêm vào giỏ</span>
+                                    </button>
+                                </form>
+                                
                             </div>
 
                         </div>
@@ -330,11 +342,7 @@ body {
                     <div class="card-body text-center p-3">
                         <h6 class="text-truncate mb-2">{{ $product->name }}</h6>
                         <div class="d-flex justify-content-center align-items-center">
-                            @php
-                            $minPrice = $product->variants->min('price');
-                            $maxPrice = $product->variants->max('price');
-                            @endphp
-
+                          
                             <h6 class="text-danger font-weight-bold">
                                 {{ number_format($minPrice) }}₫
                                 @if ($minPrice !== $maxPrice)
@@ -426,10 +434,18 @@ body {
                                     </a>
                                 </div>
                                 <div class="icon-box cart-icon">
-                                    <a href="{{ route('user.cart') }}" class="icon-link">
-                                        <i class="fas fa-shopping-cart"></i>
-                                        <span class="tooltip-text">Thêm vào giỏ</span>
-                                    </a>
+                                    <form action="{{ route('cart.create', ['id' => $product->id]) }}" method="post">
+                                        @csrf
+                                        <input type="hidden" name="quantity" value="1">
+                                        <input type="hidden" name="name" value="{{ $product->name }}">
+                                        <input type="hidden" name="price" value="{{ $product->variants->min('price') }}">
+                                        <input type="hidden" name="image" value="{{ $product->image }}">
+                                        <button type="submit" class="icon-link btn btn-link p-0">
+                                            <i class="fas fa-shopping-cart"></i>
+                                            <span class="tooltip-text">Thêm vào giỏ</span>
+                                        </button>
+                                    </form>
+                                    
                                 </div>
 
                             </div>
