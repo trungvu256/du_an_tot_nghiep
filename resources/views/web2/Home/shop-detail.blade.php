@@ -139,6 +139,12 @@
     /* Bỏ gạch chân */
 }
 </style>
+<!-- <style>
+.text-primary {
+    color: #007bff !important;
+    /* Hoặc mã màu xanh bạn muốn */
+}
+</style> -->
 <!-- Page Header Start -->
 <div class="container-fluid bg-secondary mb-5">
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
@@ -154,7 +160,7 @@
 
 
 <!-- Shop Detail Start -->
-<div class="container-fluid py-5">
+<div class="container-fluid py-5" style="margin-top: 5px;">
     <div class="row px-xl-5">
 
         <div class="col-lg-5 pb-5">
@@ -182,7 +188,7 @@
 
 
             <div class="d-flex mb-3">
-                <div class="text-primary mr-2">
+                <div class="text-primaryy mr-2">
                     <small class="fas fa-star"></small>
                     <small class="fas fa-star"></small>
                     <small class="fas fa-star"></small>
@@ -191,25 +197,71 @@
                 </div>
                 <small class="pt-1">(50 Reviews)</small>
             </div>
-            <h3 class="font-weight-semi-bold mb-4">
-                Giá: <span
-                    id="product-price">{{ number_format($detailproduct->variants->first()->price ?? $detailproduct->price) }}</span>₫
-            </h3>
             <div class="mb-4">
-                <p class="text-dark font-weight-medium mb-0 mr-3">Mô tả:</p>{!! $detailproduct->description !!}
+                <p class="text-dark font-weight-medium mb-0 mr-3">
+                    Mã sản phẩm: <span class="text-primary" style="color:blue !important;">{!!
+                        $detailproduct->product_code !!}</span>
+                </p>
             </div>
+            <div class="mb-4">
+                <p class="text-dark font-weight-medium mb-0 mr-3">
+                    Thương hiệu: <span class="text-primary" style="color:blue !important;">{!!
+                        $brands ? $brands->name : 'Không có thương hiệu'
+                        !!}</span>
+                </p>
+            </div>
+            <div class="mb-4">
+                <p class="text-dark font-weight-medium mb-0 mr-3">
+                    Loại sản phẩm:
+                    <span class="text-primary" style="color:blue !important;">
+                        {!! $category ? $category->name : 'Không có danh mục' !!}
+                    </span>
+
+
+                </p>
+            </div>
+
+            <!-- <div class="mb-4">
+                <p class="text-dark font-weight-medium mb-0 mr-3">
+                    Số lượng kho: <span class="text-primary" style="color:blue !important;">{!!
+                        $detailproduct->description !!}</span>
+                </p>
+            </div> -->
+
+
+
+            <!-- Giá sản phẩm -->
+            <!-- Giá sản phẩm -->
+            <h3 class="fw-semibold text-primaryy mb-4">
+                Giá: <span id="product-price" class="fs-4 text-danger fw-bold">
+                    {{ number_format($detailproduct->variants->first()->price ?? $detailproduct->price) }}₫
+                </span>
+            </h3>
+
+            <!-- <h3 class="fw-semibold text-primaryy mb-4">
+                Số lượng kho: <span id="stock-info" class="fs-4 text-primary fw-bold">
+                    {{ $detailproduct->variants->first()->stock ?? 'Không có thông tin' }} sản phẩm
+                </span>
+            </h3> -->
+
+            <!-- Lựa chọn biến thể -->
             <div class="d-flex mb-3">
-                <p class="text-dark font-weight-medium mb-0 mr-3">ML:</p>
+                <p class="text-dark font-weight-medium mb-0 mr-3">Lựa chọn:</p>
                 <form id="variantForm">
                     @foreach ($detailproduct->variants as $key => $variant)
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="size-{{ $key }}" name="size"
-                            data-price="{{ $variant->price }}">
-                        <label class="custom-control-label" for="size-{{ $key }}">{{ $variant->size }}ml</label>
+                        <input type="radio" class="custom-control-input variant-radio" id="size-{{ $key }}" name="size"
+                            data-price="{{ $variant->price }}" data-stock="{{ $variant->stock }}"
+                            {{ $key == 0 ? 'checked' : '' }}> <!-- Chọn mặc định biến thể đầu tiên -->
+                        <label class="custom-control-label" for="size-{{ $key }}">
+                            {{ $variant->size }}ml
+                        </label>
                     </div>
                     @endforeach
                 </form>
             </div>
+
+
 
             <!-- Script cập nhật giá -->
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -222,27 +274,49 @@
             });
             </script>
 
-            <div class="d-flex align-items-center mb-4 pt-2">
-                <div class="input-group quantity mr-3" style="width: 130px;">
-                    <div class="input-group-btn">
-                        <button class="btn btn-primary btn-minus">
+            <div class="d-flex align-items-center mb-4 pt-2" style="width: 100%;">
+                <div class="input-group quantity mr-3"
+                    style="width: 130px; border: 1px solid black; border-radius: 4px;">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-light btn-minus" style="border: none; pointer-events: none;">
                             <i class="fa fa-minus"></i>
                         </button>
                     </div>
-                    <input type="text" class="form-control bg-secondary text-center" value="1">
-                    <div class="input-group-btn">
-                        <button class="btn btn-primary btn-plus">
+                    <input type="text" class="form-control text-center" value="1"
+                        style="border: none; background: white; pointer-events: none;">
+                    <div class="input-group-append">
+                        <button class="btn btn-light btn-plus" style="border: none; pointer-events: none;">
                             <i class="fa fa-plus"></i>
                         </button>
                     </div>
                 </div>
-                <a href="{{ route('user.cart') }}"> <button class="btn btn-primary px-3"><i
-                            class="fa fa-shopping-cart mr-1"></i> Thêm vào giỏ </button></a>
-
-
+                <a href="{{ route('user.cart') }}" class="flex-grow-1">
+                    <button class="btn px-4 w-100"
+                        style="background: white; color: black; border: 1px solid black; border-radius: 4px; font-weight: bold; transition: 0.3s;">
+                        THÊM VÀO GIỎ
+                    </button>
+                </a>
             </div>
-            <a href="{{ route('user.checkout') }}"> <button class="btn btn-primary px-3"><i
-                        class="fa fa-shopping-cart mr-1"></i> Mua ngay</button></a>
+            <a href="{{ route('user.checkout') }}" class="w-100 mt-2">
+                <button class="btn btn-dark px-5 py-2 w-100"
+                    style="font-weight: bold; transition: 0.3s;border: 1px solid black; border-radius: 4px;">
+                    MUA NGAY
+                </button>
+            </a>
+
+            <style>
+            .btn:hover {
+                background: black !important;
+                color: white !important;
+            }
+
+            .btn-dark:hover {
+                opacity: 0.8 !important;
+            }
+            </style>
+
+
+
 
             <div class="d-flex pt-2">
                 <p class="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
@@ -266,11 +340,13 @@
 
     <div class="row px-xl-5">
         <div class="col">
-            <div class="nav nav-tabs justify-content-center border-secondary mb-4">
-                <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Mô tả chi tiết</a>
-                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">Information</a>
-                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Reviews (0)</a>
+            <div class="nav nav-tabs justify-content-center mb-4">
+                <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1"
+                    style="color: black !important; font-size: 1.1rem; font-weight: 500;">
+                    Mô tả sản phẩm
+                </a>
             </div>
+
         </div>
     </div>
 </div>
@@ -340,12 +416,7 @@
             @endforeach
         </div>
 
-        <!-- Navigation buttons -->
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
 
-        <!-- Pagination -->
-        <div class="swiper-pagination"></div>
     </div>
     @else
     <div class="col-12">
@@ -411,9 +482,7 @@
             </div>
             @endforeach
         </div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-pagination"></div>
+
     </div>
     @else
     <div class="col-12">

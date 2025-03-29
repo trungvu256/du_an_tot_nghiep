@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
 use App\Models\Catalogue;
 use App\Models\Images;
 use App\Models\Product;
@@ -15,11 +16,10 @@ class CartController extends Controller
 {
     $detailproduct = Product::findOrFail($id);
     $description_images = Images::where('product_id', $id)->get();
-    $categoryIds = Catalogue::where('id', $detailproduct->catalogue_id)
-        ->orWhere('parent_id', $detailproduct->catalogue_id)
-        ->pluck('id')
-        ->toArray();
-    $relatedProducts = Product::whereIn('catalogue_id', $categoryIds)
+    $category = Catalogue::find($detailproduct->catalogue_id);
+    $brands = Brand::find($detailproduct->brand_id);
+
+    $relatedProducts = Product::whereIn('catalogue_id', $category)
         ->where('id', '!=', $id) 
         ->limit(4)
         ->get();
@@ -43,7 +43,7 @@ class CartController extends Controller
     $viewedProducts = Product::whereIn('id', $viewedProductIds)->get();
 
     // Trả về view
-    return view('web2.Home.shop-detail', compact('detailproduct', 'description_images', 'relatedProducts', 'similarProducts', 'viewedProducts'));
+    return view('web2.Home.shop-detail', compact('detailproduct', 'description_images', 'relatedProducts', 'similarProducts', 'viewedProducts',  'category', 'brands'));
 }
 
 }
