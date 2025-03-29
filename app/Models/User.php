@@ -23,7 +23,7 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'first_name', // Thêm Họ
+       'first_name', // Thêm Họ
         'last_name',  // Thêm Tên
         'name',       
         'email',
@@ -35,6 +35,7 @@ class User extends Authenticatable
         'phone',    
         'address',  
         'avatar',   
+        'bank_account'
     ];
 
     /**
@@ -65,7 +66,7 @@ class User extends Authenticatable
      */
     public function orders()
     {
-        return $this->hasMany(Order::class, 'id_customer', 'id');
+        return $this->hasMany(Order::class);
     }
 
     public function wallet() {
