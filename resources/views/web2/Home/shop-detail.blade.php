@@ -279,15 +279,15 @@
 
 <!-- Products Start -->
 <div class="container-fluid py-5">
-    <div class="text-center mb-5">
-        <h3 class="text-3xl font-normal tracking-wide text-black uppercase">
+    <div class=" mb-5" style="margin-left: 50px;">
+        <h3 class=" text-3xl font-normal tracking-wide text-black uppercase" style="font-size:25px;">
             Sản phẩm có thể yêu thích
         </h3>
     </div>
 
     @if ($relatedProducts->isNotEmpty())
-    <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 0 5px;">
-        <div class="row justify-content-center px-xl-5 pb-3">
+    <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 0 5px; margin-left: 0px;">
+        <div class="row px-xl-5 pb-3">
             @foreach ($relatedProducts as $relatedProduct)
             <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
                 <div class="card product-item border-0 shadow-sm rounded position-relative">
@@ -321,15 +321,19 @@
                             $minPrice = $relatedProduct->variants->min('price');
                             $maxPrice = $relatedProduct->variants->max('price');
                             @endphp
-                            <h3 class="font-weight-semi-bold mb-4">{{ number_format($minPrice) }}₫ -
-                                {{ number_format($maxPrice) }}₫</h3>
-
+                            <h7 class="fw-bold mb-4 d-flex align-items-center">
+                                <span class="fs-5 text-dark">{{ number_format($minPrice) }}₫</span>
+                                <span class="mx-2">-</span>
+                                <span class="fs-5 text-dark">{{ number_format($maxPrice) }}₫</span>
+                            </h7>
                             @else
-                            <h3 class="font-weight-semi-bold mb-4">{{ number_format($detailproduct->price) }}₫
-                            </h3>
+                            <h7 class="fw-bold mb-4 text-dark">
+                                <span class="fs-5">{{ number_format($detailproduct->price) }}₫</span>
+                            </h7>
                             @endif
-                            </h6>
                         </div>
+
+
                     </div>
                 </div>
             </div>
@@ -352,53 +356,63 @@
 
 {{-- sản phẩm cùng phân khúc --}}
 <div class="container-fluid py-5">
-    <div class="mb-3 ml-5">
-        <h2 class="mt-5">Sản phẩm cùng phân khúc</h2>
+    <div class="mb-5" style="margin-left: 50px;">
+        <h3 class="text-3xl font-normal tracking-wide text-black uppercase" style="font-size:25px;">
+            Sản phẩm cùng phân khúc
+        </h3>
     </div>
 
     @if ($similarProducts->isNotEmpty())
-    <div class="swiper mySwiper">
-        <div class="swiper-wrapper">
-            @foreach ($similarProducts as $relatedProduct)
-            <div class="swiper-slide">
-                <div class="card product-item border-0 shadow-sm">
+    <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 0 5px; margin-left: 0px;">
+        <div class="row px-xl-5 pb-3">
+            @foreach ($similarProducts as $similarProduct)
+            <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
+                <div class="card product-item border-0 shadow-sm rounded position-relative">
                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="{{ asset('storage/' . $relatedProduct->image) }}"
-                            alt="{{ $relatedProduct->name }}">
+                        <img class="img-fluid w-100 product-image" style="height: 250px; object-fit: contain;"
+                            src="{{ asset('storage/'.$similarProduct->image) }}" alt="{{ $similarProduct->name }}">
+                        <div class="product-overlay">
+                            <div class="icon-box cart-icon">
+                                <a href="{{ route('web.shop-detail', ['id' => $similarProduct->id]) }}"
+                                    class="icon-link">
+                                    <i class="fas fa-eye"></i>
+                                    <span class="tooltip-text">Xem chi tiết</span>
+                                </a>
+                            </div>
+                            <div class="icon-box cart-icon">
+                                <a href="{{ route('user.cart') }}" class="icon-link">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <span class="tooltip-text">Thêm vào giỏ</span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body text-center p-3">
-                        <h6 class="text-truncate mb-3">{{ $relatedProduct->name }}</h6>
-                        @if ($detailproduct->variants->count() > 0)
-                        @php
-                        $minPrice = $detailproduct->variants->min('price');
-                        $maxPrice = $detailproduct->variants->max('price');
-                        @endphp
-                        <h3 class="font-weight-semi-bold mb-4">{{ number_format($minPrice) }}₫ -
-                            {{ number_format($maxPrice) }}₫</h3>
-                        @else
-                        <h3 class="font-weight-semi-bold mb-4">{{ number_format($detailproduct->price) }}₫
-                        </h3>
-                        @endif
-                    </div>
-                    <div class="card-footer bg-light border-top d-flex justify-content-center">
-                        <a href="{{ route('web.shop-detail', ['id' => $relatedProduct->id]) }}"
-                            class="btn btn-outline-primary btn-sm mr-2">
-                            <i class="fas fa-eye"></i> Xem chi tiết
-                        </a>
-                        <a href="{{ route('user.cart') }}" class="btn btn-outline-success btn-sm">
-                            <i class="fas fa-shopping-cart"></i> Mua ngay
-                        </a>
+                        <h6 class="text-truncate mb-2">{{ $similarProduct->name }}</h6>
+                        <div class="d-flex justify-content-center align-items-center">
+                            @if ($similarProduct->variants->count() > 0)
+                            @php
+                            $minPrice = $similarProduct->variants->min('price');
+                            $maxPrice = $similarProduct->variants->max('price');
+                            @endphp
+                            <h7 class="fw-bold mb-4 d-flex align-items-center">
+                                <span class="fs-5 text-dark">{{ number_format($minPrice) }}₫</span>
+                                <span class="mx-2">-</span>
+                                <span class="fs-5 text-dark">{{ number_format($maxPrice) }}₫</span>
+                            </h7>
+                            @else
+                            <h7 class="fw-bold mb-4 text-dark">
+                                <span class="fs-5">{{ number_format($similarProduct->price) }}₫</span>
+                            </h7>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
             @endforeach
         </div>
-
-        <!-- Navigation buttons -->
         <div class="swiper-button-next"></div>
         <div class="swiper-button-prev"></div>
-
-        <!-- Pagination -->
         <div class="swiper-pagination"></div>
     </div>
     @else
@@ -411,53 +425,63 @@
 {{-- sản phẩm đã xem --}}
 
 <div class="container-fluid py-5">
-    <div class="mb-3 ml-5">
-        <h2 class="mt-5">Sản phẩm đã xem</h2>
+    <div class="mb-5" style="margin-left: 50px;">
+        <h3 class="text-3xl font-normal tracking-wide text-black uppercase" style="font-size:25px;">
+            Sản phẩm đã xem
+        </h3>
     </div>
 
     @if ($viewedProducts->isNotEmpty())
-    <div class="swiper mySwiper">
-        <div class="swiper-wrapper">
-            @foreach ($viewedProducts as $relatedProduct)
-            <div class="swiper-slide">
-                <div class="card product-item border-0 shadow-sm">
+    <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 0 5px; margin-left: 0px;">
+        <div class="row px-xl-5 pb-3">
+            @foreach ($viewedProducts as $viewedProduct)
+            <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
+                <div class="card product-item border-0 shadow-sm rounded position-relative">
                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="{{ asset('storage/' . $relatedProduct->image) }}"
-                            alt="{{ $relatedProduct->name }}">
+                        <img class="img-fluid w-100 product-image" style="height: 250px; object-fit: contain;"
+                            src="{{ asset('storage/'.$viewedProduct->image) }}" alt="{{ $viewedProduct->name }}">
+                        <div class="product-overlay">
+                            <div class="icon-box cart-icon">
+                                <a href="{{ route('web.shop-detail', ['id' => $viewedProduct->id]) }}"
+                                    class="icon-link">
+                                    <i class="fas fa-eye"></i>
+                                    <span class="tooltip-text">Xem chi tiết</span>
+                                </a>
+                            </div>
+                            <div class="icon-box cart-icon">
+                                <a href="{{ route('user.cart') }}" class="icon-link">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <span class="tooltip-text">Thêm vào giỏ</span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body text-center p-3">
-                        <h6 class="text-truncate mb-3">{{ $relatedProduct->name }}</h6>
-                        @if ($detailproduct->variants->count() > 0)
-                        @php
-                        $minPrice = $detailproduct->variants->min('price');
-                        $maxPrice = $detailproduct->variants->max('price');
-                        @endphp
-                        <h3 class="font-weight-semi-bold mb-4">{{ number_format($minPrice) }}₫ -
-                            {{ number_format($maxPrice) }}₫</h3>
-                        @else
-                        <h3 class="font-weight-semi-bold mb-4">{{ number_format($detailproduct->price) }}₫
-                        </h3>
-                        @endif
-                    </div>
-                    <div class="card-footer bg-light border-top d-flex justify-content-center">
-                        <a href="{{ route('web.shop-detail', ['id' => $relatedProduct->id]) }}"
-                            class="btn btn-outline-primary btn-sm mr-2">
-                            <i class="fas fa-eye"></i> Xem chi tiết
-                        </a>
-                        <a href="{{ route('user.cart') }}" class="btn btn-outline-success btn-sm">
-                            <i class="fas fa-shopping-cart"></i> Mua ngay
-                        </a>
+                        <h6 class="text-truncate mb-2">{{ $viewedProduct->name }}</h6>
+                        <div class="d-flex justify-content-center align-items-center">
+                            @if ($viewedProduct->variants->count() > 0)
+                            @php
+                            $minPrice = $viewedProduct->variants->min('price');
+                            $maxPrice = $viewedProduct->variants->max('price');
+                            @endphp
+                            <h7 class="fw-bold mb-4 d-flex align-items-center">
+                                <span class="fs-5 text-dark">{{ number_format($minPrice) }}₫</span>
+                                <span class="mx-2">-</span>
+                                <span class="fs-5 text-dark">{{ number_format($maxPrice) }}₫</span>
+                            </h7>
+                            @else
+                            <h7 class="fw-bold mb-4 text-dark">
+                                <span class="fs-5">{{ number_format($viewedProduct->price) }}₫</span>
+                            </h7>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
             @endforeach
         </div>
-
-        <!-- Navigation buttons -->
         <div class="swiper-button-next"></div>
         <div class="swiper-button-prev"></div>
-
-        <!-- Pagination -->
         <div class="swiper-pagination"></div>
     </div>
     @else
@@ -466,6 +490,7 @@
     </div>
     @endif
 </div>
+
 
 <!-- Swiper CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">

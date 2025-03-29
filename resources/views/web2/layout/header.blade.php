@@ -190,7 +190,7 @@
     .icon-menu {
         position: relative;
         /* Đảm bảo nó không bị cố định */
-        right: 40px;
+        right: 55px;
         /* Dịch chuyển cả block sang phải */
     }
 
