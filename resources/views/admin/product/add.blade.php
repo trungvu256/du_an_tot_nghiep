@@ -26,6 +26,13 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+                <div class="col-md-4">
+                    <label class="form-label">Mã sản phẩm</label>
+                    <input type="text" name="product_code" class="form-control" value="{{ old('product_code') }}" placeholder="Nhập mã sản phẩm">
+                    @error('product_code')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
                 <div class="col-md-6">
                     <label class="form-label">Tên nước hoa</label>
                     <input type="text" name="name" class="form-control" value="{{ old('name') }}"
@@ -34,8 +41,7 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-            </div>
-
+           
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label class="form-label">Hình ảnh sản phẩm</label>
