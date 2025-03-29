@@ -34,30 +34,47 @@
                     </tr>
                 </thead>
                 <tbody class="align-middle">
+                    @foreach (session('cart', []) as $id => $item)
                     <tr>
-                        <td class="align-middle"><img src="img/product-1.jpg" alt="" style="width: 50px;"> Áo sơ mi thời
-                            trang nhiều màu</td>
-                        <td class="align-middle">$150</td>
+                        <td class="align-middle">
+                            <img src="{{ asset('storage/' . ($item['image'] ?? 'default.jpg')) }}" alt="" style="width: 50px;">
+                            {{ $item['name'] }}
+                        </td>
+                        <td class="align-middle">{{ number_format($item['price']) }}₫</td>
                         <td class="align-middle">
                             <div class="input-group quantity mx-auto" style="width: 100px;">
                                 <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-primary btn-minus">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
+                                    <form action="{{ route('cart.update', $id) }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="quantity" value="{{ max(1, $item['quantity'] - 1) }}">
+                                        <button type="submit" class="btn btn-sm btn-primary btn-minus">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                    </form>
                                 </div>
                                 <input type="text" class="form-control form-control-sm bg-secondary text-center"
-                                    value="1">
+                                    value="{{ $item['quantity'] }}" readonly>
                                 <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-primary btn-plus">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
+                                    <form action="{{ route('cart.update', $id) }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="quantity" value="{{ $item['quantity'] + 1 }}">
+                                        <button type="submit" class="btn btn-sm btn-primary btn-plus">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </td>
-                        <td class="align-middle">$150</td>
-                        <td class="align-middle"><button class="btn btn-sm btn-primary"><i
-                                    class="fa fa-times"></i></button></td>
+                        <td class="align-middle">{{ number_format($item['price'] * $item['quantity']) }}₫</td>
+                        <td class="align-middle">
+                            <form action="{{ route('cart.remove', $id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button>
+                            </form>
+                        </td>
                     </tr>
+                    @endforeach
+                    
                 </tbody>
             </table>
         </div>
@@ -77,17 +94,17 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-3 pt-1">
                         <h6 class="font-weight-medium">Tạm tính</h6>
-                        <h6 class="font-weight-medium">$150</h6>
+                        <h6 class="font-weight-medium">150</h6>
                     </div>
                     <div class="d-flex justify-content-between">
                         <h6 class="font-weight-medium">Phí vận chuyển</h6>
-                        <h6 class="font-weight-medium">$10</h6>
+                        <h6 class="font-weight-medium">10</h6>
                     </div>
                 </div>
                 <div class="card-footer border-secondary bg-transparent">
                     <div class="d-flex justify-content-between mt-2">
                         <h5 class="font-weight-bold">Tổng cộng</h5>
-                        <h5 class="font-weight-bold">$160</h5>
+                        <h5 class="font-weight-bold">160</h5>
                     </div>
 
                     <a href="{{route('user.checkout')}}" class="btn btn-block btn-primary my-3 py-3">Tiến hành thanh

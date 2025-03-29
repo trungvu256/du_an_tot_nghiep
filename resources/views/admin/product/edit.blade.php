@@ -131,7 +131,7 @@
 
                 <div class="col-md-4">
                     <label class="form-label">Mô tả</label>
-                    <textarea name="description" class="form-control">{{ old('description', $product->description) }}</textarea>
+                    <textarea id="editor" name="description" class="form-control">{{ old('description', $product->description) }}</textarea>
                     @error('description')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -350,4 +350,9 @@
 
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('editor', {
+        });
+    </script>
 @endsection
