@@ -29,6 +29,7 @@ use App\Http\Controllers\Admin\PromotionController;
 use App\Http\Controllers\Web\BlogController as WebBlogController;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\LoginController as WebLoginController;
+use App\Http\Controllers\Web\WalletController as WebWalletController;
 use App\Http\Controllers\Web\ProfileController;
 use App\Models\Category;
 use App\Http\Controllers\Web\WebController;
@@ -270,12 +271,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
                     Route::post('/returns/{id}/update', [ReturnOrderController::class, 'update'])->name('admin.returns.update');
                 });
 
-                // ví điện tử
-                Route::prefix('wallet')->group(function () {
-                    route::get('/wallet', [WalletController::class, 'show'])->name('wallet.show');
-                    route::post('/wallet/{order}/refund', [WalletController::class, 'refund'])->name('wallet.refund');
-                    route::post('/wallet/deposit', [WalletController::class, 'deposit'])->name('wallet.deposit');
-                });
                 Route::prefix('product')->group(function () {
                     route::get('/', [ProductController::class, 'index'])->name('admin.product');
                     route::get('/add', [ProductController::class, 'create'])->name('admin.add.product');
@@ -395,3 +390,20 @@ Route::get('/home/blog/{id}', [WebBlogController::class, 'detaiWebBlog'])->name(
 
 // giỏ hàng
 Route::get('/shop/detail/{id}', [CartController::class, 'shopdetail'])->name('web.shop-detail');
+
+// ví người dùng
+Route::middleware(['auth', 'user'])->group(function () {
+    Route::prefix('wallet/user')->group(function () {
+        Route::get('/wallet', [WebWalletController::class, 'show'])->name('wallet.index');
+        Route::post('/wallet/deposit/vnpay', [WebWalletController::class, 'depositVNPay'])->name('wallet.deposit.vnpay');
+        Route::get('/wallet/deposit/vnpay', [WebWalletController::class, 'VNPay'])->name('wallet.vnpay');
+        Route::get('/wallet/vnpay-callback', [WebWalletController::class, 'vnpayCallback'])->name('wallet.vnpay.callback');
+        Route::get('/wallet/vnpay/return', [WebWalletController::class, 'vnpayReturn'])->name('wallet.vnpay.return');
+        Route::get('/wallet/history', [WebWalletController::class, 'transactionHistory'])->name('wallet.history');
+
+
+        Route::get('/wallet/withdraw', [WebWalletController::class, 'croen'])->name('wallet.croen');
+        Route::post('/wallet/withdraw', [WebWalletController::class, 'withdraw'])->name('wallet.withdraw');
+
+    });
+});

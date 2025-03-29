@@ -276,7 +276,7 @@
                         </div>
 
                         <!-- Icon Menu -->
-                        <div class="d-flex align-items-center" style="margin-right: 80px;">
+                        {{-- <div class="d-flex align-items-center" style="margin-right: 80px;">
                             <!-- Người dùng -->
                             <div class="dropdown me-2">
                                 @auth
@@ -287,7 +287,7 @@
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                     <li><a class="dropdown-item" href="{{ route('profile') }}">Thông tin cá nhân</a>
                                     </li>
-                                    <li><a class="dropdown-item" href="{{ route('wallet.show') }}">Ví điện tử</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('wallet.index') }}">Ví điện tử</a></li>
                                     <li><a class="dropdown-item" href="{{ route('profile') }}">Lịch sử mua hàng</a></li>
                                     <li><a class="dropdown-item" href="{{ route('web.logout') }}">Đăng xuất</a></li>
                                 </ul>
@@ -313,7 +313,7 @@
                                         class="cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
                                 </a>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
 
@@ -341,7 +341,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li><a class="dropdown-item" href="{{ route('profile') }}">Thông tin cá nhân</a></li>
-                            <li><a class="dropdown-item" href="{{ route('wallet.show') }}">Ví điện tử</a></li>
+                            <li><a class="dropdown-item" href="{{ route('wallet.index') }}">Ví điện tử</a></li>
                             <li><a class="dropdown-item" href="{{ route('profile') }}">Lịch sử mua hàng</a></li>
                             <li><a class="dropdown-item" href="{{ route('web.logout') }}">Đăng xuất</a></li>
                         </ul>

@@ -37,7 +37,9 @@
                                 <div class="card-body">
                                     <p><strong>SKU:</strong> {{ $variant->sku }}</p>
                                     <p><strong>Giá bán:</strong> 
-                                        <span class="text-success">{{ number_format($variant->price_sale ?? $variant->price, 0, ',', '.') }} VNĐ</span>
+                                        <span class="text-success">
+                                            {{ number_format($variant->price_sale > 0 ? $variant->price_sale : $variant->price, 0, ',', '.') }} VNĐ
+                                        </span>                                        
                                     </p>
                                     <p><strong>Số lượng kho:</strong> {{ $variant->stock_quantity }}</p>
                 
