@@ -201,7 +201,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 
         // Route cho chức năng kích hoạt lại trạng thái
-      
+
 
 
         // Route::get('admin/products/{product}/variants', [ProductVariantController::class, 'index'])->name('products.variants.index');
@@ -285,7 +285,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
                     route::delete('/admin/product/fore-delete/{id}', [ProductController::class, 'foreDelete'])->name('admin.foreDelete.product');
                 });
 
-                // Sản phẩm biến thể 
+                // Sản phẩm biến thể
                 Route::get('admin/variant', [ProductVariantController::class, 'index'])->name('variant.index');
                 Route::get('admin/variant/add', [ProductVariantController::class, 'create'])->name('variant.create');
                 Route::post('admin/variant/add', [ProductVariantController::class, 'store'])->name('variant.store');
@@ -294,7 +294,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
                 Route::post('admin/variant/update/{id}', [ProductVariantController::class, 'update'])->name('variant.update');
                 Route::delete('admin/variant/delete/{id}', [ProductVariantController::class, 'destroy'])->name('variant.destroy');
                 Route::delete('admin/variant/destroyAttributeValue/{id}', [ProductVariantController::class, 'destroyAttributeValue'])->name('variant.destroyAttributeValue');
-                
+
 
                 // Blog
                 Route::prefix('blog')->group(function () {
