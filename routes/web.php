@@ -3,6 +3,8 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CommentController;
+use App\Http\Controllers\Admin\ProductReviewController;
+use App\Http\Controllers\Admin\ReviewResponseController;
 use App\Http\Controllers\Admin\CustomerGroupController;
 use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
@@ -84,6 +86,19 @@ Route::middleware(['auth', 'admin'])->group(function () {
             route::post('/store', [CommentController::class, 'store'])->name('store.comment');
             route::patch('/showhidden/{id}', [CommentController::class, 'Hide_comments'])->name('admin.comment.showhidden');
         });
+
+        // Đánh giá
+        Route::resource('product-reviews', ProductReviewController::class);
+        
+        // Quản lý đánh giá sản phẩm
+        Route::post('product-reviews/respond/{id}', [ProductReviewController::class, 'respond'])->name('product-reviews.respond');
+        Route::get('product-reviews-trash', [ProductReviewController::class, 'trash'])->name('product-reviews.trash');
+        Route::patch('product-reviews/{id}/restore', [ProductReviewController::class, 'restore'])->name('product-reviews.restore');
+        Route::delete('product-reviews/{id}/delete-permanently', [ProductReviewController::class, 'deletePermanently'])->name('product-reviews.delete-permanently');
+
+        // Quản lý phản hồi đánh giá sản phẩm
+        Route::get('product-reviews/{review}/response/{response}/edit', [ReviewResponseController::class, 'editResponse'])->name('product-reviews.response.edit');
+        Route::put('product-reviews/{review}/response/{response}', [ReviewResponseController::class, 'updateResponse'])->name('product-reviews.response.update');
 
         /// order
 
@@ -201,7 +216,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 
         // Route cho chức năng kích hoạt lại trạng thái
-      
+
 
 
         // Route::get('admin/products/{product}/variants', [ProductVariantController::class, 'index'])->name('products.variants.index');
@@ -285,7 +300,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
                     route::delete('/admin/product/fore-delete/{id}', [ProductController::class, 'foreDelete'])->name('admin.foreDelete.product');
                 });
 
-                // Sản phẩm biến thể 
+                // Sản phẩm biến thể
                 Route::get('admin/variant', [ProductVariantController::class, 'index'])->name('variant.index');
                 Route::get('admin/variant/add', [ProductVariantController::class, 'create'])->name('variant.create');
                 Route::post('admin/variant/add', [ProductVariantController::class, 'store'])->name('variant.store');
@@ -294,7 +309,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
                 Route::post('admin/variant/update/{id}', [ProductVariantController::class, 'update'])->name('variant.update');
                 Route::delete('admin/variant/delete/{id}', [ProductVariantController::class, 'destroy'])->name('variant.destroy');
                 Route::delete('admin/variant/destroyAttributeValue/{id}', [ProductVariantController::class, 'destroyAttributeValue'])->name('variant.destroyAttributeValue');
-                
+
 
                 // Blog
                 Route::prefix('blog')->group(function () {
@@ -414,7 +429,7 @@ Route::middleware(['auth', 'user'])->group(function () {
         Route::post('/add/{id}', [CartController::class, 'createAddTocart'])->name('cart.create');
         Route::post('/cart/update/{id}', [CartController::class, 'updateCart'])->name('cart.update');
         Route::post('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
-       
+
         // áp mã giảm giá
         Route::post('/cart/apply-promotion', [CartController::class, 'applyPromotion'])->name('cart.applyPromotion');
     });
