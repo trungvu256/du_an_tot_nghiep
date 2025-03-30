@@ -31,5 +31,10 @@ class Promotion extends Model
         return $this->belongsToMany(User::class, 'user_promotions');
     }
 
-    
+    public function isValid($total)
+    {
+        return $this->status === 'active' &&
+               now()->between($this->start_date, $this->end_date) &&
+               ($this->min_order_value === null || $total >= $this->min_order_value);
+    }
 }

@@ -28,5 +28,10 @@ class ProductVariantAttribute extends Model
     {
         return $this->belongsTo(AttributeValue::class, 'attribute_value_id'); // Đảm bảo tên cột đúng
     }
+    public function attributes()
+{
+    return $this->hasMany(ProductVariantAttribute::class, 'product_variant_id');
+}
+
 }
 
