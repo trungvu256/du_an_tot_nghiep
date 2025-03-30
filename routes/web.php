@@ -414,7 +414,11 @@ Route::middleware(['auth', 'user'])->group(function () {
         Route::post('/add/{id}', [CartController::class, 'createAddTocart'])->name('cart.create');
         Route::post('/cart/update/{id}', [CartController::class, 'updateCart'])->name('cart.update');
         Route::post('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
-
+       
+        // áp mã giảm giá
+        Route::post('/cart/apply-promotion', [CartController::class, 'applyPromotion'])->name('cart.applyPromotion');
     });
+
+    // Thanh toán đơn hàng
 });
 
