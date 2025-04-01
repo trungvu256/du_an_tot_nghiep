@@ -26,14 +26,14 @@ class WebController extends Controller
     public function shopdetail($id)
     {
         $detailproduct = Product::find($id);
-    
+
         if (!$detailproduct) {
             abort(404); // Hiển thị trang 404 nếu sản phẩm không tồn tại
         }
-    
+
         return view('web2.Home.shop-detail', compact('detailproduct'));
     }
-    
+
     public function cart()
     {
         return view('web2.Home.cart');

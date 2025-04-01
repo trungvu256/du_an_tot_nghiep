@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Web;
 use App\Models\Blog;
 use App\Models\User;
 use App\Models\order;
-use App\Models\Comment;
+use App\Models\ProductComment;
+use App\Models\ProductCommentReply;
 use App\Models\Contact;
 use App\Models\Product;
 use App\Models\Category;
@@ -181,6 +182,106 @@ class HomeController extends Controller
         $show_detail->save();
         return view('web.blogdetail', compact('categories', 'categories_2', 'categories_3', 'show_detail'));
     }
+    public function storeComment(Request $request, $productId)
+    {
+        $request->validate([
+            'comment' => 'required|string|max:500',
+        ]);
+
+        ProductComment::create([
+            'product_id' => $productId,
+            'user_id' => Auth::id(),
+            'comment' => $request->input('comment'),
+        ]);
+
+        return redirect()->back()->with('success', 'Bình luận của bạn đã được thêm!');
+    }
+    // Phương thức lưu phản hồi bình luận
+    public function storeReply(Request $request, $commentId)
+    {
+        $request->validate([
+            'reply' => 'required|string|max:500',
+        ]);
+
+        ProductCommentReply::create([
+            'product_comment_id' => $commentId,
+            'user_id' => Auth::id(),
+            'reply' => $request->input('reply'),
+        ]);
+
+        return redirect()->back()->with('success', 'Phản hồi của bạn đã được thêm!');
+    }
+    // Cập nhật bình luận
+    public function updateComment(Request $request, $productId, $commentId)
+    {
+        $request->validate([
+            'comment' => 'required|string|max:500',
+        ]);
+
+        $comment = ProductComment::findOrFail($commentId);
+
+        // Kiểm tra xem bình luận có thuộc về người dùng hiện tại hay không
+        if ($comment->user_id != Auth::id()) {
+            return redirect()->back()->with('error', 'Bạn không có quyền chỉnh sửa bình luận này.');
+        }
+
+        $comment->update([
+            'comment' => $request->input('comment'),
+        ]);
+
+        return redirect()->back()->with('success', 'Bình luận đã được cập nhật!');
+    }
+    // Xóa bình luận
+    public function deleteComment($productId, $commentId)
+    {
+        $comment = ProductComment::findOrFail($commentId);
+
+        // Kiểm tra quyền sở hữu bình luận
+        if ($comment->user_id != Auth::id()) {
+            return redirect()->back()->with('error', 'Bạn không có quyền xóa bình luận này.');
+        }
+
+        // Xóa các phản hồi liên quan đến bình luận
+        ProductCommentReply::where('product_comment_id', $commentId)->delete();
+
+        // Xóa bình luận
+        $comment->delete();
+
+        return redirect()->back()->with('success', 'Bình luận và các phản hồi đã được xóa!');
+    }
+    // Cập nhật phản hồi
+    public function updateReply(Request $request, $commentId, $replyId)
+    {
+        $request->validate([
+            'reply' => 'required|string|max:500',
+        ]);
+
+        $reply = ProductCommentReply::findOrFail($replyId);
+
+        // Kiểm tra quyền sở hữu phản hồi
+        if ($reply->user_id != Auth::id()) {
+            return redirect()->back()->with('error', 'Bạn không có quyền chỉnh sửa phản hồi này.');
+        }
+
+        $reply->update([
+            'reply' => $request->input('reply'),
+        ]);
+
+        return redirect()->back()->with('success', 'Phản hồi đã được cập nhật!');
+    }
+
+    public function deleteReply($commentId, $replyId)
+    {
+        $reply = ProductCommentReply::findOrFail($replyId);
+
+        // Kiểm tra quyền sở hữu phản hồi
+        if ($reply->user_id != Auth::id()) {
+            return redirect()->back()->with('error', 'Bạn không có quyền xóa phản hồi này.');
+        }
+
+        $reply->delete();
+        return redirect()->back()->with('success', 'Phản hồi đã được xóa!');
+    }
     public function comment(Request $request)
     {
         $comment = new Comment();
@@ -222,7 +323,7 @@ class HomeController extends Controller
         $products = Product::where('name', 'LIKE', '%' . $request->key . '%')->get();
         return view('web.load', compact('products'));
     }
-    
+
     protected function _registerOrLoginUser($data)
     {
         $user = User::where('email', '=', $data->email)->first();
