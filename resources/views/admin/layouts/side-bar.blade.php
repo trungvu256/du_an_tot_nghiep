@@ -120,6 +120,9 @@
                                 <a href="{{route('variant.create')}}" class="nav-link">Các thuộc tính</a>
                             </li>
                             <li class="nav-item">
+                                <a href="{{ route('product-comments.index') }}" class="nav-link">Bình luận</a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{{ route('product-reviews.index') }}" class="nav-link">Đánh giá</a>
                             </li>
                             {{-- <li class="nav-item">
@@ -151,11 +154,11 @@
                 </li> --}}
 
                 <!--Ví Tiền-->
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="{{ route('wallet.show') }}" class="nav-link menu-link">
                         <i class="ri-wallet-line"></i> <span>Sổ quỹ</span>
                     </a>
-                </li>
+                </li> --}}
 
 
                 <!-- Bài viết -->

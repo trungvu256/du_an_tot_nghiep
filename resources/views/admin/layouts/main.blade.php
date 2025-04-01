@@ -5,10 +5,23 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>@yield('title_page')</title>
+    <title>@yield('title')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @include('admin.layouts.css')
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    overflow-y: auto; /* Cho phép cuộn dọc */
+}
+
+    </style>
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('template/admin/velzon/assets/images/favicon.ico') }}">
 
@@ -44,7 +57,7 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
-    </script>
+        </script>
 
 </head>
 
@@ -52,11 +65,12 @@
 
     <!-- Begin page -->
     <div id="layout-wrapper">
+        @include('admin.layouts.load')
         <!-- ========== Top bar ========== -->
         @include('admin.layouts.header')
 
         <!-- removeNotificationModal -->
-        <div id="removeNotificationModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
+        {{-- <div id="removeNotificationModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -81,7 +95,7 @@
 
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
+        </div><!-- /.modal --> --}}
 
         <!-- ========== App Menu ========== -->
         @include('admin.layouts.side-bar')
@@ -106,27 +120,18 @@
             <!-- End Page-content -->
             <!-- ============================================================== -->
 
-            <footer class="footer">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-sm-6">
+            @include('admin.layouts.footer')
 
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="text-sm-end d-none d-sm-block">
-                                Ethereal Noir
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </footer>
         </div>
         <!-- end main content-->
 
     </div>
     <!-- END layout-wrapper -->
 
+    @include('admin.layouts.js')
 
+    @yield('custom-js')
+    @yield('scripts')
 
     <!--start back-to-top-->
     <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
@@ -183,6 +188,18 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Flatpickr JS -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!-- jQuery -->
+
+
+    <!-- Bootstrap JS (có cả Popper.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 </body>
 
 </html>

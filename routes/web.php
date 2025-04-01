@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\BlogController;
-use App\Http\Controllers\Admin\CommentController;
+use App\Http\Controllers\Admin\CommentReplyController;
+use App\Http\Controllers\Admin\ProductCommentController;
+use App\Http\Controllers\Admin\ProductCommentReplyController;
 use App\Http\Controllers\Admin\ProductReviewController;
 use App\Http\Controllers\Admin\ReviewResponseController;
 use App\Http\Controllers\Admin\CustomerGroupController;
@@ -58,7 +60,7 @@ Route::get('/admin/unban-user/{id}', [UserController::class, 'unbanUser'])->name
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::prefix('admin')->group(function () {
-        Route::get('/', [MainController::class, 'index'])->name('admin.dashboard');
+        Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
         Route::prefix('category')->group(function () {
             route::get('/', [CategoryController::class, 'index'])->name('admin.cate');
             route::get('/add', [CategoryController::class, 'create'])->name('admin.create.cate');
@@ -80,16 +82,16 @@ Route::middleware(['auth', 'admin'])->group(function () {
         });
 
         //Bình luận
-        Route::prefix('comment')->group(function () {
-            route::get('/', [CommentController::class, 'index'])->name('admin.comment');
-            route::get('/create', [CommentController::class, 'create'])->name('create.comment');
-            route::post('/store', [CommentController::class, 'store'])->name('store.comment');
-            route::patch('/showhidden/{id}', [CommentController::class, 'Hide_comments'])->name('admin.comment.showhidden');
-        });
+        // Route::prefix('comment')->group(function () {
+        //     route::get('/', [CommentController::class, 'index'])->name('admin.comment');
+        //     route::get('/create', [CommentController::class, 'create'])->name('create.comment');
+        //     route::post('/store', [CommentController::class, 'store'])->name('store.comment');
+        //     route::patch('/showhidden/{id}', [CommentController::class, 'Hide_comments'])->name('admin.comment.showhidden');
+        // });
 
         // Đánh giá
         Route::resource('product-reviews', ProductReviewController::class);
-        
+
         // Quản lý đánh giá sản phẩm
         Route::post('product-reviews/respond/{id}', [ProductReviewController::class, 'respond'])->name('product-reviews.respond');
         Route::get('product-reviews-trash', [ProductReviewController::class, 'trash'])->name('product-reviews.trash');
@@ -214,6 +216,21 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::patch('brands/{id}/restore', [BrandController::class, 'restore'])->name('brands.restore');
         Route::delete('brands/{id}/delete-permanently', [BrandController::class, 'deletePermanently'])->name('brands.delete-permanently');
 
+        //  route reply comment post
+        Route::get('comments/{comment}/reply/{reply}/edit', [CommentReplyController::class, 'editReply'])->name('comments.reply.edit');
+        Route::put('comments/{comment}/reply/{reply}', [CommentReplyController::class, 'updateReply'])->name('comments.reply.update');
+        Route::resource('product-comments', ProductCommentController::class);
+
+        // Phản hồi bình luận sản phẩm (trả lời cho bình luận sản phẩm)
+        Route::post('product-comments/respond/{id}', [ProductCommentController::class, 'respond'])->name('product-comments.respond');
+        Route::get('product-comments-trash', [ProductCommentController::class, 'trash'])->name('product-comments.trash');
+        Route::patch('product-comments/{id}/restore', [ProductCommentController::class, 'restore'])->name('product-comments.restore');
+        Route::delete('product-comments/{id}/delete-permanently', [ProductCommentController::class, 'deletePermanently'])->name('product-comments.delete-permanently');
+
+        // Quản lý trả lời bình luận sản phẩm
+        Route::get('product-comments/{comment}/reply/{reply}/edit', [ProductCommentReplyController::class, 'editReply'])->name('product-comments.reply.edit');
+        Route::put('product-comments/{comment}/reply/{reply}', [ProductCommentReplyController::class, 'updateReply'])->name('product-comments.reply.update');
+
 
         // Route cho chức năng kích hoạt lại trạng thái
 
@@ -230,9 +247,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
         // Route::put('admin/products/{product}/variants/{variant}', [ProductVariantController::class, 'update'])->name('variants.update');
 
 
-        //dasboard
-        Route::get('/admin/revenue-data', [DashboardController::class, 'getRevenueData']);
-        Route::get('/admin/best-selling-products', [DashboardController::class, 'getBestSellingProducts']);
+
+
     });
 
     Route::middleware(['auth', 'admin'])->group(
@@ -240,7 +256,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 
             Route::prefix('admin')->group(function () {
-                Route::get('/', [MainController::class, 'index'])->name('admin.dashboard');
+                Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
                 Route::prefix('category')->group(function () {
                     route::get('/', [CategoryController::class, 'index'])->name('admin.cate');
                     route::get('/add', [CategoryController::class, 'create'])->name('admin.create.cate');
@@ -262,13 +278,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
                 });
 
                 //Bình luận
-                Route::prefix('comment')->group(function () {
-                    route::get('/', [CommentController::class, 'index'])->name('admin.comment');
-                    route::get('/create', [CommentController::class, 'create'])->name('create.comment');
-                    route::post('/store', [CommentController::class, 'store'])->name('store.comment');
-                    route::patch('/showhidden/{id}', [CommentController::class, 'Hide_comments'])->name('admin.comment.showhidden');
-                    Route::post('/admin/orders/{id}/ship', [OrderController::class, 'shipOrder'])->name('admin.order.ship');
-                });
+                // Route::prefix('comment')->group(function () {
+                //     route::get('/', [CommentController::class, 'index'])->name('admin.comment');
+                //     route::get('/create', [CommentController::class, 'create'])->name('create.comment');
+                //     route::post('/store', [CommentController::class, 'store'])->name('store.comment');
+                //     route::patch('/showhidden/{id}', [CommentController::class, 'Hide_comments'])->name('admin.comment.showhidden');
+                //     Route::post('/admin/orders/{id}/ship', [OrderController::class, 'shipOrder'])->name('admin.order.ship');
+                // });
 
                 /// order
 
@@ -328,8 +344,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
                 });
 
                 //dasboard
-                Route::get('/admin/revenue-data', [DashboardController::class, 'getRevenueData']);
-                Route::get('/admin/best-selling-products', [DashboardController::class, 'getBestSellingProducts']);
+                // Route::get('/admin/revenue-data', [DashboardController::class, 'getRevenueData']);
+                // Route::get('/admin/best-selling-products', [DashboardController::class, 'getBestSellingProducts']);
             });
 
             ///Giao hàng tiết kiệm
@@ -435,5 +451,8 @@ Route::middleware(['auth', 'user'])->group(function () {
     });
 
     // Thanh toán đơn hàng
+    //cmt
+    Route::post('product/{product}/comment', [HomeController::class, 'storeComment'])->name('client.storeComment');
+    Route::post('comment/{comment}/reply', [HomeController::class, 'storeReply'])->name('client.storeReply');
 });
 
