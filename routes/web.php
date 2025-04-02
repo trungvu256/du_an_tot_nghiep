@@ -32,7 +32,9 @@ use App\Http\Controllers\Admin\PromotionController;
 
 use App\Http\Controllers\Web\BlogController as WebBlogController;
 use App\Http\Controllers\Web\CartController;
+use App\Http\Controllers\Web\CheckoutController;
 use App\Http\Controllers\Web\LoginController as WebLoginController;
+use App\Http\Controllers\Web\OrderController as WebOrderController;
 use App\Http\Controllers\Web\WalletController as WebWalletController;
 use App\Http\Controllers\Web\ProfileController;
 use App\Models\Category;
@@ -451,8 +453,28 @@ Route::middleware(['auth', 'user'])->group(function () {
     });
 
     // Thanh toán đơn hàng
+
+    Route::prefix('checkout')->group(function () {
+        Route::post('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+        Route::get('/checkout/app', [CheckoutController::class, 'appvnp'])->name('checkout.appvnp');
+        Route::get('/checkout/view', [CheckoutController::class, 'checkout'])->name('checkout.view');
+        Route::post('/checkout/vnpay', [CheckoutController::class, 'depositVNPay'])->name('checkout.depositVNPay');
+        // Route::post('/checkout/order', [CheckoutController::class, 'processOrder'])->name('checkout.processOrder');
+        Route::match(['get', 'post'], '/checkout/vnpay-callback', [CheckoutController::class, 'vnpayCallback'])->name('checkout.vnpay.callback');
+
+        Route::get('/checkout/order', [CheckoutController::class, 'order'])->name('checkout.order');
+        Route::get('/order/{id}/continue-payment', [CheckoutController::class, 'continuePayment'])->name('order.continuePayment');
+    });
+
+   
+
+
     //cmt
     Route::post('product/{product}/comment', [HomeController::class, 'storeComment'])->name('client.storeComment');
     Route::post('comment/{comment}/reply', [HomeController::class, 'storeReply'])->name('client.storeReply');
+
 });
+
+Route::get('/get-product-variant/{id}', [CartController::class, 'getProductVariant']);
+Route::get('/get-product-variant/{productId}', [CartController::class, 'getVariant']);
 

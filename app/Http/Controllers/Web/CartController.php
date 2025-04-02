@@ -16,72 +16,113 @@ use Illuminate\Support\Facades\Log;
 class CartController extends Controller
 {
     public function shopdetail($id)
-    {
-        $product = Product::findOrFail($id);
-        $detailproduct = Product::findOrFail($id);
-        $description_images = Images::where('product_id', $id)->get();
-
-        $categoryIds = Catalogue::where('id', $detailproduct->catalogue_id)
-            ->orWhere('parent_id', $detailproduct->catalogue_id)
-            ->pluck('id')
-            ->toArray();
-
-        $relatedProducts = Product::whereIn('catalogue_id', $categoryIds)
-            ->where('id', '!=', $id)
-            ->limit(4)
-            ->get();
-
-        $variant = ProductVariant::where('product_id', $id)
-            ->select('id', 'price', 'price_sale', 'stock_quantity')
-            ->orderByRaw("LEAST(price, IFNULL(price_sale, price)) ASC") // Lấy giá thấp nhất giữa price và price_sale
-            ->first();
-
-        $price = $variant ? $variant->price : null;
-
-        $similarProducts = Product::whereHas('variants', function ($query) use ($price) {
-            $query->where('price', $price);
-        })->where('id', '!=', $id)
-            ->take(5)
-            ->get();
-
-        $viewedProductIds = session()->get('viewed_products', []);
-        if (!in_array($id, $viewedProductIds)) {
-            $viewedProductIds[] = $id;
-            session()->put('viewed_products', $viewedProductIds);
-        }
-
-        $viewedProducts = Product::whereIn('id', $viewedProductIds)->get();
-        $category = Catalogue::find($detailproduct->catalogue_id);
-        $brands = Brand::find($detailproduct->brand_id);
-
-        // ✅ Truy vấn tất cả thuộc tính của sản phẩm
-        $attributes = [];
-        foreach ($detailproduct->variants as $variant) {
-            foreach ($variant->attributes as $attr) {
-                $attrName = $attr->attribute->name ?? 'Không xác định';
-                $attrValue = $attr->attributeValue->value ?? 'Không có giá trị';
+{
+    // Lấy sản phẩm chi tiết
+    $detailproduct = Product::findOrFail($id);
+    $product = Product::find($id);
+    $description_images = Images::where('product_id', $id)->get();
+    
+    // Lấy danh sách các danh mục liên quan
+    $categoryIds = Catalogue::where('id', $detailproduct->catalogue_id)
+        ->orWhere('parent_id', $detailproduct->catalogue_id)
+        ->pluck('id')
+        ->toArray();
+    
+    // Lấy các sản phẩm liên quan cùng danh mục
+    $relatedProducts = Product::whereIn('catalogue_id', $categoryIds)
+        ->where('id', '!=', $id)
+        ->limit(4)
+        ->get();
+    
+    // Lấy biến thể của sản phẩm với giá thấp nhất (giữa price và price_sale)
+    $variant = ProductVariant::where('product_id', $id)
+        ->select('id', 'price', 'price_sale', 'stock_quantity')
+        ->orderByRaw("LEAST(price, IFNULL(price_sale, price)) ASC") // Lấy giá thấp nhất giữa price và price_sale
+        ->first();
+    
+    $price = $variant ? $variant->price : null;
+    
+    // Lấy các sản phẩm tương tự cùng giá
+    $similarProducts = Product::whereHas('variants', function ($query) use ($price) {
+        $query->where('price', $price);
+    })->where('id', '!=', $id)
+        ->take(5)
+        ->get();
+    
+    // Lưu lại các sản phẩm đã xem
+    $viewedProductIds = session()->get('viewed_products', []);
+    if (!in_array($id, $viewedProductIds)) {
+        $viewedProductIds[] = $id;
+        session()->put('viewed_products', $viewedProductIds);
+    }
+    
+    // Lấy các sản phẩm đã xem
+    $viewedProducts = Product::whereIn('id', $viewedProductIds)->get();
+    
+    // Lấy thông tin danh mục và thương hiệu
+    $category = Catalogue::find($detailproduct->catalogue_id);
+    $brands = Brand::find($detailproduct->brand_id);
+    
+    // Truy vấn tất cả thuộc tính của sản phẩm
+    $attributes = [];
+    foreach ($detailproduct->variants as $variant) {
+        foreach ($variant->product_variant_attributes as $pivot) {
+            $attrName = $pivot->attribute->name;
+            $attrValue = $pivot->attributeValue->value;
+    
+            if (!isset($attributes[$attrName])) {
+                $attributes[$attrName] = [];
+            }
+    
+            if (!in_array($attrValue, $attributes[$attrName])) {
                 $attributes[$attrName][] = $attrValue;
             }
         }
-
-        // ✅ Loại bỏ giá trị trùng lặp
-        foreach ($attributes as $key => $values) {
-            $attributes[$key] = array_unique($values);
-        }
-
-        // Trả về view với danh sách thuộc tính
-        return view('web2.Home.shop-detail', compact(
-            'detailproduct',
-            'description_images',
-            'relatedProducts',
-            'similarProducts',
-            'viewedProducts',
-            'category',
-            'brands',
-            'attributes',
-            'product' // ✅ Truyền biến $attributes vào view
-        ));
     }
+    
+    // Kiểm tra mảng attributes và loại bỏ các giá trị trùng lặp trong các thuộc tính
+    foreach ($attributes as $key => $values) {
+        $attributes[$key] = array_unique($values);
+    }
+    
+    // Truy vấn biến thể dựa trên các thuộc tính đã chọn (giả sử đã có biến $attributes)
+    $selectedVariant = $product->variants()->whereHas('product_variant_attributes', function ($query) use ($attributes) {
+        foreach ($attributes as $attrName => $attrValues) {
+            $query->whereHas('attributeValues', function ($query) use ($attrName, $attrValues) {
+                $query->whereHas('attribute', function ($query) use ($attrName) {
+                    $query->where('name', $attrName);
+                })
+                ->whereIn('value', $attrValues); // Tìm kiếm theo giá trị thuộc tính trong bảng attribute_values
+            });
+        }
+    })->first();
+    
+    if ($selectedVariant) {
+        return response()->json([
+            'success' => true,
+            'variant' => [
+                'price' => $selectedVariant->price,
+                'price_sale' => $selectedVariant->price_sale,
+                'stock_quantity' => $selectedVariant->stock_quantity,
+            ]
+        ]);
+    }
+    
+    // Trả về view với tất cả các dữ liệu đã truy vấn, bao gồm các thuộc tính của sản phẩm
+    return view('web2.Home.shop-detail', compact(
+        'detailproduct',
+        'description_images',
+        'relatedProducts',
+        'similarProducts',
+        'viewedProducts',
+        'category',
+        'brands',
+        'attributes',
+        'variant'
+    ));
+}
+
+    
 
 
     // public function index()
@@ -93,75 +134,85 @@ class CartController extends Controller
     public function viewCart()
     {
         $cart = session()->get('cart', []);
+        $totalAmount = 0;
+
+        // Tính tổng tiền
+        foreach ($cart as $item) {
+            $totalAmount += $item['price'] * $item['quantity'];
+        }
         // dd($cart);
-        return view('web2.Home.cart', compact('cart'));
+        return view('web2.Home.cart', compact('cart', 'totalAmount'));
     }
 
     public function createAddTocart(Request $request, $id)
-    {
-        $product = Product::findOrFail($id);
-        $cart = session()->get('cart', []);
+{
+    // Lấy thông tin sản phẩm
+    $product = Product::findOrFail($id);
     
-        // Lấy thông tin biến thể từ thuộc tính đã chọn
-        $attributes = json_decode($request->input('attributes'), true);
+    // Lấy giỏ hàng từ session
+    $cart = session()->get('cart', []);
     
-        if (empty($attributes)) {
-            return redirect()->back()->with('error', 'Vui lòng chọn đầy đủ các thuộc tính.');
-        }
+    // Lấy thông tin từ request
+    $attributes = json_decode($request->input('attributes'), true);
+    $price = $request->input('price');
+    $priceSale = $request->input('price_sale');
+    $stockQuantity = $request->input('stock_quantity');
+    $quantity = $request->input('quantity', 1);
     
-        // Tìm variant tương ứng với các thuộc tính
-        $query = $product->variants();
-    
-        foreach ($attributes as $key => $value) {
-            $columnName = $this->mapAttributeKey($key);
-            if ($columnName) { 
-                $query->where($columnName, $value);
-            }
-        }
-    
-        $variant = $query->first();
-    
-        if (!$variant) {
-            return redirect()->back()->with('error', 'Không tìm thấy biến thể sản phẩm phù hợp.');
-        }
-    
-        // Lấy giá: nếu có giá khuyến mãi thì dùng, nếu không thì dùng giá gốc
-        $price = $variant->price_sale > 0 ? $variant->price_sale : $variant->price;
-    
-        // Lấy số lượng từ form
-        $quantity = $request->input('quantity', 1);
-    
-        // 🔥 **Tạo key duy nhất dựa trên ID biến thể + danh sách thuộc tính**
-        $attributesString = implode('-', array_values($attributes)); // Chuyển thành chuỗi
-        $cartKey = $product->id . '-' . $variant->id . '-' . md5($attributesString);
-    
-        Log::info("Thêm vào giỏ hàng - Key: $cartKey, Variant ID: {$variant->id}, Thuộc tính: " . json_encode($attributes));
-    
-        if (isset($cart[$cartKey])) {
-            $cart[$cartKey]['quantity'] += $quantity;
-        } else {
-            $cart[$cartKey] = [
-                'id' => $variant->id, 
-                'name' => $product->name,
-                'price' => $price,
-                'image' => $product->image,
-                'quantity' => $quantity,
-                'variant' => [
-                    'id' => $variant->id,
-                    'attributes' => $attributes,
-                ]
-            ];
-        }
-    
-        session()->put('cart', $cart);
-    
-        Log::info("Giỏ hàng hiện tại:", $cart);
-    
-        return redirect()->route('cart.viewCart')->with('success', 'Đã thêm vào giỏ hàng');
+    // Kiểm tra nếu không chọn đủ thuộc tính
+    if (empty($attributes)) {
+        return redirect()->back()->with('error', 'Vui lòng chọn đầy đủ các thuộc tính.');
     }
     
+    // Kiểm tra giá và giá khuyến mãi
+    if (empty($price) || $price <= 0) {
+        return redirect()->back()->with('error', 'Giá sản phẩm không hợp lệ.');
+    }
     
+    // Kiểm tra tồn kho
+    if ($stockQuantity <= 0) {
+        return redirect()->back()->with('error', 'Sản phẩm đã hết hàng.');
+    }
     
+    // Kiểm tra số lượng yêu cầu so với tồn kho
+    if ($quantity > $stockQuantity) {
+        return redirect()->back()->with('error', "Số lượng yêu cầu vượt quá tồn kho. Chỉ còn $stockQuantity sản phẩm.");
+    }
+    
+    // Lấy giá cuối cùng (ưu tiên giá khuyến mãi nếu có)
+    $finalPrice = $priceSale > 0 && $priceSale < $price ? $priceSale : $price;
+    
+    // Tạo key duy nhất cho sản phẩm trong giỏ hàng (dựa trên product_id và attributes)
+    $attributesString = implode('-', array_values($attributes)); // Chuyển các thuộc tính thành chuỗi
+    $cartKey = $product->id . '-' . md5($attributesString);
+    
+    // Kiểm tra nếu sản phẩm đã có trong giỏ hàng
+    if (isset($cart[$cartKey])) {
+        // Nếu có rồi, tăng số lượng
+        $newQuantity = $cart[$cartKey]['quantity'] + $quantity;
+        if ($newQuantity > $stockQuantity) {
+            return redirect()->back()->with('error', "Số lượng trong giỏ vượt quá tồn kho. Chỉ còn $stockQuantity sản phẩm.");
+        }
+        $cart[$cartKey]['quantity'] = $newQuantity;
+    } else {
+        // Nếu chưa có trong giỏ, thêm mới vào giỏ
+        $cart[$cartKey] = [
+            'id' => $product->id, // Không cần variant_id vì form không gửi
+            'name' => $product->name,
+            'price' => $finalPrice,
+            'image' => $product->image,
+            'quantity' => $quantity,
+            'variant' => [
+                'attributes' => $attributes,
+            ]
+        ];
+    }
+    
+    // Lưu giỏ vào session
+    session()->put('cart', $cart);
+    
+    return redirect()->route('cart.viewCart')->with('success', 'Đã thêm vào giỏ hàng');
+}
     
     
     public function updateCart(Request $request, $id)

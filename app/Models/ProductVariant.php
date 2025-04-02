@@ -27,20 +27,40 @@ class ProductVariant extends Model
     {
         return $this->hasMany(ProductVariant::class, 'parent_id');
     }
-    public function attributeValues()
-    {
-        return $this->belongsToMany(AttributeValue::class, 'variant_attribute_values', 'product_variant_id', 'attribute_value_id')
-                    ->withTimestamps();
-    }
+    // public function attributeValues()
+    // {
+    //     return $this->belongsToMany(AttributeValue::class, 'variant_attribute_values', 'product_variant_id', 'attribute_value_id')
+    //                 ->withTimestamps();
+    // }
     public function attributes()
     {
-        return $this->hasMany(ProductVariantAttribute::class, 'product_variant_id');
+        return $this->belongsToMany(
+            Attribute::class,
+            'product_variant_attributes', // Tên bảng trung gian
+            'product_variant_id',         // Khóa ngoại trong bảng product_variant_attributes
+            'attribute_id'                // Khóa ngoại trong bảng Attribute
+        )->withPivot('attribute_value_id')->withTimestamps();
     }
+
 
     public function productVariantAttributes()
 {
     return $this->belongsToMany(ProductVariantAttribute::class, 'product_variant_attribute')
                 ->withTimestamps();
 }
-
+public function attributeValues()
+{
+    return $this->hasManyThrough(
+        AttributeValue::class,
+        ProductVariantAttribute::class,
+        'product_variant_id', // Khóa ngoại trong bảng trung gian
+        'id', // Khóa chính bảng AttributeValue
+        'id', // Khóa chính bảng ProductVariant
+        'attribute_value_id' // Khóa ngoại trong bảng trung gian
+    );
+}
+public function product_variant_attributes()
+    {
+        return $this->hasMany(ProductVariantAttribute::class); // Giả sử bạn có mối quan hệ với bảng ProductVariantAttribute
+    }
 }

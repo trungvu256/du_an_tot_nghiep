@@ -59,10 +59,16 @@
         </td>
         <td class="align-middle">{{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }}₫</td>
         <td class="align-middle">
-            @foreach ($item['variant']['attributes'] as $attrName => $attrValue)
-                <p><strong>{{ $attrName }}:</strong> {{ $attrValue }}</p>
-            @endforeach
+            @if(isset($item['variant']) && isset($item['variant']['attributes']) && count($item['variant']['attributes']) > 0)
+                @foreach ($item['variant']['attributes'] as $attrName => $attrValue)
+                    <p><strong>{{ $attrName }}:</strong> {{ $attrValue }}</p>
+                @endforeach
+            @else
+                <p>Không có biến thể</p>
+            @endif
         </td>
+        
+        
         <td class="align-middle">
             <form action="{{ route('cart.remove', $cartKey) }}" method="POST">
                 @csrf
@@ -131,13 +137,44 @@
                         <h5 class="font-weight-bold">Tổng cộng</h5>
                         <h5 class="font-weight-bold">{{ number_format($total, 0, ',', '.') }}₫</h5>
                     </div>
-                    <a href="{{ route('user.checkout') }}" class="btn btn-block btn-primary my-3 py-3">Tiến hành thanh toán</a>
+                   <!-- Form chứa thông tin thanh toán -->
+<form id="checkout-form" action="{{ route('checkout.index') }}" method="POST">
+    @csrf <!-- Đảm bảo bảo mật khi gửi form POST -->
+    
+    <!-- Các trường thông tin cần thiết, ví dụ: -->
+    <input type="hidden" name="totalAmount" value="{{ $totalAmount }}">
+    <input type="hidden" name="cartData" value="{{ json_encode($cart) }}"> <!-- Dữ liệu giỏ hàng -->
+    
+    <!-- Thêm các trường khác nếu cần -->
+</form>
+
+<!-- Nút thanh toán -->
+<a href="{{ route('checkout.index') }}" 
+    onclick="event.preventDefault(); document.getElementById('checkout-form').submit();" 
+    class="btn btn-block btn-primary my-3 py-3">
+    Tiến hành thanh toán
+</a>
+
+                 
+                 <form id="checkout-form" action="{{ route('checkout.index') }}" method="POST" style="display: none;">
+                     @csrf
+                     <input type="hidden" name="totalAmount" value="{{ $total }}">
+                 </form>
                 </div>
             </div>
             
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        @if(session('clear_cart'))
+            localStorage.removeItem('cart'); // Xóa giỏ hàng trên trình duyệt
+            console.log("Giỏ hàng đã bị xóa khỏi localStorage.");
+        @endif
+    });
+</script>
+
 
 <!-- Cart End -->
 @endsection
