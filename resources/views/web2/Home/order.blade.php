@@ -9,19 +9,16 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-
         @if (session('error'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 {{ session('error') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-
         {{-- Tiêu đề --}}
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h4 class="fw-bold">📦 Danh sách đơn hàng</h4>
         </div>
-
         {{-- Thanh tìm kiếm --}}
         <div class="mb-3">
             <form action="{{ route('admin.order') }}" method="GET" class="d-flex">
@@ -161,7 +158,6 @@
             </div>
         </div>
     </div>
-
     {{-- Script cập nhật danh sách đơn hàng được chọn --}}
     <script>
         document.getElementById('select-all').addEventListener('click', function() {
