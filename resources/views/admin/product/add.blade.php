@@ -7,8 +7,16 @@
             @if (session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
+            <div class="row d-flex align-items-center justify-content-between">
+                <div class="col-auto">
+                    <a href="{{ route('admin.product') }}" class="btn btn-primary"><i class="bi bi-arrow-return-left"></i>
+                        Quay lại</a>
+                </div>
+                <div class="col text-center">
+                    <h4 class="mb-4">Thông tin sản phẩm</h4>
+                </div>
+            </div>
 
-            <h4 class="text-center mb-4">Thông tin sản phẩm</h4>
 
             <div class="row mb-3">
                 <div class="col-md-6">
