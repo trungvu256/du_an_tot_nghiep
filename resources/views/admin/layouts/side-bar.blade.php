@@ -28,6 +28,14 @@
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">DANH SÁCH</span></li>
 
+
+                <!-- Thống kê -->
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="{{ route('admin.dashboard') }}">
+                        <i class="ri-bar-chart-box-line"></i> <span>Thống kê</span>
+                    </a>
+                </li>
+
                 <!-- Khách hàng -->
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#khachhang" data-bs-toggle="collapse" role="button">
@@ -43,14 +51,6 @@
                             </li>
                         </ul>
                     </div>
-                </li>
-
-
-                <!-- Thống kê -->
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="{{ route('admin.dashboard') }}">
-                        <i class="ri-bar-chart-box-line"></i> <span>Thống kê</span>
-                    </a>
                 </li>
 
                 <!-- Đơn hàng -->
@@ -120,7 +120,10 @@
                                 <a href="{{route('variant.create')}}" class="nav-link">Các thuộc tính</a>
                             </li>
                             <li class="nav-item">
-                                <a href="" class="nav-link">Bảng giá</a>
+                                <a href="{{ route('product-comments.index') }}" class="nav-link">Bình luận</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('product-reviews.index') }}" class="nav-link">Đánh giá</a>
                             </li>
                             {{-- <li class="nav-item">
                                 <a href="{{ route('attributes.index') }}" class="nav-link">Thuộc tính</a>
@@ -151,11 +154,11 @@
                 </li> --}}
 
                 <!--Ví Tiền-->
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="{{ route('wallet.show') }}" class="nav-link menu-link">
                         <i class="ri-wallet-line"></i> <span>Sổ quỹ</span>
                     </a>
-                </li>
+                </li> --}}
 
 
                 <!-- Bài viết -->
