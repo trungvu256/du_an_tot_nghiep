@@ -377,7 +377,6 @@ Route::middleware(['auth', 'user'])->group(function () {
 
         Route::get('/wallet/withdraw', [WebWalletController::class, 'croen'])->name('wallet.croen');
         Route::post('/wallet/withdraw', [WebWalletController::class, 'withdraw'])->name('wallet.withdraw');
-
     });
 
     // Giỏ hàng
@@ -387,7 +386,7 @@ Route::middleware(['auth', 'user'])->group(function () {
         Route::post('/add/{id}', [CartController::class, 'createAddTocart'])->name('cart.create');
         Route::post('/cart/update/{id}', [CartController::class, 'updateCart'])->name('cart.update');
         Route::post('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
-        // áp mã giảm giá
+        // Áp mã giảm giá
         Route::post('/cart/apply-promotion', [CartController::class, 'applyPromotion'])->name('cart.applyPromotion');
     });
 
@@ -397,37 +396,27 @@ Route::middleware(['auth', 'user'])->group(function () {
         Route::get('/checkout/app', [CheckoutController::class, 'appvnp'])->name('checkout.appvnp');
         Route::get('/checkout/view', [CheckoutController::class, 'checkout'])->name('checkout.view');
         Route::post('/checkout/vnpay', [CheckoutController::class, 'depositVNPay'])->name('checkout.depositVNPay');
-        // Route::post('/checkout/order', [CheckoutController::class, 'processOrder'])->name('checkout.processOrder');
         Route::match(['get', 'post'], '/checkout/vnpay-callback', [CheckoutController::class, 'vnpayCallback'])->name('checkout.vnpay.callback');
-
         Route::get('/checkout/order', [CheckoutController::class, 'order'])->name('checkout.order');
         Route::get('/order/{id}/continue-payment', [CheckoutController::class, 'continuePayment'])->name('order.continuePayment');
     });
 
-
-
-
-
-    //cmt
+    // Bình luận và phản hồi
     Route::post('product/{product}/comment', [WebProductController::class, 'storeComment'])->name('client.storeComment');
     Route::post('comment/{comment}/reply', [WebProductController::class, 'storeReply'])->name('client.storeReply');
-    // Route sửa và xóa bình luận
+
+    // Sửa và xóa bình luận
     Route::put('product/{product}/comment/{comment}/edit', [WebProductController::class, 'updateComment'])->name('client.updateComment');
     Route::delete('product/{product}/comment/{comment}/delete', [WebProductController::class, 'deleteComment'])->name('client.deleteComment');
 
-    // Route sửa và xóa phản hồi
+    // Sửa và xóa phản hồi
     Route::put('comment/{comment}/reply/{reply}/edit', [WebProductController::class, 'updateReply'])->name('client.updateReply');
     Route::delete('comment/{comment}/reply/{reply}/delete', [WebProductController::class, 'deleteReply'])->name('client.deleteReply');
-    // route review , review respone
+
+    // Đánh giá sản phẩm
     Route::post('/products/{product}/reviews', [WebProductController::class, 'storeReview'])->name('client.storeReview');
     Route::post('/reviews/{review}/responses', [WebProductController::class, 'storeResponse'])->name('client.storeReviewResponse');
 
-
-    //cmt
-    Route::post('product/{product}/comment', [HomeController::class, 'storeComment'])->name('client.storeComment');
-    Route::post('comment/{comment}/reply', [HomeController::class, 'storeReply'])->name('client.storeReply');
-
-
-Route::get('/get-product-variant/{id}', [CartController::class, 'getProductVariant']);
-Route::get('/get-product-variant/{productId}', [CartController::class, 'getVariant']);
-
+    // Lấy biến thể sản phẩm
+    Route::get('/get-product-variant/{id}', [CartController::class, 'getProductVariant'])->name('cart.getProductVariant');
+});
