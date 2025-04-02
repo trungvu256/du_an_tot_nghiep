@@ -132,12 +132,12 @@ class ProductController extends Controller
                         'status' => $variant['status'] ?? 'active',
                     ]);
                     if ($productVariant) {
-                        
+
                         if (!empty($variant['attributes']) && is_array($variant['attributes'])) {
                             foreach ($variant['attributes'] as $attrValue) {
                                 // Tìm attribute_value trong database
                                 $attributeValue = AttributeValue::where('value', trim($attrValue))->first();
-                        
+
                                 if ($attributeValue) {
                                     ProductVariantAttribute::create([
                                         'product_variant_id' => $productVariant->id,

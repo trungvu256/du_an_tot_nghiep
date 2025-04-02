@@ -13,10 +13,10 @@
                                 <div class="card-title">Danh sách bình luận sản phẩm</div>
                             </div>
                             <div>
-                                <a href="{{ route('product-comments.trash') }}"
+                                {{-- <a href="{{ route('product-comments.trash') }}"
                                     class="btn btn-primary btn-rounded d-flex align-items-center mt-3">
                                     <i class="bi bi-trash me-2"></i> Thùng Rác
-                                </a>
+                                </a> --}}
                             </div>
                         </div>
 
@@ -24,8 +24,9 @@
                             <form method="GET" action="{{ route('product-comments.index') }}" class="mb-3">
                                 <div class="row g-2">
                                     <div class="col-auto">
-                                        <input type="text" id="search" name="search" class="form-control form-control-sm"
-                                            placeholder="Tìm kiếm bình luận" value="{{ request()->search }}">
+                                        <input type="text" id="search" name="search"
+                                            class="form-control form-control-sm" placeholder="Tìm kiếm bình luận"
+                                            value="{{ request()->search }}">
                                     </div>
                                     <div class="col-auto">
                                         <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
@@ -41,7 +42,7 @@
                                 <table class="table v-middle m-0">
                                     <thead>
                                         <tr>
-                                            <th>STT</th>
+                                            <th>Stt</th>
                                             <th>Người dùng</th>
                                             <th>Sản phẩm</th>
                                             <th>Nội dung</th>
@@ -58,7 +59,8 @@
                                                 <td>{{ $comment->comment }}</td>
                                                 <td>
                                                     @if ($comment->replies->count() > 0)
-                                                        <button class="btn btn-link p-0" type="button" data-toggle="collapse"
+                                                        <button class="btn btn-link p-0" type="button"
+                                                            data-toggle="collapse"
                                                             data-target="#replies-{{ $comment->id }}" aria-expanded="false"
                                                             aria-controls="replies-{{ $comment->id }}">
                                                             Xem {{ $comment->replies->count() }} phản hồi
@@ -74,7 +76,8 @@
                                                                         <br>
                                                                         <small class="text-muted">Đã phản hồi vào:
                                                                             {{ $response->created_at->format('d/m/Y H:i') }}</small>
-                                                                        <button type="button" class="btn btn-sm btn-warning edit-reply"
+                                                                        <button type="button"
+                                                                            class="btn btn-sm btn-warning edit-reply"
                                                                             data-id="{{ $response->id }}"
                                                                             data-reply="{{ $response->reply }}">
                                                                             Sửa
@@ -89,7 +92,8 @@
                                                 </td>
 
                                                 <td>
-                                                    <button type="button" class="btn rounded-pill btn-primary btnModalReply"
+                                                    <button type="button"
+                                                        class="btn rounded-pill btn-primary btnModalReply"
                                                         data-toggle="modal" data-target="#responseModal" id="btnModalReply"
                                                         data-id="{{ $comment->id }}"
                                                         data-user="{{ $comment->user->name ?? '' }}"
@@ -118,8 +122,7 @@
                                                 <input type="hidden" id="editReplyId" name="reply_id">
                                                 <div class="form-group">
                                                     <label for="editReply" class="font-medium">Nội dung phản hồi:</label>
-                                                    <textarea class="form-control" id="editReply" name="reply" rows="3"
-                                                        required></textarea>
+                                                    <textarea class="form-control" id="editReply" name="reply" rows="3" required></textarea>
                                                 </div>
                                                 <button type="submit" class="btn btn-primary mt-4">Cập nhật</button>
                                             </form>
@@ -150,21 +153,20 @@
                                                     <div class="form-group flex items-center">
                                                         <label for="user" class="mr-2 font-medium">Người dùng:</label>
                                                         <input type="text"
-                                                            class="form-control flex-1 border-gray-300 rounded" id="user"
-                                                            disabled>
+                                                            class="form-control flex-1 border-gray-300 rounded"
+                                                            id="user" disabled>
                                                     </div>
                                                     <div class="form-group flex items-center">
                                                         <label for="content" class="mr-2 font-medium">Nội dung bình
                                                             luận:</label>
                                                         <input type="text"
-                                                            class="form-control flex-1 border-gray-300 rounded" id="content"
-                                                            disabled>
+                                                            class="form-control flex-1 border-gray-300 rounded"
+                                                            id="content" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="form-group mt-4">
                                                     <label for="response" class="font-medium">Phản hồi:</label>
-                                                    <textarea class="form-control border-gray-300 rounded" id="response"
-                                                        name="response" rows="3"></textarea>
+                                                    <textarea class="form-control border-gray-300 rounded" id="response" name="response" rows="3"></textarea>
                                                 </div>
                                                 <button type="submit" class="btn btn-primary mt-4">Gửi phản hồi</button>
                                             </form>
@@ -181,24 +183,20 @@
 @endsection
 
 @section('scripts')
-    @section('scripts')
-        {{-- Cần jQuery trước Bootstrap --}}
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 
-        {{-- SweetAlert2 --}}
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script>
-    @endsection
-
+    {{-- Alert 2 --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script>
 
     <script>
-        $(document).ready(function () {
-            $('#filterRemove').click(function () {
+        $(document).ready(function() {
+            $('#filterRemove').click(function() {
                 $('#search').val('');
                 $(this).closest('form').submit();
             });
         });
-        $(document).on('click', '.edit-reply', function () {
+        $(document).on('click', '.edit-reply', function() {
             var replyId = $(this).data('id');
             var replyContent = $(this).data('reply');
             // Đặt giá trị vào form
@@ -212,12 +210,12 @@
     </script>
 
     <script>
-        $('.btnModalReply').each(function () {
+        $('.btnModalReply').each(function() {
 
             var button = $(this); // Button that triggered the modal
             console.log(button);
 
-            button.on('click', function (event) {
+            button.on('click', function(event) {
 
 
                 console.log(this.dataset);
@@ -246,7 +244,7 @@
 
         // Xác nhận khi xóa brand
         document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', function (e) {
+            button.addEventListener('click', function(e) {
                 e.preventDefault();
                 Swal.fire({
                     position: "top",
@@ -270,7 +268,7 @@
         });
     </script>
 
-    {{-- thông báo phản hồi --}}
+    {{-- thông báo phản hồi  --}}
     @if (session()->has('respond'))
         <script>
             Swal.fire({
@@ -278,6 +276,7 @@
                 icon: "success",
                 toast: true,
                 title: "Phản hồi thành công",
+                // text: 'Có quần què gì đâu mà phản với chả hồi?',
                 showConfirmButton: false,
                 timerProgressBar: true, // Hiển thị thanh thời gian
                 timer: 3500
@@ -285,7 +284,7 @@
         </script>
     @endif
 
-    {{-- thông báo phản hồi --}}
+    {{-- thông báo phản hồi  --}}
     @if (session()->has('respondError'))
         <script>
             Swal.fire({
@@ -293,6 +292,7 @@
                 icon: "error",
                 toast: true,
                 title: "Nhập nội dung phản hồi",
+                // text: 'Có quần què gì đâu mà phản với chả hồi?',
                 showConfirmButton: false,
                 timerProgressBar: true, // Hiển thị thanh thời gian
                 timer: 3500

@@ -39,6 +39,7 @@ use App\Http\Controllers\Web\WalletController as WebWalletController;
 use App\Http\Controllers\Web\ProfileController;
 use App\Models\Category;
 use App\Http\Controllers\Web\WebController;
+use App\Http\Controllers\Web\WebProductController;
 use App\Services\GHTKService;
 
 /*
@@ -466,12 +467,22 @@ Route::middleware(['auth', 'user'])->group(function () {
         Route::get('/order/{id}/continue-payment', [CheckoutController::class, 'continuePayment'])->name('order.continuePayment');
     });
 
-   
+
 
 
     //cmt
-    Route::post('product/{product}/comment', [HomeController::class, 'storeComment'])->name('client.storeComment');
-    Route::post('comment/{comment}/reply', [HomeController::class, 'storeReply'])->name('client.storeReply');
+    Route::post('product/{product}/comment', [WebProductController::class, 'storeComment'])->name('client.storeComment');
+    Route::post('comment/{comment}/reply', [WebProductController::class, 'storeReply'])->name('client.storeReply');
+    // Route sửa và xóa bình luận
+    Route::put('product/{product}/comment/{comment}/edit', [WebProductController::class, 'updateComment'])->name('client.updateComment');
+    Route::delete('product/{product}/comment/{comment}/delete', [WebProductController::class, 'deleteComment'])->name('client.deleteComment');
+
+    // Route sửa và xóa phản hồi
+    Route::put('comment/{comment}/reply/{reply}/edit', [WebProductController::class, 'updateReply'])->name('client.updateReply');
+    Route::delete('comment/{comment}/reply/{reply}/delete', [WebProductController::class, 'deleteReply'])->name('client.deleteReply');
+    // route review , review respone
+    Route::post('/products/{product}/reviews', [WebProductController::class, 'storeReview'])->name('client.storeReview');
+    Route::post('/reviews/{review}/responses', [WebProductController::class, 'storeResponse'])->name('client.storeReviewResponse');
 
 });
 

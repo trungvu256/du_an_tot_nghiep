@@ -36,20 +36,20 @@
                             <div class="card border shadow-sm">
                                 <div class="card-body">
                                     <p><strong>SKU:</strong> {{ $variant->sku }}</p>
-                                    <p><strong>Giá bán:</strong> 
+                                    <p><strong>Giá bán:</strong>
                                         <span class="text-success">
                                             {{ number_format($variant->price_sale > 0 ? $variant->price_sale : $variant->price, 0, ',', '.') }} VNĐ
-                                        </span>                                        
+                                        </span>
                                     </p>
                                     <p><strong>Số lượng kho:</strong> {{ $variant->stock_quantity }}</p>
-                
+
                                     <!-- Hiển thị danh sách thuộc tính của biến thể -->
                                     <p><strong>Thuộc tính:</strong></p>
                                     @if ($variant->attributes && count($variant->attributes) > 0)
                                         <ul>
                                             @foreach ($variant->attributes as $attr)
                                                 <li>
-                                                    <strong>{{ $attr->attribute->name ?? 'Không xác định' }}:</strong> 
+                                                    <strong>{{ $attr->attribute->name ?? 'Không xác định' }}:</strong>
                                                     {{ $attr->attributeValue->value ?? 'Không có giá trị' }}
                                                 </li>
                                             @endforeach
@@ -62,7 +62,7 @@
                         </div>
                     @endforeach
                 </div>
-                
+
                 <!-- Hiển thị mô tả sản phẩm -->
                 <div class="mt-4">
                     <h5>Mô tả sản phẩm:</h5>
