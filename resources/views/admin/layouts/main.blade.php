@@ -198,7 +198,16 @@
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script>
 
-
+    {{-- Hàm tự động đóng thông báo --}}
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $("#successAlert").fadeOut(500, function () {
+                    $(this).remove(); // Xóa khỏi DOM sau hiệu ứng
+                });
+            }, 4000);
+        });
+    </script>
 </body>
 
 </html>
