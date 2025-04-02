@@ -19,8 +19,7 @@ class CreateOrdersTable extends Migration
             $table->string('email');
             $table->string('phone');
             $table->string('address');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Chỉ cần khai báo 1 lần
-
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->decimal('total_price', 10, 2)->default(0);
             $table->tinyInteger('payment_status')->default(0); // Chuyển thành số (0: Chưa thanh toán, 1: Đã thanh toán)
             $table->tinyInteger('status')->default(0);

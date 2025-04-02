@@ -39,5 +39,4 @@ class Attribute extends Model
             'product_variant_id'
         )->withPivot('attribute_value_id')->withTimestamps();
     }
-
 }

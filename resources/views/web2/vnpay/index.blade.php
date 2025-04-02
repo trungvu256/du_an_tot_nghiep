@@ -6,6 +6,7 @@
     <title>Thanh toán VNPay</title>
     <link href="{{ asset('assets/bootstrap.min.css') }}" rel="stylesheet"/>
     <script src="{{ asset('assets/jquery-1.11.3.min.js') }}"></script>
+    
     <style>
         body {
             background-color: #f8f9fa;
@@ -31,11 +32,23 @@
 
 <div class="container mt-5">
     <h3 class="text-center text-primary">Thanh toán VNPay</h3>
-    <form action="{{ route('wallet.deposit.vnpay') }}" method="POST" class="payment-form">
+    <form action="{{ route('checkout.depositVNPay') }}" method="POST" class="payment-form">
         @csrf
         <div class="mb-3">
-            <label for="amount" class="form-label">Số tiền cần nạp (VND)</label>
-            <input type="number" class="form-control" id="amount" name="amount" min="1000" max="100000000" value="10000" required>
+            <label for="amount" class="form-label">Số tiền cần thanh toán (VND)</label>
+            @php
+            $subtotal = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], session('cart', [])));
+            $discount = session('promotion')['discount'] ?? 0;
+            $shippingFee = 10000; // Phí vận chuyển cố định
+            $totalAmount = max(1000, intval($subtotal - $discount + $shippingFee)); // Ép về số nguyên
+        @endphp
+        
+        <input type="number" class="form-control" id="amount" name="amount" 
+               min="1000" max="100000000" 
+               value="{{ old('amount', $totalAmount) }}" required>
+        
+
+     
         </div>
 
         <h5 class="mt-3">Chọn phương thức thanh toán:</h5>
@@ -75,6 +88,22 @@
         <p>&copy; VNPay {{ date('Y') }}</p>
     </footer>
 </div>
-
+<script>
+    document.querySelector('.payment-form').addEventListener('submit', function(event) {
+        console.log('Form đã gửi');
+    });
+    </script>
+    <script>
+        fetch("{{ route('checkout.depositVNPay') }}", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ _token: "{{ csrf_token() }}", amount: document.getElementById("amount").value })
+        })
+        .then(response => response.json())
+        .then(data => { 
+            if (data.redirect_url) window.location.href = data.redirect_url;
+        });
+    </script>
+    
 </body>
 </html>
