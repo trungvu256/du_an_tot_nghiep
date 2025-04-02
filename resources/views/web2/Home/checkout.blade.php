@@ -27,47 +27,31 @@
                 <h4 class="font-weight-semi-bold mb-4">Địa Chỉ Thanh Toán</h4>
                 <div class="row">
                     <div class="col-md-6 form-group">
-                        <label>Họ</label>
-                        <input class="form-control" type="text" placeholder="Nguyễn">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>Tên</label>
-                        <input class="form-control" type="text" placeholder="Văn A">
+                        <label>Họ tên</label>
+                        <input class="form-control" type="text" name="first_name"
+                               value="{{ Auth::check() ? Auth::user()->name : '' }}" 
+                               placeholder="Văn A">
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Email</label>
-                        <input class="form-control" type="text" placeholder="example@email.com">
+                        <input class="form-control" type="email" name="email"
+                               value="{{ Auth::check() ? Auth::user()->email : '' }}" 
+                               placeholder="example@email.com">
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Số Điện Thoại</label>
-                        <input class="form-control" type="text" placeholder="+84 123 456 789">
+                        <input class="form-control" type="text" name="phone"
+                               value="{{ Auth::check() ? Auth::user()->phone : '' }}" 
+                               placeholder="+84 123 456 789">
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Địa Chỉ</label>
-                        <input class="form-control" type="text" placeholder="123 Đường ABC">
-                    </div>
-
-
-                    <div class="col-md-6 form-group">
-                        <label>Thành Phố</label>
-                        <input class="form-control" type="text" placeholder="Hà Nội">
-                    </div>
-
-
-                    <div class="col-md-12 form-group">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="newaccount">
-                            <label class="custom-control-label" for="newaccount">Tạo tài khoản mới</label>
-                        </div>
-                    </div>
-                    <div class="col-md-12 form-group">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="shipto">
-                            <label class="custom-control-label" for="shipto" data-toggle="collapse"
-                                data-target="#shipping-address">Giao hàng đến địa chỉ khác</label>
-                        </div>
+                        <input class="form-control" type="text" name="address"
+                               value="{{ Auth::check() ? Auth::user()->address : '' }}" 
+                               placeholder="123 Đường ABC">
                     </div>
                 </div>
+                
             </div>
             <div class="collapse mb-4" id="shipping-address">
                 <h4 class="font-weight-semi-bold mb-4">Địa Chỉ Giao Hàng</h4>
@@ -109,32 +93,61 @@
                 </div>
                 <div class="card-body">
                     <h5 class="font-weight-medium mb-3">Sản Phẩm</h5>
-                    <div class="d-flex justify-content-between">
-                        <p>Áo sơ mi màu sắc </p>
-                        <p>$150</p>
-                    </div>
-
+                    @php
+                        $cart = session()->get('cart', []);
+                        $subtotal = 0;
+                        $shipping_fee = 10000; // Phí giao hàng cố định hoặc lấy từ cấu hình
+                    @endphp
+        
+                    @foreach($cart as $item)
+                        @php $subtotal += $item['price'] * $item['quantity']; @endphp
+                        <div class="d-flex justify-content-between">
+                            <p>{{ $item['name'] }} (x{{ $item['quantity'] }})</p>
+                            <p>{{ number_format($item['price'] * $item['quantity'], 2) }}đ</p>
+                        </div>
+                    @endforeach
+        
                     <hr class="mt-0">
-                    <div class="d-flex justify-content-between mb-3 pt-1">
-                        <h6 class="font-weight-medium">Tạm tính</h6>
-                        <h6 class="font-weight-medium">$150</h6>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <h6 class="font-weight-medium">Phí giao hàng</h6>
-                        <h6 class="font-weight-medium">$10</h6>
-                    </div>
-                </div>
-                <div class="card-footer border-secondary bg-transparent">
-                    <div class="d-flex justify-content-between mt-2">
-                        <h5 class="font-weight-bold">Tổng</h5>
-                        <h5 class="font-weight-bold">$160</h5>
-                    </div>
-                </div>
+<div class="d-flex justify-content-between mb-3 pt-1">
+    <h6 class="font-weight-medium">Tạm tính</h6>
+    <h6 class="font-weight-medium">{{ number_format($subtotal, 2) }}đ</h6>
+</div>
+
+@if(session('promotion'))
+    <div class="d-flex justify-content-between mb-3 pt-1">
+        <h6 class="font-weight-medium text-success">Giảm giá ({{ session('promotion')['code'] }})</h6>
+        <h6 class="font-weight-medium text-success">-{{ number_format(session('promotion')['discount'], 2) }}đ</h6>
+    </div>
+@endif
+
+<div class="d-flex justify-content-between">
+    <h6 class="font-weight-medium">Phí giao hàng</h6>
+    <h6 class="font-weight-medium">{{ number_format($shipping_fee, 2) }}đ</h6>
+</div>
+</div>
+<div class="card-footer border-secondary bg-transparent">
+    <div class="d-flex justify-content-between mt-2">
+        <h5 class="font-weight-bold">Tổng</h5>
+        <h5 class="font-weight-bold">
+            {{ number_format(intval($subtotal - (session('promotion')['discount'] ?? 0) + $shipping_fee), 0, ',', '.') }}đ
+        </h5>
+    </div>
+</div>
+
             </div>
             <div class="card-footer border-secondary bg-transparent">
-                <button class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Đặt Hàng</button>
+                <form action="{{ route('checkout.depositVNPay') }}" method="POST" class="payment-form">
+                    @csrf
+                    
+                    <!-- Số tiền thanh toán -->
+                    <input type="hidden" class="form-control" id="amount" name="amount" 
+                           value="{{ intval($subtotal - (session('promotion')['discount'] ?? 0) + $shipping_fee) }}">
+                    
+                    <button type="submit" class="btn btn-primary btn-payment mt-3">💰 Thanh toán ngay</button>
+                </form>
             </div>
         </div>
+        
     </div>
 </div>
 <!-- Kết thúc Thanh Toán -->

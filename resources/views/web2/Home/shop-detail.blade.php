@@ -249,300 +249,323 @@
                     </p>
                 </div>
 
-                <!-- Form chọn thuộc tính -->
-                {{-- <form id="variantForm" class="d-flex flex-column">
-                    @foreach ($attributes as $attrName => $values)
-                        <div class="variant-group">
-                            <h5>{{ $attrName }}:</h5>
-                            @foreach ($values as $value)
-                                @php
-                                    // Tìm variant tương ứng với thuộc tính này
-                                    $matchedVariant = null;
-                                    foreach ($detailproduct->variants as $variant) {
-                                        foreach ($variant->attributes as $attr) {
-                                            if ($attr->attributeValue->value == $value) {
-                                                $matchedVariant = $variant;
-                                                break 2;
-                                            }
+               
+                <form id="variantForm" class="d-flex flex-column" method="POST" action="{{ route('cart.create', $detailproduct->id) }}">
+                    @csrf
+                    
+                    <!-- Thông tin sản phẩm -->
+                    <input type="hidden" name="product_id" value="{{ $detailproduct->id }}">
+                    <input type="hidden" name="name" value="{{ $detailproduct->name }}">
+                    <input type="hidden" name="image" value="{{ $detailproduct->image }}">
+                    <input type="hidden" name="price" id="selectedPrice" value="{{ $detailproduct->variants->min('price') ?? 0 }}">
+                    <input type="hidden" name="price_sale" id="selectedSalePrice">
+                    <input type="hidden" name="stock_quantity" id="selectedStock">
+                    <input type="hidden" id="selectedAttributes" name="attributes">
+                
+                    <!-- Chọn thuộc tính -->
+                    @php
+                        // Tạo mảng $attributes từ $detailproduct->variants nếu chưa có
+                        if (!isset($attributes) || empty($attributes)) {
+                            $attributes = [];
+                            if ($detailproduct->variants->isNotEmpty()) {
+                                foreach ($detailproduct->variants as $variant) {
+                                    foreach ($variant->product_variant_attributes as $attr) {
+                                        $attrName = $attr->attribute->name;
+                                        $attrValue = $attr->attributeValue->value;
+                                        if (!isset($attributes[$attrName])) {
+                                            $attributes[$attrName] = [];
+                                        }
+                                        if (!in_array($attrValue, $attributes[$attrName])) {
+                                            $attributes[$attrName][] = $attrValue;
                                         }
                                     }
-                                @endphp
-                                <button type="button" class="btn btn-outline-dark m-1 variant-option"
-                                    data-attribute="{{ $attrName }}" data-value="{{ $value }}"
-                                    data-price="{{ $matchedVariant->price ?? 'Không có giá' }}"
-                                    data-sale-price="{{ $variant->price_sale > 0 ? $variant->price_sale : $variant->price }}"
-                                    data-stock="{{ $matchedVariant->stock_quantity ?? 0 }}"
-                                    onclick="selectAttribute(this)">
-                                    <strong>{{ $value }}</strong>
-                                </button>
-                            @endforeach
-                        </div>
-                    @endforeach
-                </form> --}}
-
-                <!-- Hiển thị giá và tồn kho -->
-                <div class="mb-4">
-                    <p id="product-stock-wrapper" style="display: none;">
-                        <strong>Tồn kho:</strong> <span id="product-stock"></span>
-                    </p>
-                </div>
-                {{-- <div class="d-flex mb-3">
-                    @php
-                        $minPriceSale = $detailproduct->variants->where('price_sale', '>', 0)->min('price_sale');
-                        $minPrice = $minPriceSale ?? $detailproduct->variants->min('price'); // Lấy price_sale nếu có, nếu không lấy price
-                        $maxPrice = $detailproduct->variants->max('price');
+                                }
+                            }
+                        }
+                
+                        // Tạo mảng để lưu các tổ hợp thuộc tính và thông tin biến thể
+                        $variantData = [];
+                        if ($detailproduct->variants->isNotEmpty()) {
+                            foreach ($detailproduct->variants as $variant) {
+                                $attributesCombo = [];
+                                foreach ($variant->product_variant_attributes as $attr) {
+                                    $attrName = $attr->attribute->name;
+                                    $attrValue = $attr->attributeValue->value;
+                                    $attributesCombo[$attrName] = $attrValue;
+                                }
+                                $variantKey = json_encode($attributesCombo);
+                                $variantData[$variantKey] = [
+                                    'price' => $variant->price,
+                                    'price_sale' => $variant->price_sale ?? 0,
+                                    'stock' => $variant->stock_quantity,
+                                ];
+                            }
+                        }
+                        // Debug dữ liệu
+                        // dd($attributes, $variantData);
                     @endphp
-
-                    <h4 id="product-price" class="font-weight-semi-bold mb-4">
-                        <i class="fas fa-money-bill-wave text-success"></i>
-                        <span id="product-original-price" class="text-muted"
-                            style="text-decoration: line-through; display: none;"></span>
-                        <span id="product-sale-price">
-                            {{ number_format($minPrice, 0, ',', '.') }} - {{ number_format($maxPrice, 0, ',', '.') }}₫
-                        </span>
-                    </h4>
-
-
-
-                </div> --}}
+                
+                    @if (empty($attributes))
+                        <p>Không có thuộc tính nào để chọn.</p>
+                    @else
+                        @foreach ($attributes as $attrName => $values)
+                            @if (!empty($values) && is_array($values))
+                                <div class="variant-group mb-3">
+                                    <h5 class="mb-2">{{ $attrName }}:</h5>
+                                    @foreach ($values as $value)
+                                        <button type="button" class="btn btn-outline-dark m-1 variant-option"
+                                            data-attribute="{{ $attrName }}" 
+                                            data-value="{{ $value }}"
+                                            onclick="selectAttribute(this)">
+                                            <strong>{{ $value }}</strong>
+                                        </button>
+                                    @endforeach
+                                </div>
+                            @endif
+                        @endforeach
+                    @endif
+                
+                    <!-- Hiển thị giá và tồn kho -->
+                    <div class="mb-4">
+                        {{-- <p>
+                            <strong>Giá: </strong>
+                            <span id="product-original-price" style="text-decoration: line-through; color: red; display: none;"></span>
+                            <span id="product-sale-price"></span>
+                        </p> --}}
+                        <p id="product-stock-wrapper" style="display: none;">
+                            <strong>Tồn kho:</strong> <span id="product-stock"></span>
+                        </p>
+                    </div>
+                
+                    <!-- Chọn số lượng -->
+                    <!-- Chọn số lượng -->
+<div class="form-group mb-3">
+    <label for="quantity">Số lượng:</label>
+    <div class="input-group">
+        <button type="button" class="btn btn-outline-secondary" onclick="decreaseQuantity()">-</button>
+        <input type="number" id="quantity" name="quantity" value="1" min="1" class="form-control text-center" required>
+        <button type="button" class="btn btn-outline-secondary" onclick="increaseQuantity()">+</button>
+    </div>
+    <small id="quantity-error" class="text-danger" style="display: none;">Số lượng phải từ 1 đến số lượng tồn kho</small>
+</div>
+                    <!-- Nút thêm vào giỏ -->
+                    <button type="submit" class="btn btn-primary px-3 mt-3">
+                        <i class="fas fa-shopping-cart"></i>
+                        Thêm vào giỏ
+                    </button>
+                </form>
+                
 
                 <script>
-                    function selectAttribute(button) {
-                        // Bỏ chọn tất cả các nút khác trong nhóm
-                        let attributeGroup = button.closest('.variant-group');
-                        let buttons = attributeGroup.querySelectorAll('.variant-option');
-                        buttons.forEach(btn => {
-                            btn.classList.remove('btn-dark');
-                            btn.classList.add('btn-outline-dark');
-                        });
+                    // Thêm các hàm mới vào script
+function updateQuantityLimit(stock) {
+    const quantityInput = document.getElementById('quantity');
+    if (stock > 0) {
+        quantityInput.max = stock;
+        if (parseInt(quantityInput.value) > stock) {
+            quantityInput.value = stock;
+        }
+        if (parseInt(quantityInput.value) < 1) {
+            quantityInput.value = 1;
+        }
+    } else {
+        quantityInput.max = 1;
+        quantityInput.value = 1;
+    }
+    validateQuantity();
+}
+
+function validateQuantity() {
+    const quantityInput = document.getElementById('quantity');
+    const stock = parseInt(document.getElementById('selectedStock').value) || 0;
+    const errorMsg = document.getElementById('quantity-error');
+    let currentValue = parseInt(quantityInput.value) || 1;
+    
+    if (currentValue > stock) {
+        quantityInput.value = stock;
+        errorMsg.style.display = 'block';
+    } else if (currentValue < 1) {
+        quantityInput.value = 1;
+        errorMsg.style.display = 'block';
+    } else {
+        errorMsg.style.display = 'none';
+    }
+}
+
+function increaseQuantity() {
+    const quantityInput = document.getElementById('quantity');
+    const stock = parseInt(document.getElementById('selectedStock').value) || 0;
+    let currentValue = parseInt(quantityInput.value);
+    
+    if (currentValue < stock) {
+        quantityInput.value = currentValue + 1;
+    }
+    validateQuantity();
+}
+
+function decreaseQuantity() {
+    const quantityInput = document.getElementById('quantity');
+    let currentValue = parseInt(quantityInput.value);
+    
+    if (currentValue > 1) {
+        quantityInput.value = currentValue - 1;
+    }
+    validateQuantity();
+}
+
+// Cập nhật hàm updateProductInfo hiện có
+function updateProductInfo(price, salePrice, stock) {
+    let originalPriceEl = document.getElementById("product-original-price");
+    let salePriceEl = document.getElementById("product-sale-price");
+    let stockEl = document.getElementById("product-stock");
+    let stockWrapper = document.getElementById("product-stock-wrapper");
+
+    if (salePrice > 0 && salePrice < price) {
+        originalPriceEl.style.display = "inline";
+        originalPriceEl.innerText = new Intl.NumberFormat('vi-VN').format(price) + '₫';
+        salePriceEl.innerText = new Intl.NumberFormat('vi-VN').format(salePrice) + '₫';
+    } else {
+        originalPriceEl.style.display = "none";
+        salePriceEl.innerText = new Intl.NumberFormat('vi-VN').format(price) + '₫';
+    }
+
+    stockWrapper.style.display = "block";
+    stockEl.innerText = stock > 0 ? `Còn ${stock} sản phẩm` : "Hết hàng";
+
+    document.getElementById("selectedPrice").value = price;
+    document.getElementById("selectedSalePrice").value = salePrice;
+    document.getElementById("selectedStock").value = stock;
+    
+    // Cập nhật giới hạn số lượng
+    updateQuantityLimit(stock);
+}
+
+// Validate khi người dùng nhập tay
+document.getElementById('quantity').addEventListener('input', function(e) {
+    const quantityInput = this;
+    const stock = parseInt(document.getElementById('selectedStock').value) || 0;
+    let value = parseInt(quantityInput.value);
+    
+    // Ngăn nhập số âm hoặc vượt quá stock ngay lập tức
+    if (isNaN(value) || value < 1) {
+        quantityInput.value = 1;
+    } else if (value > stock) {
+        quantityInput.value = stock;
+    }
+    validateQuantity();
+});
+                </script>
+                <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    let selectedAttributes = {}; // Lưu các thuộc tính đã chọn
+                    let defaultMinPrice = {{ $detailproduct->variants->min('price') ?? 0 }};
+                    let defaultMaxPrice = {{ $detailproduct->variants->max('price') ?? 0 }};
+                    const variantButtons = document.querySelectorAll('.variant-option');
+                    const totalGroups = document.querySelectorAll('.variant-group').length;
                 
-                        // Đánh dấu nút được chọn
-                        button.classList.add('btn-dark');
-                        button.classList.remove('btn-outline-dark');
+                    // Lưu toàn bộ dữ liệu biến thể từ PHP
+                    const variantData = @json($variantData);
                 
-                        // Lấy giá trị từ thuộc tính data của nút bấm
-                        let price = parseInt(button.getAttribute('data-price')) || 0; // Giá gốc
-                        let salePrice = parseInt(button.getAttribute('data-sale-price')) || 0; // Giá khuyến mãi
-                        let stock = button.getAttribute('data-stock');
+                    // Đặt giá mặc định
+                    function setDefaultPrice() {
+                        let salePriceEl = document.getElementById("product-sale-price");
+                        let originalPriceEl = document.getElementById("product-original-price");
+                        let stockWrapper = document.getElementById("product-stock-wrapper");
                 
-                        // Kiểm tra xem dữ liệu có lấy đúng không
-                        console.log("Giá gốc:", price, "Giá KM:", salePrice, "Tồn kho:", stock);
+                        originalPriceEl.style.display = "none";
+                        if (defaultMinPrice > 0 && defaultMaxPrice > 0) {
+                            salePriceEl.innerText = 
+                                new Intl.NumberFormat('vi-VN').format(defaultMinPrice) + " - " +
+                                new Intl.NumberFormat('vi-VN').format(defaultMaxPrice) + "₫";
+                        } else {
+                            salePriceEl.innerText = "Chưa có giá";
+                        }
+                        stockWrapper.style.display = "none";
+                    }
                 
-                        // Lấy các phần tử HTML cần cập nhật giá
-                        let originalPriceEl = document.getElementById('product-original-price');
-                        let salePriceEl = document.getElementById('product-sale-price');
+                    // Cập nhật thông tin giá và tồn kho
+                    function updateProductInfo(price, salePrice, stock) {
+                        let originalPriceEl = document.getElementById("product-original-price");
+                        let salePriceEl = document.getElementById("product-sale-price");
+                        let stockEl = document.getElementById("product-stock");
+                        let stockWrapper = document.getElementById("product-stock-wrapper");
                 
-                        // Kiểm tra nếu có giá khuyến mãi hợp lệ
                         if (salePrice > 0 && salePrice < price) {
-                            originalPriceEl.style.display = 'inline'; // Hiện giá gốc
+                            originalPriceEl.style.display = "inline";
                             originalPriceEl.innerText = new Intl.NumberFormat('vi-VN').format(price) + '₫';
                             salePriceEl.innerText = new Intl.NumberFormat('vi-VN').format(salePrice) + '₫';
                         } else {
-                            // Nếu không có giá khuyến mãi, chỉ hiển thị giá gốc
-                            originalPriceEl.style.display = 'none'; // Ẩn giá gốc
+                            originalPriceEl.style.display = "none";
                             salePriceEl.innerText = new Intl.NumberFormat('vi-VN').format(price) + '₫';
                         }
                 
-                        // Hiển thị tồn kho
-                        let stockWrapper = document.getElementById('product-stock-wrapper');
-                        let stockText = document.getElementById('product-stock');
                         stockWrapper.style.display = "block";
-                        stockText.innerText = stock;
+                        stockEl.innerText = stock > 0 ? `Còn ${stock} sản phẩm` : "Hết hàng";
+                
+                        document.getElementById("selectedPrice").value = price;
+                        document.getElementById("selectedSalePrice").value = salePrice;
+                        document.getElementById("selectedStock").value = stock;
                     }
-                </script>
                 
-                <script>
-                    document.addEventListener("DOMContentLoaded", function() {
-                        let selectedAttributes = {};
-                        let productId = {{ $detailproduct->id }};
-                        let defaultMinPrice = {{ $minPrice }};
-                        let defaultMaxPrice = {{ $maxPrice }};
+                    // Tìm biến thể khớp với tổ hợp thuộc tính đã chọn
+                    function findMatchingVariant() {
+                        let selectedCount = Object.keys(selectedAttributes).length;
                 
-                        function setDefaultPrice() {
-                            document.getElementById("product-original-price").style.display = "none";
-                            document.getElementById("product-sale-price").innerText =
-                                new Intl.NumberFormat('vi-VN').format(defaultMinPrice) + " - " +
-                                new Intl.NumberFormat('vi-VN').format(defaultMaxPrice) + "₫";
-                        }
-                
-                        function updateProductInfo(variant) {
-                            let originalPriceEl = document.getElementById("product-original-price");
-                            let salePriceEl = document.getElementById("product-sale-price");
-                
-                            let price = variant.price;
-                            let sale_price = variant.price_sale;
-                
-                            if (sale_price > 0 && sale_price < price) {
-                                originalPriceEl.style.display = "inline";
-                                originalPriceEl.innerText = new Intl.NumberFormat('vi-VN').format(price) + '₫';
-                                salePriceEl.innerText = new Intl.NumberFormat('vi-VN').format(sale_price) + '₫';
-                            } else {
-                                originalPriceEl.style.display = "none";
-                                salePriceEl.innerText = new Intl.NumberFormat('vi-VN').format(price) + '₫';
-                            }
-                
-                            document.getElementById("product-stock-wrapper").style.display = "block";
-                            document.getElementById("product-stock").innerText = variant.stock_quantity;
-                        }
-                
-                        function getVariantData() {
-                            let queryParams = new URLSearchParams(selectedAttributes).toString();
-                
-                            fetch(`/get-product-variant/${productId}?${queryParams}`)
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.success) {
-                                        updateProductInfo(data.variant);
-                                    } else {
-                                        console.error("Không tìm thấy biến thể phù hợp!");
-                                        setDefaultPrice();
-                                    }
+                        if (selectedCount === totalGroups) {
+                            // Tìm biến thể khớp với tổ hợp thuộc tính đã chọn
+                            let matchedVariant = null;
+                            for (let key in variantData) {
+                                let variantAttributes = JSON.parse(key);
+                                let allMatched = Object.keys(selectedAttributes).every(attrName => {
+                                    return variantAttributes[attrName] === selectedAttributes[attrName];
                                 });
-                        }
-                
-                        setDefaultPrice();
-                
-                        // Lắng nghe sự kiện chọn thuộc tính
-                        document.querySelectorAll('.variant-option').forEach(button => {
-                            button.addEventListener('click', function() {
-                                let attrName = this.getAttribute('data-attribute');
-                                let attrValue = this.getAttribute('data-value');
-                
-                                let groupButtons = this.closest('.variant-group').querySelectorAll('.variant-option');
-                                groupButtons.forEach(btn => btn.classList.remove('active', 'btn-dark'));
-                                this.classList.add('active', 'btn-dark');
-                
-                                selectedAttributes[attrName] = attrValue;
-                                document.getElementById('selectedAttributes').value = JSON.stringify(selectedAttributes);
-                
-                                getVariantData();
-                            });
-                        });
-                    });
-                </script>
-                
-                
-
-
-
-                <script>
-                    document.querySelectorAll('input[name="size"]').forEach(radio => {
-                        radio.addEventListener('change', function() {
-                            let price = this.getAttribute('data-price');
-                            // Lấy các phần tử HTML cần cập nhật giá
-                            let salePriceEl = document.getElementById('product-sale-price');
-                            let originalPriceEl = document.getElementById('product-original-price');
-
-                            // Giả sử 'price' là giá gốc, 'salePrice' là giá khuyến mãi lấy từ dữ liệu sản phẩm
-                            if (salePrice > 0 && salePrice < price) {
-                                // Có giá khuyến mãi, hiển thị cả hai giá
-                                originalPriceEl.style.display = 'inline'; // Hiện giá gốc
-                                originalPriceEl.innerText = new Intl.NumberFormat('vi-VN').format(price) + '₫';
-
-                                salePriceEl.innerText = new Intl.NumberFormat('vi-VN').format(salePrice) + '₫';
-                            } else {
-                                // Không có khuyến mãi, chỉ hiển thị giá gốc
-                                originalPriceEl.style.display = 'none'; // Ẩn giá gốc
-                                salePriceEl.innerText = new Intl.NumberFormat('vi-VN').format(price) + '₫';
+                                if (allMatched) {
+                                    matchedVariant = variantData[key];
+                                    break;
+                                }
                             }
-
-                        });
-                    });
+                
+                            if (matchedVariant) {
+                                let price = matchedVariant.price;
+                                let salePrice = matchedVariant.price_sale;
+                                let stock = matchedVariant.stock;
+                                console.log('Matched Variant:', { price, salePrice, stock }); // Debug
+                                updateProductInfo(price, salePrice, stock);
+                            } else {
+                                console.log('No matching variant found for:', selectedAttributes); // Debug
+                                setDefaultPrice();
+                            }
+                        } else {
+                            setDefaultPrice();
+                        }
+                    }
+                
+                    // Khởi tạo giá mặc định
+                    setDefaultPrice();
+                
+                    // Hàm chọn thuộc tính
+                    window.selectAttribute = function(button) {
+                        let attrName = button.getAttribute('data-attribute');
+                        let attrValue = button.getAttribute('data-value');
+                
+                        // Bỏ chọn các nút khác trong cùng nhóm
+                        let groupButtons = button.closest('.variant-group').querySelectorAll('.variant-option');
+                        groupButtons.forEach(btn => btn.classList.remove('active', 'btn-dark'));
+                
+                        // Đánh dấu nút được chọn
+                        button.classList.add('active', 'btn-dark');
+                
+                        // Lưu lựa chọn
+                        selectedAttributes[attrName] = attrValue;
+                        document.getElementById('selectedAttributes').value = JSON.stringify(selectedAttributes);
+                
+                        // Tìm và cập nhật thông tin biến thể
+                        console.log('Selected Attributes:', selectedAttributes); // Debug
+                        findMatchingVariant();
+                    };
+                });
                 </script>
-
-                <!-- Script cập nhật giá -->
-                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                <script>
-                    $(document).ready(function() {
-                        $('input[name="size"]').on('change', function() {
-                            var selectedPrice = $(this).data('price');
-                            $('#product-price').text(selectedPrice.toLocaleString('vi-VN'));
-                        });
-                    });
-                </script>
-
-<form id="variantForm" class="d-flex flex-column" method="POST" action="{{ route('cart.create', $detailproduct->id) }}">
-    @csrf
-
-    <!-- Thông tin sản phẩm -->
-    <input type="hidden" name="product_id" value="{{ $detailproduct->id }}">
-    <input type="hidden" name="name" value="{{ $detailproduct->name }}">
-    <input type="hidden" name="image" value="{{ $detailproduct->image }}">
-    <input type="hidden" name="price" id="selectedPrice" value="{{ $detailproduct->variants->min('price') }}">
-    <input type="hidden" name="price_sale" id="selectedSalePrice">
-    <input type="hidden" name="stock_quantity" id="selectedStock">
-    <input type="hidden" id="selectedAttributes" name="attributes">
-
-    <!-- Chọn thuộc tính -->
-    @foreach ($attributes as $attrName => $values)
-        @if (!empty($values) && is_array($values))
-            <div class="variant-group mb-3">
-                <h5 class="mb-2">{{ $attrName }}:</h5>
-                @foreach ($values as $value)
-                    @php
-                        // Tìm variant có thuộc tính tương ứng
-                        $matchedVariant = $detailproduct->variants->first(function ($variant) use ($value) {
-                            return $variant->attributes->contains(function ($attr) use ($value) {
-                                return $attr->attributeValue->value == $value;
-                            });
-                        });
-                    @endphp
-
-                    <button type="button" class="btn btn-outline-dark m-1 variant-option"
-                        data-attribute="{{ $attrName }}" 
-                        data-value="{{ $value }}"
-                        data-price="{{ $matchedVariant->price ?? 0 }}"
-                        data-sale-price="{{ $matchedVariant->price_sale > 0 ? $matchedVariant->price_sale : $matchedVariant->price }}"
-                        data-stock="{{ $matchedVariant->stock_quantity ?? 0 }}"
-                        onclick="selectAttribute(this)">
-                        <strong>{{ $value }}</strong>
-                    </button>
-                @endforeach
-            </div>
-        @endif
-    @endforeach
-
-    <!-- Chọn số lượng -->
-    <div class="form-group mb-3">
-        <label for="quantity">Số lượng:</label>
-        <input type="number" id="quantity" name="quantity" value="1" min="1" class="form-control" required>
-    </div>
-
-    <!-- Nút thêm vào giỏ -->
-    <button type="submit" class="btn btn-primary px-3 mt-3">
-        <i class="fas fa-shopping-cart"></i>
-        Thêm vào giỏ
-    </button>
-</form>
-
-
-
-
-<script>
-    function updateQuantity(change) {
-        // Lấy giá trị hiện tại của số lượng
-        var quantityInput = document.getElementById('quantity');
-        var currentQuantity = parseInt(quantityInput.value);
-
-        // Cập nhật số lượng
-        var newQuantity = currentQuantity + change;
-
-        // Kiểm tra nếu số lượng nhỏ hơn 1, thì giữ nguyên số lượng
-        if (newQuantity < 1) {
-            newQuantity = 1;
-        }
-
-        // Cập nhật lại giá trị vào input
-        quantityInput.value = newQuantity;
-    }
-
-    document.getElementById('quantity').addEventListener('input', function() {
-        let quantity = this.value;
-        console.log('Số lượng hiện tại: ' + quantity); // Bạn có thể thực hiện logic kiểm tra ở đây (ví dụ: kiểm tra số lượng tồn kho)
-    });
-</script>
-
-
+                
                 {{-- <a href="{{ route('user.checkout') }}"> <button class="btn btn-primary px-3"><i
                         class="fa fa-shopping-cart mr-1"></i> Mua ngay</button></a> --}}
 

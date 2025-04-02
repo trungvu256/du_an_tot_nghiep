@@ -17,13 +17,15 @@ class Order extends Model
         'email',
         'phone',
         'address',
-        'id_user',
+        'user_id',
         'total_price',
         'status',
         'payment_status',
         'return_status',
         'return_reason',
         'branch',
+        'payment_deadline',
+        'txn_ref',
         'region', 'shipping_provider', 'tracking_number'
     ];
     const STATUS_PENDING = 0; // Chờ xử lý
@@ -42,6 +44,18 @@ class Order extends Model
     const RETURN_APPROVED = 2; // Đã duyệt trả hàng
     const RETURN_DECLINED = 3; // Từ chối trả hàng
     const RETURN_COMPLETED = 4; // Hoàn tất trả hàng
+
+
+    
+
+    const STATUS_PAID = 'paid';
+
+    protected $casts = [
+        'total_price' => 'decimal:2', // Chuyển total_price thành số thập phân với 2 chữ số
+        'payment_deadline' => 'datetime', // Chuyển payment_deadline thành đối tượng DateTime
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
     // lk với User
     public function user()
     {
@@ -67,4 +81,21 @@ public function shippingInfo()
 {
     return $this->hasOne(Shipping::class); // Nếu bạn có bảng shipping riêng
 }
+
+public function items()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
+public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class, 'order_id', 'id'); // Liên kết với bảng order_items thông qua order_id
+    }
+
+    // hạn thanh toán
+    public function isPaymentExpired()
+    {
+        return $this->payment_deadline && now()->greaterThan($this->payment_deadline);
+    }
+
 }
