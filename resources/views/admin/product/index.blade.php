@@ -16,7 +16,7 @@
         
 
         @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+            <div id="successAlert" class="alert alert-success alert-dismissible fade show mt-2 text-center" role="alert">
                 {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
@@ -66,7 +66,7 @@
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
                                     <form action="{{ route('admin.delete.product', $product->id) }}" method="POST"
-                                        onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">
+                                        onsubmit="return confirm('Bạn có chắc chắn muốn đưa sản phẩm này vào thùng rác?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-outline-danger btn-sm" title="Xóa">
