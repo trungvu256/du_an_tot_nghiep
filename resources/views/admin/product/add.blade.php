@@ -41,7 +41,7 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-           
+
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label class="form-label">Hình ảnh sản phẩm</label>
@@ -331,5 +331,5 @@
         CKEDITOR.replace('editor', {
         });
     </script>
-    
+
 @endsection

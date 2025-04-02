@@ -125,7 +125,11 @@ class Product extends Model
     // }
     public function comments()
     {
-        return $this->hasMany(Comment::class, 'product_id');
+        return $this->hasMany(ProductComment::class);
+    }
+    public function reviews()
+    {
+        return $this->hasMany(ProductReview::class);
     }
 
     public function discounts()

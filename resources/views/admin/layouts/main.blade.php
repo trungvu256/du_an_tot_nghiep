@@ -13,14 +13,14 @@
     @include('admin.layouts.css')
     <style>
         * {
-    margin: 0;
-    padding: 0;
-}
+            margin: 0;
+            padding: 0;
+        }
 
-body {
-    overflow-y: auto; /* Cho phép cuộn dọc */
-}
-
+        body {
+            overflow-y: auto;
+            /* Cho phép cuộn dọc */
+        }
     </style>
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('template/admin/velzon/assets/images/favicon.ico') }}">
@@ -124,14 +124,14 @@ body {
 
         </div>
         <!-- end main content-->
+        @include('admin.layouts.js')
 
+        @yield('custom-js')
+        @yield('scripts')
     </div>
     <!-- END layout-wrapper -->
 
-    @include('admin.layouts.js')
 
-    @yield('custom-js')
-    @yield('scripts')
 
     <!--start back-to-top-->
     <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
@@ -197,7 +197,6 @@ body {
 
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 </body>
