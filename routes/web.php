@@ -24,12 +24,14 @@ use App\Http\Controllers\Admin\WalletController;
 use App\Http\Controllers\Auth\LoginGoogleController;
 use App\Http\Controllers\Admin\CatalogueController;
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\ChatController as AdminChatController;
 use App\Http\Controllers\Web\HomeController;
 
 use App\Http\Controllers\Admin\DiscountController as AdminDiscountController;
 use App\Http\Controllers\Admin\PerfumeVariantController;
 use App\Http\Controllers\Admin\PromotionController;
-
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\Web\BlogController as WebBlogController;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\CheckoutController;
@@ -296,6 +298,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
                     route::post('/orders/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
                     route::post('/orders/{id}/updatePaymenStatus', [OrderController::class, 'updatePaymenStatus'])->name('orders.updatePaymenStatus');
                     route::get('/admin/orders/unfinished', [OrderController::class, 'unfinishedOrders'])->name('admin.orders.unfinished');
+                    Route::post('/admin/orders/ship/{id}', [OrderController::class, 'shipOrder'])->name('admin.order.ship');
                 });
 
                 // Trả hàng
@@ -437,7 +440,6 @@ Route::middleware(['auth', 'user'])->group(function () {
 
         Route::get('/wallet/withdraw', [WebWalletController::class, 'croen'])->name('wallet.croen');
         Route::post('/wallet/withdraw', [WebWalletController::class, 'withdraw'])->name('wallet.withdraw');
-
     });
 
     // Giỏ hàng
@@ -466,15 +468,34 @@ Route::middleware(['auth', 'user'])->group(function () {
         Route::get('/order/{id}/continue-payment', [CheckoutController::class, 'continuePayment'])->name('order.continuePayment');
     });
 
-   
+
+    Route::prefix('donhang')->group(function () {
+        Route::get('/donhang', [WebOrderController::class, 'index'])->name('donhang.index');
+        Route::get('/donhang/show/{id}', [WebOrderController::class, 'show'])->name('donhang.show');
+        // Route hủy đơn hàng
+        Route::get('order/{id}/cancel', [WebOrderController::class, 'cancel'])->name('order.cancel');
+
+        // Route xác nhận đã nhận được hàng
+        Route::get('order/{id}/received', [WebOrderController::class, 'received'])->name('order.received');
+
+        // Route xác nhận đã trả hàng
+        Route::get('order/{id}/returned', [WebOrderController::class, 'returned'])->name('order.returned');
+    });
+
+
 
 
     //cmt
     Route::post('product/{product}/comment', [HomeController::class, 'storeComment'])->name('client.storeComment');
     Route::post('comment/{comment}/reply', [HomeController::class, 'storeReply'])->name('client.storeReply');
-
 });
 
 Route::get('/get-product-variant/{id}', [CartController::class, 'getProductVariant']);
 Route::get('/get-product-variant/{productId}', [CartController::class, 'getVariant']);
 
+
+Route::middleware('auth')->group(function () {
+    Route::post('/messages', [MessageController::class, 'sendMessage'])->name('messages.send');
+    Route::get('/messages', [MessageController::class, 'fetchMessages'])->name('messages.fetch');
+    Route::post('/typing', [MessageController::class, 'typing'])->name('messages.typing');
+});

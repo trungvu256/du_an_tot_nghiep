@@ -12,7 +12,7 @@ class Product extends Model
     use HasFactory;
     protected $dates = ['deleted_at'];
     protected $primaryKey = 'id';
-
+    protected $table = 'products';
     protected $fillable = [
         'catalogue_id',
         'brand_id',

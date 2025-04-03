@@ -360,7 +360,7 @@ body {
         </div>
     </div>
     <div class="text-center mt-5">
-        <a href="#" class="custom-btn">
+        <a href="{{route('web.shop')}}" class="custom-btn">
             XEM TẤT CẢ
         </a>
     </div>
@@ -472,7 +472,7 @@ body {
             </div>
         </div>
         <div class="text-center mt-5">
-            <a href="#" class="custom-btn">
+            <a href="{{route('web.shop')}}" class="custom-btn">
                 XEM TẤT CẢ
             </a>
         </div>
@@ -481,55 +481,48 @@ body {
 
     <!-- Products End -->
     <div class="container-fluid pt-5" style="padding-left: 84px; padding-right: 84px;">
-        <div class="row d-flex justify-content-center gap-4">
-            <div class="col-md-6">
-                <div class="container" style="max-width: 1400px; padding: 0;">
-                    <img src="{{ asset('/images/Banner/featured_coll_2_1_img.jpg') }}" alt="Perfume Image"
-                        class="perfume-image responsive-img">
-                    <div class="text-center mb-1" style="margin-top: 25px;">
-                        <h3 class="text-3xl font-black tracking-wide text-black uppercase">
-                            NƯỚC HOA CHO NAM
-                        </h3>
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-6 d-flex flex-column align-items-center">
+                    <div class="w-100">
+                        <img src="{{ asset('/images/Banner/featured_coll_2_1_img.jpg') }}" alt="Perfume Image"
+                            class="perfume-image responsive-img w-100">
+                        <div class="text-center mt-3">
+                            <h3 class="text-3xl font-black tracking-wide text-black uppercase">
+                                NƯỚC HOA CHO NAM
+                            </h3>
+                        </div>
+                        <div class="text-center mt-2">
+                            <p class="font-black tracking-wide text-black">
+                                Mỗi hương thơm mà ARMAF sáng tạo dành cho phái mạnh là một tuyên ngôn không lời giúp các
+                                chàng trai "ngầm" khẳng định chất riêng...
+                            </p>
+                            <a href="#" class="view-details mt-2">Xem chi tiết →</a>
+                        </div>
                     </div>
-                    <!-- Text section -->
-                    <div class="text-center mb-3" style="margin-top: 5px ;">
-                        <h8 class="font-black tracking-wide text-black">
-                            Mỗi hương thơm mà ARMAF sáng tạo dành cho phái mạnh là một tuyên ngôn không lời giúp các
-                            chàng trai "ngầm" khẳng định chất riêng. Dù theo đuổi phong cách trẻ trung - năng động, mạnh
-                            mẽ - bản lĩnh hay lịch lãm - cổ điển, bạn sẽ luôn tìm thấy nốt hương tôn vinh sức hấp dẫn
-                            của bản thân ở bộ sưu tập nước hoa nam của ARMAF.
-                        </h8>
-                        <br>
-                        <a href="#" class="view-details" style="margin-top: 10px ;">Xem chi tiết →</a>
+                </div>
+        
+                <div class="col-md-6 d-flex flex-column align-items-center">
+                    <div class="w-100">
+                        <img src="{{ asset('/images/Banner/featured_coll_2_2_img.jpg') }}" alt="Perfume Image"
+                            class="perfume-image responsive-img w-100">
+                        <div class="text-center mt-3">
+                            <h3 class="text-3xl font-black tracking-wide text-black uppercase">
+                                NƯỚC HOA CHO NỮ
+                            </h3>
+                        </div>
+                        <div class="text-center mt-2">
+                            <p class="font-black tracking-wide text-black">
+                                Với bộ sưu tập nước hoa mới, ARMAF khéo léo nắm bắt mọi khía cạnh trong khuôn dung và nội hàm
+                                của phái nữ hiện đại...
+                            </p>
+                            <a href="#" class="view-details mt-2">Xem chi tiết →</a>
+                        </div>
                     </div>
                 </div>
             </div>
-
-
-            <div class="col-md-6">
-                <div class="container" style="max-width: 1400px; padding: 0;">
-                    <img src="{{ asset('/images/Banner/featured_coll_2_2_img.jpg') }}" alt="Perfume Image"
-                        class="perfume-image responsive-img">
-                    <div class="text-center mb-1" style="margin-top: 25px;">
-                        <h3 class="text-3xl font-black tracking-wide text-black uppercase">
-                            NƯỚC HOA CHO NỮ
-                        </h3>
-                    </div>
-                    <!-- Text section -->
-                    <div class="text-center mb-3" style="margin-top: 5px ;">
-                        <h8 class="font-black tracking-wide text-black">
-                            Với bộ sưu tập nước hoa mới, ARMAF khéo léo nắm bắt mọi khía cạnh trong khuôn dung và nội
-                            hàm của phái nữ hiện đại. Dù là cô gái thời thượng - quyến rũ, ngọt ngào - nữ tính hay cá
-                            tính - năng động, bạn sẽ luôn tìm thấy mình ở những sáng tạo hương thơm cao cấp mang dấu ấn
-                            ARMAF.
-                        </h8>
-                        <br>
-                        <a href="#" class="view-details" style="margin-top: 10px ;">Xem chi tiết →</a>
-                    </div>
-                </div>
-            </div>
-
         </div>
+        
     </div>
 
 
@@ -691,5 +684,6 @@ body {
     });
     </script>
     <!-- Vendor End -->
+    
 
     @endsection
