@@ -15,7 +15,7 @@ class ProductCommentController extends Controller
         $search = $request->input('search');
         $productComments = ProductComment::with(['user', 'product', 'replies']) // Đổi thành 'replies'
             ->when($search, function ($query, $search) {
-                $query->where('content', 'LIKE', "%{$search}%");
+                $query->where('comment', 'LIKE', "%{$search}%");
             })
             ->get();
 

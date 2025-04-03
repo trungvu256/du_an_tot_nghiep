@@ -3,12 +3,18 @@
 @section('content')
 
 <div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Danh sách sản phẩm</h5>
+    <div class="row mt-3 d-flex align-items-center justify-content-between">
+        <div class="col-auto">
+            <a href="{{ route('admin.product') }}" class="btn btn-primary"><i class="bi bi-arrow-return-left"></i>
+                Quay lại</a>
+        </div>
+        <div class="col text-center">
+            <h4 class="mb-4">Danh sách sản phẩm trong thùng rác</h4>
+        </div>
     </div>
 
     @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+        <div id="successAlert" class="alert alert-success alert-dismissible fade show mt-2 text-center" role="alert">
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
@@ -43,14 +49,14 @@
                         <td>
                             <form action="{{ route('admin.restore.product', $product->id) }}" method="POST" style="display:inline;">
                                 @csrf
-                                <button type="submit" class="btn btn-success" onclick="return confirm('Khôi phục')"><i class="bi bi-arrow-clockwise"></i>
+                                <button type="submit" class="btn btn-success" onclick="return confirm('Bạn có muốn khôi phục sản phẩm này?')" title="Khôi phục"><i class="bi bi-arrow-clockwise"></i>
                                 </button>
                             </form>
             
                             <form action="{{ route('admin.foreDelete.product', $product->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger" onclick="return confirm('Xóa vĩnh viễn?')"><i class="bi bi-x-circle-fill"></i></button>
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có muốn xóa vĩnh viễn sản phẩm này?')" title="Xóa vĩnh viễn"><i class="bi bi-x-circle-fill"></i></button>
                             </form>
                         </td>
                         
@@ -87,7 +93,6 @@
                     @endif
                 @endforeach
             </tbody>
-            <a href="{{route('admin.product')}}" class="btn btn-black"> <i class="bi bi-arrow-left"></i> Quay lại</a>
         </table>
         {{-- {!! $products->links() !!} --}}
     </div>

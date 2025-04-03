@@ -180,7 +180,7 @@
                         </tr>
                     @endforeach
                 </tbody>
-                
+
             </table>
 
             <input type="hidden" id="variants_data" name="variants">
@@ -189,7 +189,7 @@
     </div>
 
     <script>
-        
+
         document.addEventListener("DOMContentLoaded", function() {
     let selectedAttributes = {}; // Lưu trữ các giá trị được chọn theo từng thuộc tính
     let variants = []; // Danh sách biến thể
@@ -210,7 +210,7 @@
         const attributeId = selectedOption.value;
         const attributeName = selectedOption.text;
         const values = JSON.parse(selectedOption.getAttribute("data-values"));
-        
+
         if (!attributeId || selectedAttributes[attributeId]) return;
 
         selectedAttributes[attributeId] = []; // Khởi tạo mảng cho thuộc tính mới

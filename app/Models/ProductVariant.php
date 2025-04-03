@@ -10,9 +10,9 @@ class ProductVariant extends Model
     use HasFactory;
     protected $table = 'product_variants'; // Đảm bảo tên bảng đúng
     protected $fillable = [
-        'product_id', 'size', 'concentration', 'special_edition', 
+        'product_id', 'size', 'concentration', 'special_edition',
         'price', 'price_sale', 'stock_quantity', 'sku', 'status'
-    ];    
+    ];
     public function product()
     {
         return $this->belongsTo(Product::class);

@@ -82,7 +82,7 @@ class CatalogueController extends Controller
 
             if ($existingCatalogue) {
                 return redirect()->back()->withErrors([
-                    'error' => 'Tên danh mục hoặc slug đã tồn tại.'
+                    'error' => 'Tên danh mục đã tồn tại.'
                 ])->withInput();
             }
 

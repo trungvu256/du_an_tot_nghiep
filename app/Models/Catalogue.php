@@ -39,13 +39,15 @@ class Catalogue extends Model
     {
         if ($level == 0) {
             return $query->whereNull('parent_id');
+        } elseif ($level == 1) {
+            return $query->where('parent_id', '!=', null);
+        } else {
+            // Xử lý các cấp độ tiếp theo nếu cần
+            return $query->where('parent_id', '!=', null)
+                ->whereHas('parent', function ($q) use ($level) {
+                    $q->where('parent_id', '!=', null);
+                });
         }
-
-        return $query->whereHas('parent', function ($q) use ($level) {
-            for ($i = 1; $i < $level; $i++) {
-                $q->whereHas('parent');
-            }
-        });
     }
 
     // Mối quan hệ với bảng discounts thông qua bảng catalogue_discounts

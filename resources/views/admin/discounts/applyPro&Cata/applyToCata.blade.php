@@ -27,7 +27,7 @@
                     <th>ID</th>
                     <th>Tên danh mục</th>
                     <th>Trạng thái giảm giá</th>
-                    <th>Giá Trị giảm giá</th>
+                    <th>Giá trị giảm giá</th>
                     <th>Giá sản phẩm</th>
                 </tr>
             </thead>
@@ -71,9 +71,8 @@
                                 </select>
                                 <button type="submit" class="btn btn-success mt-2">Áp Dụng</button>
                             </form>
-                        @endif 
+                        @endif
                     </td>
-
 
                     <td>
                         @if ($catalogue->discounts->isNotEmpty())
@@ -88,24 +87,33 @@
                         @else
                         Không có giảm giá
                         @endif
-
                     </td>
+
                     <td>
                         @if ($catalogue->products->isNotEmpty())
                         <p>Số lượng : {{ $catalogue->products->count() }}</p>
-                        <!-- <ul>
-                                @foreach ($catalogue->products as $product)
-    <li>
-                                    {{ $product->name }}:
-                                    @if ($product->price_sale)
-    <span style="text-decoration: line-through;">{{ number_format($product->price, 0, ',', '.') }}₫</span>
-                                    {{ number_format($product->price_sale, 0, ',', '.') }}₫
-@else
-    {{ number_format($product->price, 0, ',', '.') }}₫
-    @endif
-                                </li>
-    @endforeach
-                            </ul>-->
+                        <ul>
+                            @foreach ($catalogue->products as $product)
+                            <li>
+                                {{ $product->name }}:
+                                @if ($product->variants->isNotEmpty())
+                                    @php
+                                        // Lấy giá và giá giảm từ product_variants
+                                        $minPrice = $product->variants->min('price');
+                                        $minDiscountPrice = $product->variants->where('price_sale', '>', 0)->min('price_sale');
+                                    @endphp
+                                    @if ($minDiscountPrice)
+                                        <span style="text-decoration: line-through;">{{ number_format($minPrice, 0, ',', '.') }}₫</span>
+                                        {{ number_format($minDiscountPrice, 0, ',', '.') }}₫
+                                    @else
+                                        {{ number_format($minPrice, 0, ',', '.') }}₫
+                                    @endif
+                                @else
+                                    {{ number_format($product->price, 0, ',', '.') }}₫
+                                @endif
+                            </li>
+                            @endforeach
+                        </ul>
                         @else
                         <p>Không có sản phẩm nào đang giảm giá.</p>
                         @endif

@@ -27,19 +27,15 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $title = 'Trang Quản Trị';
-
         $catalogueCount = Catalogue::count();
         // dd($catalogueCount);
         $orderCount = Order::count();
         $userCount = User::count();
         $productCount = Product::count();
-
         // Lấy tham số selectedPeriod từ query string
         $selectedPeriod = $request->input('selectedPeriod', '1day'); // Mặc định là '1day'
-
         // Khởi tạo mốc thời gian
         $periodStart = Carbon::today()->timezone('Asia/Ho_Chi_Minh'); // Chuyển đổi sang múi giờ Việt Nam
-
         // Xử lý khoảng thời gian dựa trên tham số selectedPeriod
         switch ($selectedPeriod) {
             case '1day':
@@ -55,7 +51,6 @@ class DashboardController extends Controller
                 $periodStart = Carbon::today()->subDay(); // Mặc định là 1 ngày
                 break;
         }
-
         // Lấy danh sách người dùng mua hàng gần đây trong khoảng thời gian đã xác định
         $recentBuyers = Order::with('user')
             ->select(
@@ -68,20 +63,15 @@ class DashboardController extends Controller
             ->orderBy('last_order_time', 'desc')
             ->take(1010)
             ->get();
-
-
         // Chuyển đổi last_order_time từ chuỗi thành Carbon
         foreach ($recentBuyers as $buyer) {
             $buyer->last_order_time = Carbon::parse($buyer->last_order_time);
         }
-
         // Lấy tham số period từ query string
         $period = $request->input('period', 'today'); // Mặc định là 'today'
-
         // Khởi tạo các mốc thời gian
         $startDate = Carbon::today()->timezone('Asia/Ho_Chi_Minh'); // Chuyển đổi sang múi giờ Việt Nam
         $endDate = Carbon::today()->timezone('Asia/Ho_Chi_Minh'); // Chuyển đổi sang múi giờ Việt Nam
-
         // Xử lý khoảng thời gian dựa trên tham số period
         switch ($period) {
             case 'yesterday':
@@ -105,7 +95,6 @@ class DashboardController extends Controller
                 $startDate = Carbon::today();
                 break;
         }
-
         $dailyRevenue = Order::selectRaw('DATE(created_at) as date, SUM(total_price) as total')
             ->whereDate('created_at', '>=', $startDate->toDateString())
             ->whereDate('created_at', '<=', $endDate->toDateString())
@@ -114,35 +103,24 @@ class DashboardController extends Controller
             ->groupBy('date')
             ->orderBy('date')
             ->get();
-
-
         // dd($dailyRevenue);
-
         // Chuyển đổi dữ liệu thành mảng
         $dates = $dailyRevenue->pluck('date')->map(function ($date) {
             return Carbon::parse($date)->format('d-m-Y');
         })->toArray();
 
         $totals = $dailyRevenue->pluck('total')->toArray();
-
-
         // $discounts = $dailyRevenue->sum('discount_amount');
-
         // dd($totals, $discounts);
-
         // Tính tổng doanh số
         $totalSales = Order::whereIn('status', ['delivered', 'confirm_delivered'])
             ->where('payment_status', 'paid') // Giữ nguyên trạng thái thanh toán
             ->sum('total_price');
-
-
         // Lấy tham số selectedOrderPeriod từ query string
         $selectedOrderPeriod = $request->input('selectedOrderPeriod', '1day'); // Mặc định là '1week'
-
         // Khởi tạo mốc thời gian
         $startDate = Carbon::today()->timezone('Asia/Ho_Chi_Minh');
         $endDate = Carbon::today()->timezone('Asia/Ho_Chi_Minh');
-
         // Xử lý khoảng thời gian dựa trên tham số selectedOrderPeriod
         switch ($selectedOrderPeriod) {
             case '1day':

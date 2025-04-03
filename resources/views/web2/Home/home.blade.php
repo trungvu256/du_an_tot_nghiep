@@ -334,7 +334,7 @@ body {
                                         <span class="tooltip-text">Thêm vào giỏ</span>
                                     </button>
                                 </form>
-                                
+
                             </div>
 
                         </div>
@@ -342,7 +342,7 @@ body {
                     <div class="card-body text-center p-3">
                         <h6 class="text-truncate mb-2">{{ $product->name }}</h6>
                         <div class="d-flex justify-content-center align-items-center">
-                          
+
                             <h6 class="text-danger font-weight-bold">
                                 {{ number_format($minPrice) }}₫
                                 @if ($minPrice !== $maxPrice)
@@ -445,7 +445,7 @@ body {
                                             <span class="tooltip-text">Thêm vào giỏ</span>
                                         </button>
                                     </form>
-                                    
+
                                 </div>
 
                             </div>

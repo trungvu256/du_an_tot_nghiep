@@ -1,3 +1,4 @@
+
 require('./bootstrap');
 import 'bootstrap';
 
@@ -71,3 +72,6 @@ Echo.private('chat.' + userChatId)
         console.log('New message received:', event.message);
         displayMessage(event.message.message, event.message.sender_id);
     });
+
+import './bootstrap';
+

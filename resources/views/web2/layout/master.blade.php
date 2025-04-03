@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    @include('web2.layout.css')
     @include('web2.layout.header')
     <style>
         /* CSS cho thông báo dạng bong bóng */
@@ -63,5 +64,8 @@
     <!-- Include app.js -->
     <script src="{{ asset('js/app.js') }}"></script>
    
+
+    @include('web2.layout.js')
+
 </body>
 </html>

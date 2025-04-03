@@ -7,8 +7,16 @@
             @if (session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
+            <div class="row d-flex align-items-center justify-content-between">
+                <div class="col-auto">
+                    <a href="{{ route('admin.product') }}" class="btn btn-primary"><i class="bi bi-arrow-return-left"></i>
+                        Quay lại</a>
+                </div>
+                <div class="col text-center">
+                    <h4 class="mb-4">Thông tin sản phẩm</h4>
+                </div>
+            </div>
 
-            <h4 class="text-center mb-4">Thông tin sản phẩm</h4>
 
             <div class="row mb-3">
                 <div class="col-md-6">
@@ -26,13 +34,6 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-                <div class="col-md-4">
-                    <label class="form-label">Mã sản phẩm</label>
-                    <input type="text" name="product_code" class="form-control" value="{{ old('product_code') }}" placeholder="Nhập mã sản phẩm">
-                    @error('product_code')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
                 <div class="col-md-6">
                     <label class="form-label">Tên nước hoa</label>
                     <input type="text" name="name" class="form-control" value="{{ old('name') }}"
@@ -41,7 +42,8 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-           
+            </div>
+
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label class="form-label">Hình ảnh sản phẩm</label>
@@ -60,8 +62,6 @@
             </div>
 
             <div class="row mb-3">
-
-
                 <div class="col-md-6">
                     <label class="form-label">Thương hiệu</label>
                     <select name="brand_id" class="form-select">
@@ -120,7 +120,7 @@
 
                 <div class="col-md-6">
                     <label class="form-label">Mô tả</label>
-                    <textarea id="editor" name="description" class="form-control">{{ old('description') }}</textarea>
+                    <textarea id="description" name="description" class="form-control">{{ old('description') }}</textarea>
                     @error('description')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -326,10 +326,16 @@
         });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.js"></script>
-    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
     <script>
-        CKEDITOR.replace('editor', {
-        });
+        ClassicEditor
+            .create(document.querySelector('#description'), {
+                ckfinder: {
+                    uploadUrl: "{{ route('admin.upload.image') }}?_token={{ csrf_token() }}"
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
     </script>
-    
 @endsection
