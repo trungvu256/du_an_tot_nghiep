@@ -15,21 +15,25 @@ class ProductVariantAttribute extends Model
         'attribute_value_id',
     ];
 
-    // Quan hệ với bảng ProductVariant
     public function productVariant()
     {
-        return $this->belongsTo(ProductVariant::class, 'product_variant_id');
+        return $this->belongsTo(ProductVariant::class);
     }
 
-    // Quan hệ với bảng Attributes
     public function attribute()
     {
-        return $this->belongsTo(Attribute::class, 'attribute_id');
+        return $this->belongsTo(Attribute::class);
     }
-
-    // Quan hệ với bảng AttributeValues
     public function attributeValue()
     {
         return $this->belongsTo(AttributeValue::class, 'attribute_value_id');
+    }
+    public function attributes()
+    {
+        return $this->hasMany(ProductVariantAttribute::class, 'product_variant_id');
+    }
+    public function attributeValues()
+    {
+        return $this->hasMany(AttributeValue::class, 'attribute_id', 'attribute_id');
     }
 }
