@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Events\OrderPlaced as EventsOrderPlaced;
+use Pusher\Pusher;
 use App\Http\Controllers\Controller;
 use App\Mail\PaymentSuccessMail;
 use App\Models\Order;
@@ -14,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use OrderPlaced;
 
 class CheckoutController extends Controller
 {
@@ -115,7 +118,7 @@ class CheckoutController extends Controller
                 'total_price' => $totalPrice,
                 'payment_deadline' => $paymentDeadline->toDateTimeString()
             ]);
-    
+            // event(new EventsOrderPlaced($order));
             foreach ($cart as $item) {
                 $variantQuery = ProductVariant::where('product_id', $item['id']);
     
@@ -147,11 +150,20 @@ class CheckoutController extends Controller
                     'price' => $totalPrice,
                 ]);
     
+                
                 $variant->decrement('stock_quantity', $quantity);
+                event(new EventsOrderPlaced($order));
             }
     
+            // Phát event để gửi thông báo real-time khi tạo đơn hàng
+            Log::info('Phát sự kiện OrderPlaced', [
+                'order_id' => $order->id,
+                'event_type' => 'created'
+            ]);
+           
+    
             $vnp_TmnCode = "RJBK6J49";
-            $vnp_HashSecret = "0FFMB5EJI6AL35QE35TKCP18SYKI6N30";
+     $vnp_HashSecret = "0FFMB5EJI6AL35QE35TKCP18SYKI6N30";
             $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
             $vnp_ReturnUrl = route('checkout.vnpay.callback');
     
@@ -242,6 +254,9 @@ class CheckoutController extends Controller
                 'status' => Order::STATUS_PENDING, // Sử dụng hằng số đã định nghĩa
                 'payment_deadline' => null, // Xóa deadline
             ]);
+
+            // Phát event để gửi thông báo real-time khi thanh toán thành công
+            // event(new \App\Events\OrderPlaced($order, 'paid'));
 
             Log::info('Thanh toán VNPay thành công', [
                 'order_id' => $order->id,

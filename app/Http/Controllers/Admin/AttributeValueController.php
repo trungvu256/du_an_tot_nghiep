@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AttributeValue;
 use App\Models\Attribute;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class AttributeValueController extends Controller
 {
@@ -32,27 +33,31 @@ class AttributeValueController extends Controller
     {
         $request->validate([
             'attribute_id' => 'required|exists:attributes,id',
-            'name' => 'required|string|max:255|unique:attribute_values,name', // Kiểm tra trùng tên trong bảng attribute_values
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('attribute_values', 'name')->where(function ($query) use ($request) {
+                    return $query->where('attribute_id', $request->attribute_id);
+                }),
+            ],
         ], [
             'attribute_id.required' => 'Thuộc tính là bắt buộc.',
             'attribute_id.exists' => 'Thuộc tính không tồn tại trong cơ sở dữ liệu.',
             'name.required' => 'Tên là bắt buộc.',
             'name.string' => 'Tên phải là một chuỗi ký tự.',
             'name.max' => 'Tên không được vượt quá 255 ký tự.',
-            'name.unique' => 'Tên thuộc tính đã tồn tại.', // Thông báo khi tên bị trùng
+            'name.unique' => 'Tên thuộc tính đã tồn tại trong thuộc tính này.', // Kiểm tra trùng trong cùng một thuộc tính
         ]);
-
-
-
+    
         AttributeValue::create([
             'attribute_id' => $request->attribute_id,
             'name' => $request->name,
         ]);
-
+    
         return redirect()->route('attributes.attribute_values.index', $request->attribute_id)
             ->with('success', 'Attribute Value created successfully!');
     }
-
     // Hiển thị form chỉnh sửa Attribute Value
     public function edit($attributeId, $valueId)
     {

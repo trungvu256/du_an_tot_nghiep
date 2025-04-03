@@ -116,7 +116,9 @@
                             @if ($order->payment_status == 0)
                                 <span class="badge bg-warning text-dark">🟡 Chưa thanh toán</span>
                             @elseif ($order->payment_status == 1)
-                                <span class="badge bg-success">🟢 Đã thanh toán</span>
+                                <span class="badge bg-success">🟢 Đã thanh toán vnpay</span>
+                                @elseif ($order->payment_status == 2)
+                                <span class="badge bg-success">🟢 Thanh toán khi nhận hàng</span>
                             @else
                                 <span class="badge bg-danger">🔴 Thất bại</span>
                             @endif
