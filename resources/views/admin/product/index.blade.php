@@ -8,7 +8,7 @@
                 <a href="{{ route('admin.add.product') }}" class="btn btn-primary">
                     <i class="bi bi-plus"></i> Thêm sản phẩm
                 </a>
-                <a href="{{ route('admin.trash.product') }}" class="btn btn-warning" style="margin-top:10px">
+                <a href="{{ route('admin.trash.product') }}" class="btn btn-warning">
                     <i class="bi bi-trash-fill me-1"></i> Thùng rác
                 </a>
             </div>
@@ -27,7 +27,7 @@
                 <thead class="table-primary text-center">
                     <tr>
                         <th>ID</th>
-                        <th>Sản phẩm</th>
+                        <th>Tên sản phẩm</th>
                         <th>Thương hiệu</th>
                         <th>Hình ảnh</th>
                         <th>Danh mục</th>
