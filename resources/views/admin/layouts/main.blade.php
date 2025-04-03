@@ -57,7 +57,7 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
-        </script>
+    </script>
 
 </head>
 
@@ -200,12 +200,26 @@
 
     {{-- Hàm tự động đóng thông báo --}}
     <script>
-        $(document).ready(function () {
-            setTimeout(function () {
-                $("#successAlert").fadeOut(500, function () {
-                    $(this).remove(); // Xóa khỏi DOM sau hiệu ứng
+        $(document).ready(function() {
+            var alertTimeout = setTimeout(function() {
+                $("#successAlert").fadeOut(500, function() {
+                    $(this).remove();
                 });
             }, 4000);
+
+            // Khi hover vào, dừng ẩn thông báo
+            $("#successAlert").hover(
+                function() {
+                    clearTimeout(alertTimeout);
+                },
+                function() {
+                    alertTimeout = setTimeout(function() {
+                        $("#successAlert").fadeOut(500, function() {
+                            $(this).remove();
+                        });
+                    }, 2000); // Giảm thời gian lại khi rời chuột
+                }
+            );
         });
     </script>
 </body>

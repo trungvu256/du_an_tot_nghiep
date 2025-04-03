@@ -181,7 +181,6 @@ class ProductController extends Controller
 
     $description_images = Images::where('product_id', $id)->get();
 
-    // $product->load('variants.attributes.attributeValue');
     // dd($product->variants->toArray());
     return view('admin.product.show', compact('product', 'catalogues', 'description_images', 'title'));
 }
