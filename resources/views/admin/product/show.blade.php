@@ -7,16 +7,20 @@
                     Quay lại</a>
             </div>
             <div class="d-flex align-items-center justify-content-center flex-grow-1">
-                <h4>{{ $product->name }}</h4>
+                <h4 style="color: #0ab39c">{{ $product->name }}</h4>
             </div>
         </div>
-        
+
         <div class="card-body">
             <div class="row gx-lg-5">
                 <div class="col-xl-4 col-md-8 mx-auto">
                     <div class="product-img-slider sticky-side-div">
                         <div class="swiper product-thumbnail-slider p-2 rounded bg-light">
                             <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <img src="{{ asset('storage/' . $product->image) }}" alt=""
+                                        class="img-fluid d-block" />
+                                </div>
                                 @foreach ($description_images as $image)
                                     <div class="swiper-slide">
                                         <img src="{{ asset('storage/' . $image->image) }}" alt=""
@@ -30,6 +34,12 @@
                         <!-- end swiper thumbnail slide -->
                         <div class="swiper product-nav-slider mt-2">
                             <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <div class="nav-slide-item">
+                                        <img src="{{ asset('storage/' . $product->image) }}" alt=""
+                                            class="img-fluid d-block" />
+                                    </div>
+                                </div>
                                 @foreach ($description_images as $image)
                                     <div class="swiper-slide">
                                         <div class="nav-slide-item">
@@ -80,53 +90,37 @@
                         <div class="text-muted">( 5.50k Customer Review )</div>
                     </div> --}}
 
-                        <div class="row mt-4">
-                            <div class="col-lg-3 col-sm-6">
-                                <div class="p-2 border border-dashed rounded">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar-sm me-2">
-                                            <div class="avatar-title rounded bg-transparent text-success fs-24">
-                                                <i class="ri-money-dollar-circle-fill"></i>
-                                            </div>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <p class="text-muted mb-1">Giá :</p>
-                                            <h5 class="mb-0">{{ $product->price }}</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end col -->
-                        </div>
-
-                        <div class="row mt-4">
+                        <div class="row mt-3">
                             @foreach ($product->variants as $variant)
                                 <div class="col-md-4">
                                     <div class="card border shadow-sm">
                                         <div class="card-body">
-                                            <p><strong>SKU:</strong> {{ $variant->sku }}</p>
-                                            <p><strong>Giá bán:</strong>
-                                                <span class="text-success">
-                                                    {{ number_format($variant->price_sale > 0 ? $variant->price_sale : $variant->price, 0, ',', '.') }}
-                                                    VNĐ
-                                                </span>
+                                            <p style="font-size: 1rem"><i class="ri-money-dollar-circle-fill"></i> Giá bán :
+                                                <strong>
+                                                    <br><del style="color: red">
+                                                        {{ number_format($variant->price > 0 ? $variant->price : $variant->price, 0, ',', '.') }}
+                                                        VNĐ
+                                                    </del>
+                                                    <br><span style="color: #0ab39c">
+                                                        {{ number_format($variant->price_sale > 0 ? $variant->price_sale : $variant->price, 0, ',', '.') }}
+                                                        VNĐ
+                                                    </span>
+                                                </strong>
                                             </p>
-                                            <p><strong>Số lượng kho:</strong> {{ $variant->stock_quantity }}</p>
 
                                             <!-- Hiển thị danh sách thuộc tính của biến thể -->
-                                            <p><strong>Thuộc tính:</strong></p>
                                             @if ($variant->attributes && count($variant->attributes) > 0)
-                                                <ul>
-                                                    @foreach ($variant->attributes as $attr)
-                                                        <li>
-                                                            <strong>{{ $attr->attribute->name ?? 'Không xác định' }}:</strong>
-                                                            {{ $attr->attributeValue->value ?? 'Không có giá trị' }}
-                                                        </li>
-                                                    @endforeach
-                                                </ul>
+                                                @foreach ($variant->attributes as $attr)
+                                                    <br>
+                                                    <span style="font-size: 1rem">{{ $attr->name }}</span>
+                                                    <strong>{{ $attr->attributeValue->value ?? ' không có giá trị' }}</strong>
+                                                @endforeach
                                             @else
                                                 <p class="text-muted">Không có thuộc tính.</p>
                                             @endif
+                                            <p style="font-size: 1rem">Số lượng :
+                                                <strong> {{ $variant->stock_quantity }}</strong>
+                                            </p>
                                         </div>
                                     </div>
                                 </div>

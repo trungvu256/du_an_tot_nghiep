@@ -27,7 +27,7 @@
                 <thead class="table-primary text-center">
                     <tr>
                         <th>ID</th>
-                        <th>Sản phẩm</th>
+                        <th>Tên sản phẩm</th>
                         <th>Thương hiệu</th>
                         <th>Hình ảnh</th>
                         <th>Danh mục</th>

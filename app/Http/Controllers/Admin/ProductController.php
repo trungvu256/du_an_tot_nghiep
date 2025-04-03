@@ -171,7 +171,6 @@ class ProductController extends Controller
 {
     $title = 'Detail Product';
     $catalogues = Catalogue::all();
-
     $product = Product::with([
         'catalogue',
         'brand',
@@ -181,7 +180,9 @@ class ProductController extends Controller
     ])->findOrFail($id);
 
     $description_images = Images::where('product_id', $id)->get();
-    // dd($product->variants);
+
+    // $product->load('variants.attributes.attributeValue');
+    // dd($product->variants->toArray());
     return view('admin.product.show', compact('product', 'catalogues', 'description_images', 'title'));
 }
 
