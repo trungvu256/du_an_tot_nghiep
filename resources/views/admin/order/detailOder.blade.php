@@ -21,7 +21,11 @@
             </tr>
             <tr>
                 <th>Tổng tiền</th>
-                <td>{{ number_format($order->total_price, 0, ',', '.') }} VNĐ</td>
+                <td class="fw-bold text-success">
+                    {{ number_format($order->orderItems->sum(function ($item) {
+                        return $item->price;
+                    }), 0, ',', '.') }} VNĐ
+                </td>
             </tr>
             <tr>
                 <th>Trạng thái</th>
@@ -48,12 +52,12 @@
                     <th>Tên sản phẩm</th>
                     <th>Số lượng</th>
                     <th>Giá</th>
-                    <th>Tổng</th>
+                   
                 </tr>
             </thead>
             <tbody>
-                @if ($order->orderDetails && count($order->orderDetails) > 0)
-                    @foreach ($order->orderDetails as $detail)
+                @if ($order->orderItems && count($order->orderItems) > 0)
+                    @foreach ($order->orderItems as $detail)
                         <tr>
                             <td>
                                 @if ($detail->product && $detail->product->image)
@@ -63,9 +67,9 @@
                                 @endif
                             </td>
                             <td>{{ $detail->product->name }}</td>
-                            <td>{{ $detail->qty }}</td>
+                            <td>{{ $detail->quantity }}</td>
                             <td>{{ number_format($detail->price, 0, ',', '.') }} VNĐ</td>
-                            <td>{{ number_format($detail->qty * $detail->price, 0, ',', '.') }} VNĐ</td>
+                            
                         </tr>
                     @endforeach
                 @else
@@ -107,27 +111,5 @@
             </tr>
         </table>
     @endif
-    <script>
-        document.getElementById('shipOrderButton').addEventListener('click', function () {
-            let orderId = this.getAttribute('data-order-id');
     
-            fetch(`/admin/shipping/ship-order/${orderId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    shipping_provider: 'GHTK', // Có thể thay bằng dữ liệu động
-                    tracking_number: 'TRK' + Math.floor(Math.random() * 1000000000) // Giả lập mã vận đơn
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message);
-                location.reload(); // Cập nhật lại giao diện
-            })
-            .catch(error => console.error('Lỗi:', error));
-        });
-    </script>
 @endsection

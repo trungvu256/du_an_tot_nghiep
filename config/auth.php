@@ -17,7 +17,10 @@ return [
         'guard' => 'web',
         'passwords' => 'users',
     ],
-
+'api' => [
+        'driver' => 'sanctum', // Hoặc 'passport' nếu dùng Passport
+        'provider' => 'users',
+    ],
     /*
     |--------------------------------------------------------------------------
     | Authentication Guards

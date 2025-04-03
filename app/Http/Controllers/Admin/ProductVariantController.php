@@ -47,7 +47,7 @@ class ProductVariantController extends Controller
     {
         $validated = $request->validate([
             'attribute_id' => 'required|exists:attributes,id',
-            'value' => 'required|string|max:255',
+            'value' => 'required|string|max:255|unique:attribute_values,value',
         ]);
 
         $attributeValue = AttributeValue::create($validated);
