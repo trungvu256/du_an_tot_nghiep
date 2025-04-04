@@ -66,18 +66,18 @@ class LoginController extends Controller
 
     public function registerStore(Request $request)
     {
-            $validator = Validator::make($request->all(), [
-                'first_name' => 'required|string|max:255',
-                'last_name' => 'required|string|max:255',
-                'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
-                'password' => 'required|string|min:6|confirmed',
-                'phone' => 'nullable|string|regex:/^(0[1-9][0-9]{8,9})$/',
-                'address' => 'nullable|string|max:255',
-                'gender' => 'required|string|in:Male,Female,Other',
-                'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-                'agree_terms' => 'accepted',
-            ]);
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+            'phone' => 'nullable|string|regex:/^(0[1-9][0-9]{8,9})$/',
+            'address' => 'nullable|string|max:255',
+            'gender' => 'required|string|in:Male,Female,Other',
+            'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'agree_terms' => 'accepted',
+        ]);
     
         if ($validator->fails()) {
             return response()->json([
