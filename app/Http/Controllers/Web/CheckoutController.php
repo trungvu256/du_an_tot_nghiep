@@ -7,6 +7,7 @@ use Pusher\Pusher;
 use App\Http\Controllers\Controller;
 use App\Mail\OrderPlacedMail;
 use App\Mail\PaymentSuccessMail;
+use App\Models\Catalogue;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -23,6 +24,7 @@ class CheckoutController extends Controller
 {
     public function index()
     {
+        $categories = Catalogue::all();
         $cart = session('cart', []);
         $subtotal = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
         $promotion = session('promotion');
@@ -31,11 +33,12 @@ class CheckoutController extends Controller
         $discount = $promotion['discount'] ?? 0;
         $totalAmount = max(0, $subtotal - $discount + $shippingFee);
 
-        return view('web2.Home.checkout', compact('totalAmount', 'cart'));
+        return view('web2.Home.checkout', compact('categories', 'totalAmount', 'cart'));
     }
 
     public function checkout(Request $request)
     {
+        $categories = Catalogue::all();
         // Lấy tổng tiền từ session
         $totalAmount = session('totalAmount', 0);
     
@@ -70,7 +73,7 @@ class CheckoutController extends Controller
         // Lưu tổng tiền vào session
         session(['totalAmount' => $totalAmount]);
     
-        return view('checkout.index', compact('totalAmount', 'cart'));
+        return view('checkout.index', compact('categories', 'totalAmount', 'cart'));
     }
     
 
@@ -309,6 +312,7 @@ private function mapAttributeKey($key)
 
     public function order(Request $request)
     {
+        $categories = Catalogue::all();
         $orders = Order::with('user') // Lấy thông tin khách hàng
             ->when($request->status !== null, function ($query) use ($request) {
                 return $query->where('status', $request->status);
@@ -319,7 +323,7 @@ private function mapAttributeKey($key)
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('web2.Home.order', compact('orders'));
+        return view('web2.Home.order', compact('orders', 'categories'));
     }
 
     public function continuePayment($id, Request $request)

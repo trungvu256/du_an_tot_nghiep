@@ -232,11 +232,11 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
-                            <a class="nav-link text-nowrap {{ request()->routeIs('web.home') ? 'active' : '' }}"
+                            <a class="me-2 nav-link text-nowrap {{ request()->routeIs('web.home') ? 'active' : '' }}"
                                 href="{{ route('web.home') }}" style="font-size: large">TRANG CHỦ</a>
-                            <a class="nav-link text-nowrap {{ request()->routeIs('web.shop') ? 'active' : '' }}"
+                            <a class="me-2 nav-link text-nowrap {{ request()->routeIs('web.shop') ? 'active' : '' }}"
                                 href="{{ route('web.shop') }}" style="font-size: large">SẢN PHẨM</a>
-                            <div class="nav-item dropdown ml-0">
+                            <div class="me-2 nav-item dropdown ml-0">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"
                                     style="font-size: large">DANH MỤC</a>
                                 <div class="dropdown-menu rounded-0 m-0">
@@ -246,7 +246,7 @@
                                     @endforeach
                                 </div>
                             </div>
-                            <a class="nav-link text-nowrap {{ request()->routeIs('web.listBlog.blog') ? 'active' : '' }}"
+                            <a class="me-2 nav-link text-nowrap {{ request()->routeIs('web.listBlog.blog') ? 'active' : '' }}"
                                 href="{{ route('web.listBlog.blog') }}" style="font-size: large">BÀI VIẾT</a>
                             <a class="nav-link text-nowrap {{ request()->routeIs('user.contact') ? 'active' : '' }}"
                                 href="{{ route('user.contact') }}" style="font-size: large">LIÊN HỆ</a>
