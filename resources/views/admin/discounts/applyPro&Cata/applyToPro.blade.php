@@ -2,9 +2,9 @@
 
 @section('title', 'Giảm Giá Cho Sản Phẩm')
 
-@section('css')
+{{-- @section('css')
 <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.min.css" rel="stylesheet">
-@endsection
+@endsection --}}
 
 @section('content')
 <style>
@@ -284,7 +284,7 @@
 
 
 @section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script> --}}
 <script>
     $(document).ready(function() {
         // Xóa bộ lọc
@@ -294,18 +294,19 @@
             $(this).closest('form').submit(); // Submit form
         });
     });
-    @if(session('success') || session('error'))
-    Swal.fire({
-        position: "top",
-        icon: "{{ session('success') ? 'success' : 'error' }}",
-        title: "{{ session('success') ?? session('error') }}",
-        showConfirmButton: false,
-        timerProgressBar: true,
-        timer: "{{ session('success') ? 5000 : 5000 }}"
-    });
-    @endif
-</script>
-@endsection
+    // @if(session('success') || session('error'))
+    // Swal.fire({
+    //     position: "top",
+    //     icon: "{{ session('success') ? 'success' : 'error' }}",
+    //     title: "{{ session('success') ?? session('error') }}",
+    //     showConfirmButton: false,
+    //     timerProgressBar: true,
+    //     timer: "{{ session('success') ? 5000 : 5000 }}"
+    // });
+    // @endif
 
+</script>
+
+@include('alert')
 
 @endsection

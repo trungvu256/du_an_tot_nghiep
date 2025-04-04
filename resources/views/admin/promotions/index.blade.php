@@ -2,9 +2,9 @@
 
 @section('title', 'Danh Sách Mã Giảm Giá')
 
-@section('css')
+{{-- @section('css')
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.min.css" rel="stylesheet">
-@endsection
+@endsection --}}
 
 @section('content')
     <div class="content-wrapper-scroll">
@@ -138,7 +138,7 @@
 @endsection
 
 @section('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script> --}}
     <script>
         $(document).ready(function() {
             $('#filterRemove').click(function() {
@@ -170,38 +170,39 @@
             });
         });
 
-        @if (session('success'))
-            Swal.fire({
-                position: "top",
-                icon: "success",
-                toast: true,
-                title: "{{ session('success') }}",
-                showConfirmButton: false,
-                timerProgressBar: true,
-                timer: 3500
-            });
-        @endif
+        // @if (session('success'))
+        //     Swal.fire({
+        //         position: "top",
+        //         icon: "success",
+        //         toast: true,
+        //         title: "{{ session('success') }}",
+        //         showConfirmButton: false,
+        //         timerProgressBar: true,
+        //         timer: 3500
+        //     });
+        // @endif
 
-        @if (session('error11'))
-            Swal.fire({
-                position: "top",
-                icon: "error",
-                title: "Không thể xóa khuyến mãi vì nó đã được áp dụng trong đơn hàng.",
-                showConfirmButton: false,
-                timerProgressBar: true,
-                timer: 1500
-            });
-        @endif
-        @if (session('error22'))
-            Swal.fire({
-                position: "top",
-                icon: "error",
-                toast: true,
-                title: "Không thể xóa khuyến mãi vì nó đang trong thời gian áp dụng.",
-                showConfirmButton: false,
-                timerProgressBar: true,
-                timer: 1500
-            });
-        @endif
+        // @if (session('error11'))
+        //     Swal.fire({
+        //         position: "top",
+        //         icon: "error",
+        //         title: "Không thể xóa khuyến mãi vì nó đã được áp dụng trong đơn hàng.",
+        //         showConfirmButton: false,
+        //         timerProgressBar: true,
+        //         timer: 1500
+        //     });
+        // @endif
+        // @if (session('error22'))
+        //     Swal.fire({
+        //         position: "top",
+        //         icon: "error",
+        //         toast: true,
+        //         title: "Không thể xóa khuyến mãi vì nó đang trong thời gian áp dụng.",
+        //         showConfirmButton: false,
+        //         timerProgressBar: true,
+        //         timer: 1500
+        //     });
+        // @endif
     </script>
+    @include('alert')
 @endsection

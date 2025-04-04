@@ -501,7 +501,7 @@ body {
                         </div>
                     </div>
                 </div>
-        
+
                 <div class="col-md-6 d-flex flex-column align-items-center">
                     <div class="w-100">
                         <img src="{{ asset('/images/Banner/featured_coll_2_2_img.jpg') }}" alt="Perfume Image"
@@ -522,7 +522,7 @@ body {
                 </div>
             </div>
         </div>
-        
+
     </div>
 
 
@@ -684,6 +684,6 @@ body {
     });
     </script>
     <!-- Vendor End -->
-    
+
 
     @endsection

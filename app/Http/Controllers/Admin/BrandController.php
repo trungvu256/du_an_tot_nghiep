@@ -45,7 +45,7 @@ class BrandController extends Controller
         try {
             Brand::create($data);
             DB::commit();
-            return redirect()->route('brands.index')->with('create', 'Thêm thành công');
+            return redirect()->route('brands.index')->with('success', 'Thêm thành công');
         } catch (\Throwable $th) {
             DB::rollBack();
             return redirect()->route('brands.index')->with('error', 'Có lỗi xảy ra: ' . $th->getMessage());
@@ -78,10 +78,10 @@ class BrandController extends Controller
             $brand = Brand::findOrFail($id);
             $brand->update($data);
             DB::commit();
-            return redirect()->route('brands.index')->with('update', 'Cập nhật thành công.');
+            return redirect()->route('brands.index')->with('success', 'Cập nhật thành công.');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return redirect()->route('brands.index')->with('updateError', 'Cập nhật thất bại.');
+            return redirect()->route('brands.index')->with('error', 'Cập nhật thất bại.');
         }
     }
 
@@ -91,7 +91,7 @@ class BrandController extends Controller
 
         // Kiểm tra nếu có sản phẩm liên kết với thương hiệu
         if ($brand->products()->count() > 0 ) {
-            return back()->with('error', 'Không thể xóa thương hiệu vì có sản phẩm liên kết.');
+            return back()->with('warning', 'Không thể xóa thương hiệu vì có sản phẩm liên kết.');
         }
 
         DB::beginTransaction();
@@ -99,7 +99,7 @@ class BrandController extends Controller
         try {
             $brand->delete();
             DB::commit();
-            return back()->with('success ', 'Xóa thương hiệu thành công.');
+            return back()->with('success', 'Xóa thương hiệu thành công.');
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', 'Có lỗi xảy ra: ' . $th->getMessage());
@@ -122,7 +122,7 @@ class BrandController extends Controller
             $brand = Brand::onlyTrashed()->findOrFail($id);
             $brand->restore();
             DB::commit();
-            return redirect()->route('brands.trash')->with('restoreBrand', 'Khôi phục thương hiệu thành công');
+            return redirect()->route('brands.trash')->with('success', 'Khôi phục thương hiệu thành công');
         } catch (\Throwable $th) {
             DB::rollBack();
             return redirect()->route('brands.trash')->with('error', 'Có lỗi xảy ra: ' . $th->getMessage());
@@ -134,7 +134,7 @@ class BrandController extends Controller
         $brand = Brand::onlyTrashed()->findOrFail($id);
 
         if ($brand->products()->exists()) {
-            return redirect()->route('brands.trash')->with('error', 'Không thể xóa cứng thương hiệu này vì nó có sản phẩm liên quan.');
+            return redirect()->route('brands.trash')->with('warning', 'Không thể xóa cứng thương hiệu này vì nó có sản phẩm liên quan.');
         }
 
         DB::beginTransaction();
@@ -142,7 +142,7 @@ class BrandController extends Controller
         try {
             $brand->forceDelete();
             DB::commit();
-            return redirect()->route('brands.trash')->with('deletePermanently', 'Xóa vĩnh viễn thành công');
+            return redirect()->route('brands.trash')->with('success', 'Xóa vĩnh viễn thành công');
         } catch (\Throwable $th) {
             DB::rollBack();
             return redirect()->route('brands.trash')->with('error', 'Có lỗi xảy ra: ' . $th->getMessage());
