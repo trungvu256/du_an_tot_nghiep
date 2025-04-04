@@ -309,4 +309,17 @@ class CartController extends Controller
         return view('web2.Home.checkout', compact('cart', 'subtotal', 'promotion', 'shippingFee', 'discount', 'total'));
     }
 
+    public function remove($id)
+{
+    $cart = session('cart', []);
+    foreach ($cart as $key => $item) {
+        if ($item['id'] == $id) {
+            unset($cart[$key]);
+        }
+    }
+    session(['cart' => $cart]);
+
+    return response()->json(['success' => true]);
+}
+
 }

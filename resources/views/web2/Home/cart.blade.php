@@ -45,18 +45,21 @@
             {{ number_format($item['price'], 0, ',', '.') }}₫
         </td>
         <td class="align-middle">
-            <form action="{{ route('cart.update', $cartKey) }}" method="POST">
+            <form action="{{ route('cart.update', $cartKey) }}" method="POST" class="update-cart-form">
                 @csrf
-                <input type="hidden" name="quantity" value="{{ max(1, $item['quantity'] - 1) }}">
-                <button type="submit" class="btn btn-sm btn-primary btn-minus">-</button>
-            </form>
-            <input type="text" class="form-control form-control-sm bg-secondary text-center" value="{{ $item['quantity'] }}" readonly>
-            <form action="{{ route('cart.update', $cartKey) }}" method="POST">
-                @csrf
-                <input type="hidden" name="quantity" value="{{ $item['quantity'] + 1 }}">
-                <button type="submit" class="btn btn-sm btn-primary btn-plus">+</button>
+                <input type="hidden" name="quantity" id="quantity-{{ $cartKey }}" value="{{ $item['quantity'] }}">
+                
+                <!-- Giảm số lượng -->
+                <button type="button" class="btn btn-sm btn-primary btn-minus" data-cart-key="{{ $cartKey }}" data-action="decrease">-</button>
+                
+                <!-- Hiển thị số lượng hiện tại -->
+                <input type="text" class="form-control form-control-sm bg-secondary text-center" id="quantity-display-{{ $cartKey }}" value="{{ $item['quantity'] }}" readonly>
+                
+                <!-- Tăng số lượng -->
+                <button type="button" class="btn btn-sm btn-primary btn-plus" data-cart-key="{{ $cartKey }}" data-action="increase">+</button>
             </form>
         </td>
+        
         <td class="align-middle">{{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }}₫</td>
         <td class="align-middle">
             @if(isset($item['variant']) && isset($item['variant']['attributes']) && count($item['variant']['attributes']) > 0)
@@ -67,8 +70,7 @@
                 <p>Không có biến thể</p>
             @endif
         </td>
-        
-        
+    
         <td class="align-middle">
             <form action="{{ route('cart.remove', $cartKey) }}" method="POST">
                 @csrf
@@ -81,6 +83,7 @@
 
                 </tbody>
             </table>
+            <a href="{{route('web.shop')}}">Thêm sản phẩm</a>
             
             
         </div>
@@ -174,7 +177,45 @@
         @endif
     });
 </script>
+<script>
+    $(document).ready(function() {
+    // Xử lý nút tăng/giảm
+    $('.btn-minus, .btn-plus').on('click', function() {
+        var cartKey = $(this).data('cart-key');
+        var action = $(this).data('action');
+        var quantityInput = $('#quantity-' + cartKey);
+        var quantityDisplay = $('#quantity-display-' + cartKey);
+        var currentQuantity = parseInt(quantityInput.val());
 
+        // Tính toán số lượng mới
+        var newQuantity = action === 'increase' ? currentQuantity + 1 : Math.max(1, currentQuantity - 1);
+
+        // Cập nhật giá trị của input ẩn (sẽ gửi lên server)
+        quantityInput.val(newQuantity);
+        
+        // Cập nhật hiển thị số lượng
+        quantityDisplay.val(newQuantity);
+
+        // Gửi yêu cầu AJAX để cập nhật giỏ hàng
+        $.ajax({
+            url: '{{ route('cart.update', ':cartKey') }}'.replace(':cartKey', cartKey),
+            method: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                quantity: newQuantity
+            },
+            success: function(response) {
+                // Cập nhật sau khi thành công (có thể hiển thị thông báo, cập nhật tổng tiền, v.v.)
+            },
+            error: function(xhr, status, error) {
+                // Xử lý lỗi nếu có
+                alert('Có lỗi xảy ra khi cập nhật giỏ hàng.');
+            }
+        });
+    });
+});
+
+</script>
 
 <!-- Cart End -->
 @endsection
