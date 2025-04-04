@@ -21,57 +21,54 @@ use OrderPlaced;
 
 class CheckoutController extends Controller
 {
-    public function index()
-    {
-        $cart = session('cart', []);
-        $subtotal = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
-        $promotion = session('promotion');
-        $shippingFee = 10000;
+    public function index(Request $request)
+{
+    $selectedCartKeys = json_decode($request->input('selected_cart_items'), true); // Mảng các cart key đã chọn
+    $cart = session('cart', []);
 
-        $discount = $promotion['discount'] ?? 0;
-        $totalAmount = max(0, $subtotal - $discount + $shippingFee);
+    // Lọc giỏ hàng chỉ lấy các sản phẩm được chọn
+    $filteredCart = collect($cart)->only($selectedCartKeys)->toArray();
 
-        return view('web2.Home.checkout', compact('totalAmount', 'cart'));
+    $subtotal = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $filteredCart));
+    $promotion = session('promotion');
+    $shippingFee = 10000;
+
+    $discount = $promotion['discount'] ?? 0;
+    $totalAmount = max(0, $subtotal - $discount + $shippingFee);
+
+    return view('web2.Home.checkout', [
+        'totalAmount' => $totalAmount,
+        'cart' => $filteredCart,
+    ]);
+}
+
+public function checkout(Request $request)
+{
+    $selectedKeys = json_decode($request->input('selected_cart_items'), true);
+    $allCart = session('cart', []);
+
+    // Lọc lại giỏ hàng chỉ lấy các item đã chọn
+    $filteredCart = collect($allCart)->only($selectedKeys)->toArray();
+
+    if (empty($filteredCart)) {
+        return redirect()->route('cart.viewCart')->with('error', 'Không có sản phẩm nào được chọn để thanh toán.');
     }
 
-    public function checkout(Request $request)
-    {
-        // Lấy tổng tiền từ session
-        $totalAmount = session('totalAmount', 0);
-    
-        // Lấy giỏ hàng từ session
-        $cart = session()->get('cart', []);
-        dd($cart);
-    
-        // Kiểm tra xem giỏ hàng có chứa sản phẩm hay không
-        if (empty($cart)) {
-            return redirect()->route('cart.viewCart')->with('error', 'Giỏ hàng của bạn hiện tại đang trống.');
-        }
-    
-        // Kiểm tra và lấy các id của biến thể
-        foreach ($cart as $item) {
-            $variantId = $item['variant']['id']; // Lấy variant_id từ giỏ hàng
-            $attributes = $item['variant']['attributes']; // Lấy thuộc tính
-    
-            // Log để kiểm tra biến thể
-            Log::info("Variant ID: $variantId, Attributes: " . json_encode($attributes));
-            
-            // Kiểm tra nếu variant không hợp lệ
-            $variant = ProductVariant::find($variantId);
-    
-            if (!$variant) {
-                return redirect()->route('cart.viewCart')->with('error', 'Một trong các sản phẩm trong giỏ hàng không còn tồn tại.');
-            }
-    
-            // Tính tổng tiền giỏ hàng
-            $totalAmount += $variant->price * $item['quantity'];
-        }
-    
-        // Lưu tổng tiền vào session
-        session(['totalAmount' => $totalAmount]);
-    
-        return view('checkout.index', compact('totalAmount', 'cart'));
-    }
+    // Lấy các dữ liệu tóm tắt gửi từ form
+    $subtotal = $request->input('subtotal');
+    $discount = $request->input('discount');
+    $shipping_fee = $request->input('shipping_fee');
+    $totalAmount = $request->input('total');
+
+    return view('web2.Home.checkout', compact(
+        'filteredCart',
+        'subtotal',
+        'discount',
+        'shipping_fee',
+        'totalAmount'
+    ));
+}
+
     
 
 

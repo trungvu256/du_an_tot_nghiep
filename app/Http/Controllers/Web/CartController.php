@@ -217,28 +217,40 @@ class CartController extends Controller
 }
 
 
-    public function updateCart(Request $request, $id)
-    {
-        $cart = session()->get('cart', []);
-
-        if (isset($cart[$id])) {
-            $cart[$id]['quantity'] = max(1, $request->quantity);
-            session()->put('cart', $cart);
-        }
-        return redirect()->route('cart.viewCart')->with('success', 'Cập nhật giỏ hàng thành công');
+public function updateCart(Request $request, $cartKey)
+{
+    $quantity = $request->input('quantity');
+    $cart = session('cart', []);
+    
+    if (isset($cart[$cartKey])) {
+        $cart[$cartKey]['quantity'] = $quantity;
+        session(['cart' => $cart]); // Lưu lại giỏ hàng vào session
+        return response()->json(['success' => true]);
     }
 
-    public function removeFromCart($id)
-    {
-        $cart = session()->get('cart', []);
+    return response()->json(['success' => false, 'message' => 'Sản phẩm không tồn tại']);
+}
 
-        if (isset($cart[$id])) {
-            unset($cart[$id]);
-            session()->put('cart', $cart);
-        }
+public function removeFromCart($id)
+{
+    $cart = session()->get('cart', []);
+    if (isset($cart[$id])) {
+        unset($cart[$id]); // Xóa sản phẩm khỏi giỏ hàng
+        session()->put('cart', $cart); // Lưu lại giỏ hàng
 
-        return redirect()->route('cart.viewCart')->with('success', 'Đã xóa sản phẩm');
+        // Tính toán lại tổng tiền và số lượng
+        $totalAmount = array_sum(array_column($cart, 'total')); // Tổng tiền (giả sử sản phẩm có thuộc tính total)
+        $cartCount = count($cart);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Sản phẩm đã được xóa khỏi giỏ hàng.',
+            'totalAmount' => $totalAmount,
+            'cartCount' => $cartCount,
+        ]);
     }
+}
+
 
 
     // khai bas0 mapkey
@@ -321,5 +333,8 @@ class CartController extends Controller
 
     return response()->json(['success' => true]);
 }
+
+// chọn số lượng
+
 
 }
