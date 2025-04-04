@@ -42,7 +42,9 @@ use App\Http\Controllers\Web\ProfileController;
 use App\Models\Category;
 use App\Http\Controllers\Web\WebController;
 use App\Http\Controllers\Web\WebProductController;
+use App\Mail\OrderPlacedMail;
 use App\Services\GHTKService;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -391,6 +393,9 @@ Route::middleware(['auth', 'user'])->group(function () {
         Route::post('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
         // Áp mã giảm giá
         Route::post('/cart/apply-promotion', [CartController::class, 'applyPromotion'])->name('cart.applyPromotion');
+        Route::get('/viewCart/show', [CartController::class, 'showHeaderCart'])->name('cart.showHeaderCart');
+        Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.removess');
+
     });
 
     // Thanh toán đơn hàng
@@ -402,6 +407,7 @@ Route::middleware(['auth', 'user'])->group(function () {
         Route::match(['get', 'post'], '/checkout/vnpay-callback', [CheckoutController::class, 'vnpayCallback'])->name('checkout.vnpay.callback');
         Route::get('/checkout/order', [CheckoutController::class, 'order'])->name('checkout.order');
         Route::get('/order/{id}/continue-payment', [CheckoutController::class, 'continuePayment'])->name('order.continuePayment');
+        Route::post('/checkout/ofline', [CheckoutController::class, 'offline'])->name('checkout.offline');
     });
 
 
@@ -443,15 +449,3 @@ Route::middleware(['auth', 'user'])->group(function () {
     // Đánh giá sản phẩm
     Route::post('/products/{product}/reviews', [WebProductController::class, 'storeReview'])->name('client.storeReview');
     Route::post('/reviews/{review}/responses', [WebProductController::class, 'storeResponse'])->name('client.storeReviewResponse');
-
-
-
-Route::middleware('auth')->group(function () {
-    Route::post('/messages', [MessageController::class, 'sendMessage'])->name('messages.send');
-    Route::get('/messages', [MessageController::class, 'fetchMessages'])->name('messages.fetch');
-    Route::post('/typing', [MessageController::class, 'typing'])->name('messages.typing');
-
-    // Lấy biến thể sản phẩm
-    Route::get('/get-product-variant/{id}', [CartController::class, 'getProductVariant'])->name('cart.getProductVariant');
-
-});

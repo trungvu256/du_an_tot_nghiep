@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Events\OrderPlaced as EventsOrderPlaced;
 use Pusher\Pusher;
 use App\Http\Controllers\Controller;
+use App\Mail\OrderPlacedMail;
 use App\Mail\PaymentSuccessMail;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -388,6 +389,109 @@ private function mapAttributeKey($key)
         return redirect()->back()->with('error', 'Đã xảy ra lỗi khi tạo link thanh toán. Vui lòng thử lại!');
     }
 }
+
+// thanh toán bằng tiền mặt
+public function offline(Request $request)
+{
+    try {
+        Log::info('Bắt đầu xử lý thanh toán tiền mặt', ['request_data' => $request->all()]);
+
+        $request->validate([
+            'amount' => 'required|numeric|min:1000',
+        ]);
+
+        $totalPrice = intval($request->input('amount')); // Tổng giá tiền từ request (được xác nhận ở cuối)
+
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Bạn cần đăng nhập trước khi thanh toán');
+        }
+
+        $user = Auth::user();
+        $cart = session()->get('cart', []);
+
+        if (empty($cart)) {
+            return redirect()->route('cart.viewCart')->with('error', 'Giỏ hàng của bạn đang trống!');
+        }
+
+        DB::beginTransaction();
+
+        $txnRef = now()->timestamp . rand(1000, 9999);
+
+        // Tạo đơn hàng và đánh dấu là đã thanh toán (1)
+        $order = Order::create([
+            'user_id' => $user->id,
+            'email' => $user->email ?? 'no-email@example.com',
+            'phone' => $user->phone ?? '0000000000',
+            'address' => $user->address ?? 'Chưa cập nhật',
+            'txn_ref' => $txnRef,
+            'total_price' =>  $totalPrice, // Sẽ được cập nhật sau khi tính tổng giá từng sản phẩm
+            'payment_status' => 2, // Đã thanh toán tiền mặt
+            'status' => Order::STATUS_PENDING,
+        ]);
+
+        $orderTotal = 0; // Tổng giá của các sản phẩm trong đơn hàng (theo biến thể)
+
+        foreach ($cart as $item) {
+            $variantQuery = ProductVariant::where('product_id', $item['id']);
+
+            // Lọc theo các thuộc tính của biến thể sản phẩm
+            foreach ($item['variant']['attributes'] as $attrName => $attrValue) {
+                $variantQuery->whereHas('product_variant_attributes', function ($query) use ($attrName, $attrValue) {
+                    $query->whereHas('attribute', fn($attrQuery) => $attrQuery->where('name', $attrName))
+                          ->whereHas('attributeValue', fn($valQuery) => $valQuery->where('value', $attrValue));
+                });
+            }
+
+            $variant = $variantQuery->first();
+
+            if (!$variant) {
+                DB::rollBack();
+                return redirect()->route('cart.viewCart')->with('error', 'Không tìm thấy biến thể sản phẩm trong kho!');
+            }
+
+            $quantity = intval($item['quantity']);
+            if ($variant->stock_quantity < $quantity) {
+                DB::rollBack();
+                return redirect()->route('cart.viewCart')->with('error', 'Sản phẩm ' . $item['name'] . ' không đủ số lượng!');
+            }
+
+            // Tính giá cho từng sản phẩm theo biến thể
+            $itemTotalPrice = $variant->price * $quantity + 5000;
+            $orderTotal += $itemTotalPrice;
+
+            // Lưu mục đơn hàng với giá của biến thể
+            OrderItem::create([
+                'order_id' => $order->id,
+                'product_id' => $item['id'],
+                'product_variant_id' => $variant->id,
+                'quantity' => $quantity,
+                'price' => $variant->price, // Lưu giá của biến thể
+            ]);
+
+            // Giảm số lượng tồn kho của biến thể
+            $variant->decrement('stock_quantity', $quantity);
+        }
+
+        // Cập nhật tổng giá đơn hàng sau khi tính giá từng sản phẩm theo biến thể
+        // $order->update(['total_price' => $orderTotal]);
+
+        event(new EventsOrderPlaced($order)); // Gửi thông báo hoặc xử lý logic tiếp theo
+
+        DB::commit();
+
+        session(['last_order_id' => $order->id]);
+        session()->forget('cart');
+
+        return redirect()->route('donhang.index')->with('success', 'Đặt hàng thành công. Cảm ơn bạn đã mua hàng!');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        Log::error('Lỗi xử lý thanh toán tiền mặt', [
+            'message' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ]);
+        return redirect()->route('cart.viewCart')->with('error', 'Đã xảy ra lỗi khi xử lý thanh toán. Vui lòng thử lại!');
+    }
 }
 
+}
 

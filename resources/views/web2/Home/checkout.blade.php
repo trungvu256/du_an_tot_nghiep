@@ -143,7 +143,19 @@
                     <input type="hidden" class="form-control" id="amount" name="amount" 
                            value="{{ intval($subtotal - (session('promotion')['discount'] ?? 0) + $shipping_fee) }}">
                     
-                    <button type="submit" class="btn btn-primary btn-payment mt-3">💰 Thanh toán ngay</button>
+                    <button type="submit" class="btn btn-primary btn-payment mt-3">💰 Thanh toán bằng vnpay</button>
+                </form>
+            </div>
+
+            <div class="card-footer border-secondary bg-transparent">
+                <form action="{{ route('checkout.offline') }}" method="POST" class="payment-form">
+                    @csrf
+                    
+                    <!-- Số tiền thanh toán -->
+                    <input type="hidden" class="form-control" id="amount" name="amount" 
+                           value="{{ intval($subtotal - (session('promotion')['discount'] ?? 0) + $shipping_fee) }}">
+                    
+                    <button type="submit" class="btn btn-primary btn-payment mt-3">💰 Thanh toán bằng tiền mặt</button>
                 </form>
             </div>
         </div>
