@@ -22,14 +22,13 @@ use OrderPlaced;
 
 class CheckoutController extends Controller
 {
-
     public function index(Request $request)
 {
     $selectedCartKeys = json_decode($request->input('selected_cart_items'), true); // Mảng các cart key đã chọn
     $cart = session('cart', []);
+
     // Lọc giỏ hàng chỉ lấy các sản phẩm được chọn
     $filteredCart = collect($cart)->only($selectedCartKeys)->toArray();
-
 
     $subtotal = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $filteredCart));
     $promotion = session('promotion');
@@ -46,6 +45,7 @@ class CheckoutController extends Controller
 
 public function checkout(Request $request)
 {
+    $categories = Catalogue::all();
     $selectedKeys = json_decode($request->input('selected_cart_items'), true);
     $allCart = session('cart', []);
 
@@ -54,6 +54,7 @@ public function checkout(Request $request)
 
     if (empty($filteredCart)) {
         return redirect()->route('cart.viewCart')->with('error', 'Không có sản phẩm nào được chọn để thanh toán.');
+    }
 
     // Lấy các dữ liệu tóm tắt gửi từ form
     $subtotal = $request->input('subtotal');
@@ -66,7 +67,8 @@ public function checkout(Request $request)
         'subtotal',
         'discount',
         'shipping_fee',
-        'totalAmount'
+        'totalAmount',
+        'categories'
     ));
 }
 
