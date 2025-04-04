@@ -329,7 +329,7 @@
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item" href="{{ route('profile') }}">Thông tin cá nhân</a></li>
                                 <li><a class="dropdown-item" href="{{ route('wallet.index') }}">Ví điện tử</a></li>
-                                <li><a href="{{ route('messages.fetch') }}">Chat với Admin</a></li>
+                                <li><a class="dropdown-item" href="{{ route('messages.fetch') }}">Chat với Admin</a></li>
                                 <li><a class="dropdown-item" href="{{ route('checkout.order') }}">Lịch sử mua hàng</a>
                                 </li>
                                 <li><a class="dropdown-item" href="{{ route('web.logout') }}">Đăng xuất</a></li>
