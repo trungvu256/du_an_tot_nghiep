@@ -2,9 +2,9 @@
 
 @section('title', 'Áp Dụng Giảm Giá Cho Danh Mục')
 
-@section('css')
+{{-- @section('css')
 <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.min.css" rel="stylesheet">
-@endsection
+@endsection --}}
 
 @section('content')
 

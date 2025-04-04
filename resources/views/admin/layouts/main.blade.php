@@ -9,6 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     @include('admin.layouts.css')
     <style>
@@ -127,7 +129,7 @@
         @include('admin.layouts.js')
 
         @yield('custom-js')
-        @yield('scripts')
+
     </div>
     <!-- END layout-wrapper -->
 
@@ -195,8 +197,6 @@
     <!-- Bootstrap JS (có cả Popper.js) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script>
 
     {{-- Hàm tự động đóng thông báo --}}
     <script>
@@ -222,6 +222,8 @@
             );
         });
     </script>
+
+    @yield('scripts')
 </body>
 
 </html>

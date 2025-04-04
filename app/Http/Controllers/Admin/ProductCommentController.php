@@ -27,7 +27,7 @@ class ProductCommentController extends Controller
         $comment = ProductComment::findOrFail($id);
         $comment->delete();
 
-        return redirect()->route('product-comments.index')->with('destroyComment', true);
+        return redirect()->route('product-comments.index')->with('success', true);
     }
 
     public function respond(Request $request, $id)
@@ -42,7 +42,7 @@ class ProductCommentController extends Controller
                 'reply' => $request->response,
             ]);
 
-            return redirect()->route('product-comments.index')->with('respond', 'Phản hồi đã được gửi.');
+            return redirect()->route('product-comments.index')->with('success', 'Phản hồi đã được gửi.');
         } catch (\Throwable $th) {
 
             return $th->getMessage();
@@ -58,6 +58,6 @@ class ProductCommentController extends Controller
 
         $reply->update(['reply' => $request->reply]);
 
-        return redirect()->route('product-comments.index')->with('updateReply', true);
+        return redirect()->route('product-comments.index')->with('success', true);
     }
 }

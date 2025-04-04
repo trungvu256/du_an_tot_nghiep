@@ -29,7 +29,7 @@ class CommentReplyController extends Controller
             $reply->update(['reply' => $validated['reply']]);
             DB::commit();
 
-            return redirect()->route('comments.index')->with('updateReply', 'Phản hồi đã được cập nhật.');
+            return redirect()->route('comments.index')->with('success', 'Phản hồi đã được cập nhật.');
         } catch (\Throwable $th) {
             DB::rollBack();
             return redirect()->route('comments.index')->with('error', 'Có lỗi xảy ra: ' . $th->getMessage());
@@ -43,7 +43,7 @@ class CommentReplyController extends Controller
 
         // Kiểm tra quyền hạn
         if ($reply->user_id !== Auth::id()) {
-            return redirect()->back()->with('error', 'Bạn không có quyền xóa phản hồi này.');
+            return redirect()->back()->with('warning', 'Bạn không có quyền xóa phản hồi này.');
         }
 
         DB::beginTransaction();

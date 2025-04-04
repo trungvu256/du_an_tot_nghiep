@@ -31,7 +31,7 @@ class ReviewResponseController extends Controller
             $response->update(['response' => $validated['response']]);
             DB::commit();
 
-            return redirect()->route('product-reviews.index')->with('updateResponse', 'Phản hồi đã được cập nhật.');
+            return redirect()->route('product-reviews.index')->with('success', 'Phản hồi đã được cập nhật.');
         } catch (\Throwable $th) {
             DB::rollBack();
             return redirect()->route('product-reviews.index')->with('error', 'Có lỗi xảy ra: ' . $th->getMessage());
@@ -45,7 +45,7 @@ class ReviewResponseController extends Controller
 
         // Kiểm tra quyền sở hữu
         if ($response->responder_id !== Auth::id()) {
-            return redirect()->back()->with('error', 'Bạn không có quyền xóa phản hồi này.');
+            return redirect()->back()->with('warning', 'Bạn không có quyền xóa phản hồi này.');
         }
 
         DB::beginTransaction();

@@ -274,7 +274,11 @@
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item" href="{{ route('profile') }}">Thông tin cá nhân</a></li>
                                 <li><a class="dropdown-item" href="{{ route('wallet.index') }}">Ví điện tử</a></li>
-                                <li><a href="{{ route('messages.fetch') }}">Chat với Admin</a></li>
+
+                                <li><a href="">Chat với Admin</a></li>
+
+
+
                                 <li><a class="dropdown-item" href="{{ route('checkout.order') }}">Lịch sử mua hàng</a>
                                 </li>
                                 <li><a class="dropdown-item" href="{{ route('web.logout') }}">Đăng xuất</a></li>
@@ -294,12 +298,57 @@
                     </div>
 
                     <!-- Icon giỏ hàng -->
-                    <div class="cart-icon">
-                        <a href="{{ route('cart.viewCart') }}" class="text-dark">
+                    <!-- Icon giỏ hàng -->
+                    <div class="cart-icon dropdown">
+                        <a href="#" class="text-dark dropdown-toggle" id="cartDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-shopping-cart fa-lg"></i>
-                            <span class="cart-badge">0</span>
+                            <span
+                                class="cart-badge">{{ session('cart') ? collect(session('cart'))->sum('quantity') : 0 }}</span>
                         </a>
+
+                        <!-- Dropdown danh sách sản phẩm trong giỏ hàng -->
+                        <ul class="dropdown-menu dropdown-menu-end p-2" aria-labelledby="cartDropdown"
+                            style="width: 300px;">
+                            @php $cart = session('cart', []); @endphp
+                            @if (count($cart) > 0)
+                                @foreach ($cart as $item)
+                                    <li class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex">
+                                            <img src="{{ asset('storage/' . $item['image']) }}"
+                                                alt="{{ $item['name'] }}" width="50" class="me-2">
+                                            <div>
+                                                <strong>{{ $item['name'] }}</strong>
+                                                <br>
+                                                <small>{{ $item['quantity'] }} x
+                                                    {{ number_format($item['price'], 0, ',', '.') }} VNĐ</small>
+                                            </div>
+                                        </div>
+
+                                        <button type="button" class="btn btn-sm btn-danger btn-remove-item"
+                                            data-id="{{ $item['id'] }}">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+
+                                    </li>
+                                    <hr>
+                                @endforeach
+                                <li class="text-center">
+                                    <strong>Tổng:
+                                        {{ number_format(collect($cart)->sum(fn($i) => $i['quantity'] * $i['price']), 0, ',', '.') }}
+                                        VNĐ</strong>
+                                </li>
+                                <li class="text-center mt-2">
+                                    <a href="{{ route('cart.viewCart') }}" class="btn btn-primary btn-sm w-100">Xem
+                                        giỏ hàng</a>
+                                </li>
+                            @else
+                                <li class="text-center text-muted">Giỏ hàng trống</li>
+                            @endif
+                        </ul>
                     </div>
+
+
                 </div>
             </div>
         </div>
@@ -333,6 +382,68 @@
                         </button>
                     </form>
                 </div>
+                <script>
+                    $(document).on('click', '.btn-remove-item', function(e) {
+                        e.preventDefault();
+                        let id = $(this).data('id');
+
+                        $.ajax({
+                            url: '{{ route('cart.removess', ':id') }}'.replace(':id', id),
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(res) {
+                                // Reload dropdown hoặc xoá trực tiếp DOM
+                                location.reload();
+                            },
+                            error: function(err) {
+                                alert("Xóa thất bại!");
+                            }
+                        });
+                    });
+                </script>
+
+                <script>
+                    $(document).ready(function() {
+                        $('.form-remove-item').on('submit', function(e) {
+                            e.preventDefault(); // Ngăn reload trang
+
+                            const form = $(this);
+                            const url = form.attr('action');
+
+                            $.ajax({
+                                url: url,
+                                method: 'POST',
+                                data: form.serialize(), // Lấy CSRF token
+                                success: function() {
+                                    // Sau khi xóa thành công, reload lại giỏ hàng header và danh sách sản phẩm
+                                    updateHeaderCart();
+                                    updateCartTable();
+                                },
+                                error: function() {
+                                    alert('Xóa sản phẩm thất bại');
+                                }
+                            });
+                        });
+
+                        function updateHeaderCart() {
+                            $.get('{{ route('cart.showHeaderCart') }}', function(html) {
+                                $('#header-cart').html(html); // phần hiển thị giỏ hàng ở header
+                            });
+                        }
+
+                        function updateCartTable() {
+                            $.get('{{ route('cart.index') }}', function(html) {
+                                $('#cart-table').html($(html).find('#cart-table').html()); // reload lại danh sách cart
+                            });
+                        }
+                    });
+                </script>
+
+
+                <!-- Thanh tìm kiếm -->
+
 
 
             </div>

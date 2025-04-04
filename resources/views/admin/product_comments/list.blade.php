@@ -186,8 +186,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 
     {{-- Alert 2 --}}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script> --}}
 
     <script>
         $(document).ready(function() {
@@ -269,7 +269,7 @@
     </script>
 
     {{-- thông báo phản hồi  --}}
-    @if (session()->has('respond'))
+    {{-- @if (session()->has('respond'))
         <script>
             Swal.fire({
                 position: "top",
@@ -282,10 +282,10 @@
                 timer: 3500
             });
         </script>
-    @endif
+    @endif --}}
 
     {{-- thông báo phản hồi  --}}
-    @if (session()->has('respondError'))
+    {{-- @if (session()->has('respondError'))
         <script>
             Swal.fire({
                 position: "top",
@@ -298,10 +298,10 @@
                 timer: 3500
             });
         </script>
-    @endif
+    @endif --}}
 
     {{-- thông báo xóa thành công --}}
-    @if (session()->has('destroyComment'))
+    {{-- @if (session()->has('destroyComment'))
         <script>
             Swal.fire({
                 position: "top",
@@ -313,10 +313,10 @@
                 timer: 3500
             });
         </script>
-    @endif
+    @endif --}}
 
     {{-- update --}}
-    @if (session()->has('updateReply'))
+    {{-- @if (session()->has('updateReply'))
         <script>
             Swal.fire({
                 position: "top",
@@ -328,5 +328,6 @@
                 timer: 3500
             });
         </script>
-    @endif
+    @endif --}}
+    @include('alert')
 @endsection

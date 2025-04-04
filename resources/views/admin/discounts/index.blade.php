@@ -2,9 +2,9 @@
 
 @section('title', 'Danh Sách Giảm Giá Cho Danh Mục')
 
-@section('css')
+{{-- @section('css')
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.min.css" rel="stylesheet">
-@endsection
+@endsection --}}
 
 @section('content')
     <div class="content-wrapper-scroll">
@@ -132,7 +132,7 @@
 @endsection
 
 @section('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script> --}}
     <script>
         $(document).ready(function () {
             $('#filterRemove').click(function () {
@@ -164,27 +164,28 @@
             });
         });
 
-        @if (session('success'))
-            Swal.fire({
-                position: "top",
-                icon: "success",
-                toast: true,
-                title: "{{ session('success') }}",
-                showConfirmButton: false,
-                timerProgressBar: true,
-                timer: 3500
-            });
-        @endif
+        // @if (session('success'))
+        //     Swal.fire({
+        //         position: "top",
+        //         icon: "success",
+        //         toast: true,
+        //         title: "{{ session('success') }}",
+        //         showConfirmButton: false,
+        //         timerProgressBar: true,
+        //         timer: 3500
+        //     });
+        // @endif
 
-        @if (session('errors'))
-            Swal.fire({
-                position: "top",
-                icon: "error",
-                title: "Có lỗi xảy ra",
-                showConfirmButton: false,
-                timerProgressBar: true,
-                timer: 1500
-            });
-        @endif
+        // @if (session('errors'))
+        //     Swal.fire({
+        //         position: "top",
+        //         icon: "error",
+        //         title: "Có lỗi xảy ra",
+        //         showConfirmButton: false,
+        //         timerProgressBar: true,
+        //         timer: 1500
+        //     });
+        // @endif
     </script>
+    @include('alert')
 @endsection

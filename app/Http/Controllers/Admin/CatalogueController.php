@@ -174,13 +174,13 @@ class CatalogueController extends Controller
 
         if (Catalogue::where('parent_id', $catalogue->id)->exists()) {
             return redirect()->route('catalogues.index')
-                ->with('error', 'Không thể xóa danh mục này vì nó là danh mục cha của một hoặc nhiều danh mục khác.');
+                ->with('warning', 'Không thể xóa danh mục này vì nó là danh mục cha của một hoặc nhiều danh mục khác.');
         }
         // Kiểm tra nếu danh mục có sản phẩm
         $count = $catalogue->products()->count();
         if ($count > 0) {
             return redirect()->route('catalogues.index')
-                ->with('error', 'Không thể xóa danh mục này vì có ' . $count . ' sản phẩm đang thuộc danh mục.');
+                ->with('warning', 'Không thể xóa danh mục này vì có ' . $count . ' sản phẩm đang thuộc danh mục.');
         }
 
         DB::beginTransaction();
@@ -189,7 +189,7 @@ class CatalogueController extends Controller
             $catalogue->delete();
             DB::commit();
 
-            return redirect()->route('catalogues.index')->with('destroyCatalogue', 'Xóa danh mục thành công');
+            return redirect()->route('catalogues.index')->with('success', 'Xóa danh mục thành công');
         } catch (Exception $e) {
             DB::rollBack();
             return redirect()->route('catalogues.index')->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
@@ -222,7 +222,7 @@ class CatalogueController extends Controller
             $catalogue->restore();
             DB::commit();
 
-            return redirect()->route('catalogues.trash')->with('restoreCatalogue', 'Khôi phục danh mục thành công');
+            return redirect()->route('catalogues.trash')->with('success', 'Khôi phục danh mục thành công');
         } catch (Exception $e) {
             DB::rollBack();
             return redirect()->route('catalogues.trash')->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
@@ -236,12 +236,12 @@ class CatalogueController extends Controller
 
         // Kiểm tra nếu danh mục có danh mục con
         if (Catalogue::where('parent_id', $catalogue->id)->exists()) {
-            return redirect()->route('catalogues.trash')->with('error', 'Không thể xóa cứng danh mục này vì nó là danh mục cha của một hoặc nhiều danh mục khác.');
+            return redirect()->route('catalogues.trash')->with('warning', 'Không thể xóa cứng danh mục này vì nó là danh mục cha của một hoặc nhiều danh mục khác.');
         }
 
         // Kiểm tra nếu danh mục có sản phẩm
         if ($catalogue->products()->exists()) {
-            return redirect()->route('catalogues.trash')->with('error', 'Không thể xóa cứng danh mục này vì nó chứa sản phẩm.');
+            return redirect()->route('catalogues.trash')->with('warning', 'Không thể xóa cứng danh mục này vì nó chứa sản phẩm.');
         }
 
         DB::beginTransaction();
@@ -250,7 +250,7 @@ class CatalogueController extends Controller
             $catalogue->forceDelete();
             DB::commit();
 
-            return redirect()->route('catalogues.trash')->with('forceDeleteCatalogue', 'Xóa cứng danh mục thành công');
+            return redirect()->route('catalogues.trash')->with('success', 'Xóa cứng danh mục thành công');
         } catch (Exception $e) {
             DB::rollBack();
             return redirect()->route('catalogues.trash')->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());

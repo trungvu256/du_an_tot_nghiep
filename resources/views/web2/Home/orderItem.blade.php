@@ -22,9 +22,7 @@
             <tr>
                 <th>Tổng tiền</th>
                 <td class="fw-bold text-success">
-                    {{ number_format($order->orderItems->sum(function ($item) {
-                        return $item->price;
-                    }), 0, ',', '.') }} VNĐ
+                    {{ number_format($order->total_price, 0, ',', '.') }} VNĐ
                 </td>
             </tr>
             <tr>
@@ -64,8 +62,17 @@
                 </tr>
             </thead>
             <tbody>
+                @php 
+                    $totalOrderPrice = 0; 
+                @endphp
                 @if ($order->orderItems && count($order->orderItems) > 0)
                     @foreach ($order->orderItems as $detail)
+                        @php
+                            // Lấy giá của biến thể, nếu có
+                            $variantPrice = $detail->variant ? $detail->variant->price : $detail->price;
+                            $itemTotal = $variantPrice * $detail->quantity;
+                            $totalOrderPrice += $itemTotal;
+                        @endphp
                         <tr>
                             <td>
                                 @if ($detail->product && $detail->product->image)
@@ -76,15 +83,29 @@
                             </td>
                             <td>{{ $detail->product->name }}</td>
                             <td>{{ $detail->quantity }}</td>
-                            <td>{{ number_format($detail->price, 0, ',', '.') }} VNĐ</td>
+                            <td>
+                                {{-- Hiển thị giá giống giỏ hàng --}}
+                                {{ number_format($itemTotal, 0, ',', '.') }} VNĐ
+                                <br>
+                                <small>({{ number_format($variantPrice, 0, ',', '.') }} x {{ $detail->quantity }})</small>
+                            </td>
                         </tr>
                     @endforeach
+                    {{-- Hiển thị tổng giá đơn hàng --}}
+                    <tr>
+                        <td colspan="3" class="text-end fw-bold">Tổng cộng:</td>
+                        <td class="fw-bold text-danger">{{ number_format($totalOrderPrice, 0, ',', '.') }} VNĐ</td>
+                    </tr>
                 @else
                     <tr>
                         <td colspan="4" class="text-center text-muted">Không có sản phẩm nào trong đơn hàng</td>
                     </tr>
                 @endif
             </tbody>
+            
+            
+            
+            
         </table>
 
         <!-- Thông tin vận chuyển -->
