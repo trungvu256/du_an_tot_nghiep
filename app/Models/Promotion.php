@@ -22,10 +22,10 @@ class Promotion extends Model
     {
         return $this->hasMany(Order::class);
     }
-    // public function userPromotions()
-    // {
-    //     return $this->hasMany(UserPromotion::class);
-    // }
+    public function userPromotions()
+    {
+        return $this->hasMany(UserPromotion::class);
+    }
     public function users()
     {
         return $this->belongsToMany(User::class, 'user_promotions');

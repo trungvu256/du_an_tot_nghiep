@@ -2,9 +2,9 @@
 
 @section('title', 'Thùng Rác Danh Mục')
 
-@section('css')
+{{-- @section('css')
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.min.css" rel="stylesheet">
-@endsection
+@endsection --}}
 
 @section('content')
     <div class="content-wrapper-scroll">
@@ -85,8 +85,8 @@
 @endsection
 
 @section('scripts')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script> --}}
 
     <script>
         document.querySelectorAll('.force-delete-btn').forEach(button => {
@@ -138,7 +138,7 @@
         });
     </script>
 
-    @if (session()->has('restoreCatalogue'))
+    {{-- @if (session()->has('restoreCatalogue'))
         <script>
             Swal.fire({
                 position: "top-end",
@@ -178,5 +178,6 @@
                 timer: 3500
             });
         </script>
-    @endif
+    @endif --}}
+    @include('alert')
 @endsection

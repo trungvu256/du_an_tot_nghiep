@@ -255,13 +255,13 @@ class PromotionController extends Controller
 
         // Kiểm tra nếu khuyến mãi đang được tham chiếu trong bất kỳ đơn hàng nào
         if (Order::where('promotion_id', $promotion->id)->exists()) {
-            return redirect()->route('promotions.index')->with('error11', 'Không thể xóa khuyến mãi vì nó đã được áp dụng trong đơn hàng.');
+            return redirect()->route('promotions.index')->with('warning', 'Không thể xóa khuyến mãi vì nó đã được áp dụng trong đơn hàng.');
         }
 
         // Kiểm tra nếu khuyến mãi đang trong thời gian áp dụng
         $currentDate = now();
         if ($promotion->start_date <= $currentDate && $promotion->end_date >= $currentDate) {
-            return redirect()->route('promotions.index')->with('error22', 'Không thể xóa khuyến mãi vì nó đang trong thời gian áp dụng.');
+            return redirect()->route('promotions.index')->with('warning', 'Không thể xóa khuyến mãi vì nó đang trong thời gian áp dụng.');
         }
 
         // Xóa khuyến mãi

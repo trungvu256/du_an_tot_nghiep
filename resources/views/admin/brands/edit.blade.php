@@ -2,9 +2,9 @@
 
 @section('title', 'Cập Nhật Thương Hiệu')
 
-@section('css')
+{{-- @section('css')
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.min.css" rel="stylesheet">
-@endsection
+@endsection --}}
 
 @section('content')
     <div class="content-wrapper-scroll">
@@ -52,7 +52,7 @@
 @endsection
 
 @section('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script>
 
     @if (session()->has('update'))
     <script>
@@ -65,6 +65,7 @@
             timer: 1500
         });
     </script>
-@endif
+@endif --}}
+@include('alert')
 
 @endsection

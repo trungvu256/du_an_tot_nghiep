@@ -25,16 +25,16 @@ class User extends Authenticatable
     protected $fillable = [
        'first_name', // Thêm Họ
         'last_name',  // Thêm Tên
-        'name',       
+        'name',
         'email',
         'password',
         'is_admin',
         'provider_id',
-        'status',   
-        'gender',   
-        'phone',    
-        'address',  
-        'avatar',   
+        'status',
+        'gender',
+        'phone',
+        'address',
+        'avatar',
         'bank_account'
     ];
 
@@ -77,4 +77,16 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(CustomerGroup::class, 'customer_group_user', 'user_id', 'customer_group_id');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function promotions()
+{
+    return $this->belongsToMany(Promotion::class, 'user_promotions')
+                ->withPivot('is_used')
+                ->withTimestamps();
+}
 }
