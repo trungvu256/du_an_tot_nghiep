@@ -18,6 +18,7 @@ class Order extends Model
         'phone',
         'address',
         'user_id',
+        'promotion_id',
         'total_price',
         'status',
         'payment_status',
@@ -46,7 +47,7 @@ class Order extends Model
     const RETURN_COMPLETED = 4; // Hoàn tất trả hàng
 
 
-    
+
 
     const STATUS_PAID = 'paid';
 
@@ -96,6 +97,11 @@ public function orderItems()
     public function isPaymentExpired()
     {
         return $this->payment_deadline && now()->greaterThan($this->payment_deadline);
+    }
+
+    public function promotion()
+    {
+        return $this->belongsTo(Promotion::class);
     }
 
 }

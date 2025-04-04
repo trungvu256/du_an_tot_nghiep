@@ -240,11 +240,11 @@
                                     href="{{ route('web.shop') }}">SẢN PHẨM</a>
                             </li>
                             <li class="nav-item dropdown px-3">
-                                <a class="nav-link dropdown-toggle d-flex align-items-center text-nowrap" href="#" 
+                                <a class="nav-link dropdown-toggle d-flex align-items-center text-nowrap" href="#"
                                    id="navbarDropdown" aria-expanded="false">
                                     NƯỚC HOA
                                 </a>
-                                <ul class="dropdown-menu shadow border-0 rounded-3 p-2 animate-dropdown" 
+                                <ul class="dropdown-menu shadow border-0 rounded-3 p-2 animate-dropdown"
                                     aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item py-2 px-3 rounded-2" href="#">Nước hoa Nam</a></li>
                                     <li><a class="dropdown-item py-2 px-3 rounded-2" href="#">Nước hoa Nữ</a></li>
@@ -329,7 +329,11 @@
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item" href="{{ route('profile') }}">Thông tin cá nhân</a></li>
                                 <li><a class="dropdown-item" href="{{ route('wallet.index') }}">Ví điện tử</a></li>
+
                                 <li><a href="">Chat với Admin</a></li>
+
+                         
+
                                 <li><a class="dropdown-item" href="{{ route('checkout.order') }}">Lịch sử mua hàng</a>
                                 </li>
                                 <li><a class="dropdown-item" href="{{ route('web.logout') }}">Đăng xuất</a></li>

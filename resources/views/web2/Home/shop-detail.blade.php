@@ -1,9 +1,6 @@
 @extends('web2.layout.master')
 
 @section('content')
-
-
-
     <!-- Navbar Start -->
 
     <!-- Navbar End -->
@@ -154,7 +151,7 @@
     }
     </style>
     <!-- Page Header Start -->
-    <div class="container-fluid ">
+    {{-- <div class="container-fluid ">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
             <h1 class="font-weight-semi-bold text-uppercase mb-3">Chi tiết sản phẩm</h1>
             <div class="d-inline-flex">
@@ -163,7 +160,7 @@
                 <p class="m-0">Chi tiết sản phẩm</p>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- Page Header End -->
 
     @include('web2.sup.css')
@@ -192,7 +189,7 @@
 
             <div class="col-lg-7 pb-5">
 
-                <h3 class="font-weight-semi-bold">{{ $detailproduct->name }}</h3>
+                <h3 class="font-weight-semi-bold" style="color: #0ab39c">{{  $detailproduct->name }}</h3>
 
 
                 <div class="d-flex mb-3">
@@ -224,9 +221,9 @@
                 </div>
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-                <div class="mb-4">
+                {{-- <div class="mb-4">
                     <p class="text-dark font-weight-medium mb-0 mr-3"></p>{!! $detailproduct->description !!}
-                </div>
+                </div> --}}
                 <div class="mb-4">
                     <p class="text-dark font-weight-medium mb-0 mr-3">Thương hiệu: {{ $brands->name }}</p>
                 </div>
@@ -354,22 +351,24 @@
 
                     <!-- Chọn số lượng -->
                     <!-- Chọn số lượng -->
-                    <div class="form-group mb-3">
-                        <label for="quantity">Số lượng:</label>
-                        <div class="input-group">
-                            <button type="button" class="btn btn-outline-secondary" onclick="decreaseQuantity()">-</button>
-                            <input type="number" id="quantity" name="quantity" value="1" min="1"
-                                class="form-control text-center" required>
-                            <button type="button" class="btn btn-outline-secondary" onclick="increaseQuantity()">+</button>
+                    <p>Số lượng :</p>
+                    <div class="row">
+                        <div class="form-group mb-3 col-3">
+                            <div class="input-group">
+                                <button type="button" class="btn btn-outline-secondary" onclick="decreaseQuantity()">-</button>
+                                <input type="number" id="quantity" name="quantity" value="1" min="1"
+                                    class="form-control text-center" required>
+                                <button type="button" class="btn btn-outline-secondary" onclick="increaseQuantity()">+</button>
+                            </div>
+                            <small id="quantity-error" class="text-danger" style="display: none;">Số lượng phải từ 1 đến số
+                                lượng tồn kho</small>
                         </div>
-                        <small id="quantity-error" class="text-danger" style="display: none;">Số lượng phải từ 1 đến số
-                            lượng tồn kho</small>
+                        <!-- Nút thêm vào giỏ -->
+                        <button type="submit" class="btn btn-primary col-3">
+                            <i class="fas fa-shopping-cart"></i>
+                             Thêm vào giỏ hàng
+                        </button>
                     </div>
-                    <!-- Nút thêm vào giỏ -->
-                    <button type="submit" class="btn btn-primary px-3 mt-3">
-                        <i class="fas fa-shopping-cart"></i>
-                        Thêm vào giỏ
-                    </button>
                 </form>
 
 
@@ -633,7 +632,7 @@
                         <div class="tab-pane fade show active" id="tab-description" role="tabpanel">
                             <div class="product-description">
                                 <!-- Hiển thị mô tả sản phẩm -->
-                                <p>{{ $product->description }}</p>
+                                <p>{!! $product->description !!}</p>
                             </div>
                         </div>
 
@@ -645,7 +644,7 @@
                                         <!-- Hiển thị tên người dùng và ngày đăng bình luận -->
                                         <div class="user-info"
                                             style="display: flex; align-items: center; justify-content: space-between;">
-                                            <div style="display: flex; align-items: center;">
+                                            {{-- <div style="display: flex; align-items: center;">
                                                 @if ($comment->user->image)
                                                     <img src="{{ asset('storage/' . $comment->user->image) }}"
                                                         alt="{{ $comment->user->name }}" class="rounded-circle user-pic"
@@ -659,7 +658,7 @@
                                                 <span class="date"
                                                     style="margin-left: 10px;">{{ optional($comment->created_at)->format('d/m/Y H:i') ?? 'N/A' }}
                                                 </span>
-                                            </div>
+                                            </div> --}}
 
                                             <!-- Nút sửa và xóa -->
                                             @if ($comment->user_id == Auth::id())
@@ -1101,7 +1100,7 @@
     <div class="container-fluid py-5">
         <div class=" mb-5" style="margin-left: 50px;">
             <h3 class=" text-3xl font-normal tracking-wide text-black uppercase" style="font-size:25px;">
-                Sản phẩm có thể yêu thích
+                Sản phẩm liên quan
             </h3>
         </div>
 
@@ -1223,75 +1222,6 @@
                                         @else
                                             <h7 class="fw-bold mb-4 text-dark">
                                                 <span class="fs-5">{{ number_format($similarProduct->price) }}₫</span>
-                                            </h7>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-pagination"></div>
-            </div>
-        @else
-            <div class="col-12">
-                <p class="text-center text-muted">Không có sản phẩm liên quan</p>
-            </div>
-        @endif
-    </div>
-
-    {{-- sản phẩm đã xem --}}
-
-    <div class="container-fluid py-5">
-        <div class="mb-5" style="margin-left: 50px;">
-            <h3 class="text-3xl font-normal tracking-wide text-black uppercase" style="font-size:25px;">
-                Sản phẩm đã xem
-            </h3>
-        </div>
-
-        @if ($viewedProducts->isNotEmpty())
-            <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 0 5px; margin-left: 0px;">
-                <div class="row px-xl-5 pb-3">
-                    @foreach ($viewedProducts as $viewedProduct)
-                        <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
-                            <div class="card product-item border-0 shadow-sm rounded position-relative">
-                                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                    <img class="img-fluid w-100 product-image" style="height: 250px; object-fit: contain;"
-                                        src="{{ asset('storage/' . $viewedProduct->image) }}" alt="{{ $viewedProduct->name }}">
-                                    <div class="product-overlay">
-                                        <div class="icon-box cart-icon">
-                                            <a href="{{ route('web.shop-detail', ['id' => $viewedProduct->id]) }}"
-                                                class="icon-link">
-                                                <i class="fas fa-eye"></i>
-                                                <span class="tooltip-text">Xem chi tiết</span>
-                                            </a>
-                                        </div>
-                                        <div class="icon-box cart-icon">
-                                            <a href="{{ route('user.cart') }}" class="icon-link">
-                                                <i class="fas fa-shopping-cart"></i>
-                                                <span class="tooltip-text">Thêm vào giỏ</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body text-center p-3">
-                                    <h6 class="text-truncate mb-2">{{ $viewedProduct->name }}</h6>
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        @if ($viewedProduct->variants->count() > 0)
-                                                            @php
-                                                                $minPrice = $viewedProduct->variants->min('price');
-                                                                $maxPrice = $viewedProduct->variants->max('price');
-                                                            @endphp
-                                                            <h7 class="fw-bold mb-4 d-flex align-items-center">
-                                                                <span class="fs-5 text-dark">{{ number_format($minPrice) }}₫</span>
-                                                                <span class="mx-2">-</span>
-                                                                <span class="fs-5 text-dark">{{ number_format($maxPrice) }}₫</span>
-                                                            </h7>
-                                        @else
-                                            <h7 class="fw-bold mb-4 text-dark">
-                                                <span class="fs-5">{{ number_format($viewedProduct->price) }}₫</span>
                                             </h7>
                                         @endif
                                     </div>

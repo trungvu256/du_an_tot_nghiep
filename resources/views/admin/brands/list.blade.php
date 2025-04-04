@@ -96,7 +96,7 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script> --}}
     <script>
         $(document).ready(function() {
             $('#filterRemove').click(function() {
@@ -105,7 +105,8 @@
             });
         });
     </script>
-    @if (session('create'))
+    @include('alert')
+    {{-- @if (session('create'))
         <script>
             Swal.fire({
                 position: "top",
@@ -117,7 +118,7 @@
                 timer: 3500
             });
         </script>
-    @endif
+    @endif --}}
 
     <script>
         // Xác nhận khi xóa brand
@@ -146,7 +147,7 @@
         });
     </script>
 
-    @if (session('updateError'))
+    {{-- @if (session('updateError'))
         <script>
             Swal.fire({
                 position: "top",
@@ -184,5 +185,6 @@
                 timer: 3000
             });
         </script>
-    @endif
+    @endif --}}
+    @include('alert')
 @endsection

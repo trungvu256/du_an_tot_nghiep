@@ -28,7 +28,7 @@ class ProductReviewController extends Controller
         $review = ProductReview::findOrFail($id);
         $review->delete();
 
-        return redirect()->route('product-reviews.index')->with('destroyReview', true);
+        return redirect()->route('product-reviews.index')->with('success', true);
     }
 
     // Phản hồi đánh giá
@@ -44,9 +44,9 @@ class ProductReviewController extends Controller
                 'response' => $request->response,
             ]);
 
-            return redirect()->route('product-reviews.index')->with('respond', 'Phản hồi đã được gửi.');
+            return redirect()->route('product-reviews.index')->with('success', 'Phản hồi đã được gửi.');
         } catch (\Throwable $th) {
-            return redirect()->route('product-reviews.index')->with('respondError', 'Có lỗi xảy ra khi gửi phản hồi.');
+            return redirect()->route('product-reviews.index')->with('error', 'Có lỗi xảy ra khi gửi phản hồi.');
         }
     }
 }
