@@ -313,7 +313,10 @@ body {
                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
                         <img class="img-fluid w-100 product-image" style="height: 250px; object-fit: contain;"
                             src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }}">
-
+                            <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}" class="icon-link">
+                                <i class="fas fa-eye"></i>
+                                <span class="tooltip-text">Xem chi tiết</span>
+                            </a>
                         <!-- Thêm div chứa từng icon riêng biệt -->
                         <div class="product-overlay">
                             <div class="icon-box cart-icon">
