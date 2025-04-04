@@ -418,7 +418,7 @@ Route::middleware(['auth', 'user'])->group(function () {
         Route::get('/donhang', [WebOrderController::class, 'index'])->name('donhang.index');
         Route::get('/donhang/show/{id}', [WebOrderController::class, 'show'])->name('donhang.show');
         // Route hủy đơn hàng
-        Route::get('order/{id}/cancel', [WebOrderController::class, 'cancel'])->name('order.cancel');
+        Route::post('order/{id}/cancel', [WebOrderController::class, 'cancel'])->name('order.cancel');
 
         // Route xác nhận đã nhận được hàng
         Route::get('order/{id}/received', [WebOrderController::class, 'received'])->name('order.received');
