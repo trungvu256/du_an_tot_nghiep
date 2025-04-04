@@ -394,7 +394,7 @@ Route::middleware(['auth', 'user'])->group(function () {
         // Áp mã giảm giá
         Route::post('/cart/apply-promotion', [CartController::class, 'applyPromotion'])->name('cart.applyPromotion');
         Route::get('/viewCart/show', [CartController::class, 'showHeaderCart'])->name('cart.showHeaderCart');
-        Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.removess');
+        Route::post('/cart/removesss/{id}', [CartController::class, 'remove'])->name('cart.removess');
 
     });
 
