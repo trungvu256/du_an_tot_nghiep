@@ -226,18 +226,20 @@
             <div class="container-fluid">
 
                 <div id="header-carousel" class="containerfluid carousel slide" data-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active" style="height: 550px;">
-                            <img class="img-fluid" src="{{ asset('/images/Banner/slider_2.jpg') }}" alt="Image">
-                            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-
+                    <a href="{{route('web.shop')}}" title="TẤT CẢ SẢN PHẨM">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active" style="height: 550px;">
+                                <img class="img-fluid" src="{{ asset('/images/Banner/slider_2.jpg') }}" alt="Banner">
+                                <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+    
+                                </div>
+                            </div>
+                            <div class="carousel-item" style="height: 550px;">
+                                <img class="img-fluid" src="{{ asset('/images/Banner/slider_1.jpg') }}" alt="Banner">
+    
                             </div>
                         </div>
-                        <div class="carousel-item" style="height: 550px;">
-                            <img class="img-fluid" src="{{ asset('/images/Banner/slider_1.jpg') }}" alt="Image">
-
-                        </div>
-                    </div>
+                    </a>
                     <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
                         <div class="btn btn-dark" style="width: 45px; height: 45px;">
                             <span class="carousel-control-prev-icon mb-n2"></span>
@@ -295,7 +297,7 @@
     <div class="container-fluid pt-5">
         <div class="text-center mb-5">
             <h3 class="text-3xl font-normal tracking-wide text-black uppercase">
-                BỘ SƯU TẬP MỚI
+                SẢN PHẨM MỚI
             </h3>
         </div>
         <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 0 5px;">
@@ -400,32 +402,32 @@
     <div class="container-fluid pt-5">
         <div class="text-center mb-5">
             <h3 class="text-3xl font-normal tracking-wide text-black uppercase">
-                SẢN PHẨM HOT
+                SẢN PHẨM BÁN CHẠY
             </h3>
         </div>
         <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 0 20px;">
 
 
             <div class="row justify-content-center px-xl-5 pb-3">
-                @foreach ($list_product as $product)
+                @foreach ($bestSellers as $bestSeller)
                     <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
                         <div class="card product-item border-0 shadow-sm rounded position-relative">
                             <div
                                 class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}" class="icon-link">
+                                <a href="{{ route('web.shop-detail', ['id' => $bestSeller->id]) }}" class="icon-link">
                                     <img class="img-fluid w-100 product-image" style="height: 250px; object-fit: contain;"
-                                        src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
+                                        src="{{ asset('storage/' . $bestSeller->image) }}" alt="{{ $bestSeller->name }}">
                                 </a>
                                 <!-- Thêm div chứa từng icon riêng biệt -->
                                 <div class="product-overlay">
                                     <div class="icon-box cart-icon">
-                                        <form action="{{ route('cart.create', ['id' => $product->id]) }}" method="post">
+                                        <form action="{{ route('cart.create', ['id' => $bestSeller->id]) }}" method="post">
                                             @csrf
                                             <input type="hidden" name="quantity" value="1">
-                                            <input type="hidden" name="name" value="{{ $product->name }}">
+                                            <input type="hidden" name="name" value="{{ $bestSeller->name }}">
                                             <input type="hidden" name="price"
-                                                value="{{ $product->variants->min('price') }}">
-                                            <input type="hidden" name="image" value="{{ $product->image }}">
+                                                value="{{ $bestSeller->variants->min('price') }}">
+                                            <input type="hidden" name="image" value="{{ $bestSeller->image }}">
                                             <button type="submit" class="btn btn-danger">
                                                 <i class="fas fa-shopping-cart"></i>
                                                 Thêm vào giỏ hàng
@@ -437,15 +439,15 @@
                                 </div>
                             </div>
                             <div class="card-body text-center p-3">
-                                <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}" class="icon-link"
+                                <a href="{{ route('web.shop-detail', ['id' => $bestSeller->id]) }}" class="icon-link"
                                     style="text-decoration-color: #0ab39c;">
                                     <h4 class="text-truncate mb-2" style="color: #0ab39c">
-                                        {{ mb_substr($product->name, 0, 20, 'UTF-8') }}</h4>
+                                        {{ mb_substr($bestSeller->name, 0, 20, 'UTF-8') }}</h4>
                                 </a>
                                 <div class="d-flex justify-content-center align-items-center">
                                     @php
-                                        $minPrice = $product->variants->min('price');
-                                        $maxPrice = $product->variants->max('price');
+                                        $minPrice = $bestSeller->variants->min('price');
+                                        $maxPrice = $bestSeller->variants->max('price');
                                     @endphp
 
                                     <h6 class="text-danger font-weight-bold">
@@ -540,61 +542,6 @@
         </div>
     </div>
     <!-- Subscribe End -->
-
-
-    <!-- Products Start -->
-    <!-- <div class="container-fluid pt-5">
-            <div class="text-center mb-4">
-                <h2 class="section-title px-5"><span class="px-2">Sản phẩm HOT</span></h2>
-            </div>
-
-            <div class="row px-xl-5 pb-3">
-                @foreach ($list_product_new as $product)
-    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="card product-item border-0 shadow-sm rounded">
-                        <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                            <img class="img-fluid w-100" src="{{ asset('storage/' . $product->image) }}"
-                                alt="{{ $product->name }}">
-                        </div>
-                        <div class="card-body text-center p-3">
-                            <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
-                            <div class="d-flex justify-content-center align-items-center">
-                                @php
-                                    $minPrice = $product->variants->min('price');
-                                    $maxPrice = $product->variants->max('price');
-                                @endphp
-
-                                <h6 class="text-danger font-weight-bold">
-                                    {{ number_format($minPrice) }}₫
-                                    @if ($minPrice !== $maxPrice)
-    - {{ number_format($maxPrice) }}₫
-    @endif
-                                </h6>
-                            </div>
-
-                        </div>
-                        <div class="card-footer bg-light border-top d-flex justify-content-between">
-                            <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
-                                class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-eye"></i> Xem chi tiết
-                            </a>
-                            <a href="{{ route('user.cart') }}" class="btn btn-outline-success btn-sm">
-                                <i class="fas fa-shopping-cart"></i> Mua ngay
-                            </a>
-                        </div>
-                    </div>
-                </div>
-    @endforeach
-            </div>
-        </div> -->
-
-    <!-- Products End -->
-    <!-- bài viết -->
-
-
-
-
-
 
     <body>
         <div class="container py-5">

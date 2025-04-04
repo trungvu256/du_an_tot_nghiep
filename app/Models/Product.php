@@ -159,4 +159,8 @@ class Product extends Model
         $this->save();
         return $totalStock;
     }
+
+    public function orderItems() {
+        return $this->hasMany(OrderItem::class);
+    }
 }

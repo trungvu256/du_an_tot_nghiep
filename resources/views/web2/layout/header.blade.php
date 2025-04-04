@@ -209,7 +209,7 @@
     </style>
     <!-- HEADER -->
     <div class="container-fluid bg-white">
-        <div class="row align-items-center py-3 px-xl-5">
+        <div class="row d-flex justify-content-between align-items-center py-2">
             <!-- Logo -->
             <div class="col-lg-3 text-start">
                 <a href="/" class="text-decoration-none">
@@ -221,104 +221,49 @@
             </div>
 
             <!-- MENU NAV -->
-
-
             <div class="col-lg-6">
-                <nav class="navbar navbar-expand-lg navbar-light">
-                    <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarNav">
+                <nav class="navbar navbar-expand-lg  py-3 py-lg-0 px-0">
+                    <a href="" class="text-decoration-none d-block d-lg-none">
+                        <h1 class="m-0 display-5 font-weight-semi-bold"><span
+                                class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
+                    </a>
+                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                        <ul class="navbar-nav d-flex flex-nowrap align-items-center overflow-auto" id="navbar-menu">
-                            <li class="nav-item px-3">
-                                <a class="nav-link text-nowrap {{ request()->routeIs('web.home') ? 'active' : '' }}"
-                                    href="{{ route('web.home') }}">TRANG CHỦ</a>
-                            </li>
-                            <li class="nav-item px-3">
-                                <a class="nav-link text-nowrap {{ request()->routeIs('web.shop') ? 'active' : '' }}"
-                                    href="{{ route('web.shop') }}">SẢN PHẨM</a>
-                            </li>
-                            <li class="nav-item dropdown px-3">
-                                <a class="nav-link dropdown-toggle d-flex align-items-center text-nowrap" href="#"
-                                   id="navbarDropdown" aria-expanded="false">
-                                    NƯỚC HOA
-                                </a>
-                                <ul class="dropdown-menu shadow border-0 rounded-3 p-2 animate-dropdown"
-                                    aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item py-2 px-3 rounded-2" href="#">Nước hoa Nam</a></li>
-                                    <li><a class="dropdown-item py-2 px-3 rounded-2" href="#">Nước hoa Nữ</a></li>
-                                    <li><a class="dropdown-item py-2 px-3 rounded-2" href="#">Nước hoa Unisex</a></li>
-                                </ul>
-                            </li>
-
-                            <li class="nav-item px-3">
-                                <a class="nav-link text-nowrap {{ request()->routeIs('web.listBlog.blog') ? 'active' : '' }}"
-                                    href="{{ route('web.listBlog.blog') }}">BÀI VIẾT</a>
-                            </li>
-                            <li class="nav-item px-3">
-                                <a class="nav-link text-nowrap {{ request()->routeIs('user.contact') ? 'active' : '' }}"
-                                    href="{{ route('user.contact') }}">LIÊN HỆ</a>
-                            </li>
-                        </ul>
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                        <div class="navbar-nav mr-auto py-0">
+                            <a class="nav-link text-nowrap {{ request()->routeIs('web.home') ? 'active' : '' }}"
+                                href="{{ route('web.home') }}" style="font-size: large">TRANG CHỦ</a>
+                            <a class="nav-link text-nowrap {{ request()->routeIs('web.shop') ? 'active' : '' }}"
+                                href="{{ route('web.shop') }}" style="font-size: large">SẢN PHẨM</a>
+                            <div class="nav-item dropdown ml-0">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"
+                                    style="font-size: large">DANH MỤC</a>
+                                <div class="dropdown-menu rounded-0 m-0">
+                                    @foreach ($categories as $cate)
+                                        <a href="{{ route('web.shopByCate', $cate->id) }}" class="dropdown-item"
+                                            style="font-size: large">{{ $cate->name }}</a>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <a class="nav-link text-nowrap {{ request()->routeIs('web.listBlog.blog') ? 'active' : '' }}"
+                                href="{{ route('web.listBlog.blog') }}" style="font-size: large">BÀI VIẾT</a>
+                            <a class="nav-link text-nowrap {{ request()->routeIs('user.contact') ? 'active' : '' }}"
+                                href="{{ route('user.contact') }}" style="font-size: large">LIÊN HỆ</a>
+                        </div>
+                        {{-- <div class="navbar-nav ml-auto py-0">
+                            <a href="" class="nav-item nav-link">Login</a>
+                            <a href="" class="nav-item nav-link">Register</a>
+                        </div> --}}
                     </div>
                 </nav>
-            </div>
-
-
-
-
-            <!-- Thanh tìm kiếm -->
-            <!-- Thanh tìm kiếm (bọc trong 1 div có ID nếu bạn cần JS ẩn/hiện) -->
-            <div class="search-bar" id="searchBar">
-                <div class="container-fluid px-3 py-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <!-- Logo -->
-                        <div class="col-lg-3 text-start" style="margin-left: 20px;">
-                            <a href="/" class="text-decoration-none">
-                                <h1 class="m-0 display-5 font-weight-semi-bold"
-                                    style="font-family: 'Montserrat', sans-serif;">
-                                    <span class="text-primary font-weight-bold px-3 mr-1">Ethereal</span>Noir
-                                </h1>
-                            </a>
-                        </div>
-
-                        <!-- Thanh tìm kiếm -->
-                        <div class="flex-grow-1 d-flex justify-content-center mx-2">
-                            <form action="{{ route('web.shop') }}" method="GET"
-                                class="d-flex align-items-center border rounded-pill px-3 py-2 shadow-sm"
-                                style="max-width: 700px; width: 100%; height: 40px;">
-                                <input type="text" name="name"
-                                    class="form-control border-0 shadow-none flex-grow-1"
-                                    placeholder="Tìm theo nội dung..."
-                                    style="outline: none; font-size: 14px; padding: 6px; height: 100%;" required>
-                                <button type="submit"
-                                    class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center ms-2"
-                                    style="width: 35px; height: 35px;">
-                                    <i class="fa fa-search text-white"></i>
-                                </button>
-                            </form>
-                        </div>
-
-
-                    </div>
-                </div>
-
-
-
-
-
 
             </div>
 
-
-            <!-- ICONS -->
             <div class="col-lg-3">
                 <div class="icon-menu">
                     <!-- Icon tìm kiếm -->
                     <i class="fas fa-search fa-lg cursor-pointer" id="searchIcon"></i>
-
-
                     <!-- Icon người dùng -->
                     <div class="dropdown">
                         @auth
@@ -332,7 +277,7 @@
 
                                 <li><a href="">Chat với Admin</a></li>
 
-                         
+
 
                                 <li><a class="dropdown-item" href="{{ route('checkout.order') }}">Lịch sử mua hàng</a>
                                 </li>
@@ -352,118 +297,158 @@
                         @endauth
                     </div>
 
-                   <!-- Icon giỏ hàng -->
-<!-- Icon giỏ hàng -->
-<div class="cart-icon dropdown">
-    <a href="#" class="text-dark dropdown-toggle" id="cartDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="fas fa-shopping-cart fa-lg"></i>
-        <span class="cart-badge">{{ session('cart') ? collect(session('cart'))->sum('quantity') : 0 }}</span>
-    </a>
+                    <!-- Icon giỏ hàng -->
+                    <!-- Icon giỏ hàng -->
+                    <div class="cart-icon dropdown">
+                        <a href="#" class="text-dark dropdown-toggle" id="cartDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-shopping-cart fa-lg"></i>
+                            <span
+                                class="cart-badge">{{ session('cart') ? collect(session('cart'))->sum('quantity') : 0 }}</span>
+                        </a>
 
-    <!-- Dropdown danh sách sản phẩm trong giỏ hàng -->
-    <ul class="dropdown-menu dropdown-menu-end p-2" aria-labelledby="cartDropdown" style="width: 300px;">
-        @php $cart = session('cart', []); @endphp
-        @if(count($cart) > 0)
-            @foreach($cart as $item)
-                <li class="d-flex align-items-center justify-content-between">
-                    <div class="d-flex">
-                        <img src="{{ asset('storage/' . $item['image']) }}" alt="{{ $item['name'] }}" width="50" class="me-2">
-                        <div>
-                            <strong>{{ $item['name'] }}</strong>
-                            <br>
-                            <small>{{ $item['quantity'] }} x {{ number_format($item['price'], 0, ',', '.') }} VNĐ</small>
-                        </div>
+                        <!-- Dropdown danh sách sản phẩm trong giỏ hàng -->
+                        <ul class="dropdown-menu dropdown-menu-end p-2" aria-labelledby="cartDropdown"
+                            style="width: 300px;">
+                            @php $cart = session('cart', []); @endphp
+                            @if (count($cart) > 0)
+                                @foreach ($cart as $item)
+                                    <li class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex">
+                                            <img src="{{ asset('storage/' . $item['image']) }}"
+                                                alt="{{ $item['name'] }}" width="50" class="me-2">
+                                            <div>
+                                                <strong>{{ $item['name'] }}</strong>
+                                                <br>
+                                                <small>{{ $item['quantity'] }} x
+                                                    {{ number_format($item['price'], 0, ',', '.') }} VNĐ</small>
+                                            </div>
+                                        </div>
+
+                                        <button type="button" class="btn btn-sm btn-danger btn-remove-item"
+                                            data-id="{{ $item['id'] }}">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+
+                                    </li>
+                                    <hr>
+                                @endforeach
+                                <li class="text-center">
+                                    <strong>Tổng:
+                                        {{ number_format(collect($cart)->sum(fn($i) => $i['quantity'] * $i['price']), 0, ',', '.') }}
+                                        VNĐ</strong>
+                                </li>
+                                <li class="text-center mt-2">
+                                    <a href="{{ route('cart.viewCart') }}" class="btn btn-primary btn-sm w-100">Xem
+                                        giỏ hàng</a>
+                                </li>
+                            @else
+                                <li class="text-center text-muted">Giỏ hàng trống</li>
+                            @endif
+                        </ul>
                     </div>
-                    
-                    <button type="button"
-        class="btn btn-sm btn-danger btn-remove-item"
-        data-id="{{ $item['id'] }}">
-    <i class="fa fa-times"></i>
-</button>
-                    
-                </li>
-                <hr>
-            @endforeach
-            <li class="text-center">
-                <strong>Tổng: {{ number_format(collect($cart)->sum(fn($i) => $i['quantity'] * $i['price']), 0, ',', '.') }} VNĐ</strong>
-            </li>
-            <li class="text-center mt-2">
-                <a href="{{ route('cart.viewCart') }}" class="btn btn-primary btn-sm w-100">Xem giỏ hàng</a>
-            </li>
-        @else
-            <li class="text-center text-muted">Giỏ hàng trống</li>
-        @endif
-    </ul>
-</div>
 
 
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        $(document).on('click', '.btn-remove-item', function (e) {
-            e.preventDefault();
-            let id = $(this).data('id');
-            
-            $.ajax({
-                url: '{{ route("cart.removess", ":id") }}'.replace(':id', id),
-                type: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function (res) {
-                    // Reload dropdown hoặc xoá trực tiếp DOM
-                    location.reload();
-                },
-                error: function (err) {
-                    alert("Xóa thất bại!");
-                }
-            });
-        });
-    </script>
-    
-    <script>
-        $(document).ready(function () {
-            $('.form-remove-item').on('submit', function (e) {
-                e.preventDefault(); // Ngăn reload trang
-        
-                const form = $(this);
-                const url = form.attr('action');
-        
-                $.ajax({
-                    url: url,
-                    method: 'POST',
-                    data: form.serialize(), // Lấy CSRF token
-                    success: function () {
-                        // Sau khi xóa thành công, reload lại giỏ hàng header và danh sách sản phẩm
-                        updateHeaderCart();
-                        updateCartTable();
-                    },
-                    error: function () {
-                        alert('Xóa sản phẩm thất bại');
-                    }
-                });
-            });
-        
-            function updateHeaderCart() {
-                $.get('{{ route("cart.showHeaderCart") }}', function (html) {
-                    $('#header-cart').html(html); // phần hiển thị giỏ hàng ở header
-                });
-            }
-        
-            function updateCartTable() {
-                $.get('{{ route("cart.index") }}', function (html) {
-                    $('#cart-table').html($(html).find('#cart-table').html()); // reload lại danh sách cart
-                });
-            }
-        });
-        </script>
-        
-    
-    <!-- Thanh tìm kiếm -->
-    
+    <!-- Thanh tìm kiếm (bọc trong 1 div có ID nếu bạn cần JS ẩn/hiện) -->
+    <div class="search-bar" id="searchBar">
+        <div class="container-fluid px-3 py-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <!-- Logo -->
+                <div class="col-lg-3 text-start" style="margin-left: 20px;">
+                    <a href="/" class="text-decoration-none">
+                        <h1 class="m-0 display-5 font-weight-semi-bold"
+                            style="font-family: 'Montserrat', sans-serif;">
+                            <span class="text-primary font-weight-bold px-3 mr-1">Ethereal</span>Noir
+                        </h1>
+                    </a>
+                </div>
 
+                <!-- Thanh tìm kiếm -->
+                <div class="flex-grow-1 d-flex justify-content-center mx-2">
+                    <form action="{{ route('web.shop') }}" method="GET"
+                        class="d-flex align-items-center border rounded-pill px-3 py-2 shadow-sm"
+                        style="max-width: 700px; width: 100%; height: 40px;">
+                        <input type="text" name="name" class="form-control border-0 shadow-none flex-grow-1"
+                            placeholder="Tìm theo nội dung..."
+                            style="outline: none; font-size: 14px; padding: 6px; height: 100%;" required>
+                        <button type="submit"
+                            class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center ms-2"
+                            style="width: 35px; height: 35px;">
+                            <i class="fa fa-search text-white"></i>
+                        </button>
+                    </form>
+                </div>
+                <script>
+                    $(document).on('click', '.btn-remove-item', function(e) {
+                        e.preventDefault();
+                        let id = $(this).data('id');
+
+                        $.ajax({
+                            url: '{{ route('cart.removess', ':id') }}'.replace(':id', id),
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(res) {
+                                // Reload dropdown hoặc xoá trực tiếp DOM
+                                location.reload();
+                            },
+                            error: function(err) {
+                                alert("Xóa thất bại!");
+                            }
+                        });
+                    });
+                </script>
+
+                <script>
+                    $(document).ready(function() {
+                        $('.form-remove-item').on('submit', function(e) {
+                            e.preventDefault(); // Ngăn reload trang
+
+                            const form = $(this);
+                            const url = form.attr('action');
+
+                            $.ajax({
+                                url: url,
+                                method: 'POST',
+                                data: form.serialize(), // Lấy CSRF token
+                                success: function() {
+                                    // Sau khi xóa thành công, reload lại giỏ hàng header và danh sách sản phẩm
+                                    updateHeaderCart();
+                                    updateCartTable();
+                                },
+                                error: function() {
+                                    alert('Xóa sản phẩm thất bại');
+                                }
+                            });
+                        });
+
+                        function updateHeaderCart() {
+                            $.get('{{ route('cart.showHeaderCart') }}', function(html) {
+                                $('#header-cart').html(html); // phần hiển thị giỏ hàng ở header
+                            });
+                        }
+
+                        function updateCartTable() {
+                            $.get('{{ route('cart.index') }}', function(html) {
+                                $('#cart-table').html($(html).find('#cart-table').html()); // reload lại danh sách cart
+                            });
+                        }
+                    });
+                </script>
+
+
+                <!-- Thanh tìm kiếm -->
+
+
+
+            </div>
+        </div>
+    </div>
 
     <script>
         // Xử lý mở/đóng thanh tìm kiếm
