@@ -226,17 +226,17 @@
             <div class="container-fluid">
 
                 <div id="header-carousel" class="containerfluid carousel slide" data-ride="carousel">
-                    <a href="{{route('web.shop')}}" title="TẤT CẢ SẢN PHẨM">
+                    <a href="{{ route('web.shop') }}" title="TẤT CẢ SẢN PHẨM">
                         <div class="carousel-inner">
                             <div class="carousel-item active" style="height: 550px;">
                                 <img class="img-fluid" src="{{ asset('/images/Banner/slider_2.jpg') }}" alt="Banner">
                                 <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-    
+
                                 </div>
                             </div>
                             <div class="carousel-item" style="height: 550px;">
                                 <img class="img-fluid" src="{{ asset('/images/Banner/slider_1.jpg') }}" alt="Banner">
-    
+
                             </div>
                         </div>
                     </a>
@@ -322,7 +322,7 @@
                                 <!-- Thêm div chứa từng icon riêng biệt -->
                                 <div class="product-overlay">
                                     <div class="icon-box cart-icon">
-                                        <form action="{{ route('cart.create', ['id' => $product->id]) }}" method="post">
+                                        <form action="{{ route('cart.create', $product->id) }}" method="post">
                                             @csrf
                                             <input type="hidden" name="quantity" value="1">
                                             <input type="hidden" name="name" value="{{ $product->name }}">
@@ -373,7 +373,8 @@
 
     <div class="container-fluid pt-5">
         <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 0 40px;">
-            <img src="{{ asset('/images/Banner/banner00.jpg') }}" alt="Perfume Image" class="perfume-image responsive-img">
+            <img src="{{ asset('/images/Banner/banner00.jpg') }}" alt="Perfume Image"
+                class="perfume-image responsive-img">
 
 
             <!-- Text section -->
@@ -416,12 +417,14 @@
                                 class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
                                 <a href="{{ route('web.shop-detail', ['id' => $bestSeller->id]) }}" class="icon-link">
                                     <img class="img-fluid w-100 product-image" style="height: 250px; object-fit: contain;"
-                                        src="{{ asset('storage/' . $bestSeller->image) }}" alt="{{ $bestSeller->name }}">
+                                        src="{{ asset('storage/' . $bestSeller->image) }}"
+                                        alt="{{ $bestSeller->name }}">
                                 </a>
                                 <!-- Thêm div chứa từng icon riêng biệt -->
                                 <div class="product-overlay">
                                     <div class="icon-box cart-icon">
-                                        <form action="{{ route('cart.create', ['id' => $bestSeller->id]) }}" method="post">
+                                        <form action="{{ route('cart.create', ['id' => $bestSeller->id]) }}"
+                                            method="post">
                                             @csrf
                                             <input type="hidden" name="quantity" value="1">
                                             <input type="hidden" name="name" value="{{ $bestSeller->name }}">
@@ -476,42 +479,45 @@
         <div class="container">
             <div class="row d-flex justify-content-center">
                 <div class="col-md-6 d-flex flex-column align-items-center">
-                    <div class="w-100">
-                        <img src="{{ asset('/images/Banner/featured_coll_2_1_img.jpg') }}" alt="Perfume Image"
-                            class="perfume-image responsive-img w-100">
-                        <div class="text-center mt-3">
-                            <h3 class="text-3xl font-black tracking-wide text-black uppercase">
-                                NƯỚC HOA CHO NAM
-                            </h3>
+                    <a href="{{ route('web.shopByCate', 1) }}" class="view-details mt-2">
+                        <div class="w-100">
+                            <img src="{{ asset('/images/Banner/featured_coll_2_1_img.jpg') }}" alt="Perfume Image"
+                                class="perfume-image responsive-img w-100">
+                            <div class="text-center mt-3">
+                                <h3 class="text-3xl font-black tracking-wide text-black uppercase">
+                                    NƯỚC HOA CHO NAM
+                                </h3>
+                            </div>
+                            <div class="text-center mt-2">
+                                <p class="font-black tracking-wide text-black">
+                                    Mỗi hương thơm mà ARMAF sáng tạo dành cho phái mạnh là một tuyên ngôn không lời giúp các
+                                    chàng trai "ngầm" khẳng định chất riêng...
+                                </p>
+                            </div>
                         </div>
-                        <div class="text-center mt-2">
-                            <p class="font-black tracking-wide text-black">
-                                Mỗi hương thơm mà ARMAF sáng tạo dành cho phái mạnh là một tuyên ngôn không lời giúp các
-                                chàng trai "ngầm" khẳng định chất riêng...
-                            </p>
-                            <a href="#" class="view-details mt-2">Xem chi tiết →</a>
-                        </div>
-                    </div>
+                    </a>
                 </div>
 
                 <div class="col-md-6 d-flex flex-column align-items-center">
-                    <div class="w-100">
-                        <img src="{{ asset('/images/Banner/featured_coll_2_2_img.jpg') }}" alt="Perfume Image"
-                            class="perfume-image responsive-img w-100">
-                        <div class="text-center mt-3">
-                            <h3 class="text-3xl font-black tracking-wide text-black uppercase">
-                                NƯỚC HOA CHO NỮ
-                            </h3>
+                    <a href="{{ route('web.shopByCate', 2) }}" class="view-details mt-2">
+                        <div class="w-100">
+                            <img src="{{ asset('/images/Banner/featured_coll_2_2_img.jpg') }}" alt="Perfume Image"
+                                class="perfume-image responsive-img w-100">
+                            <div class="text-center mt-3">
+                                <h3 class="text-3xl font-black tracking-wide text-black uppercase">
+                                    NƯỚC HOA CHO NỮ
+                                </h3>
+                            </div>
+                            <div class="text-center mt-2">
+                                <p class="font-black tracking-wide text-black">
+                                    Với bộ sưu tập nước hoa mới, ARMAF khéo léo nắm bắt mọi khía cạnh trong khuôn dung và nội
+                                    hàm
+                                    của phái nữ hiện đại...
+                                </p>
+                                
+                            </div>
                         </div>
-                        <div class="text-center mt-2">
-                            <p class="font-black tracking-wide text-black">
-                                Với bộ sưu tập nước hoa mới, ARMAF khéo léo nắm bắt mọi khía cạnh trong khuôn dung và nội
-                                hàm
-                                của phái nữ hiện đại...
-                            </p>
-                            <a href="#" class="view-details mt-2">Xem chi tiết →</a>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>

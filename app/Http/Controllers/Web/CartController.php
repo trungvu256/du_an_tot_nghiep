@@ -18,6 +18,7 @@ class CartController extends Controller
     public function shopdetail($id)
 {
     // Lấy sản phẩm chi tiết
+    $categories = Catalogue::all();
     $detailproduct = Product::findOrFail($id);
     $product = Product::with(['comments', 'reviews'])->find($id);
     $description_images = Images::where('product_id', $id)->get();
@@ -120,7 +121,8 @@ class CartController extends Controller
         'category',
         'brands',
         'attributes',
-        'variant'
+        'variant',
+        'categories'
     ));
 }
 
@@ -135,6 +137,7 @@ class CartController extends Controller
 
     public function viewCart()
     {
+        $categories = Catalogue::all();
         $cart = session()->get('cart', []);
         $totalAmount = 0;
 
@@ -143,7 +146,7 @@ class CartController extends Controller
             $totalAmount += $item['price'] * $item['quantity'];
         }
         // dd($cart);
-        return view('web2.Home.cart', compact('cart', 'totalAmount'));
+        return view('web2.Home.cart', compact('cart', 'totalAmount', 'categories'));
     }
 
     public function createAddTocart(Request $request, $id)
@@ -299,6 +302,7 @@ class CartController extends Controller
 
     public function index()
     {
+        $categories=Catalogue::all();
         $cart = session('cart', []);
         $subtotal = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
         $promotion = session('promotion');
@@ -306,7 +310,7 @@ class CartController extends Controller
         $discount = $promotion['discount'] ?? 0;
         $total = max(0, $subtotal - $discount + $shippingFee);
 
-        return view('web2.Home.checkout', compact('cart', 'subtotal', 'promotion', 'shippingFee', 'discount', 'total'));
+        return view('web2.Home.checkout', compact('categories', 'cart', 'subtotal', 'promotion', 'shippingFee', 'discount', 'total'));
     }
 
     public function remove($id)
