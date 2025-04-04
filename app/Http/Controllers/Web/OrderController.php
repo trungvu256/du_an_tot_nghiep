@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Catalogue;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -11,7 +12,8 @@ class OrderController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Order::query();
+        $query = Order::orderBy('created_at', 'desc');
+        $categories = Catalogue::all();
 
         // Lọc theo trạng thái giao hàng
         if ($request->filled('status')) {
@@ -41,15 +43,16 @@ class OrderController extends Controller
 
         $orders = $query->paginate(10);
 
-        return view('web2.Home.order', compact('orders'));
+        return view('web2.Home.order', compact('orders','categories'));
     }
 
     // show order
     public function show($id)
 {
+    $categories = Catalogue::all();
     $order = Order::with(['orderItems.product', 'shippingInfo', 'orderItems.productVariant'])->findOrFail($id);
 
-    return view('web2.Home.orderItem', compact('order'));
+    return view('web2.Home.orderItem', compact('order','categories'));
 }
 
 
