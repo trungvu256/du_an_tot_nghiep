@@ -396,6 +396,7 @@ Route::middleware(['auth', 'user'])->group(function () {
         Route::post('/cart/apply-promotion', [CartController::class, 'applyPromotion'])->name('cart.applyPromotion');
         Route::get('/viewCart/show', [CartController::class, 'showHeaderCart'])->name('cart.showHeaderCart');
         Route::post('/cart/removesss/{id}', [CartController::class, 'remove'])->name('cart.removess');
+        Route::post('/cart/checkout-selected', [CartController::class, 'checkoutSelected'])->name('cart.checkoutSelected');
 
     });
 
@@ -403,7 +404,7 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::prefix('checkout')->group(function () {
         Route::post('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
         Route::get('/checkout/app', [CheckoutController::class, 'appvnp'])->name('checkout.appvnp');
-        Route::get('/checkout/view', [CheckoutController::class, 'checkout'])->name('checkout.view');
+        Route::post('/checkout/view', [CheckoutController::class, 'checkout'])->name('checkout.view');
         Route::post('/checkout/vnpay', [CheckoutController::class, 'depositVNPay'])->name('checkout.depositVNPay');
         Route::match(['get', 'post'], '/checkout/vnpay-callback', [CheckoutController::class, 'vnpayCallback'])->name('checkout.vnpay.callback');
         Route::get('/checkout/order', [CheckoutController::class, 'order'])->name('checkout.order');
