@@ -298,12 +298,9 @@
                 BỘ SƯU TẬP MỚI
             </h3>
         </div>
-
-
-
         <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 0 5px;">
             <div class="row justify-content-center px-xl-5 pb-3">
-                @foreach ($products as $product)
+                @foreach ($productNews as $product)
                     @php
                         $minPrice = $product->variants->isNotEmpty()
                             ? $product->variants->min('price')
