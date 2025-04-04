@@ -18,10 +18,28 @@ class WebController extends Controller
         $blogs = Blog::latest()->take(3)->get();
         return view('web2.Home.home', compact('list_product', 'list_product_new', 'blogs', 'products'));
     }
-    public function shop()
+    public function shop(Request $request)
     {
-        return view('web2.Home.shop');
+        $query = Product::query();
+    
+        // Lọc theo tên sản phẩm (nếu có)
+        if ($request->has('name') && !empty($request->name)) {
+            $query->where('name', 'LIKE', '%' . $request->name . '%');
+        }
+    
+        // Lọc theo danh mục (nếu có)
+        if ($request->has('category') && !empty($request->category)) {
+            $query->whereHas('category', function ($q) use ($request) {
+                $q->where('name', 'LIKE', '%' . $request->category . '%');
+            });
+        }
+    
+        // Phân trang kết quả
+        $list_product = $query->paginate(8);
+    
+        return view('web2.Home.shop', compact('list_product'));
     }
+    
 
     public function shopdetail($id)
     {

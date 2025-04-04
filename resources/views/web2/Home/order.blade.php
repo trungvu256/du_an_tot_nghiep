@@ -9,18 +9,18 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-
         @if (session('error'))
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 {{ session('error') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-
         {{-- Tiêu đề --}}
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h4 class="fw-bold">📦 Danh sách đơn hàng</h4>
         </div>
+
+
 
         {{-- Thanh tìm kiếm --}}
         <div class="mb-3">
@@ -31,6 +31,7 @@
             </form>
         </div>
 
+
         {{-- Thanh trạng thái --}}
         @php
             $status = request('status');
@@ -38,60 +39,7 @@
         @endphp
 
         {{-- Form cập nhật trạng thái --}}
-        <form action="{{ route('orders.updateStatus') }}" method="POST" id="bulk-update-form">
-            @csrf
-            <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap">
-                {{-- Tabs chuyển trạng thái --}}
-                <ul class="nav nav-tabs flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link {{ is_null($status) && is_null($payment_status) ? 'active' : '' }}"
-                            href="{{ route('admin.order') }}">
-                            🛒 Tất cả
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ $status == 0 && is_null($payment_status) ? 'active' : '' }}"
-                            href="{{ route('admin.order', ['status' => 0]) }}">
-                            ⏳ Chưa xử lý
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ $status == 1 && is_null($payment_status) ? 'active' : '' }}"
-                            href="{{ route('admin.order', ['status' => 1]) }}">
-                            📦 Chờ lấy hàng
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ $status == 2 && is_null($payment_status) ? 'active' : '' }}"
-                            href="{{ route('admin.order', ['status' => 2]) }}">
-                            🚚 Đang giao hàng
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ is_null($status) && $payment_status === '0' ? 'active' : '' }}"
-                            href="{{ route('admin.order', ['payment_status' => 0]) }}">
-                            💰 Chưa thanh toán
-                        </a>
-                    </li>
-                </ul>
-        
-                {{-- Dropdown và nút cập nhật --}}
-                <div class="d-flex align-items-center ms-auto mt-2 mt-md-0">
-                    <select name="status" class="form-select form-select-sm me-2" id="bulk-status" style="width: 180px;">
-                        <option value="0">Chờ xử lý</option>
-                        <option value="1">Chờ lấy hàng</option>
-                        <option value="2">Đơn vị vận chuyển đã lấy hàng</option>
-                        <option value="3">Đang giao</option>
-                        <option value="4">Đã giao</option>
-                        <option value="5">Hoàn tất</option>
-                        <option value="6">Đã hủy</option>
-                    </select>
-        
-                    <input type="hidden" name="order_ids" id="selected-orders">
-                    <button type="submit" class="btn btn-primary btn-sm px-3">Cập nhật</button>
-                </div>
-            </div>
-        </form>
+
 
         {{-- Bảng danh sách đơn hàng --}}
         <div class="card mt-3 shadow-sm">
@@ -110,9 +58,11 @@
                     </thead>
                     <tbody>
                         @foreach ($orders as $order)
-                            <tr onclick="window.location='{{ route('admin.show.order', $order->id) }}';" style="cursor: pointer;">
+                            <tr onclick="window.location='{{ route('donhang.show', $order->id) }}';"
+                                style="cursor: pointer;">
                                 <td>
-                                    <input type="checkbox" name="order_ids[]" value="{{ $order->id }}" class="order-checkbox">
+                                    <input type="checkbox" name="order_ids[]" value="{{ $order->id }}"
+                                        class="order-checkbox">
                                 </td>
                                 <td>WD{{ $order->id }}</td>
                                 <td>{{ $order->created_at ? $order->created_at->format('d/m/Y H:i') : '---' }}</td>
@@ -120,35 +70,41 @@
                                 <td>{{ number_format($order->total_price, 0, ',', '.') }}₫</td>
                                 <td>
                                     @if ($order->payment_status == 0)
-                                        <span class="badge bg-warning text-dark">🟡 Tiếp tục thanh toán</span>
+                                        <span class="badge bg-warning text-dark">🟡 Chưa thanh toán</span>
                                         <div class="mt-1">
-                                            <a href="{{ route('order.continuePayment', $order->id) }}" class="btn btn-sm btn-primary">
+                                            <a href="{{ route('order.continuePayment', $order->id) }}"
+                                                class="btn btn-sm btn-primary">
                                                 Thanh toán ngay
                                             </a>
                                         </div>
                                     @elseif ($order->payment_status == 1)
-                                        <span class="badge bg-success">🟢 Đã thanh toán</span>
+                                        <span class="badge bg-success">🟢 Đã thanh toán bằng vnpay</span>
+                                    @elseif ($order->payment_status == 2)
+                                        <span class="badge bg-success">🟢 Thanh toán khi nhận hàng</span>
                                     @else
                                         <span class="badge bg-danger">🔴 Thất bại</span>
                                     @endif
                                 </td>
                                 <td>
                                     @if ($order->status == 0)
-                                        <span class="badge bg-secondary">⏳ Chờ xử lý</span>
+                                        <span class="badge bg-secondary">⏳ Chờ xác nhận</span>
+                                        <a href="{{ route('order.cancel', $order->id) }}" class="btn btn-danger btn-sm mt-2" onclick="return confirm('Bạn chắc chắn muốn hủy đơn hàng này?')">Hủy đơn</a>
                                     @elseif ($order->status == 1)
                                         <span class="badge bg-info">📦 Chờ lấy hàng</span>
+                                        <a href="{{ route('order.cancel', $order->id) }}" class="btn btn-danger btn-sm mt-2" onclick="return confirm('Bạn chắc chắn muốn hủy đơn hàng này?')">Hủy đơn</a>
                                     @elseif ($order->status == 2)
-                                        <span class="badge bg-primary">🚚 Đơn vị vận chuyển đã lấy hàng</span>
+                                        <span class="badge bg-primary">🚚 Chờ giao hàng</span>
                                     @elseif ($order->status == 3)
-                                        <span class="badge bg-warning">🚛 Đang giao</span>
+                                        <span class="badge bg-warning">✅ Đang giao</span>
+                                        <a href="{{ route('order.received', $order->id) }}" class="btn btn-success btn-sm mt-2" onclick="return confirm('Bạn đã nhận được hàng?')">Đã nhận được hàng</a>
                                     @elseif ($order->status == 4)
-                                        <span class="badge bg-success">✅ Đã giao</span>
+                                        <span class="badge bg-success">🚛 Trả hàng</span>
+                                        <a href="{{ route('order.returned', $order->id) }}" class="btn btn-warning btn-sm mt-2" onclick="return confirm('Bạn chắc chắn muốn xác nhận đã trả hàng?')">Xác nhận đã trả hàng</a>
                                     @elseif ($order->status == 5)
-                                        <span class="badge bg-dark">🏁 Hoàn tất</span>
-                                    @elseif ($order->status == 6)
-                                        <span class="badge bg-danger">❌ Đã hủy</span>
+                                        <span class="badge bg-dark">❌ Đã hủy</span>
                                     @endif
                                 </td>
+                                
                             </tr>
                         @endforeach
                     </tbody>
@@ -161,7 +117,6 @@
             </div>
         </div>
     </div>
-
     {{-- Script cập nhật danh sách đơn hàng được chọn --}}
     <script>
         document.getElementById('select-all').addEventListener('click', function() {
@@ -186,30 +141,26 @@
     </script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const checkboxes = document.querySelectorAll(".order-checkbox");
-            const selectedOrdersInput = document.getElementById("selected-orders");
-            const form = document.getElementById("bulk-update-form");
-        
-            // Khi form submit, cập nhật danh sách đơn hàng đã chọn
-            form.addEventListener("submit", function (event) {
-                const selectedOrderIds = [];
-        
-                checkboxes.forEach(checkbox => {
-                    if (checkbox.checked) {
-                        selectedOrderIds.push(checkbox.value);
-                    }
+        document.addEventListener("DOMContentLoaded", function() {
+            // Lắng nghe sự kiện real-time từ Pusher
+            window.Echo.channel('orders')
+                .listen('OrderPlaced', (e) => {
+                    console.log('Sự kiện OrderPlaced nhận được:', e); // Log để debug
+
+                    const toastEl = document.getElementById('orderToast');
+                    const messageEl = document.getElementById('orderMessage');
+                    const linkEl = document.getElementById('orderLink');
+
+                    // Hiển thị thông báo khi đơn hàng được tạo
+                    let message =
+                        `Đơn hàng mới WD${e.order_id} từ ${e.user_name}, tổng tiền: ${e.total_price}, lúc ${e.created_at}`;
+
+                    messageEl.innerHTML = message;
+                    linkEl.href = `{{ route('admin.show.order', '') }}/${e.order_id}`;
+
+                    const toast = new bootstrap.Toast(toastEl);
+                    toast.show();
                 });
-        
-                if (selectedOrderIds.length === 0) {
-                    alert("❌ Vui lòng chọn ít nhất một đơn hàng để cập nhật!");
-                    event.preventDefault(); // Ngăn chặn submit form
-                    return;
-                }
-        
-                // Cập nhật danh sách order_ids vào input ẩn
-                selectedOrdersInput.value = selectedOrderIds.join(",");
-            });
         });
     </script>
 @endsection

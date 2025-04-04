@@ -21,4 +21,12 @@ class OrderItem extends Model
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+    public function detailproduct()
+{
+    return $this->belongsTo(Product::class, 'product_id'); // Điều chỉnh theo cấu trúc DB của bạn
+}
+public function productVariant()
+{
+    return $this->belongsTo(ProductVariant::class, 'product_id');
+}
 }

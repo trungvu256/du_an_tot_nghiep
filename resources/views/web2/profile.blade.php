@@ -52,7 +52,6 @@
                             <input type="text" class="form-control" value="{{ Auth::user()->phone }}" disabled>
                         </div>
                     </div>
-
                     <div class="row mt-3">
                         <div class="col-md-7">
                             <label><strong>Email</strong></label>
@@ -62,12 +61,10 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="mt-3">
                         <label><strong>Địa chỉ (*)</strong></label>
                         <textarea class="form-control" rows="2" disabled>{{ Auth::user()->address }}</textarea>
                     </div>
-
                     <div class="text-center mt-4">
                         <a href="{{ route('profile.edit') }}" class="btn btn-warning px-4">Chỉnh sửa thông tin</a>
                     </div>
