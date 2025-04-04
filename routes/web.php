@@ -360,6 +360,7 @@ Route::get('login/google/callback', [HomeController::class, 'handleGoogleCallbac
 //web
 Route::get('/', [WebController::class, 'index'])->name('web.home');
 Route::get('/shop', [WebController::class, 'shop'])->name('web.shop');
+Route::get('/category/{cate_id}/products', [WebController::class, 'getProductsByCategory'])->name('web.shopByCate');
 
 // Route::get('/product/detail/{id}' , [WebController::class, 'detail'])->name('web.product.detail');
 

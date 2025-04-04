@@ -7,6 +7,7 @@ use Pusher\Pusher;
 use App\Http\Controllers\Controller;
 use App\Mail\OrderPlacedMail;
 use App\Mail\PaymentSuccessMail;
+use App\Models\Catalogue;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -21,13 +22,14 @@ use OrderPlaced;
 
 class CheckoutController extends Controller
 {
+
     public function index(Request $request)
 {
     $selectedCartKeys = json_decode($request->input('selected_cart_items'), true); // Mảng các cart key đã chọn
     $cart = session('cart', []);
-
     // Lọc giỏ hàng chỉ lấy các sản phẩm được chọn
     $filteredCart = collect($cart)->only($selectedCartKeys)->toArray();
+
 
     $subtotal = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $filteredCart));
     $promotion = session('promotion');
@@ -52,7 +54,6 @@ public function checkout(Request $request)
 
     if (empty($filteredCart)) {
         return redirect()->route('cart.viewCart')->with('error', 'Không có sản phẩm nào được chọn để thanh toán.');
-    }
 
     // Lấy các dữ liệu tóm tắt gửi từ form
     $subtotal = $request->input('subtotal');
@@ -306,6 +307,7 @@ private function mapAttributeKey($key)
 
     public function order(Request $request)
     {
+        $categories = Catalogue::all();
         $orders = Order::with('user') // Lấy thông tin khách hàng
             ->when($request->status !== null, function ($query) use ($request) {
                 return $query->where('status', $request->status);
@@ -316,7 +318,7 @@ private function mapAttributeKey($key)
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('web2.Home.order', compact('orders'));
+        return view('web2.Home.order', compact('orders', 'categories'));
     }
 
     public function continuePayment($id, Request $request)
