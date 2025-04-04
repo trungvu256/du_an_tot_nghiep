@@ -5,28 +5,9 @@
 <!-- Navbar End -->
 
 
-<!-- Page Header Start -->
-<div class="container-fluid bg-secondary mb-5">
-    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-        <h1 class="font-weight-semi-bold text-uppercase mb-3">Sản Phẩm</h1>
-        <div class="d-inline-flex">
-            <p class="m-0"><a href="/">Trang chủ</a></p>
-            <p class="m-0 px-2">-</p>
-            <p class="m-0">Sản phẩm</p>
-        </div>
-    </div>
-</div>
-<!-- Page Header End -->
-
-
 <!-- Shop Start -->
 <div class="container-fluid pt-5">
     <div class="row px-xl-5">
-
-
-
-
-
         <!-- Shop Product Start -->
         <div class="col-lg-12 col-md-12">
             <div class="row pb-3">
@@ -64,46 +45,46 @@
                             <div class="card product-item border-0 shadow-sm rounded position-relative">
                                 <div
                                     class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                    <img class="img-fluid w-100 product-image" style="height: 250px; object-fit: contain;"
-                                        src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }}">
-        
+                                    <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}" class="icon-link">
+                                        <img class="img-fluid w-100 product-image" style="height: 250px; object-fit: contain;"
+                                            src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
+                                    </a>
                                     <!-- Thêm div chứa từng icon riêng biệt -->
                                     <div class="product-overlay">
-                                        <div class="icon-box cart-icon">
-                                            <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}" class="icon-link">
-                                                <i class="fas fa-eye"></i>
-                                                <span class="tooltip-text">Xem chi tiết</span>
-                                            </a>
-                                        </div>
                                         <div class="icon-box cart-icon">
                                             <form action="{{ route('cart.create', ['id' => $product->id]) }}" method="post">
                                                 @csrf
                                                 <input type="hidden" name="quantity" value="1">
                                                 <input type="hidden" name="name" value="{{ $product->name }}">
-                                                <input type="hidden" name="price" value="{{ $product->variants->min('price') }}">
+                                                <input type="hidden" name="price"
+                                                    value="{{ $product->variants->min('price') }}">
                                                 <input type="hidden" name="image" value="{{ $product->image }}">
-                                                <button type="submit" class="icon-link btn btn-link p-0">
+                                                <button type="submit" class="btn btn-danger">
                                                     <i class="fas fa-shopping-cart"></i>
-                                                    <span class="tooltip-text">Thêm vào giỏ</span>
+                                                    Thêm vào giỏ hàng
                                                 </button>
                                             </form>
-                                            
+    
                                         </div>
-        
+    
                                     </div>
                                 </div>
                                 <div class="card-body text-center p-3">
-                                    <h6 class="text-truncate mb-2">{{ $product->name }}</h6>
+                                    <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}" class="icon-link"
+                                        style="text-decoration-color: #0ab39c;">
+                                        <h4 class="text-truncate mb-2" style="color: #0ab39c">
+                                            {{ mb_substr($product->name, 0, 20, 'UTF-8') }}</h4>
+                                    </a>
                                     <div class="d-flex justify-content-center align-items-center">
                                         @php
-                                        $minPrice = $product->variants->min('price');
-                                        $maxPrice = $product->variants->max('price');
+                                            $minPrice = $product->variants->min('price');
+                                            $maxPrice = $product->variants->max('price');
                                         @endphp
-        
+    
                                         <h6 class="text-danger font-weight-bold">
                                             {{ number_format($minPrice) }}₫
                                             @if ($minPrice !== $maxPrice)
-                                            - {{ number_format($maxPrice) }}₫
+                                                - {{ number_format($maxPrice) }}₫
                                             @endif
                                         </h6>
                                     </div>

@@ -13,10 +13,11 @@ class WebController extends Controller
     public function index()
     {
         $products = Product::all();
+        $productNews = Product::orderBy('id', 'DESC')->take(4)->get();
         $list_product = Product::with('category')->paginate(8);
         $list_product_new = Product::with('category')->orderBy('created_at', 'desc')->get();
         $blogs = Blog::latest()->take(3)->get();
-        return view('web2.Home.home', compact('list_product', 'list_product_new', 'blogs', 'products'));
+        return view('web2.Home.home', compact('list_product', 'list_product_new', 'blogs', 'products', 'productNews'));
     }
     public function shop(Request $request)
     {
@@ -35,7 +36,7 @@ class WebController extends Controller
         }
     
         // Phân trang kết quả
-        $list_product = $query->paginate(8);
+        $list_product = $query->paginate(12);
     
         return view('web2.Home.shop', compact('list_product'));
     }
@@ -44,12 +45,17 @@ class WebController extends Controller
     public function shopdetail($id)
     {
         $detailproduct = Product::find($id);
+        $relatedProducts = Product::where('category_id', $detailproduct->category_id)
+                          ->where('id', '!=', $detailproduct->id)
+                          ->orderBy('id', 'DESC')
+                          ->take(4)
+                          ->get();
 
         if (!$detailproduct) {
             abort(404); // Hiển thị trang 404 nếu sản phẩm không tồn tại
         }
 
-        return view('web2.Home.shop-detail', compact('detailproduct'));
+        return view('web2.Home.shop-detail', compact('detailproduct', 'relatedProducts'));
     }
 
     public function cart()
