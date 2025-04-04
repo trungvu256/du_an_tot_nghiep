@@ -1,7 +1,11 @@
 @extends('web2.layout.master')
 @section('content')
     <div class="container">
-        <h2 class="my-4 text-center text-primary">Chi tiết đơn hàng #{{ $order->id }}</h2>
+        <div class="d-flex align-items-center justify-content-between">
+            <a href="{{ route('donhang.index') }}" class="btn btn-link text-decoration-none">&larr; Quay lại</a>
+            <h2 class="my-4 text-center text-primary flex-grow-1 text-center">Chi tiết đơn hàng #{{ $order->id }}</h2>
+        </div>
+        
         <hr class="my-3">
 
         <!-- Thông tin khách hàng -->
