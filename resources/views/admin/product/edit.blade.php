@@ -165,21 +165,30 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($variants as $variant)
+                    @foreach ($product->variants as $variant)
                         @php
-                            $attributeNames = $variant->attributes->map(function($attr) {
+                            $attributeNames = $variant->product_variant_attributes->map(function ($attr) {
                                 return $attr->attribute->name . ': ' . $attr->attributeValue->value;
                             })->toArray();
                         @endphp
                         <tr>
                             <td>{{ implode(', ', $attributeNames) }}</td>
-                            <td><input type="number" class="form-control price-input" data-id="{{ $variant->id }}" value="{{ $variant->price }}"></td>
-                            <td><input type="number" class="form-control price-sale-input" data-id="{{ $variant->id }}" value="{{ $variant->price_sale }}"></td>
-                            <td><input type="number" class="form-control stock-input" data-id="{{ $variant->id }}" value="{{ $variant->stock_quantity }}"></td>
-                            <td><button class="btn btn-danger btn-sm delete-variant-btn" data-id="{{ $variant->id }}">Xóa</button></td>
+                            <td>
+                                <input type="number" class="form-control price-input" data-id="{{ $variant->id }}" value="{{ $variant->price }}">
+                            </td>
+                            <td>
+                                <input type="number" class="form-control price-sale-input" data-id="{{ $variant->id }}" value="{{ $variant->price_sale }}">
+                            </td>
+                            <td>
+                                <input type="number" class="form-control stock-input" data-id="{{ $variant->id }}" value="{{ $variant->stock_quantity }}">
+                            </td>
+                            <td>
+                                <button class="btn btn-danger btn-sm delete-variant-btn" data-id="{{ $variant->id }}">Xóa</button>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
+                
 
             </table>
 
