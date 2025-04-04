@@ -43,9 +43,7 @@
                         @foreach ($list_product as $product)
                         <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
                             <div class="card product-item border-0 shadow-sm rounded position-relative">
-                                <div
-                                    class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                    
+                                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">                       
                                         <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}" class="icon-link">
                                             <img class="img-fluid w-100 product-image" style="height: 250px; object-fit: contain;"
                                             src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }}">
@@ -76,7 +74,10 @@
                                     </div>
                                 </div>
                                 <div class="card-body text-center p-3">
-                                    <h6 class="text-truncate mb-2">{{ $product->name }}</h6>
+                                    <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}" class="icon-link">
+                                        <h6 class="text-truncate mb-2">{{ $product->name }}</h6>
+                                    </a>
+                                    
                                     <div class="d-flex justify-content-center align-items-center">
                                         @php
                                         $minPrice = $product->variants->min('price');
