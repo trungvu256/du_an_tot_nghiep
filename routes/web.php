@@ -34,6 +34,7 @@ use App\Models\Category;
 use App\Http\Controllers\Web\WebController;
 use App\Services\GHTKService;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -131,6 +132,17 @@ Route::middleware(['auth', 'admin'])->group(function () {
             route::delete('/force-delete/{id}', [BlogController::class, 'forceDelete'])->name('admin.forceDelete.blog');
         });
         Route::prefix('customer-groups')->group(function () {
+
+            
+
+            //thêm thành cvieen vào nhóm 
+
+            Route::post('/users/add-group', [UserController::class, 'addGroup'])->name('users.addGroup');
+            Route::post('/admin/users/add-to-group', [UserController::class, 'addUsersToGroup'])->name('users.addToGroup');
+
+            Route::get('/customer/assign_customers/{id}', [CustomerGroupController::class, 'assignCustomers'])
+            ->name('customer.assign_customers');
+
 
             // Route để hiển thị danh sách nhóm khách hàng
             Route::get('/customer', [CustomerGroupController::class, 'index'])->name('customer.index');

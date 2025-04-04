@@ -1,69 +1,121 @@
-@extends('admin.layouts.main')
+<!DOCTYPE html>
+<html lang="vi">
 
-@section('content')
-<div class="container">
-    <h2 class="mb-4">Thêm khách hàng vào nhóm: <span class="text-primary">{{ $group->name }}</span></h2>
-
-    <div class="card shadow-sm p-4">
-        <form action="{{ route('customer.store_assigned_customers', $group->id) }}" method="POST">
-            @csrf
-            <div class="mb-3">
-                <label for="users" class="form-label fw-bold">Chọn khách hàng</label>
-                <select class="form-select select2" id="users" name="users[]" multiple required>
-                    @foreach ($users as $user)
-                        <option value="{{ $user->id }}">
-                            {{ $user->name }} ({{ $user->email }}) - 
-                            Tổng mua: {{ number_format($user->orders_sum_total_price, 2) }} VNĐ, 
-                            Số đơn hàng: {{ $user->orders_count }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-        
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-user-plus"></i> Thêm vào nhóm
-                </button>
-                <a href="{{ route('customer.index') }}" class="btn btn-secondary">
-                    <i class="fas fa-times"></i> Hủy
-                </a>
-            </div>
-        </form>
-        
-
-        <!-- Phân trang -->
-        <div class="mt-4">
-            {{ $users->links('pagination::bootstrap-4') }} <!-- Sử dụng phân trang Bootstrap -->
-        </div>
-    </div>
-</div>
-
-<!-- Nhúng Select2 và tùy chỉnh giao diện -->
-@push('styles')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm người dùng vào nhóm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .select2-container .select2-selection--multiple {
-            height: auto !important;
-            border-radius: 8px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .select2-container--default .select2-selection--multiple .select2-selection__choice {
-            background-color: #007bff;
-            color: white;
+
+        body,
+        html {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            width: 100vw;
+            height: 100vh;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h4 {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-check {
+            font-size: 18px;
+            /* Tăng cỡ chữ */
+            padding: 5px;
+        }
+
+        .checkbox-list {
+            border: 1px solid #ccc;
             border-radius: 5px;
+            padding: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .btn-primary {
+            padding: 12px;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            /* Căn giữa checkbox với chữ */
+            padding-left: 20px;
+            /* Đẩy checkbox vào trong một chút */
+        }
+
+        .form-check-input {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            /* Tạo khoảng cách giữa checkbox và chữ */
         }
     </style>
-@endpush
+</head>
 
-@push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('.select2').select2({
-                placeholder: "Chọn khách hàng...",
-                allowClear: true
-            });
-        });
-    </script>
-@endpush
+<body>
 
-@endsection
+    <div class="container">
+        <h4>Thêm Thành Viên Vào Nhóm</h4>
+        <form action="{{ route('users.addGroup') }}" method="POST">
+            @csrf
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Chọn nhóm:</label>
+                <select name="group_id" class="form-select" style="font-size: 18px;">
+                        @foreach ($groups as $group)
+                            <option value="{{ $group->id }}">{{ $group->name }}</option>
+                        @endforeach
+                    
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Chọn thành viên:</label>
+                <div class="checkbox-list">
+                    @foreach ($users as $user)
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="user_id[]" value="{{ $user->id }}"
+                                id="user{{ $user->id }}">
+                            <label class="form-check-label" for="user{{ $user->id }}">
+                                {{ $user->name }} ({{ $user->email }})
+                            </label>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Thêm vào nhóm</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

@@ -13,9 +13,12 @@ class CustomerGroupController extends Controller
 {
     public function index()
     {
+        
         $customerGroups = CustomerGroup::withCount('users')->get();
 
         return view('admin.customer.index', compact('customerGroups'));
+
+        
     }
 
     // Hiển thị form tạo nhóm khách hàng
@@ -70,7 +73,7 @@ class CustomerGroupController extends Controller
     // Hiển thị form đưa khách hàng vào nhóm
     public function assignCustomers($groupId)
     {
-        $group = CustomerGroup::findOrFail($groupId); // Lấy nhóm khách hàng theo ID
+        $groups = CustomerGroup::all(); // Lấy nhóm khách hàng theo ID
 
         // Lấy tất cả khách hàng không phải admin và phân trang
         $users = User::where('is_admin', '<', 1)
@@ -78,7 +81,7 @@ class CustomerGroupController extends Controller
             ->withSum('orders', 'total_price') // Tính tổng số tiền chi tiêu của mỗi khách hàng
             ->paginate(20); // Phân trang, hiển thị 20 khách hàng mỗi trang
 
-        return view('admin.customer.adduserGroup', compact('group', 'users'));
+        return view('admin.customer.addusergroup', compact('groups', 'users'));
     }
 
 
@@ -91,7 +94,10 @@ class CustomerGroupController extends Controller
         ]);
 
         // Lấy nhóm khách hàng
+        $groups = DB::table('customer_groups')->get();
+        
         $group = CustomerGroup::findOrFail($groupId);
+
 
         // Lấy danh sách user đã có trong nhóm
         $existingUsers = $group->users()->pluck('users.id')->toArray();

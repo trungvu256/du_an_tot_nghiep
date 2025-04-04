@@ -22,20 +22,8 @@ class User extends Authenticatable
      *
      * @var string[]
      */
-    protected $fillable = [
-        'first_name', // Thêm Họ
-        'last_name',  // Thêm Tên
-        'name',       
-        'email',
-        'password',
-        'is_admin',
-        'provider_id',
-        'status',   
-        'gender',   
-        'phone',    
-        'address',  
-        'avatar',   
-    ];
+    protected $fillable = 
+        ['name', 'email', 'group_id'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -75,5 +63,15 @@ class User extends Authenticatable
     public function customerGroups()
     {
         return $this->belongsToMany(CustomerGroup::class, 'customer_group_user', 'user_id', 'customer_group_id');
+    }
+
+    public function group()
+    {
+        return $this->belongsTo(CustomerGroup::class);
+    }
+
+    public static function addUsersToGroup($groupId, $userIds)
+    {
+        return self::whereIn('id', $userIds)->update(['group_id' => $groupId]);
     }
 }

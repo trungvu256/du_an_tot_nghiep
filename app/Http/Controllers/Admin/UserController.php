@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Models\CustomerGroup;
 use Illuminate\Http\Request;
 
 class UserController
@@ -77,5 +78,35 @@ class UserController
 
     return redirect()->back()->with('success', 'Người dùng đã được bỏ chặn thành công!');
 }
+
+public function addUsersToGroup(Request $request)
+    {
+        $request->validate([
+            'group_id' => 'required|exists:customer_groups,id',
+            'user_ids' => 'required|array',
+            'user_ids.*' => 'exists:users,id',
+        ]);
+
+        User::addUsersToGroup($request->group_id, $request->user_ids);
+
+        return redirect()->back()->with('success', 'Thêm thành viên vào nhóm thành công!');
+    }
+    public function addGroup(Request $request)
+    {
+        // Xử lý logic thêm thành viên vào nhóm ở đây
+        return back()->with('success', 'Thêm thành viên vào nhóm thành công!');
+    }
+
+    public function showAddUserGroupForm()
+{
+    $groups = CustomerGroup::all();
+    $users = User::whereNull('group_id')->get();
+    
+    return view('admin.customer.addusergroup', compact('groups', 'users'));
+
+  
+
+}
+
 
 }
