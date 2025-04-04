@@ -1,9 +1,6 @@
 @extends('web2.layout.master')
 
 @section('content')
-
-
-
     <!-- Navbar Start -->
 
     <!-- Navbar End -->
@@ -154,7 +151,7 @@
     }
     </style>
     <!-- Page Header Start -->
-    <div class="container-fluid ">
+    {{-- <div class="container-fluid ">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
             <h1 class="font-weight-semi-bold text-uppercase mb-3">Chi tiết sản phẩm</h1>
             <div class="d-inline-flex">
@@ -163,7 +160,7 @@
                 <p class="m-0">Chi tiết sản phẩm</p>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- Page Header End -->
 
     @include('web2.sup.css')
@@ -224,9 +221,9 @@
                 </div>
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-                <div class="mb-4">
+                {{-- <div class="mb-4">
                     <p class="text-dark font-weight-medium mb-0 mr-3"></p>{!! $detailproduct->description !!}
-                </div>
+                </div> --}}
                 <div class="mb-4">
                     <p class="text-dark font-weight-medium mb-0 mr-3">Thương hiệu: {{ $brands->name }}</p>
                 </div>
@@ -354,22 +351,24 @@
 
                     <!-- Chọn số lượng -->
                     <!-- Chọn số lượng -->
-                    <div class="form-group mb-3">
-                        <label for="quantity">Số lượng:</label>
-                        <div class="input-group">
-                            <button type="button" class="btn btn-outline-secondary" onclick="decreaseQuantity()">-</button>
-                            <input type="number" id="quantity" name="quantity" value="1" min="1"
-                                class="form-control text-center" required>
-                            <button type="button" class="btn btn-outline-secondary" onclick="increaseQuantity()">+</button>
+                    <p>Số lượng :</p>
+                    <div class="row">
+                        <div class="form-group mb-3 col-3">
+                            <div class="input-group">
+                                <button type="button" class="btn btn-outline-secondary" onclick="decreaseQuantity()">-</button>
+                                <input type="number" id="quantity" name="quantity" value="1" min="1"
+                                    class="form-control text-center" required>
+                                <button type="button" class="btn btn-outline-secondary" onclick="increaseQuantity()">+</button>
+                            </div>
+                            <small id="quantity-error" class="text-danger" style="display: none;">Số lượng phải từ 1 đến số
+                                lượng tồn kho</small>
                         </div>
-                        <small id="quantity-error" class="text-danger" style="display: none;">Số lượng phải từ 1 đến số
-                            lượng tồn kho</small>
+                        <!-- Nút thêm vào giỏ -->
+                        <button type="submit" class="btn btn-primary col-3">
+                            <i class="fas fa-shopping-cart"></i>
+                             Thêm vào giỏ hàng
+                        </button>
                     </div>
-                    <!-- Nút thêm vào giỏ -->
-                    <button type="submit" class="btn btn-primary px-3 mt-3">
-                        <i class="fas fa-shopping-cart"></i>
-                        Thêm vào giỏ
-                    </button>
                 </form>
 
 
@@ -633,7 +632,7 @@
                         <div class="tab-pane fade show active" id="tab-description" role="tabpanel">
                             <div class="product-description">
                                 <!-- Hiển thị mô tả sản phẩm -->
-                                <p>{{ $product->description }}</p>
+                                <p>{!! $product->description !!}</p>
                             </div>
                         </div>
 
@@ -645,7 +644,7 @@
                                         <!-- Hiển thị tên người dùng và ngày đăng bình luận -->
                                         <div class="user-info"
                                             style="display: flex; align-items: center; justify-content: space-between;">
-                                            <div style="display: flex; align-items: center;">
+                                            {{-- <div style="display: flex; align-items: center;">
                                                 @if ($comment->user->image)
                                                     <img src="{{ asset('storage/' . $comment->user->image) }}"
                                                         alt="{{ $comment->user->name }}" class="rounded-circle user-pic"
@@ -659,7 +658,7 @@
                                                 <span class="date"
                                                     style="margin-left: 10px;">{{ optional($comment->created_at)->format('d/m/Y H:i') ?? 'N/A' }}
                                                 </span>
-                                            </div>
+                                            </div> --}}
 
                                             <!-- Nút sửa và xóa -->
                                             @if ($comment->user_id == Auth::id())
