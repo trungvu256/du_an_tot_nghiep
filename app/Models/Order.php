@@ -29,15 +29,13 @@ class Order extends Model
         'txn_ref',
         'region', 'shipping_provider', 'tracking_number'
     ];
-    const STATUS_PENDING = 0; // Chờ xử lý
-    const STATUS_CONFIRMED = 1; // Đã xác nhận
-    const STATUS_PREPARING = 2; // Chuẩn bị hàng
-    const STATUS_PICKED_UP = 8; // Đơn vị vận chuyển đã lấy hàng
-    const STATUS_DELIVERING = 3; // Đang giao
-    const STATUS_DELIVERED = 4; // Đã giao
-    const STATUS_COMPLETED = 5; // Hoàn tất
-    const STATUS_CANCELED = 6; // Đã hủy
-    const STATUS_RETURNED = 7; // Hoàn trả
+    // const STATUS_PENDING = 0; // Chờ xử lý
+    // const STATUS_PREPARING = 1; // Chuẩn bị hàng
+    // const STATUS_DELIVERING = 2; // Đang giao
+    // const STATUS_DELIVERED = 3; // Đã giao
+    // const STATUS_COMPLETED = 4; // Hoàn tất
+    // const STATUS_CANCELED = 5; // Đã hủy
+
 
 //    Trạng thái trả hàng
     const RETURN_NONE = 0; // Không có yêu cầu trả hàng

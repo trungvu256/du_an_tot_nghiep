@@ -141,23 +141,75 @@
     </div>
 
     <div class="card-footer border-secondary bg-transparent">
+        <!-- Form thanh toán VNPay -->
         <form action="{{ route('checkout.depositVNPay') }}" method="POST" class="payment-form">
             @csrf
             <input type="hidden" name="amount" value="{{ $totalAmount }}">
-            <button type="submit" class="btn btn-primary btn-payment mt-3">💰 Thanh toán bằng VNPay</button>
+            <button type="submit" class="btn btn-primary btn-payment w-100 mt-3">
+                💰 Thanh toán bằng VNPay
+            </button>
         </form>
     </div>
-
+    
     <div class="card-footer border-secondary bg-transparent">
+        <!-- Form thanh toán tiền mặt -->
         <form action="{{ route('checkout.offline') }}" method="POST" class="payment-form">
             @csrf
             <!-- Lấy mảng các cart_key đã chọn -->
             <input type="hidden" name="selected_cart_items" id="selected_cart_items" value="[]">
             <input type="hidden" name="amount" value="{{ $totalAmount }}">
-            <button type="submit" class="btn btn-primary btn-payment">Thanh toán bằng tiền mặt</button>
+            <button type="submit" class="btn btn-success btn-payment w-100">
+                Thanh toán bằng tiền mặt
+            </button>
         </form>
-        
     </div>
+    <style>
+        /* CSS tùy chỉnh cho các nút thanh toán */
+.btn-payment {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px;
+    text-align: center;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+/* Đổi màu nút VNPay */
+.btn-payment.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-payment.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+/* Đổi màu nút Thanh toán tiền mặt */
+.btn-payment.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-payment.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+/* Chỉnh độ rộng cho các nút */
+.w-100 {
+    width: 100%;
+}
+
+/* Cải thiện kiểu dáng form */
+.card-footer {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e0e0e0;
+    border-radius: 0 0 8px 8px;
+}
+
+    </style>
 </div>
 
         </div>

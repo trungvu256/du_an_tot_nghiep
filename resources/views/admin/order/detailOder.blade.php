@@ -8,6 +8,10 @@
         <h4>Thông tin khách hàng</h4>
         <table class="table table-bordered">
             <tr>
+                <th>Họ và tên</th>
+                <td>{{ $order->name }}</td>
+            </tr>
+            <tr>
                 <th>Email</th>
                 <td>{{ $order->email }}</td>
             </tr>
@@ -21,24 +25,52 @@
             </tr>
             <tr>
                 <th>Tổng tiền</th>
-                <td class="fw-bold text-success">
-                    {{ number_format($order->orderItems->sum(function ($item) {
-                        return $item->price;
-                    }), 0, ',', '.') }} VNĐ
+                <td>{{ number_format($order->total_price, 0, ',', '.') }} VNĐ</td>
+            </tr>
+            <tr>
+                <th>cập nhật Trạng thái</th>
+                <td>
+                    @php
+    $isFinalStatus = in_array($order->status, [4, 5]); // 4 = Hoàn tất, 5 = Hủy
+@endphp
+
+<form action="{{ route('orders.updateStatus', $order->id) }}" method="POST" class="d-flex align-items-center gap-2">
+    @csrf
+    <select name="status" class="form-select form-select-sm" style="width: 200px;" {{ $isFinalStatus ? 'disabled' : '' }}>
+        <option value="0" {{ $order->status == 0 ? 'selected' : '' }}>Chờ xử lý</option>
+        <option value="1" {{ $order->status == 1 ? 'selected' : '' }}>Chờ lấy hàng</option>
+        <option value="2" {{ $order->status == 2 ? 'selected' : '' }}>Đang giao</option>
+        <option value="3" {{ $order->status == 3 ? 'selected' : '' }}>Đã giao</option>
+        <option value="4" {{ $order->status == 4 ? 'selected' : '' }}>Hoàn tất</option>
+        <option value="5" {{ $order->status == 5 ? 'selected' : '' }}>Hủy</option>
+    </select>
+    <button type="submit" class="btn btn-sm btn-primary" {{ $isFinalStatus ? 'disabled' : '' }}>Cập nhật</button>
+</form>
+
                 </td>
             </tr>
+            
             <tr>
                 <th>Trạng thái</th>
                 <td>
                     @switch($order->status)
                         @case(0) <span class="badge bg-warning">Chờ xử lý</span> @break
-                        @case(1) <span class="badge bg-info">Đã xác nhận</span> @break
-                        @case(2) <span class="badge bg-secondary">Đang chuẩn bị hàng</span> @break
-                        @case(3) <span class="badge bg-primary">Đang giao</span> @break
-                        @case(4) <span class="badge bg-success">Đã giao</span> @break
-                        @case(5) <span class="badge bg-dark">Hoàn tất (Đã nhận hàng)</span> @break
-                        @case(6) <span class="badge bg-danger">Đã hủy</span> @break
-                        @case(7) <span class="badge bg-warning">Hoàn trả</span> @break
+                        @case(1) <span class="badge bg-info">Chờ lấy hàng</span> @break
+                        @case(2) <span class="badge bg-secondary">Chờ lấy hàng</span> @break
+                        @case(3) <span class="badge bg-primary">Đã giao</span> @break
+                        @case(4) <span class="badge bg-success">Hoàn tất</span> @break
+                        @case(5) <span class="badge bg-dark">Hủy</span> @break
+
+                    @endswitch
+                </td>
+            </tr>
+            <tr>
+                <th>Trạng thái thanh toán</th>
+                <td>
+                    @switch($order->payment_status)
+                        @case(0) <span class="badge bg-warning">Chưa thanh toán</span> @break
+                        @case(1) <span class="badge bg-info">Đã thanh toán bằng vnpay</span> @break
+                        @case(2) <span class="badge bg-secondary">Thanh toán khi nhận hàng</span> @break
                     @endswitch
                 </td>
             </tr>
@@ -52,7 +84,6 @@
                     <th>Tên sản phẩm</th>
                     <th>Số lượng</th>
                     <th>Giá</th>
-                   
                 </tr>
             </thead>
             <tbody>
@@ -69,7 +100,6 @@
                             <td>{{ $detail->product->name }}</td>
                             <td>{{ $detail->quantity }}</td>
                             <td>{{ number_format($detail->price, 0, ',', '.') }} VNĐ</td>
-                            
                         </tr>
                     @endforeach
                 @else
@@ -111,5 +141,27 @@
             </tr>
         </table>
     @endif
+    <script>
+        document.getElementById('shipOrderButton').addEventListener('click', function () {
+            let orderId = this.getAttribute('data-order-id');
     
+            fetch(`/admin/shipping/ship-order/${orderId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    shipping_provider: 'GHTK', // Có thể thay bằng dữ liệu động
+                    tracking_number: 'TRK' + Math.floor(Math.random() * 1000000000) // Giả lập mã vận đơn
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                location.reload(); // Cập nhật lại giao diện
+            })
+            .catch(error => console.error('Lỗi:', error));
+        });
+    </script>
 @endsection
