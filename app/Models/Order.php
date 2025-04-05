@@ -48,7 +48,7 @@ class Order extends Model
 
 
 
-    
+
 
     const STATUS_PAID = 'paid';
 

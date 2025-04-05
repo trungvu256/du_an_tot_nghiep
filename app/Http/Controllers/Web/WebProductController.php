@@ -602,9 +602,18 @@ class WebProductController extends Controller
             'review' => 'nullable|string|max:1000',
         ]);
 
+        // Kiểm tra xem người dùng đã đánh giá sản phẩm này chưa
+        $existingReview = ProductReview::where('user_id', Auth::id())
+            ->where('product_id', $productId)
+            ->exists();
+
+        if ($existingReview) {
+            return redirect()->back()->with('error', 'Bạn đã đánh giá sản phẩm này rồi!');
+        }
+
         // Kiểm tra xem người dùng đã có đơn hàng hay chưa
         $hasOrder = Order::where('user_id', Auth::id())
-            ->where('status', 'delivered') // hoặc trạng thái phù hợp với yêu cầu
+            ->whereIn('status', [Order::STATUS_DELIVERED, Order::STATUS_COMPLETED])
             ->exists();
 
         if (!$hasOrder) {
