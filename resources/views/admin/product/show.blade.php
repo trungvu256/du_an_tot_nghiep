@@ -90,16 +90,15 @@
                         <div class="text-muted">( 5.50k Customer Review )</div>
                     </div> --}}
 
-<<<<<<< HEAD
                         <div class="row mt-3">
                             @foreach ($product->variants as $variant)
                                 <div class="col-md-4">
                                     <div class="card border shadow-sm">
                                         <div class="card-body">
-                                            <p style="font-size: 1rem"><i class="ri-money-dollar-circle-fill"></i> Giá bán :
+                                            <p style="font-size: 1rem" class="mb-0"><i class="ri-money-dollar-circle-fill"></i> Giá bán : <br>
                                                 @if ($variant->price > 0 && $variant->price_sale > 0)
                                                     <strong>
-                                                        <br><del style="color: red">
+                                                        <del style="color: red">
                                                             {{ number_format($variant->price, 0, ',', '.') }}
                                                             VNĐ
                                                         </del>
@@ -109,73 +108,43 @@
                                                         </span>
                                                     </strong>
                                                 @else
-                                                    <span style="color: #0ab39c">
-                                                        {{ number_format($variant->price_sale > 0 ? $variant->price_sale : $variant->price, 0, ',', '.') }}
-                                                        VNĐ
-                                                    </span>
+                                                    <strong>
+                                                        <span style="color: #0ab39c">
+                                                            {{ number_format($variant->price_sale > 0 ? $variant->price_sale : $variant->price, 0, ',', '.') }}
+                                                            VNĐ
+                                                        </span>
+                                                    </strong>
                                                 @endif
                                             </p>
 
-                                            <!-- Hiển thị danh sách thuộc tính của biến thể -->
-                                            @if ($variant->attributes && count($variant->attributes) > 0)
-                                                @foreach ($variant->attributes as $attr)
+                                            {{-- Danh sách thuộc tính --}}
+                                            @if ($variant->product_variant_attributes && count($variant->product_variant_attributes) > 0)
+                                                @foreach ($variant->product_variant_attributes as $attr)
                                                     <br>
-                                                    <span style="font-size: 1rem">{{ $attr->name }}</span>
-                                                    <strong>{{ $attr->attributeValue->value ?? ' không có giá trị' }}</strong>
+                                                    <span
+                                                        style="font-size: 1rem">{{ $attr->attribute->name ?? 'Thuộc tính' }}</span> :
+                                                    <strong>{{ $attr->attributeValue->value ?? 'Không có giá trị' }}</strong>
                                                 @endforeach
                                             @else
                                                 <p class="text-muted">Không có thuộc tính.</p>
                                             @endif
-                                            <p style="font-size: 1rem">Số lượng :
-                                                <strong> {{ $variant->stock_quantity }}</strong>
+
+                                            {{-- Số lượng --}}
+                                            <p style="font-size: 1rem">
+                                                Số lượng :
+                                                <strong>{{ $variant->stock_quantity }}</strong>
                                             </p>
                                         </div>
-=======
-                    <div class="row mt-3">
-                        @foreach ($product->variants as $variant)
-                            <div class="col-md-4">
-                                <div class="card border shadow-sm">
-                                    <div class="card-body">
-                                        {{-- Giá bán --}}
-                                        <p style="font-size: 1rem">
-                                            <i class="ri-money-dollar-circle-fill"></i> Giá bán:
-                                            <strong>
-                                                <br><del style="color: red">
-                                                    {{ number_format($variant->price > 0 ? $variant->price : 0, 0, ',', '.') }} VNĐ
-                                                </del>
-                                                <br><span style="color: #0ab39c">
-                                                    {{ number_format($variant->price_sale > 0 ? $variant->price_sale : $variant->price, 0, ',', '.') }} VNĐ
-                                                </span>
-                                            </strong>
-                                        </p>
-                    
-                                        {{-- Danh sách thuộc tính --}}
-                                        @if ($variant->product_variant_attributes && count($variant->product_variant_attributes) > 0)
-                                            @foreach ($variant->product_variant_attributes as $attr)
-                                                <br>
-                                                <span style="font-size: 1rem">{{ $attr->attribute->name ?? 'Thuộc tính' }}</span>:
-                                                <strong>{{ $attr->attributeValue->value ?? 'Không có giá trị' }}</strong>
-                                            @endforeach
-                                        @else
-                                            <p class="text-muted">Không có thuộc tính.</p>
-                                        @endif
-                    
-                                        {{-- Số lượng --}}
-                                        <p style="font-size: 1rem">
-                                            Số lượng:
-                                            <strong>{{ $variant->stock_quantity }}</strong>
-                                        </p>
->>>>>>> 815d3abfd0124bc6d45c2b093eb2994c415cdbf7
                                     </div>
                                 </div>
-                            </div>
-                        @endforeach
+                                @endforeach
+                        </div>
                     </div>
-                    
-                        <!-- end row -->
+
+                    <!-- end row -->
 
 
-                        {{-- <div class="row">
+                    {{-- <div class="row">
                         <div class="col-sm-6">
                             <div class="mt-3">
                                 <h5 class="fs-14">Features :</h5>
@@ -199,120 +168,119 @@
                     </div> --}}
 
 
-                        <div class="product-content mt-5">
-                            {{-- <h5 class="fs-14 mb-3">Thông tin sản phẩm :</h5> --}}
-                            <nav>
-                                <ul class="nav nav-tabs nav-tabs-custom nav-success" id="nav-tab" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" id="nav-speci-tab" data-bs-toggle="tab" href="#nav-speci"
-                                            role="tab" aria-controls="nav-speci" aria-selected="true">Thông số sản
-                                            phẩm</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="nav-detail-tab" data-bs-toggle="tab" href="#nav-detail"
-                                            role="tab" aria-controls="nav-detail" aria-selected="false">Thông tin chi
-                                            tiết</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                            <div class="tab-content border border-top-0 p-4" id="nav-tabContent">
-                                <div class="tab-pane fade show active" id="nav-speci" role="tabpanel"
-                                    aria-labelledby="nav-speci-tab">
-                                    <div class="table-responsive">
-                                        <table class="table mb-0">
-                                            <tbody>
-                                                <tr>
-                                                    <th scope="row" style="width: 200px;">Giới tính</th>
-                                                    <td>{{ $product->gender }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">Thương hiệu</th>
-                                                    <td>{{ $product->brand->name ?? 'Không có thương hiệu' }}</td>
-                                                </tr>
-                                                {{-- <tr>
+                    <div class="product-content mt-5">
+                        {{-- <h5 class="fs-14 mb-3">Thông tin sản phẩm :</h5> --}}
+                        <nav>
+                            <ul class="nav nav-tabs nav-tabs-custom nav-success" id="nav-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="nav-speci-tab" data-bs-toggle="tab" href="#nav-speci"
+                                        role="tab" aria-controls="nav-speci" aria-selected="true">Thông số sản
+                                        phẩm</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="nav-detail-tab" data-bs-toggle="tab" href="#nav-detail"
+                                        role="tab" aria-controls="nav-detail" aria-selected="false">Thông tin chi
+                                        tiết</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="tab-content border border-top-0 p-4" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="nav-speci" role="tabpanel"
+                                aria-labelledby="nav-speci-tab">
+                                <div class="table-responsive">
+                                    <table class="table mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row" style="width: 200px;">Giới tính</th>
+                                                <td>{{ $product->gender }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Thương hiệu</th>
+                                                <td>{{ $product->brand->name ?? 'Không có thương hiệu' }}</td>
+                                            </tr>
+                                            {{-- <tr>
                                                 <th scope="row">Longevity</th>
                                                 <td>{{$product->longevity}}</td>
                                             </tr> --}}
-                                                <tr>
-                                                    <th scope="row">Nồng độ</th>
-                                                    <td>{{ $product->concentration }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">Xuất xứ</th>
-                                                    <td>{{ $product->origin }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">Phong cách</th>
-                                                    <td>{{ $product->style }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">Nhóm hương</th>
-                                                    <td>{{ $product->fragrance_group }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">Số lượng</th>
-                                                    <td>{{ $product->stock_quantity }}</td>
-                                                </tr>
+                                            <tr>
+                                                <th scope="row">Nồng độ</th>
+                                                <td>{{ $product->concentration }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Xuất xứ</th>
+                                                <td>{{ $product->origin }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Phong cách</th>
+                                                <td>{{ $product->style }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Nhóm hương</th>
+                                                <td>{{ $product->fragrance_group }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Số lượng</th>
+                                                <td>{{ $product->stock_quantity }}</td>
+                                            </tr>
 
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="tab-pane fade" id="nav-detail" role="tabpanel"
-                                    aria-labelledby="nav-detail-tab">
-                                    <div>
-                                        <p>{!! $product->description !!}</p>
-                                    </div>
+                            </div>
+                            <div class="tab-pane fade" id="nav-detail" role="tabpanel" aria-labelledby="nav-detail-tab">
+                                <div>
+                                    <p>{!! $product->description !!}</p>
                                 </div>
                             </div>
                         </div>
-                        <!-- product-content -->
-
-                        <div class="mt-5">
-                            <div>
-                                <h5 class="fs-14 mb-3">Bình luận & đánh giá</h5>
-                            </div>
-                            <div class="row gy-4 gx-0">
-                                <div class="col-lg-4">
-                                  
-                                </div>
-                                <!-- end col -->
-
-                                <div class="col-lg-12">
-                                    <div class="ps-lg-4">
-                                        <div class="d-flex flex-wrap align-items-start gap-3">
-                                            <h5 class="fs-14">Bình luận: </h5>
-                                        </div>
-
-                                        <div class="list-group">
-                                            @forelse($product->comments as $comment)
-                                                <div class="list-group-item">
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <h6>{{ $comment->user->name ?? 'Ẩn danh' }} -
-                                                            <small>{{ optional($comment->created_at)->format('d M, Y') }}</small>
-                                                        </h6>
-                                                        <span class="badge bg-success"><i class="mdi mdi-star"></i>
-                                                            {{ $comment->rating }}</span>
-                                                    </div>
-                                                    <p class="mb-1">{{ $comment->content }}</p>
-                                                </div>
-                                            @empty
-                                                <p class="text-muted">Chưa có bình luận nào.</p>
-                                            @endforelse
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- end col -->
-                            </div>
-                            <!-- end Ratings & Reviews -->
-                        </div>
-                        <!-- end card body -->
                     </div>
+                    <!-- product-content -->
+
+                    <div class="mt-5">
+                        <div>
+                            <h5 class="fs-14 mb-3">Bình luận & đánh giá</h5>
+                        </div>
+                        <div class="row gy-4 gx-0">
+                            <div class="col-lg-4">
+
+                            </div>
+                            <!-- end col -->
+
+                            <div class="col-lg-12">
+                                <div class="ps-lg-4">
+                                    <div class="d-flex flex-wrap align-items-start gap-3">
+                                        <h5 class="fs-14">Bình luận: </h5>
+                                    </div>
+
+                                    <div class="list-group">
+                                        @forelse($product->comments as $comment)
+                                            <div class="list-group-item">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <h6>{{ $comment->user->name ?? 'Ẩn danh' }} -
+                                                        <small>{{ optional($comment->created_at)->format('d M, Y') }}</small>
+                                                    </h6>
+                                                    <span class="badge bg-success"><i class="mdi mdi-star"></i>
+                                                        {{ $comment->rating }}</span>
+                                                </div>
+                                                <p class="mb-1">{{ $comment->content }}</p>
+                                            </div>
+                                        @empty
+                                            <p class="text-muted">Chưa có bình luận nào.</p>
+                                        @endforelse
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end Ratings & Reviews -->
+                    </div>
+                    <!-- end card body -->
                 </div>
-                <!-- end col -->
             </div>
-            <!-- end row -->
+            <!-- end col -->
         </div>
-        <!-- end card body -->
+        <!-- end row -->
+    </div>
+    <!-- end card body -->
     </div>
 @endsection
