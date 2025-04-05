@@ -101,10 +101,11 @@
                     @endif
                 </p>
                 <div class="d-flex align-items-center">
-                    @if ($order->payment_status == 0)
-                        <a href="{{ route('order.continuePayment', $order->id) }}"
-                            class="btn btn-primary rounded-pill px-3 me-2">Thanh toán ngay</a>
-                    @endif
+                    @if ($order->payment_status == 0 && $order->status != 5)
+                    <a href="{{ route('order.continuePayment', $order->id) }}"
+                        class="btn btn-primary rounded-pill px-3 me-2">Thanh toán ngay</a>
+                @endif
+                
                     @if ($order->status == 0 || $order->status == 1)
                         <!-- Nút hủy đơn hàng -->
 <a href="javascript:void(0);" class="btn btn-danger rounded-pill px-3 me-2" 
