@@ -12,6 +12,10 @@
         <h4 class="my-3 text-secondary">Thông tin khách hàng</h4>
         <table class="table table-striped table-bordered">
             <tr>
+                <th>Họ tên người nhận</th>
+                <td>{{ $order->name }}</td>
+            </tr>
+            <tr>
                 <th>Email</th>
                 <td>{{ $order->email }}</td>
             </tr>
