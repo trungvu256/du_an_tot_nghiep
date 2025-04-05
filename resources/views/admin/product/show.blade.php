@@ -90,6 +90,47 @@
                         <div class="text-muted">( 5.50k Customer Review )</div>
                     </div> --}}
 
+<<<<<<< HEAD
+                        <div class="row mt-3">
+                            @foreach ($product->variants as $variant)
+                                <div class="col-md-4">
+                                    <div class="card border shadow-sm">
+                                        <div class="card-body">
+                                            <p style="font-size: 1rem"><i class="ri-money-dollar-circle-fill"></i> Giá bán :
+                                                @if ($variant->price > 0 && $variant->price_sale > 0)
+                                                    <strong>
+                                                        <br><del style="color: red">
+                                                            {{ number_format($variant->price, 0, ',', '.') }}
+                                                            VNĐ
+                                                        </del>
+                                                        <br><span style="color: #0ab39c">
+                                                            {{ number_format($variant->price_sale > 0 ? $variant->price_sale : $variant->price, 0, ',', '.') }}
+                                                            VNĐ
+                                                        </span>
+                                                    </strong>
+                                                @else
+                                                    <span style="color: #0ab39c">
+                                                        {{ number_format($variant->price_sale > 0 ? $variant->price_sale : $variant->price, 0, ',', '.') }}
+                                                        VNĐ
+                                                    </span>
+                                                @endif
+                                            </p>
+
+                                            <!-- Hiển thị danh sách thuộc tính của biến thể -->
+                                            @if ($variant->attributes && count($variant->attributes) > 0)
+                                                @foreach ($variant->attributes as $attr)
+                                                    <br>
+                                                    <span style="font-size: 1rem">{{ $attr->name }}</span>
+                                                    <strong>{{ $attr->attributeValue->value ?? ' không có giá trị' }}</strong>
+                                                @endforeach
+                                            @else
+                                                <p class="text-muted">Không có thuộc tính.</p>
+                                            @endif
+                                            <p style="font-size: 1rem">Số lượng :
+                                                <strong> {{ $variant->stock_quantity }}</strong>
+                                            </p>
+                                        </div>
+=======
                     <div class="row mt-3">
                         @foreach ($product->variants as $variant)
                             <div class="col-md-4">
@@ -124,6 +165,7 @@
                                             Số lượng:
                                             <strong>{{ $variant->stock_quantity }}</strong>
                                         </p>
+>>>>>>> 815d3abfd0124bc6d45c2b093eb2994c415cdbf7
                                     </div>
                                 </div>
                             </div>
@@ -216,7 +258,8 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="nav-detail" role="tabpanel" aria-labelledby="nav-detail-tab">
+                                <div class="tab-pane fade" id="nav-detail" role="tabpanel"
+                                    aria-labelledby="nav-detail-tab">
                                     <div>
                                         <p>{!! $product->description !!}</p>
                                     </div>
