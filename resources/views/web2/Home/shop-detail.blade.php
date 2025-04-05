@@ -636,449 +636,231 @@
                             </div>
                         </div>
 
-                        <!-- Bình luận tab -->
+                        <!-- Tab bình luận -->
                         <div class="tab-pane fade" id="tab-comments" role="tabpanel">
                             <div class="comments-section">
                                 @foreach ($product->comments as $comment)
                                     <div class="comment">
-                                        <!-- Hiển thị tên người dùng và ngày đăng bình luận -->
-                                        <div class="user-info"
-                                            style="display: flex; align-items: center; justify-content: space-between;">
-                                            <div style="display: flex; align-items: center;">
-                                                @if ($comment->user->image)
-                                                    <img src="{{ asset('storage/' . $comment->user->image) }}"
-                                                        alt="{{ $comment->user->name }}" class="rounded-circle user-pic"
-                                                        style="width: 30px; height: 30px; margin-right: 10px;">
-                                                @else
-                                                    <img src="{{ asset('path/to/default-image.png') }}" alt="Hình đại diện mặc định"
-                                                        class="rounded-circle user-pic"
-                                                        style="width: 30px; height: 30px; margin-right: 10px;">
-                                                @endif
-                                                <strong>{{ $comment->user->name }}</strong>
-                                                <span class="date"
-                                                    style="margin-left: 10px;">{{ optional($comment->created_at)->format('d/m/Y H:i') ?? 'N/A' }}
-                                                </span>
+                                        <div class="comment-header">
+                                            <div class="user-info">
+                                                <div class="user-meta">
+                                                    @if ($comment->user->image)
+                                                        <img src="{{ asset('storage/' . $comment->user->image) }}"
+                                                            alt="{{ $comment->user->name }}" class="user-avatar">
+                                                    @else
+                                                        <img src="{{ asset('path/to/default-image.png') }}"
+                                                            alt="Default Avatar" class="user-avatar">
+                                                    @endif
+                                                    <div class="user-details">
+                                                        <strong class="user-name">{{ $comment->user->name }}</strong>
+                                                        <span class="comment-date">{{ $comment->created_at->format('d/m/Y H:i') }}</span>
+                                                    </div>
+                                                </div>
                                             </div>
-
-                                            <!-- Nút sửa và xóa -->
                                             @if ($comment->user_id == Auth::id())
-                                                <div class="action-icons" style="text-align: right;">
-                                                    <!-- Biểu tượng sửa -->
-                                                    <button class="btn btn-link" onclick="toggleEditForm({{ $comment->id }})"
-                                                        title="Sửa">
-                                                        <i class="fa fa-edit" style="font-size: 20px;"></i>
+                                                <div class="comment-actions">
+                                                    <button class="action-btn edit-btn" onclick="toggleEditForm({{ $comment->id }})">
+                                                        <i class="fas fa-edit"></i>
                                                     </button>
-
-                                                    <!-- Biểu tượng xóa -->
                                                     <form action="{{ route('client.deleteComment', [$product->id, $comment->id]) }}"
-                                                        method="POST" style="display:inline;"
-                                                        id="delete-comment-form-{{ $comment->id }}">
+                                                        method="POST" class="delete-form" id="delete-comment-form-{{ $comment->id }}">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button class="btn btn-link" type="button"
-                                                            onclick="confirmDeleteComment({{ $comment->id }})" title="Xóa">
-                                                            <i class="fa fa-trash" style="font-size: 20px;"></i>
+                                                        <button type="button" class="action-btn delete-btn"
+                                                                onclick="confirmDeleteComment({{ $comment->id }})">
+                                                            <i class="fas fa-trash"></i>
                                                         </button>
                                                     </form>
                                                 </div>
                                             @endif
                                         </div>
-
-                                        <!-- Nội dung bình luận -->
-                                        <div class="comment-content" id="comment-content-{{ $comment->id }}"
-                                            style="margin-top: 5px;">
+                                        <div class="comment-content" id="comment-content-{{ $comment->id }}">
                                             <p>{{ $comment->comment }}</p>
-                                        </div> <!-- Form chỉnh sửa bình luận ẩn -->
-                                        <div id="edit-comment-form-{{ $comment->id }}" style="display: none;">
-                                            <form action="{{ route('client.updateComment', [$product->id, $comment->id]) }}"
-                                                method="POST">
+                                        </div>
+                                        <div id="edit-comment-form-{{ $comment->id }}" class="edit-form" style="display: none;">
+                                            <form action="{{ route('client.updateComment', [$product->id, $comment->id]) }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
-                                                <textarea name="comment" required>{{ $comment->comment }}</textarea>
-                                                <button type="submit">Lưu thay đổi</button>
-                                                <button type="button" onclick="toggleEditForm({{ $comment->id }})">Hủy</button>
+                                                <textarea name="comment" class="form-control" required>{{ $comment->comment }}</textarea>
+                                                <div class="form-actions">
+                                                    <button type="submit" class="btn btn-primary">Lưu</button>
+                                                    <button type="button" class="btn btn-secondary"
+                                                            onclick="toggleEditForm({{ $comment->id }})">Hủy</button>
+                                                </div>
                                             </form>
                                         </div>
-
-                                        <!-- Hiển thị các phản hồi -->
-                                        @foreach ($comment->replies as $reply)
-                                            <div class="reply" style="margin-bottom: 15px;">
-                                                <!-- Thông tin người dùng -->
-                                                <div class="user-info"
-                                                    style="display: flex; align-items: center; justify-content: space-between;">
-                                                    <div style="display: flex; align-items: center;">
-                                                        @if ($reply->user->image)
-                                                            <img src="{{ asset('storage/' . $reply->user->image) }}"
-                                                                alt="{{ $reply->user->name }}" class="rounded-circle user-pic"
-                                                                style="width: 30px; height: 30px; margin-right: 10px;">
-                                                        @else
-                                                            <img src="{{ asset('path/to/default-image.png') }}"
-                                                                alt="Hình đại diện mặc định" class="rounded-circle user-pic"
-                                                                style="width: 30px; height: 30px; margin-right: 10px;">
-                                                        @endif
-                                                        <strong>{{ $reply->user->name }}</strong>
-                                                        <span class="date"
-                                                            style="margin-left: 10px;">{{ $reply->created_at->format('d/m/Y') }}</span>
-                                                    </div>
-
-                                                    <!-- Biểu tượng sửa và xóa -->
-                                                    @if ($reply->user_id == Auth::id())
-                                                        <div class="action-icons" style="text-align: right;">
-                                                            <!-- Biểu tượng sửa -->
-                                                            <button class="btn btn-link" onclick="toggleEditFormReply({{ $reply->id }})"
-                                                                title="Sửa">
-                                                                <i class="fa fa-edit" style="font-size: 20px;"></i>
-                                                            </button>
-
-                                                            <!-- Biểu tượng xóa -->
-                                                            <form action="{{ route('client.deleteReply', [$comment->id, $reply->id]) }}"
-                                                                method="POST" style="display:inline;"
-                                                                id="delete-reply-form-{{ $reply->id }}">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button class="btn btn-link" type="button"
-                                                                    onclick="confirmDeleteReply({{ $reply->id }})" title="Xóa">
-                                                                    <i class="fa fa-trash" style="font-size: 20px;"></i>
-                                                                </button>
-                                                            </form>
+                                        @if($comment->replies->count() > 0)
+                                            <button class="replies-toggle" onclick="toggleReplies({{ $comment->id }})">
+                                                <i class="fas fa-chevron-down"></i>
+                                                Xem {{ $comment->replies->count() }} phản hồi
+                                            </button>
+                                        @endif
+                                        <div class="replies" id="replies-{{ $comment->id }}">
+                                            @foreach ($comment->replies as $reply)
+                                                <div class="reply">
+                                                    <div class="reply-header">
+                                                        <div class="user-info">
+                                                            <div class="user-meta">
+                                                                @if ($reply->user->image)
+                                                                    <img src="{{ asset('storage/' . $reply->user->image) }}"
+                                                                        alt="{{ $reply->user->name }}" class="user-avatar">
+                                                                @else
+                                                                    <img src="{{ asset('path/to/default-image.png') }}"
+                                                                        alt="Default Avatar" class="user-avatar">
+                                                                @endif
+                                                                <div class="user-details">
+                                                                    <strong class="user-name">{{ $reply->user->name }}</strong>
+                                                                    <span class="comment-date">{{ $reply->created_at->format('d/m/Y H:i') }}</span>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    @endif
+                                                        @if ($reply->user_id == Auth::id())
+                                                            <div class="reply-actions">
+                                                                <button class="action-btn edit-btn"
+                                                                        onclick="toggleEditFormReply({{ $reply->id }})">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </button>
+                                                                <form action="{{ route('client.deleteReply', [$comment->id, $reply->id]) }}"
+                                                                    method="POST" class="delete-form"
+                                                                    id="delete-reply-form-{{ $reply->id }}">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="button" class="action-btn delete-btn"
+                                                                            onclick="confirmDeleteReply({{ $reply->id }})">
+                                                                        <i class="fas fa-trash"></i>
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                    <div class="reply-content" id="reply-content-{{ $reply->id }}">
+                                                        <p>{{ $reply->reply }}</p>
+                                                    </div>
+                                                    <div id="edit-reply-form-{{ $reply->id }}" class="edit-form" style="display: none;">
+                                                        <form action="{{ route('client.updateReply', [$comment->id, $reply->id]) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <textarea name="reply" class="form-control" required>{{ $reply->reply }}</textarea>
+                                                            <div class="form-actions">
+                                                                <button type="submit" class="btn btn-primary">Lưu</button>
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        onclick="toggleEditFormReply({{ $reply->id }})">Hủy</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
                                                 </div>
-
-                                                <!-- Nội dung phản hồi -->
-                                                <div class="reply-content" id="reply-content-{{ $reply->id }}"
-                                                    style="margin-top: 5px;">
-                                                    <p>{{ $reply->reply }}</p>
-                                                </div>
-
-                                                <!-- Form chỉnh sửa phản hồi ẩn -->
-                                                <div id="edit-reply-form-{{ $reply->id }}" style="display: none;">
-                                                    <form action="{{ route('client.updateReply', [$comment->id, $reply->id]) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <textarea name="reply" required>{{ $reply->reply }}</textarea>
-                                                        <button type="submit">Lưu thay đổi</button>
-                                                        <button type="button"
-                                                            onclick="toggleEditFormReply({{ $reply->id }})">Hủy</button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                        <!-- Form thêm phản hồi -->
-                                        @auth
-                                            <form action="{{ route('client.storeReply', $comment->id) }}" method="POST"
-                                                class="reply-form">
-                                                @csrf
-                                                <div class="reply-input">
-                                                    <textarea name="reply" required placeholder="Phản hồi của bạn"></textarea>
-                                                    <button type="submit" class="tbnsend"> <img
-                                                            src="{{ asset('./images/send.png') }}" width="30px"
-                                                            alt=""></button>
-                                                </div>
-                                            </form>
-                                        @endauth
+                                            @endforeach
+                                            @auth
+                                                <form action="{{ route('client.storeReply', $comment->id) }}" method="POST" class="reply-form">
+                                                    @csrf
+                                                    <div class="input-group">
+                                                        <textarea name="reply" class="form-control" required placeholder="Viết phản hồi..."></textarea>
+                                                        <button type="submit" class="btn-send">
+                                                            <img src="{{ asset('./images/send.png') }}" alt="Send">
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            @endauth
+                                        </div>
                                     </div>
                                 @endforeach
-
-                                <!-- Form thêm bình luận -->
                                 @auth
-                                    <form action="{{ route('client.storeComment', $product->id) }}" method="POST"
-                                        class="comment-form">
+                                    <form action="{{ route('client.storeComment', $product->id) }}" method="POST" class="comment-form">
                                         @csrf
-                                        <div class="comment-input">
-                                            <textarea name="comment" required placeholder="Bình luận của bạn"></textarea>
-                                            <button type="submit" class="tbnsend">
-                                                <img src="{{ asset('./images/send.png') }}" width="30px"
-                                                    alt="">
+                                        <div class="input-group">
+                                            <textarea name="comment" class="form-control" required placeholder="Viết bình luận của bạn..."></textarea>
+                                            <button type="submit" class="btn-send">
+                                                <img src="{{ asset('./images/send.png') }}" alt="Send">
                                             </button>
                                         </div>
                                     </form>
                                 @endauth
                             </div>
                         </div>
-                        <!-- JavaScript để bật tắt form chỉnh sửa -->
-                        <script>
-                            function toggleDropdown(commentId) {
-                                var dropdown = document.getElementById("customDropdown-" + commentId);
-                                dropdown.style.display = dropdown.style.display === "none" ? "block" : "none";
-                            }
-
-                            function toggleDropdownReply(replyId) {
-                                var dropdown = document.getElementById("customDropdownReply-" + replyId);
-                                dropdown.style.display = dropdown.style.display === "none" ? "block" : "none";
-                            }
-
-                            function toggleEditForm(commentId) {
-                                var content = document.getElementById('comment-content-' + commentId);
-                                var form = document.getElementById('edit-comment-form-' + commentId);
-                                if (form.style.display === "none") {
-                                    form.style.display = "block";
-                                    content.style.display = "none";
-                                } else {
-                                    form.style.display = "none";
-                                    content.style.display = "block";
-                                }
-                            }
-
-                            function toggleEditFormReply(replyId) {
-                                var content = document.getElementById('reply-content-' + replyId);
-                                var form = document.getElementById('edit-reply-form-' + replyId);
-                                if (form.style.display === "none") {
-                                    form.style.display = "block";
-                                    content.style.display = "none";
-                                } else {
-                                    form.style.display = "none";
-                                    content.style.display = "block";
-                                }
-                            }
-                        </script>
-
-                        <style>
-                            .comments-section {
-                                background-color: #f9f9f9;
-                                border-radius: 8px;
-                                padding: 20px;
-                                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                            }
-
-                            .comment {
-                                margin-bottom: 20px;
-                                padding: 10px;
-                                background-color: #ffffff;
-                                border-radius: 5px;
-                                box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-                            }
-
-                            .user-info {
-                                display: flex;
-                                align-items: center;
-                                margin-bottom: 10px;
-                            }
-
-                            .user-pic {
-                                width: 30px;
-                                height: 30px;
-                                margin-right: 10px;
-                            }
-
-                            .date {
-                                font-size: 12px;
-                                color: #888;
-                                margin-left: 5px;
-                            }
-
-                            .comment-content,
-                            .reply-content {
-                                margin-top: 10px;
-                            }
-
-                            .reply {
-                                margin-left: 40px;
-                                margin-top: 10px;
-                                padding: 10px;
-                                background-color: #f1f1f1;
-                                border-radius: 5px;
-                            }
-
-                            .reply-form,
-                            .comment-form {
-                                margin-top: 20px;
-                            }
-
-                            .reply-input,
-                            .comment-input {
-                                display: flex;
-                                align-items: center;
-                                /* Căn giữa theo chiều dọc */
-                                gap: 5px;
-                                /* Khoảng cách giữa textarea và nút gửi */
-                            }
-
-                            .reply-input textarea,
-                            .comment-input textarea {
-                                width: 100%;
-                                height: 80px;
-                                border: 1px solid #ccc;
-                                border-radius: 5px;
-                                padding: 8px;
-                                resize: none;
-                                /* Ngăn chặn thay đổi kích thước */
-                            }
-
-                            .tbnsend {
-                                border: none;
-                                background: none;
-                                cursor: pointer;
-                                margin-left: 5px;
-                            }
-
-                            .tbnsend img {
-                                width: 30px;
-                            }
-
-                            .dropdown-toggle {
-                                border: none;
-                                background: none;
-                                cursor: pointer;
-                            }
-
-                            .dropdown-menu {
-                                min-width: 150px;
-                            }
-
-                            .dropdown-item {
-                                cursor: pointer;
-                            }
-
-                            /* Responsive */
-                            @media (max-width: 768px) {
-                                .col-md-8 {
-                                    width: 100%;
-                                    padding: 0 10px;
-                                }
-                            }
-                        </style>
-
-
 
                         <!-- Đánh giá tab -->
                         <div class="tab-pane fade" id="tab-reviews" role="tabpanel">
                             <div class="reviews-section">
+                                <div class="review-stats">
+                                    <div class="review-summary">
+                                        <h2 class="review-count">{{ $product->reviews->count() }} đánh giá cho {{ $product->name }}</h2>
+                                        <div class="average-rating">
+                                            <div class="rating-number">{{ number_format($product->reviews->avg('rating'), 1) }}</div>
+                                            <div class="rating-stars">
+                                                @php
+                                                    $avgRating = $product->reviews->avg('rating');
+                                                @endphp
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    @if ($i <= $avgRating)
+                                                        <i class="fas fa-star"></i>
+                                                    @else
+                                                        <i class="far fa-star"></i>
+                                                    @endif
+                                                @endfor
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="rating-breakdown">
+                                        @for ($star = 5; $star >= 1; $star--)
+                                            @php
+                                                $count = $product->reviews->where('rating', $star)->count();
+                                                $percentage = $product->reviews->count() > 0
+                                                    ? ($count / $product->reviews->count()) * 100
+                                                    : 0;
+                                            @endphp
+                                            <div class="rating-bar">
+                                                <div class="rating-label">{{ $star }} <i class="fas fa-star"></i></div>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar"
+                                                         style="width: {{ $percentage }}%;"
+                                                         aria-valuenow="{{ $percentage }}"
+                                                         aria-valuemin="0"
+                                                         aria-valuemax="100">
+                                                    </div>
+                                                </div>
+                                                <div class="rating-count">{{ $count }} đánh giá</div>
+                                            </div>
+                                        @endfor
+                                    </div>
+                                </div>
                                 @if ($product->reviews->count() > 0)
                                     @foreach ($product->reviews as $review)
                                         <div class="review">
-                                            <div class="review-item">
-                                                <p><strong>{{ $review->user->name }} </strong>
-                                                    @for ($i = 1; $i <= $review->rating; $i++)
-                                                        <span class="star-{{ $i }}">★</span>
-                                                    @endfor
-                                                </p>
-                                                <p>Đánh giá: <em>{{ $review->review }}</em></p>
-                                            </div>
-
-                                            <!-- Kiểm tra xem người dùng đã phản hồi chưa -->
-                                            @if ($review->responses->count() > 0)
-                                                @foreach ($review->responses as $response)
-                                                    <div class="response">
-                                                        <p><strong>Admin {{ $response->responder->name }}</strong> <i>
-                                                                đã phản hồi đánh giá của
-                                                                <strong>{{ $response->review->user->name }}</strong>
-                                                                hồi </i>
-                                                            <span>{{ $response->created_at->format('H:i:s d/m/Y') }}</span>
-                                                        </p>
-                                                        <p>{{ $response->response }}</p>
+                                            <div class="review-header">
+                                                <div class="user-info">
+                                                    <strong>{{ $review->user->name }}</strong>
+                                                    <span class="review-date">{{ $review->created_at->format('d/m/Y') }}</span>
+                                                </div>
+                                                @if($review->variant_info)
+                                                    <div class="variant-info">
+                                                        Phiên bản: {{ $review->variant_info }}
                                                     </div>
-                                                @endforeach
-                                            @endif
-
-                                            <!-- Form thêm phản hồi -->
-                                            @auth
-                                                <form action="{{ route('client.storeReviewResponse', $review->id) }}" method="POST">
-                                                    @csrf
-                                                    <textarea name="response" required placeholder="Phản hồi của bạn"></textarea>
-                                                    <button type="submit" class="submit">Gửi Phản Hồi</button>
-                                                </form>
-                                            @endauth
+                                                @endif
+                                            </div>
+                                            <div class="rating-section">
+                                                <span class="rating">
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        @if ($i <= $review->rating)
+                                                            <i class="fas fa-star"></i>
+                                                        @else
+                                                            <i class="far fa-star"></i>
+                                                        @endif
+                                                    @endfor
+                                                </span>
+                                            </div>
+                                            <div class="review-content">
+                                                <p>{{ $review->review }}</p>
+                                            </div>
                                         </div>
                                     @endforeach
                                 @else
-                                    <p class="kobolg-noreviews">Chưa có đánh giá nào</p>
+                                    <p class="no-reviews">Chưa có đánh giá nào cho sản phẩm này</p>
                                 @endif
-                                <!-- Kiểm tra đơn hàng của người dùng -->
-                                @auth
-                                    @php
-                                        $hasOrder = Auth::user()
-                                            ->orders()
-                                            ->whereHas('orderItems', function ($query) use ($product) {
-                                                $query->where('product_id', $product->id);
-                                            })
-                                            ->exists();
-
-                                        $existingReview = $product->reviews()
-                                            ->where('user_id', Auth::id())
-                                            ->first();
-                                    @endphp
-
-                                    @if ($existingReview)
-                                        <div class="user-review-box">
-                                            <div class="review-header">
-                                                <div class="stars-display">
-                                                    @for ($i = 1; $i <= 5; $i++)
-                                                        @if ($i <= $existingReview->rating)
-                                                            <span class="star filled">★</span>
-                                                        @else
-                                                            <span class="star">★</span>
-                                                        @endif
-                                                    @endfor
-                                                </div>
-                                                <span class="review-date">{{ $existingReview->created_at->format('d/m/Y') }}</span>
-                                            </div>
-                                            <div class="review-content">
-                                                <p><em>"{{ $existingReview->review }}"</em></p>
-                                            </div>
-                                        </div>
-
-                                        <style>
-                                            .user-review-box {
-                                                background: #f8f9fa;
-                                                border: 1px solid #e9ecef;
-                                                border-radius: 8px;
-                                                padding: 20px;
-                                                margin: 15px 0;
-                                                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-                                            }
-
-                                            .review-header {
-                                                display: flex;
-                                                justify-content: space-between;
-                                                align-items: center;
-                                                margin-bottom: 15px;
-                                                padding-bottom: 10px;
-                                                border-bottom: 1px solid #e9ecef;
-                                            }
-
-                                            .stars-display {
-                                                display: flex;
-                                                gap: 5px;
-                                            }
-
-                                            .star {
-                                                font-size: 20px;
-                                                color: #dee2e6;
-                                            }
-
-                                            .star.filled {
-                                                color: #ffd700;
-                                            }
-
-                                            .review-date {
-                                                color: #6c757d;
-                                                font-size: 0.9em;
-                                            }
-
-                                            .review-content {
-                                                color: #495057;
-                                                line-height: 1.6;
-                                            }
-
-                                            .review-content p {
-                                                margin: 0;
-                                                font-size: 1.1em;
-                                            }
-
-                                            .review-content em {
-                                                color: #495057;
-                                                font-style: italic;
-                                            }
-                                        </style>
-                                    @endif
-                                @endauth
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -1322,3 +1104,760 @@
     <!-- Products End -->
     @include('web2.sup.js')
 @endsection
+
+<style>
+    .rating {
+        color: #ffd700;
+        margin-left: 5px;
+    }
+
+    .rating .fas.fa-star {
+        color: #ffd700;
+    }
+
+    .rating .far.fa-star {
+        color: #ccc;
+    }
+
+    .review {
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .review-item {
+        margin-bottom: 10px;
+    }
+
+    .review-item p {
+        margin: 5px 0;
+    }
+
+    .review-item strong {
+        color: #333;
+    }
+
+    .review-item em {
+        color: #666;
+        font-style: italic;
+    }
+
+    .response {
+        margin-left: 20px;
+        padding: 10px;
+        background: #f8f9fa;
+        border-left: 3px solid #ffd700;
+        margin-top: 10px;
+        border-radius: 4px;
+    }
+
+    .response p {
+        margin: 5px 0;
+        color: #555;
+    }
+
+    .response strong {
+        color: #333;
+    }
+
+    .response span {
+        font-size: 0.9em;
+        color: #888;
+    }
+
+    .reviews-section {
+        padding: 20px;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .review-stats {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .review-summary {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .review-count {
+        font-size: 1.2em;
+        color: #333;
+        margin: 0;
+    }
+
+    .average-rating {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .rating-number {
+        font-size: 2em;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .rating-stars {
+        color: #ffd700;
+        font-size: 1.2em;
+    }
+
+    .rating-breakdown {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .rating-bar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .rating-label {
+        min-width: 60px;
+        color: #666;
+    }
+
+    .progress {
+        flex-grow: 1;
+        height: 8px;
+        background-color: #eee;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        background-color: #ffd700;
+        height: 100%;
+        transition: width 0.3s ease;
+    }
+
+    .rating-count {
+        min-width: 100px;
+        text-align: right;
+        color: #666;
+        font-size: 0.9em;
+    }
+
+    .review {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 10px;
+    }
+
+    .user-info {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .review-date {
+        color: #666;
+        font-size: 0.9em;
+    }
+
+    .variant-info {
+        color: #666;
+        font-size: 0.9em;
+        font-style: italic;
+    }
+
+    .rating-section {
+        margin: 10px 0;
+    }
+
+    .rating {
+        color: #ffd700;
+        font-size: 1.1em;
+    }
+
+    .review-content {
+        color: #333;
+        line-height: 1.6;
+    }
+
+    .no-reviews {
+        text-align: center;
+        color: #666;
+        padding: 20px;
+        font-style: italic;
+    }
+
+    @media (max-width: 768px) {
+        .review-summary {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+
+        .rating-bar {
+            font-size: 0.9em;
+        }
+
+        .rating-count {
+            min-width: 80px;
+        }
+    }
+</style>
+
+<script>
+    function toggleEditForm(commentId) {
+        var content = document.getElementById('comment-content-' + commentId);
+        var form = document.getElementById('edit-comment-form-' + commentId);
+        if (form.style.display === "none") {
+            form.style.display = "block";
+            content.style.display = "none";
+        } else {
+            form.style.display = "none";
+            content.style.display = "block";
+        }
+    }
+
+    function toggleEditFormReply(replyId) {
+        var content = document.getElementById('reply-content-' + replyId);
+        var form = document.getElementById('edit-reply-form-' + replyId);
+        if (form.style.display === "none") {
+            form.style.display = "block";
+            content.style.display = "none";
+        } else {
+            form.style.display = "none";
+            content.style.display = "block";
+        }
+    }
+
+    function confirmDeleteComment(commentId) {
+        if (confirm('Bạn có chắc chắn muốn xóa bình luận này?')) {
+            document.getElementById('delete-comment-form-' + commentId).submit();
+        }
+    }
+
+    function confirmDeleteReply(replyId) {
+        if (confirm('Bạn có chắc chắn muốn xóa phản hồi này?')) {
+            document.getElementById('delete-reply-form-' + replyId).submit();
+        }
+    }
+
+    function toggleReplies(commentId) {
+        const repliesSection = document.getElementById(`replies-${commentId}`);
+        const toggleButton = repliesSection.previousElementSibling;
+        const replyCount = repliesSection.querySelectorAll('.reply').length;
+
+        if (repliesSection.classList.contains('show')) {
+            repliesSection.classList.remove('show');
+            toggleButton.classList.remove('active');
+            toggleButton.innerHTML = `<i class="fas fa-chevron-down"></i> Xem ${replyCount} phản hồi`;
+        } else {
+            repliesSection.classList.add('show');
+            toggleButton.classList.add('active');
+            toggleButton.innerHTML = `<i class="fas fa-chevron-down"></i> Ẩn phản hồi`;
+        }
+    }
+</script>
+
+<style>
+    /* Reset và style chung */
+    .comments-section {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+    }
+
+    /* Style cho comment */
+    .comment {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .comment-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 10px;
+    }
+
+    .user-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;  /* Căn trái cho thông tin user */
+        gap: 5px;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .user-meta {
+        display: flex;
+        align-items: center;
+    }
+
+    .user-details {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;  /* Căn trái cho tên và thời gian */
+    }
+
+    .user-name {
+        font-weight: 500;
+        color: #333;
+        margin: 0;
+        text-align: left;  /* Căn trái cho tên */
+    }
+
+    .comment-date {
+        font-size: 0.85em;
+        color: #666;
+        text-align: left;  /* Căn trái cho thời gian */
+        margin-top: 2px;
+    }
+
+    /* Actions (Edit/Delete buttons) */
+    .comment-actions, .reply-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .action-btn {
+        background: none;
+        border: none;
+        padding: 5px;
+        cursor: pointer;
+        color: #666;
+        transition: color 0.2s;
+    }
+
+    .action-btn:hover {
+        color: #007bff;
+    }
+
+    .action-btn.delete-btn:hover {
+        color: #dc3545;
+    }
+
+    /* Comment content */
+    .comment-content, .reply-content {
+        margin: 10px 0;
+        color: #333;
+        line-height: 1.5;
+        text-align: left;  /* Căn trái cho nội dung */
+    }
+
+    /* Reply section */
+    .replies {
+        margin-left: 50px;
+        margin-top: 10px;
+    }
+
+    .reply {
+        background: #fff;
+        border-left: 3px solid #007bff;
+        padding: 10px 15px;
+        margin-top: 10px;
+        border-radius: 4px;
+    }
+
+    /* Cập nhật HTML cho comment */
+    .comment-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .user-meta {
+        display: flex;
+        align-items: center;
+    }
+
+    /* Rest of the existing styles... */
+</style>
+
+<style>
+    /* Existing styles... */
+
+    /* Forms */
+    .edit-form {
+        margin-top: 10px;
+    }
+
+    .edit-form textarea,
+    .reply-form textarea,
+    .comment-form textarea {
+        width: 100%;
+        min-height: 60px;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        resize: vertical;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    /* Input groups */
+    .input-group {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-top: 15px;
+        background: #fff;
+        padding: 10px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+    }
+
+    .input-group textarea {
+        flex-grow: 1;
+        margin-bottom: 0;
+        border: none;
+        padding: 5px;
+        min-height: 40px;
+    }
+
+    .input-group textarea:focus {
+        outline: none;
+    }
+
+    .btn-send {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-send img {
+        width: 24px;
+        height: 24px;
+        transition: transform 0.2s;
+    }
+
+    .btn-send:hover img {
+        transform: scale(1.1);
+    }
+
+    /* Buttons */
+    .btn {
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+        border: 1px solid transparent;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .btn:hover {
+        opacity: 0.9;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .replies {
+            margin-left: 20px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+        }
+
+        .input-group {
+            flex-direction: column;
+        }
+
+        .btn-send {
+            align-self: flex-end;
+        }
+
+        .user-meta {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .user-details {
+            margin-top: 5px;
+        }
+    }
+</style>
+
+<style>
+    /* Common styles for comments and replies */
+    .comment, .reply {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .comment-header, .reply-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 10px;
+    }
+
+    .user-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .user-meta {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .user-details {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .user-name {
+        font-weight: 500;
+        color: #333;
+        margin: 0;
+    }
+
+    .comment-date {
+        font-size: 0.85em;
+        color: #666;
+        margin-top: 2px;
+    }
+
+    /* Actions styling */
+    .comment-actions, .reply-actions {
+        display: flex;
+        gap: 8px;
+        margin-left: auto;
+    }
+
+    .action-btn {
+        background: none;
+        border: none;
+        padding: 5px;
+        cursor: pointer;
+        color: #666;
+        transition: color 0.2s;
+    }
+
+    .action-btn:hover {
+        color: #007bff;
+    }
+
+    .action-btn.delete-btn:hover {
+        color: #dc3545;
+    }
+
+    /* Content styling */
+    .comment-content, .reply-content {
+        margin: 10px 0;
+        color: #333;
+        line-height: 1.5;
+    }
+
+    /* Reply specific styles */
+    .reply {
+        background: #fff;
+        border-left: 3px solid #007bff;
+        margin-left: 50px;
+        margin-top: 10px;
+    }
+
+    /* Form styling */
+    .edit-form {
+        margin-top: 10px;
+    }
+
+    .edit-form textarea {
+        width: 100%;
+        min-height: 60px;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        resize: vertical;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    /* Input groups */
+    .input-group {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-top: 15px;
+        background: #fff;
+        padding: 10px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+    }
+
+    .input-group textarea {
+        flex-grow: 1;
+        margin-bottom: 0;
+        border: none;
+        padding: 5px;
+        min-height: 40px;
+    }
+
+    .input-group textarea:focus {
+        outline: none;
+    }
+
+    /* Send button */
+    .btn-send {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-send img {
+        width: 24px;
+        height: 24px;
+        transition: transform 0.2s;
+    }
+
+    .btn-send:hover img {
+        transform: scale(1.1);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .reply {
+            margin-left: 20px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+        }
+
+        .user-meta {
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .input-group {
+            flex-direction: column;
+        }
+
+        .btn-send {
+            align-self: flex-end;
+        }
+    }
+</style>
+
+<style>
+    /* Update replies toggle styles */
+    .replies-toggle {
+        color: #333;
+        background: none;
+        border: none;
+        padding: 5px 10px;
+        margin-top: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.9em;
+        transition: all 0.3s ease;
+        opacity: 0.8;
+    }
+
+    .replies-toggle:hover {
+        opacity: 1;
+        transform: translateY(-1px);
+        text-decoration: none;
+    }
+
+    .replies-toggle i {
+        transition: transform 0.3s ease;
+        color: #333;
+    }
+
+    .replies-toggle.active {
+        opacity: 1;
+    }
+
+    .replies-toggle.active i {
+        transform: rotate(180deg);
+    }
+
+    /* Hide replies by default */
+    .replies {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: all 0.3s ease;
+        margin-left: 50px;
+    }
+
+    /* Show replies when active */
+    .replies.show {
+        max-height: 2000px; /* Arbitrary large height */
+        opacity: 1;
+        margin-top: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .replies {
+            margin-left: 20px;
+        }
+    }
+</style>

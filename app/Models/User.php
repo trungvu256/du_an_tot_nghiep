@@ -11,6 +11,9 @@ use App\Models\Order;
 use App\Models\Wallet;
 
 
+/**
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $orders
+ */
 class User extends Authenticatable
 {
 

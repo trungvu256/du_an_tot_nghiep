@@ -600,24 +600,35 @@ class WebProductController extends Controller
         $request->validate([
             'rating' => 'required|integer|between:1,5',
             'review' => 'nullable|string|max:1000',
+            'variant_id' => 'nullable|exists:product_variants,id', // Thêm validation cho variant_id
         ]);
 
-        // Kiểm tra xem người dùng đã đánh giá sản phẩm này chưa
-        $existingReview = ProductReview::where('user_id', Auth::id())
-            ->where('product_id', $productId)
-            ->exists();
-
-        if ($existingReview) {
-            return redirect()->back()->with('error', 'Bạn đã đánh giá sản phẩm này rồi!');
-        }
-
-        // Kiểm tra xem người dùng đã có đơn hàng hay chưa
+        // Kiểm tra xem người dùng đã có đơn hàng với sản phẩm này hay chưa
         $hasOrder = Order::where('user_id', Auth::id())
+            ->whereHas('orderItems', function ($query) use ($productId) {
+                $query->where('product_id', $productId);
+            })
             ->whereIn('status', [Order::STATUS_DELIVERED, Order::STATUS_COMPLETED])
             ->exists();
 
         if (!$hasOrder) {
             return redirect()->back()->with('error', 'Bạn cần có ít nhất một đơn hàng để đánh giá sản phẩm.');
+        }
+
+        // Lấy thông tin sản phẩm và biến thể
+        $product = Product::findOrFail($productId);
+        $variantId = $request->input('variant_id');
+        $variantInfo = null;
+
+        if ($variantId) {
+            $variant = ProductVariant::with('product_variant_attributes.attribute', 'product_variant_attributes.attributeValue')
+                ->find($variantId);
+
+            if ($variant) {
+                $variantInfo = $variant->product_variant_attributes->map(function ($attr) {
+                    return $attr->attribute->name . ': ' . $attr->attributeValue->value;
+                })->join(', ');
+            }
         }
 
         // Lưu đánh giá
@@ -626,9 +637,21 @@ class WebProductController extends Controller
             'user_id' => Auth::id(),
             'rating' => $request->input('rating'),
             'review' => $request->input('review'),
+            'variant_id' => $variantId,
+            'variant_info' => $variantInfo,
         ]);
 
         return redirect()->back()->with('success', 'Đánh giá của bạn đã được thêm!');
+    }
+
+    public function showReviews($productId)
+    {
+        $product = Product::with(['reviews' => function ($query) {
+            $query->with(['user', 'variant'])
+                  ->latest();
+        }])->findOrFail($productId);
+
+        return view('web2.Home.shop-detail', compact('product'));
     }
 
     // Phương thức lưu phản hồi đánh giá
