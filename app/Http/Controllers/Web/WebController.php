@@ -79,7 +79,8 @@ class WebController extends Controller
 
     public function contact()
     {
-        return view('web2.Home.contact');
+        $categories = Catalogue::all();
+        return view('web2.Home.contact',compact('categories'));
     }
 
 

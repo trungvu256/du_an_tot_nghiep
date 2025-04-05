@@ -397,6 +397,9 @@ Route::middleware(['auth', 'user'])->group(function () {
         Route::get('/viewCart/show', [CartController::class, 'showHeaderCart'])->name('cart.showHeaderCart');
         Route::post('/cart/removesss/{id}', [CartController::class, 'remove'])->name('cart.removess');
         Route::post('/cart/checkout-selected', [CartController::class, 'checkoutSelected'])->name('cart.checkoutSelected');
+        // routes/web.php
+Route::post('/cart/select-items', [CartController::class, 'selectItems'])->name('cart.selectItems');
+
 
     });
 

@@ -1,7 +1,11 @@
 @extends('web2.layout.master')
 
 @section('content')
-    <!-- Navbar End -->
+{{-- @if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif --}}
 
     <div class="container-fluid pt-5">
         <div class="row px-xl-5">
@@ -122,7 +126,34 @@
                 </form>
             </div>
 
+            
             <div class="col-lg-4">
+                <form action="{{ route('cart.applyPromotion') }}" method="POST">
+                    @csrf
+                    <div class="input-group">
+                        <input type="text" name="coupon_code" class="form-control p-4" placeholder="Nhập mã giảm giá">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary">Áp dụng mã</button>
+                        </div>
+                    </div>
+                </form>
+                @if(session('success'))
+                <p class="text-success">{{ session('success') }}</p>
+            @endif
+            @if(session('error'))
+                <p class="text-danger">{{ session('error') }}</p>
+            @endif
+            
+            <?php
+            $cart = session('cart', []);
+            $subtotal = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
+            $promotion = session('promotion');
+            $shippingFee = 10000; // Phí vận chuyển cố định hoặc có thể thay đổi
+            
+            $discount = $promotion['discount'] ?? 0;
+            $total = max(0, $subtotal - $discount);
+            ?>
+
                 <div class="card border-secondary mb-5">
                     <div class="card-header bg-secondary border-0">
                         <h4 class="font-weight-semi-bold m-0">Tóm tắt giỏ hàng</h4>
@@ -132,10 +163,16 @@
                             <h6 class="font-weight-medium">Tạm tính</h6>
                             <h6 class="font-weight-medium" id="summary-subtotal">0₫</h6>
                         </div>
-                        <div class="d-flex justify-content-between">
+                        @if($promotion)
+                    <div class="d-flex justify-content-between mb-3 pt-1">
+                        <h6 class="font-weight-medium text-success">Giảm giá ({{ $promotion['code'] }})</h6>
+                        <h6 class="font-weight-medium text-success">-{{ number_format($discount, 0, ',', '.') }}₫</h6>
+                    </div>
+                    @endif
+                        {{-- <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Phí vận chuyển</h6>
                             <h6 class="font-weight-medium" id="summary-shipping">10.000₫</h6>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
@@ -147,20 +184,60 @@
                             <input type="hidden" name="selected_cart_items" id="selected_cart_items">
                             <input type="hidden" name="subtotal" id="subtotal">
                             <input type="hidden" name="discount" id="discount">
-                            <input type="hidden" name="shipping_fee" id="shipping_fee">
+                            {{-- <input type="hidden" name="shipping_fee" id="shipping_fee"> --}}
                             <input type="hidden" name="total" id="total">
-                            
+                        
+                            {{-- @foreach ($cart as $cartKey => $item)
+                                <div class="cart-item">
+                                    <input type="checkbox" class="cart-item-checkbox" data-cart-key="{{ $cartKey }}" />
+                                    <span>{{ $item['name'] }}</span>
+                                    <!-- Các thông tin khác của sản phẩm -->
+                                </div>
+                            @endforeach --}}
+                        
                             <button type="submit" class="btn btn-block btn-primary my-3 py-3">
                                 Tiến hành thanh toán
                             </button>
                         </form>
+                        
+                        <script>
+                            // Khi form được submit, lấy các sản phẩm đã chọn
+                            document.getElementById('checkout-form').addEventListener('submit', function(event) {
+                                var selectedItems = [];
+                                document.querySelectorAll('.cart-item-checkbox:checked').forEach(function(checkbox) {
+                                    selectedItems.push(checkbox.getAttribute('data-cart-key'));
+                                });
+                        
+                                // Đưa các sản phẩm đã chọn vào input hidden
+                                document.getElementById('selected_cart_items').value = JSON.stringify(selectedItems);
+                        
+                                // Tính toán subtotal, discount và total ở đây (nếu cần thiết)
+                                var subtotal = 0;
+                                // var shipping_fee =0;
+                                var discount = 0; // Lấy từ session nếu có
+                        
+                                // Cập nhật subtotal và các giá trị tính toán khác
+                                selectedItems.forEach(function(cartKey) {
+                                    var item = {!! json_encode($cart) !!}[cartKey];
+                                    subtotal += item.price * item.quantity;
+                                });
+                        
+                                var total = subtotal - discount ;
+                        
+                                // Đưa vào các input hidden
+                                document.getElementById('subtotal').value = subtotal;
+                                document.getElementById('discount').value = discount;
+                                // document.getElementById('shipping_fee').value = shipping_fee;
+                                document.getElementById('total').value = total;
+                            });
+                        </script>
                         
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+<script></script>
     <script>
 function getCurrencyNumber(value) {
     return parseInt(value.replace(/\D/g, ''));
@@ -170,32 +247,63 @@ document.getElementById("checkout-form").addEventListener("submit", function (e)
     // Ngăn gửi form ngay
     e.preventDefault();
 
-    // 1. Lấy các cartKey đã chọn
+    // 1. Lấy các cartKey đã chọn (chỉ những sản phẩm được tích chọn)
     const selected = Array.from(document.querySelectorAll(".product-checkbox:checked"))
                         .map(cb => cb.value);
+
+    // Nếu không có sản phẩm nào được chọn, hiển thị thông báo lỗi
+    if (selected.length === 0) {
+        alert("Vui lòng chọn ít nhất 1 sản phẩm để thanh toán.");
+        return;
+    }
+
+    // 2. Gán các cartKey đã chọn vào input ẩn để gửi lên server
+    document.getElementById("checkout-form").addEventListener("submit", function(e) {
+    e.preventDefault(); // Ngăn gửi form ngay lập tức
+
+    // Lấy các cartKey đã chọn
+    const selected = Array.from(document.querySelectorAll(".product-checkbox:checked"))
+        .map(cb => cb.value);
 
     if (selected.length === 0) {
         alert("Vui lòng chọn ít nhất 1 sản phẩm để thanh toán.");
         return;
     }
 
-    // 2. Gán vào input ẩn
+    // Gán vào input ẩn
     document.getElementById("selected_cart_items").value = JSON.stringify(selected);
 
-    // 3. Lấy và gán các phần tóm tắt đơn hàng
-    const subtotal = getCurrencyNumber(document.getElementById("summary-subtotal").innerText);
-    const discount = getCurrencyNumber(document.getElementById("summary-discount")?.innerText || "0");
-    const shipping = getCurrencyNumber(document.getElementById("summary-shipping").innerText);
-    const total = getCurrencyNumber(document.getElementById("summary-total").innerText);
+    // Tính toán subtotal dựa trên sản phẩm đã chọn
+    let subtotal = 0;
+    selected.forEach(cartKey => {
+        const price = parseFloat(document.getElementById(`price-${cartKey}`).dataset.price);
+        const quantity = parseInt(document.getElementById(`quantity-display-${cartKey}`).value, 10);
+        subtotal += price * quantity;
+    });
 
+    // Gán subtotal vào input ẩn
     document.getElementById("subtotal").value = subtotal;
+
+    // Tính các giá trị khác như discount, shipping fee, total
+    const discount = parseFloat(document.getElementById("summary-discount")?.innerText.replace('₫', '').replace(',', '') || '0');
+    const shippingFee = parseFloat(document.getElementById("summary-shipping").innerText.replace('₫', '').replace(',', ''));
+    const total = subtotal - discount;
+
+    // Gán các giá trị còn lại vào input ẩn
     document.getElementById("discount").value = discount;
-    document.getElementById("shipping_fee").value = shipping;
+    // document.getElementById("shipping_fee").value = shippingFee;
     document.getElementById("total").value = total;
 
     // Gửi form
     this.submit();
 });
+
+
+// Hàm để lấy giá trị số tiền từ chuỗi văn bản có định dạng tiền tệ
+function getCurrencyNumber(str) {
+    return parseFloat(str.replace(/[^\d.-]/g, '')) || 0;
+}
+
 </script>
 
 
@@ -261,9 +369,9 @@ document.getElementById("checkout-form").addEventListener("submit", function (e)
                 subtotal += price * quantity;
             });
     
-            const shippingFee = 10000;
+            // const shippingFee = 10000;
             $('#summary-subtotal').text(formatCurrency(subtotal));
-            $('#summary-total').text(formatCurrency(subtotal + shippingFee));
+            $('#summary-total').text(formatCurrency(subtotal));
         }
     
         $('.product-checkbox').on('change', updateSummary);
@@ -275,4 +383,56 @@ document.getElementById("checkout-form").addEventListener("submit", function (e)
     margin-top: 1.5pc;             /* Thêm khoảng cách bên trong */
 }
     </style>
+    <script>
+        function getSelectedItems() {
+    const selectedItems = [];
+    // Lọc ra các checkbox được chọn
+    document.querySelectorAll('.product-checkbox:checked').forEach(function (checkbox) {
+        selectedItems.push(checkbox.value); // Lấy value (cartKey) của sản phẩm
+    });
+    return selectedItems;
+}
+    </script>
+
+<script>
+    document.getElementById("checkout-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        // 1. Lấy các checkbox được chọn
+        const selectedCheckboxes = document.querySelectorAll('.product-checkbox:checked');
+        const selectedKeys = Array.from(selectedCheckboxes).map(cb => cb.value);
+
+        if (selectedKeys.length === 0) {
+            alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
+            return;
+        }
+
+        // 2. Tính lại subtotal từ sản phẩm đã chọn
+        let subtotal = 0;
+        selectedKeys.forEach(cartKey => {
+            const price = parseInt(document.querySelector(`#price-${cartKey}`).dataset.price || 0);
+            const quantity = parseInt(document.querySelector(`#quantity-${cartKey}`).value || 0);
+            subtotal += price * quantity;
+        });
+
+        // 3. Lấy discount, shipping và tính tổng
+        const discount = getCurrencyNumber(document.getElementById("summary-discount")?.innerText || "0");
+        const shipping = getCurrencyNumber(document.getElementById("summary-shipping")?.innerText || "0");
+        const total = subtotal - discount;
+
+        // 4. Gán vào input hidden
+        document.getElementById("selected_cart_items").value = JSON.stringify(selectedKeys);
+        document.getElementById("subtotal").value = subtotal;
+        document.getElementById("discount").value = discount;
+        // document.getElementById("shipping_fee").value = shipping;
+        document.getElementById("total").value = total;
+
+        this.submit();
+    });
+
+    function getCurrencyNumber(str) {
+        return parseInt(str.replace(/[^\d]/g, '')) || 0;
+    }
+</script>
+
 @endsection

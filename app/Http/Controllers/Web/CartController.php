@@ -312,18 +312,39 @@ public function removeFromCart($id)
 
     // thanh toán
 
-    public function index()
+    public function index(Request $request)
     {
-        $categories=Catalogue::all();
+        // Lấy danh mục sản phẩm
+        $categories = Catalogue::all();
+        
+        // Lấy giỏ hàng từ session
         $cart = session('cart', []);
-        $subtotal = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
+        
+        // Lấy các sản phẩm đã được chọn (dựa vào selected_cart_items trong request)
+        $selectedKeys = json_decode($request->input('selected_cart_items'), true);
+        
+        // Lọc ra các sản phẩm đã chọn
+        $filteredCart = collect($cart)->only($selectedKeys)->toArray();
+        
+        // Tính tổng tiền tạm tính cho các sản phẩm đã chọn
+        $subtotal = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $filteredCart));
+        
+        // Lấy thông tin khuyến mãi từ session (nếu có)
         $promotion = session('promotion');
-        $shippingFee = 10000;
+        
+        // Phí giao hàng cố định (có thể thay đổi tùy theo yêu cầu)
+        // $shippingFee = 10000;
+        
+        // Tính toán giá trị giảm giá (nếu có)
         $discount = $promotion['discount'] ?? 0;
-        $total = max(0, $subtotal - $discount + $shippingFee);
-
-        return view('web2.Home.checkout', compact('categories', 'cart', 'subtotal', 'promotion', 'shippingFee', 'discount', 'total'));
+        
+        // Tính tổng tiền (đảm bảo không âm)
+        $total = max(0, $subtotal - $discount);
+        
+        // Trả về view checkout với các thông tin đã tính toán
+        return view('web2.Home.checkout', compact('categories', 'filteredCart', 'subtotal', 'promotion',  'discount', 'total'));
     }
+    
 
     public function remove($id)
 {
@@ -340,5 +361,24 @@ public function removeFromCart($id)
 
 // chọn số lượng
 
+// CartController.php
+public function selectItems(Request $request)
+{
+    $selectedKeys = $request->input('selected_items', []);
+    $cart = session()->get('cart', []);
+    $selectedCart = [];
+
+    foreach ($selectedKeys as $key) {
+        foreach ($cart as $index => $item) {
+            if ($key == $item['id'] . '_' . $index) {
+                $selectedCart[] = $item;
+            }
+        }
+    }
+
+    session()->put('selected_cart', $selectedCart);
+
+    return redirect()->route('cart.viewCart')->with('success', 'Đã chọn sản phẩm để thanh toán.');
+}
 
 }
