@@ -171,19 +171,49 @@ class ProductController extends Controller
 {
     $title = 'Detail Product';
     $catalogues = Catalogue::all();
+
+    // Lấy sản phẩm cùng các quan hệ liên quan
     $product = Product::with([
         'catalogue',
         'brand',
         'comments.user',
-        'variants.attributes.attribute',
-        'variants.attributes.attributeValue'
+        'variants.product_variant_attributes.attribute',
+        'variants.product_variant_attributes.attributeValue'
     ])->findOrFail($id);
 
     $description_images = Images::where('product_id', $id)->get();
 
-    // dd($product->variants->toArray());
-    return view('admin.product.show', compact('product', 'catalogues', 'description_images', 'title'));
+    // Chuẩn bị danh sách thuộc tính giống bên ngoài frontend
+    $attributes = [];
+    foreach ($product->variants as $variant) {
+        foreach ($variant->product_variant_attributes as $pivot) {
+            $attrName = $pivot->attribute->name;
+            $attrValue = $pivot->attributeValue->value;
+
+            if (!isset($attributes[$attrName])) {
+                $attributes[$attrName] = [];
+            }
+
+            if (!in_array($attrValue, $attributes[$attrName])) {
+                $attributes[$attrName][] = $attrValue;
+            }
+        }
+    }
+
+    // Xử lý loại bỏ trùng lặp nếu có
+    foreach ($attributes as $key => $values) {
+        $attributes[$key] = array_unique($values);
+    }
+
+    return view('admin.product.show', compact(
+        'product',
+        'catalogues',
+        'description_images',
+        'title',
+        'attributes'
+    ));
 }
+
 
 public function edit($id)
 {
@@ -191,13 +221,19 @@ public function edit($id)
     $catalogues = Catalogue::all();
     $brands = Brand::all();
     $attributes = Attribute::with('values')->get(); // Lấy danh sách thuộc tính cùng giá trị của chúng
-    $product = Product::findOrFail($id);
+
+    $product = Product::with('variants.product_variant_attributes.attribute', 'variants.product_variant_attributes.attributeValue')->findOrFail($id);
+
     $description_images = Images::where('product_id', $id)->pluck('image');
 
-    // Lấy danh sách biến thể liên quan đến sản phẩm
-    $variants = ProductVariant::where('product_id', $id)->with('attributes.attribute', 'attributes.attributeValue')->get();
-
-    return view('admin.product.edit', compact('product', 'catalogues', 'brands', 'variants', 'attributes', 'title', 'description_images'));
+    return view('admin.product.edit', compact(
+        'product',
+        'catalogues',
+        'brands',
+        'attributes',
+        'title',
+        'description_images'
+    ));
 }
 
 public function update(Request $request, $id)

@@ -3,15 +3,18 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Catalogue;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Order::query();
+        $query = Order::orderBy('created_at', 'desc');
+        $categories = Catalogue::all();
 
         // Lọc theo trạng thái giao hàng
         if ($request->filled('status')) {
@@ -41,15 +44,17 @@ class OrderController extends Controller
 
         $orders = $query->paginate(10);
 
-        return view('web2.Home.order', compact('orders'));
+        return view('web2.Home.order', compact('orders','categories'));
     }
 
     // show order
     public function show($id)
 {
+    $categories = Catalogue::all();
     $order = Order::with(['orderItems.product', 'shippingInfo', 'orderItems.productVariant'])->findOrFail($id);
+    $returnReasons = DB::table('return_reasons')->get();
 
-    return view('web2.Home.orderItem', compact('order'));
+    return view('web2.Home.orderItem', compact('order','categories','returnReasons'));
 }
 
 
@@ -69,24 +74,40 @@ class OrderController extends Controller
 
 
      // Hủy đơn hàng
-     public function cancel($id)
+     public function cancel(Request $request, $id)
      {
          $order = Order::find($id);
- 
+         $returnReason = $request->input('return_reason'); // Lý do hủy đơn hàng
+         $quantity = $request->input('quantity'); // Số lượng trả về kho
+     
          if ($order) {
+             // Kiểm tra trạng thái đơn hàng
              if ($order->status == 0 || $order->status == 1) {
                  // Cập nhật trạng thái đơn hàng là đã hủy
                  $order->status = 5;
+                 $order->return_reason = $returnReason; // Lý do hủy
                  $order->save();
- 
-                 return redirect()->back()->with('success', 'Đơn hàng đã được hủy!');
+     
+                 // Xử lý trả lại hàng về kho nếu có số lượng
+                 if ($quantity > 0) {
+                     // Ví dụ: Cập nhật lại số lượng kho
+                     foreach ($order->orderItems as $item) {
+                         if ($item->quantity >= $quantity) {
+                             $item->product->increment('stock_quantity', $quantity); // Tăng số lượng sản phẩm về kho
+                             break;
+                         }
+                     }
+                 }
+     
+                 return redirect()->back()->with('success', 'Đơn hàng đã được hủy và hàng đã được trả về kho!');
              }
- 
+     
              return redirect()->back()->with('error', 'Không thể hủy đơn hàng này!');
          }
- 
+     
          return redirect()->back()->with('error', 'Không tìm thấy đơn hàng!');
      }
+     
  
      // Xác nhận đã nhận được hàng
      public function received($id)

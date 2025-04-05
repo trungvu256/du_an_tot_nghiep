@@ -90,6 +90,7 @@
                         <div class="text-muted">( 5.50k Customer Review )</div>
                     </div> --}}
 
+<<<<<<< HEAD
                         <div class="row mt-3">
                             @foreach ($product->variants as $variant)
                                 <div class="col-md-4">
@@ -129,10 +130,48 @@
                                                 <strong> {{ $variant->stock_quantity }}</strong>
                                             </p>
                                         </div>
+=======
+                    <div class="row mt-3">
+                        @foreach ($product->variants as $variant)
+                            <div class="col-md-4">
+                                <div class="card border shadow-sm">
+                                    <div class="card-body">
+                                        {{-- Giá bán --}}
+                                        <p style="font-size: 1rem">
+                                            <i class="ri-money-dollar-circle-fill"></i> Giá bán:
+                                            <strong>
+                                                <br><del style="color: red">
+                                                    {{ number_format($variant->price > 0 ? $variant->price : 0, 0, ',', '.') }} VNĐ
+                                                </del>
+                                                <br><span style="color: #0ab39c">
+                                                    {{ number_format($variant->price_sale > 0 ? $variant->price_sale : $variant->price, 0, ',', '.') }} VNĐ
+                                                </span>
+                                            </strong>
+                                        </p>
+                    
+                                        {{-- Danh sách thuộc tính --}}
+                                        @if ($variant->product_variant_attributes && count($variant->product_variant_attributes) > 0)
+                                            @foreach ($variant->product_variant_attributes as $attr)
+                                                <br>
+                                                <span style="font-size: 1rem">{{ $attr->attribute->name ?? 'Thuộc tính' }}</span>:
+                                                <strong>{{ $attr->attributeValue->value ?? 'Không có giá trị' }}</strong>
+                                            @endforeach
+                                        @else
+                                            <p class="text-muted">Không có thuộc tính.</p>
+                                        @endif
+                    
+                                        {{-- Số lượng --}}
+                                        <p style="font-size: 1rem">
+                                            Số lượng:
+                                            <strong>{{ $variant->stock_quantity }}</strong>
+                                        </p>
+>>>>>>> 815d3abfd0124bc6d45c2b093eb2994c415cdbf7
                                     </div>
                                 </div>
-                            @endforeach
-                        </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    
                         <!-- end row -->
 
 
@@ -235,138 +274,7 @@
                             </div>
                             <div class="row gy-4 gx-0">
                                 <div class="col-lg-4">
-                                    {{-- <div>
-                                    <div class="pb-3">
-                                        <div class="bg-light px-3 py-2 rounded-2 mb-2">
-                                            <div class="d-flex align-items-center">
-                                                <div class="flex-grow-1">
-                                                    <div class="fs-16 align-middle text-warning">
-                                                        <i class="ri-star-fill"></i>
-                                                        <i class="ri-star-fill"></i>
-                                                        <i class="ri-star-fill"></i>
-                                                        <i class="ri-star-fill"></i>
-                                                        <i class="ri-star-half-fill"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="flex-shrink-0">
-                                                    <h6 class="mb-0">4.5 out of 5</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="text-center">
-                                            <div class="text-muted">Total <span class="fw-medium">5.50k</span> reviews
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="mt-3">
-                                        <div class="row align-items-center g-2">
-                                            <div class="col-auto">
-                                                <div class="p-2">
-                                                    <h6 class="mb-0">5 star</h6>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="p-2">
-                                                    <div class="progress animated-progress progress-sm">
-                                                        <div class="progress-bar bg-success" role="progressbar" style="width: 50.16%" aria-valuenow="50.16" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <div class="p-2">
-                                                    <h6 class="mb-0 text-muted">2758</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- end row -->
-
-                                        <div class="row align-items-center g-2">
-                                            <div class="col-auto">
-                                                <div class="p-2">
-                                                    <h6 class="mb-0">4 star</h6>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="p-2">
-                                                    <div class="progress animated-progress progress-sm">
-                                                        <div class="progress-bar bg-success" role="progressbar" style="width: 19.32%" aria-valuenow="19.32" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <div class="p-2">
-                                                    <h6 class="mb-0 text-muted">1063</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- end row -->
-
-                                        <div class="row align-items-center g-2">
-                                            <div class="col-auto">
-                                                <div class="p-2">
-                                                    <h6 class="mb-0">3 star</h6>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="p-2">
-                                                    <div class="progress animated-progress progress-sm">
-                                                        <div class="progress-bar bg-success" role="progressbar" style="width: 18.12%" aria-valuenow="18.12" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <div class="p-2">
-                                                    <h6 class="mb-0 text-muted">997</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- end row -->
-
-                                        <div class="row align-items-center g-2">
-                                            <div class="col-auto">
-                                                <div class="p-2">
-                                                    <h6 class="mb-0">2 star</h6>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="p-2">
-                                                    <div class="progress animated-progress progress-sm">
-                                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 7.42%" aria-valuenow="7.42" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-auto">
-                                                <div class="p-2">
-                                                    <h6 class="mb-0 text-muted">408</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- end row -->
-
-                                        <div class="row align-items-center g-2">
-                                            <div class="col-auto">
-                                                <div class="p-2">
-                                                    <h6 class="mb-0">1 star</h6>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="p-2">
-                                                    <div class="progress animated-progress progress-sm">
-                                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 4.98%" aria-valuenow="4.98" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <div class="p-2">
-                                                    <h6 class="mb-0 text-muted">274</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- end row -->
-                                    </div>
-                                </div> --}}
+                                  
                                 </div>
                                 <!-- end col -->
 

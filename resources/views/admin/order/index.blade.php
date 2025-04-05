@@ -73,10 +73,10 @@
                     <select name="status" class="form-select form-select-sm me-2" id="bulk-status" style="width: 180px;">
                         <option value="0">Chờ xử lý</option>
                         <option value="1">Chờ lấy hàng</option>
-                        <option value="2">Đơn vị vận chuyển đã lấy hàng</option>
+                        <option value="2">Chờ giao hàng</option>
                         <option value="3">Đang giao</option>
                         <option value="4">Đã giao</option>
-                        <option value="5">Hoàn tất</option>
+                        <option value="5">Trả hàng</option>
                         <option value="6">Đã hủy</option>
                     </select>
         

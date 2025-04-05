@@ -230,6 +230,7 @@
                     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                         <span class="navbar-toggler-icon"></span>
                     </button>
+
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
                             <a class="me-2 nav-link text-nowrap {{ request()->routeIs('web.home') ? 'active' : '' }}"
@@ -304,7 +305,10 @@
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-shopping-cart fa-lg"></i>
                             <span
-                                class="cart-badge">{{ session('cart') ? collect(session('cart'))->sum('quantity') : 0 }}</span>
+
+                                class="cart-badge">{{ session('cart')? collect(session('cart'))->sum(function ($item) {return (int) $item['quantity'];}): 0 }}</span>
+
+
                         </a>
 
                         <!-- Dropdown danh sách sản phẩm trong giỏ hàng -->
@@ -335,8 +339,9 @@
                                 @endforeach
                                 <li class="text-center">
                                     <strong>Tổng:
-                                        {{ number_format(collect($cart)->sum(fn($i) => $i['quantity'] * $i['price']), 0, ',', '.') }}
+                                        {{ number_format(collect($cart)->sum(fn($i) => (int) $i['quantity'] * (float) $i['price']), 0, ',', '.') }}
                                         VNĐ</strong>
+
                                 </li>
                                 <li class="text-center mt-2">
                                     <a href="{{ route('cart.viewCart') }}" class="btn btn-primary btn-sm w-100">Xem
@@ -353,96 +358,69 @@
             </div>
         </div>
     </div>
-    <!-- Thanh tìm kiếm (bọc trong 1 div có ID nếu bạn cần JS ẩn/hiện) -->
-    <div class="search-bar" id="searchBar">
-        <div class="container-fluid px-3 py-3">
-            <div class="d-flex justify-content-between align-items-center">
-                <!-- Logo -->
-                <div class="col-lg-3 text-start" style="margin-left: 20px;">
-                    <a href="/" class="text-decoration-none">
-                        <h1 class="m-0 display-5 font-weight-semi-bold"
-                            style="font-family: 'Montserrat', sans-serif;">
-                            <span class="text-primary font-weight-bold px-3 mr-1">Ethereal</span>Noir
-                        </h1>
-                    </a>
-                </div>
 
-                <!-- Thanh tìm kiếm -->
-                <div class="flex-grow-1 d-flex justify-content-center mx-2">
-                    <form action="{{ route('web.shop') }}" method="GET"
-                        class="d-flex align-items-center border rounded-pill px-3 py-2 shadow-sm"
-                        style="max-width: 700px; width: 100%; height: 40px;">
-                        <input type="text" name="name" class="form-control border-0 shadow-none flex-grow-1"
-                            placeholder="Tìm theo nội dung..."
-                            style="outline: none; font-size: 14px; padding: 6px; height: 100%;" required>
-                        <button type="submit"
-                            class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center ms-2"
-                            style="width: 35px; height: 35px;">
-                            <i class="fa fa-search text-white"></i>
-                        </button>
-                    </form>
-                </div>
-                <script>
-                    $(document).on('click', '.btn-remove-item', function(e) {
-                        e.preventDefault();
-                        let id = $(this).data('id');
+    <script>
+        $(document).on('click', '.btn-remove-item', function(e) {
+            e.preventDefault();
+            let id = $(this).data('id');
 
-                        $.ajax({
-                            url: '{{ route('cart.removess', ':id') }}'.replace(':id', id),
-                            type: 'POST',
-                            data: {
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function(res) {
-                                // Reload dropdown hoặc xoá trực tiếp DOM
-                                location.reload();
-                            },
-                            error: function(err) {
-                                alert("Xóa thất bại!");
-                            }
-                        });
-                    });
-                </script>
+            $.ajax({
+                url: '{{ route('cart.removess', ':id') }}'.replace(':id', id),
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(res) {
+                    // Reload dropdown hoặc xoá trực tiếp DOM
+                    location.reload();
+                },
+                error: function(err) {
+                    alert("Xóa thất bại!");
+                }
+            });
+        });
+    </script>
 
-                <script>
-                    $(document).ready(function() {
-                        $('.form-remove-item').on('submit', function(e) {
-                            e.preventDefault(); // Ngăn reload trang
+    <script>
+        $(document).ready(function() {
+            $('.form-remove-item').on('submit', function(e) {
+                e.preventDefault(); // Ngăn reload trang
 
-                            const form = $(this);
-                            const url = form.attr('action');
+                const form = $(this);
+                const url = form.attr('action');
 
-                            $.ajax({
-                                url: url,
-                                method: 'POST',
-                                data: form.serialize(), // Lấy CSRF token
-                                success: function() {
-                                    // Sau khi xóa thành công, reload lại giỏ hàng header và danh sách sản phẩm
-                                    updateHeaderCart();
-                                    updateCartTable();
-                                },
-                                error: function() {
-                                    alert('Xóa sản phẩm thất bại');
-                                }
-                            });
-                        });
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: form.serialize(), // Lấy CSRF token
+                    success: function() {
+                        // Sau khi xóa thành công, reload lại giỏ hàng header và danh sách sản phẩm
+                        updateHeaderCart();
+                        updateCartTable();
+                    },
+                    error: function() {
+                        alert('Xóa sản phẩm thất bại');
+                    }
+                });
+            });
 
-                        function updateHeaderCart() {
-                            $.get('{{ route('cart.showHeaderCart') }}', function(html) {
-                                $('#header-cart').html(html); // phần hiển thị giỏ hàng ở header
-                            });
-                        }
+            function updateHeaderCart() {
+                $.get('{{ route('cart.showHeaderCart') }}', function(html) {
+                    $('#header-cart').html(html); // phần hiển thị giỏ hàng ở header
+                });
+            }
 
-                        function updateCartTable() {
-                            $.get('{{ route('cart.index') }}', function(html) {
-                                $('#cart-table').html($(html).find('#cart-table').html()); // reload lại danh sách cart
-                            });
-                        }
-                    });
-                </script>
+            function updateCartTable() {
+                $.get('{{ route('cart.index') }}', function(html) {
+                    $('#cart-table').html($(html).find('#cart-table').html()); // reload lại danh sách cart
+                });
+            }
+        });
+    </script>
 
 
-                <!-- Thanh tìm kiếm -->
+    <!-- Thanh tìm kiếm -->
+
 
 
 
