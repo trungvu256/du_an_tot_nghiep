@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Catalogue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -12,7 +13,8 @@ class ProfileController extends Controller
 {
     public function showProfile()
     {
-        return view('web2.profile'); // Thay đổi 'user.profile' thành 'web2.profile'
+        $categories = Catalogue::all();
+        return view('web2.profile', compact('categories')); // Thay đổi 'user.profile' thành 'web2.profile'
     }
 
     public function confirmPassword()
