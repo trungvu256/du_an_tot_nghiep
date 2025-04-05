@@ -96,16 +96,23 @@
                                     <div class="card border shadow-sm">
                                         <div class="card-body">
                                             <p style="font-size: 1rem"><i class="ri-money-dollar-circle-fill"></i> Giá bán :
-                                                <strong>
-                                                    <br><del style="color: red">
-                                                        {{ number_format($variant->price > 0 ? $variant->price : $variant->price, 0, ',', '.') }}
-                                                        VNĐ
-                                                    </del>
-                                                    <br><span style="color: #0ab39c">
+                                                @if ($variant->price > 0 && $variant->price_sale > 0)
+                                                    <strong>
+                                                        <br><del style="color: red">
+                                                            {{ number_format($variant->price, 0, ',', '.') }}
+                                                            VNĐ
+                                                        </del>
+                                                        <br><span style="color: #0ab39c">
+                                                            {{ number_format($variant->price_sale > 0 ? $variant->price_sale : $variant->price, 0, ',', '.') }}
+                                                            VNĐ
+                                                        </span>
+                                                    </strong>
+                                                @else
+                                                    <span style="color: #0ab39c">
                                                         {{ number_format($variant->price_sale > 0 ? $variant->price_sale : $variant->price, 0, ',', '.') }}
                                                         VNĐ
                                                     </span>
-                                                </strong>
+                                                @endif
                                             </p>
 
                                             <!-- Hiển thị danh sách thuộc tính của biến thể -->
@@ -212,7 +219,8 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="nav-detail" role="tabpanel" aria-labelledby="nav-detail-tab">
+                                <div class="tab-pane fade" id="nav-detail" role="tabpanel"
+                                    aria-labelledby="nav-detail-tab">
                                     <div>
                                         <p>{!! $product->description !!}</p>
                                     </div>
