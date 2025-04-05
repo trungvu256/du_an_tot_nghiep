@@ -644,7 +644,7 @@
                                         <!-- Hiển thị tên người dùng và ngày đăng bình luận -->
                                         <div class="user-info"
                                             style="display: flex; align-items: center; justify-content: space-between;">
-                                            {{-- <div style="display: flex; align-items: center;">
+                                            <div style="display: flex; align-items: center;">
                                                 @if ($comment->user->image)
                                                     <img src="{{ asset('storage/' . $comment->user->image) }}"
                                                         alt="{{ $comment->user->name }}" class="rounded-circle user-pic"
@@ -658,7 +658,7 @@
                                                 <span class="date"
                                                     style="margin-left: 10px;">{{ optional($comment->created_at)->format('d/m/Y H:i') ?? 'N/A' }}
                                                 </span>
-                                            </div> --}}
+                                            </div>
 
                                             <!-- Nút sửa và xóa -->
                                             @if ($comment->user_id == Auth::id())
@@ -987,102 +987,92 @@
                                 @endif
                                 <!-- Kiểm tra đơn hàng của người dùng -->
                                 @auth
-                                                            @php
-                                                                $hasOrder = Auth::user()
-                                                                    ->orders()
-                                                                    ->whereHas('orderItems', function ($query) use ($product) {
-                                                                        $query->where('product_id', $product->id);
-                                                                    })
-                                                                    ->exists();
-                                                            @endphp
+                                    @php
+                                        $hasOrder = Auth::user()
+                                            ->orders()
+                                            ->whereHas('orderItems', function ($query) use ($product) {
+                                                $query->where('product_id', $product->id);
+                                            })
+                                            ->exists();
 
-                                                            @if ($hasOrder)
-                                                                                    <div id="review_form_wrapper">
-                                                                                        <div id="review_form">
-                                                                                            <div id="respond" class="comment-respond">
-                                                                                                <style>
-                                                                                                    .stars a {
-                                                                                                        font-size: 24px;
-                                                                                                        /* Kích thước của sao */
-                                                                                                        color: #ccc;
-                                                                                                        /* Màu của sao chưa được chọn */
-                                                                                                        text-decoration: none;
-                                                                                                        /* Loại bỏ gạch chân */
-                                                                                                    }
+                                        $existingReview = $product->reviews()
+                                            ->where('user_id', Auth::id())
+                                            ->first();
+                                    @endphp
 
-                                                                                                    .stars a.selected {
-                                                                                                        color: gold;
-                                                                                                        /* Màu của sao đã được chọn */
-                                                                                                    }
-                                                                                                </style>
+                                    @if ($existingReview)
+                                        <div class="user-review-box">
+                                            <div class="review-header">
+                                                <div class="stars-display">
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        @if ($i <= $existingReview->rating)
+                                                            <span class="star filled">★</span>
+                                                        @else
+                                                            <span class="star">★</span>
+                                                        @endif
+                                                    @endfor
+                                                </div>
+                                                <span class="review-date">{{ $existingReview->created_at->format('d/m/Y') }}</span>
+                                            </div>
+                                            <div class="review-content">
+                                                <p><em>"{{ $existingReview->review }}"</em></p>
+                                            </div>
+                                        </div>
 
-                                                                                                @if (session('error'))
-                                                                                                    <div class="alert alert-danger">
-                                                                                                        {{ session('error') }}
-                                                                                                    </div>
-                                                                                                @endif
+                                        <style>
+                                            .user-review-box {
+                                                background: #f8f9fa;
+                                                border: 1px solid #e9ecef;
+                                                border-radius: 8px;
+                                                padding: 20px;
+                                                margin: 15px 0;
+                                                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                                            }
 
-                                                                                                @if (session('success'))
-                                                                                                    <div class="alert alert-success">
-                                                                                                        {{ session('success') }}
-                                                                                                    </div>
-                                                                                                @endif
+                                            .review-header {
+                                                display: flex;
+                                                justify-content: space-between;
+                                                align-items: center;
+                                                margin-bottom: 15px;
+                                                padding-bottom: 10px;
+                                                border-bottom: 1px solid #e9ecef;
+                                            }
 
-                                                                                                @php
-                                                                                                    $userReview = $product->reviews()->where('user_id', Auth::id())->first();
-                                                                                                @endphp
+                                            .stars-display {
+                                                display: flex;
+                                                gap: 5px;
+                                            }
 
-                                                                                                @if ($userReview)
-                                                                                                    <div class="error mt-5">
-                                                                                                        <p>Bạn đã đánh giá sản phẩm này với điểm:
-                                                                                                            <strong>{{ $userReview->rating }} sao</strong>
-                                                                                                        </p>
-                                                                                                        <p>Đánh giá của bạn: <em>{{ $userReview->review }}</em></p>
-                                                                                                    </div>
-                                                                                                @else
-                                                                                                    <form action="{{ route('client.storeReview', $product->id) }}" method="POST"
-                                                                                                        id="review-form">
-                                                                                                        @csrf
-                                                                                                        <div class="comment-form-rating">
-                                                                                                            <label for="rating">Đánh giá</label>
-                                                                                                            <p class="stars">
-                                                                                                                <span>
-                                                                                                                    <a class="star-1" href="#" data-value="1">★</a>
-                                                                                                                    <a class="star-2" href="#" data-value="2">★</a>
-                                                                                                                    <a class="star-3" href="#" data-value="3">★</a>
-                                                                                                                    <a class="star-4" href="#" data-value="4">★</a>
-                                                                                                                    <a class="star-5" href="#" data-value="5">★</a>
-                                                                                                                </span>
-                                                                                                            </p>
-                                                                                                            <input type="hidden" name="rating" id="rating" required>
-                                                                                                        </div>
-                                                                                                        <p class="comment-form-comment"><label for="comment">Đánh giá
-                                                                                                                của bạn&nbsp;<span class="required">*</span></label>
-                                                                                                            <textarea id="comment" name="review" cols="45" rows="8"
-                                                                                                                required></textarea>
-                                                                                                        </p>
-                                                                                                        <p class="form-submit"><input name="submit" class="submit" value="Đánh Giá"
-                                                                                                                type="submit"></p>
-                                                                                                    </form>
-                                                                                                @endif
-                                                                                                <script>
-                                                                                                    document.querySelectorAll('.stars a').forEach(star => {
-                                                                                                        star.addEventListener('click', function (e) {
-                                                                                                            e.preventDefault(); // Ngăn chặn hành vi mặc định của link
-                                                                                                            const ratingValue = this.getAttribute('data-value');
-                                                                                                            document.getElementById('rating').value = ratingValue; // Cập nhật giá trị rating ẩn
-                                                                                                            // Cập nhật giao diện sao cho phù hợp
-                                                                                                            document.querySelectorAll('.stars a').forEach(s => s.classList.remove('selected'));
-                                                                                                            for (let i = 1; i <= ratingValue; i++) {
-                                                                                                                document.querySelector('.star-' + i).classList.add('selected');
-                                                                                                            }
-                                                                                                        });
-                                                                                                    });
-                                                                                                </script>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                            @endif
+                                            .star {
+                                                font-size: 20px;
+                                                color: #dee2e6;
+                                            }
+
+                                            .star.filled {
+                                                color: #ffd700;
+                                            }
+
+                                            .review-date {
+                                                color: #6c757d;
+                                                font-size: 0.9em;
+                                            }
+
+                                            .review-content {
+                                                color: #495057;
+                                                line-height: 1.6;
+                                            }
+
+                                            .review-content p {
+                                                margin: 0;
+                                                font-size: 1.1em;
+                                            }
+
+                                            .review-content em {
+                                                color: #495057;
+                                                font-style: italic;
+                                            }
+                                        </style>
+                                    @endif
                                 @endauth
                             </div>
                         </div>

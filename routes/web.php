@@ -217,7 +217,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
         // Quản lý trả lời bình luận sản phẩm
         Route::get('product-comments/{comment}/reply/{reply}/edit', [ProductCommentReplyController::class, 'editReply'])->name('product-comments.reply.edit');
         Route::put('product-comments/{comment}/reply/{reply}', [ProductCommentReplyController::class, 'updateReply'])->name('product-comments.reply.update');
-         
+
     });
 
     Route::middleware(['auth', 'admin'])->group(
@@ -434,13 +434,12 @@ Route::post('/cart/select-items', [CartController::class, 'selectItems'])->name(
 
 
     //cmt
-    Route::post('product/{product}/comment', [HomeController::class, 'storeComment'])->name('client.storeComment');
-    Route::post('comment/{comment}/reply', [HomeController::class, 'storeReply'])->name('client.storeReply');
+    Route::post('product/{product}/comment', [WebProductController::class, 'storeComment'])->name('client.storeComment');
+    Route::post('comment/{comment}/reply', [WebProductController::class, 'storeReply'])->name('client.storeReply');
 });
 
     // Bình luận và phản hồi
-    Route::post('product/{product}/comment', [WebProductController::class, 'storeComment'])->name('client.storeComment');
-    Route::post('comment/{comment}/reply', [WebProductController::class, 'storeReply'])->name('client.storeReply');
+
 
     // Sửa và xóa bình luận
     Route::put('product/{product}/comment/{comment}/edit', [WebProductController::class, 'updateComment'])->name('client.updateComment');
