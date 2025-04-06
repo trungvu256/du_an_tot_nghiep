@@ -9,6 +9,7 @@ use App\Models\Images;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\Attribute;
+use App\Models\ProductVariantAttribute;
 use App\Models\Promotion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -222,35 +223,93 @@ class CartController extends Controller
 
 public function updateCart(Request $request, $cartKey)
 {
-    $quantity = $request->input('quantity');
+    $quantity = (int) $request->input('quantity');
     $cart = session('cart', []);
-    
+
     if (isset($cart[$cartKey])) {
+        $productId = $cart[$cartKey]['id'];
+        $attributes = $cart[$cartKey]['variant']['attributes'];
+
+        $product = Product::findOrFail($productId);
+
+        // Tìm tất cả biến thể của sản phẩm
+        $variants = ProductVariant::where('product_id', $product->id)->get();
+
+        $variant = null;
+        foreach ($variants as $v) {
+            // Lấy tất cả thuộc tính của biến thể
+            $variantAttributes = ProductVariantAttribute::where('product_variant_id', $v->id)
+                ->with('attribute', 'attributeValue')
+                ->get()
+                ->pluck('attributeValue.value', 'attribute.name')
+                ->toArray();
+
+            // So sánh thuộc tính
+            if ($variantAttributes == $attributes) {
+                $variant = $v;
+                break;
+            }
+        }
+
+        if (!$variant) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Biến thể sản phẩm không tồn tại.'
+            ]);
+        }
+
+        $stockQuantity = $variant->stock_quantity;
+
+        if ($quantity > $cart[$cartKey]['quantity']) { // Tăng số lượng
+            if ($quantity > $stockQuantity) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Số lượng yêu cầu vượt quá tồn kho. Chỉ còn $stockQuantity sản phẩm."
+                ]);
+            }
+        }
+
+        if ($quantity < 1) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Số lượng không thể nhỏ hơn 1.'
+            ]);
+        }
+
         $cart[$cartKey]['quantity'] = $quantity;
-        session(['cart' => $cart]); // Lưu lại giỏ hàng vào session
-        return response()->json(['success' => true]);
-    }
-
-    return response()->json(['success' => false, 'message' => 'Sản phẩm không tồn tại']);
-}
-
-public function removeFromCart($id)
-{
-    $cart = session()->get('cart', []);
-    if (isset($cart[$id])) {
-        unset($cart[$id]); // Xóa sản phẩm khỏi giỏ hàng
-        session()->put('cart', $cart); // Lưu lại giỏ hàng
-
-        // Tính toán lại tổng tiền và số lượng
-        $totalAmount = array_sum(array_column($cart, 'total')); // Tổng tiền (giả sử sản phẩm có thuộc tính total)
-        $cartCount = count($cart);
+        $cart[$cartKey]['stock_quantity'] = $stockQuantity;
+        session(['cart' => $cart]);
 
         return response()->json([
             'success' => true,
-            'message' => 'Sản phẩm đã được xóa khỏi giỏ hàng.',
-            'totalAmount' => $totalAmount,
-            'cartCount' => $cartCount,
+            'message' => 'Cập nhật giỏ hàng thành công',
+            'quantity' => $quantity,
+            'stock_quantity' => $stockQuantity
         ]);
+    }
+
+    return response()->json([
+        'success' => false,
+        'message' => 'Sản phẩm không tồn tại trong giỏ hàng'
+    ]);
+}
+
+public function removeFromCart(Request $request, $cartKey)
+{
+    $cart = session()->get('cart', []);
+
+    if (isset($cart[$cartKey])) {
+        unset($cart[$cartKey]); // Xóa chính xác sản phẩm theo cartKey
+        session()->put('cart', $cart); // Lưu lại giỏ hàng đã cập nhật
+
+        // Tính lại tổng tiền
+        $totalAmount = array_reduce($cart, function ($sum, $item) {
+            return $sum + ($item['price'] * $item['quantity']);
+        }, 0);
+
+        $cartCount = count($cart);
+
+        return redirect()->back();
     }
 }
 
