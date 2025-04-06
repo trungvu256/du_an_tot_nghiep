@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ProductReviewController;
 use App\Http\Controllers\Admin\ReviewResponseController;
 use App\Http\Controllers\Admin\CustomerGroupController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Web2\Web2Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Admin\LoginController;
@@ -356,8 +357,10 @@ Route::post('/checkout', [HomeController::class, 'checkoutPost'])->name('web.che
 //Login with Google
 Route::get('login/google', [HomeController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('login/google/callback', [HomeController::class, 'handleGoogleCallback']);
-
+//web 2
+Route::get('/web3', [Web2Controller::class, 'index'])->name('web3.home');
 //web
+Route::get('/', [WebController::class, 'index'])->name('web.home');
 Route::get('/', [WebController::class, 'index'])->name('web.home');
 Route::get('/shop', [WebController::class, 'shop'])->name('web.shop');
 Route::get('/category/{cate_id}/products', [WebController::class, 'getProductsByCategory'])->name('web.shopByCate');
@@ -453,3 +456,5 @@ Route::post('/cart/select-items', [CartController::class, 'selectItems'])->name(
     // Đánh giá sản phẩm
     Route::post('/products/{product}/reviews', [WebProductController::class, 'storeReview'])->name('client.storeReview');
     Route::post('/reviews/{review}/responses', [WebProductController::class, 'storeResponse'])->name('client.storeReviewResponse');
+
+    
