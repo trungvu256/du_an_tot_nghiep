@@ -29,24 +29,7 @@
             </div>
         </section>
         <!-- /Title Page -->
-        <div class="flat-spacing-2">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-xl-4 col-sm-8">
-                        <div class="tf-cart-head text-center">
-                            <p class="text-xl-3 title text-dark-4">Spend <span class="fw-medium">$100</span> more to get
-                                <span class="fw-medium">Free Shipping</span>
-                            </p>
-                            <div class="progress-sold tf-progress-ship">
-                                <div class="value" style="width: 0%;" data-progress="60">
-                                    <i class="icon icon-car"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
         <!-- Cart Section -->
         <div class="flat-spacing-2 pt-0">
             <div class="container">
