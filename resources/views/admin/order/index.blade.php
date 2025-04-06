@@ -5,7 +5,7 @@
 
         {{-- Tiêu đề --}}
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="fw-bold">📦 Danh sách đơn hàng</h4>
+            <h4 class="fw-bold"> Danh sách đơn hàng</h4>
         </div>
 
         {{-- Thông báo --}}
@@ -127,7 +127,7 @@
         <div class="card mt-2 shadow-sm">
             <div class="card-body">
                 <table class="table table-hover text-center align-middle">
-                    <thead class="table-light">
+                    <thead class="table-primary">
                         <tr>
                             @if (!$payment_status === '0' || !is_null($status))
                                 <th><input type="checkbox" id="select-all"></th>

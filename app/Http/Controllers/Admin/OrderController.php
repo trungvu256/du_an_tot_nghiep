@@ -58,7 +58,7 @@ class OrderController extends Controller
 
 
     // show order
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $order = Order::with([
             'orderItems.product',
@@ -74,7 +74,7 @@ class OrderController extends Controller
             }
         }
 
-        return view('admin.order.detailOder', compact('order'));
+        return view('admin.order.detailOder', compact('order'), ['status' => $request->input('status')]);
     }
 
 
@@ -95,25 +95,40 @@ class OrderController extends Controller
 
     public function updateStatus(Request $request)
     {
-        $orderIds = $request->input('order_ids', []);
-        $newStatus = $request->input('status');
+        // Lấy dữ liệu từ request
+        $orderIds = $request->input('order_ids', []);  // Các id đơn hàng được chọn
+        $newStatus = $request->input('status');        // Trạng thái mới
+        $orderId = $request->input('order_id');        // ID đơn hàng cụ thể (nếu có)
 
-        if (empty($orderIds)) {
-            return redirect()->back()->with('error', '❌ Vui lòng chọn ít nhất một đơn hàng để cập nhật!');
+        // Nếu có id truyền vào, sử dụng id đó để tìm đơn hàng và cập nhật trạng thái
+        if ($orderId) {
+            $orders = Order::where('id', $orderId)->get();
+
+            if ($orders->isEmpty()) {
+                return redirect()->back()->with('error', '⚠️ Không tìm thấy đơn hàng để cập nhật!');
+            }
+
+            $orderIds = [$orderId]; // Chỉ xử lý đơn hàng có id này
+        } else {
+            // Nếu không có id, xử lý với danh sách đơn hàng được chọn
+            if (empty($orderIds)) {
+                return redirect()->back()->with('error', '❌ Vui lòng chọn ít nhất một đơn hàng để cập nhật!');
+            }
+
+            if (!is_array($orderIds)) {
+                $orderIds = explode(',', $orderIds);
+            }
+
+            $orders = Order::whereIn('id', $orderIds)->get();
+
+            if ($orders->isEmpty()) {
+                return redirect()->back()->with('error', '⚠️ Không tìm thấy đơn hàng nào để cập nhật!');
+            }
         }
 
+        // Kiểm tra nếu trạng thái mới không hợp lệ
         if ($newStatus === null || $newStatus === '') {
             return redirect()->back()->with('error', '❌ Vui lòng chọn trạng thái!');
-        }
-
-        if (!is_array($orderIds)) {
-            $orderIds = explode(',', $orderIds);
-        }
-
-        $orders = Order::whereIn('id', $orderIds)->get();
-
-        if ($orders->isEmpty()) {
-            return redirect()->back()->with('error', '⚠️ Không tìm thấy đơn hàng nào để cập nhật!');
         }
 
         // Quy định luồng chuyển trạng thái hợp lệ
@@ -135,14 +150,16 @@ class OrderController extends Controller
             foreach ($orders as $order) {
                 $currentStatus = $order->status;
 
-                // Kiểm tra nếu trạng thái đích có trong danh sách hợp lệ
+                // Kiểm tra điều kiện chuyển trạng thái hợp lệ
                 if (isset($validTransitions[$currentStatus]) && in_array((int)$newStatus, $validTransitions[$currentStatus])) {
+                    // Cập nhật trạng thái nếu hợp lệ
                     $order->status = $newStatus;
                     $order->save();
                     $updatedCount++;
                 }
             }
 
+            // Kiểm tra nếu có đơn hàng được cập nhật
             if ($updatedCount > 0) {
                 DB::commit();
                 return redirect()->back()->with('success', "✅ Cập nhật trạng thái thành công cho $updatedCount đơn hàng!");
@@ -157,19 +174,6 @@ class OrderController extends Controller
     }
 
 
-    //     public function updateStatus(Request $request, Order $order)
-    // {
-    //     $newStatus = OrderStatus::from((int) $request->input('status'));
-
-    //     if (!$order->canTransitionTo($newStatus)) {
-    //         return back()->with('error', 'Trạng thái đơn hàng không hợp lệ!');
-    //     }
-
-    //     $order->status = $newStatus->value;
-    //     $order->save();
-
-    //     return back()->with('success', 'Cập nhật trạng thái đơn hàng thành công!');
-    // }
 
     public function requestReturn($id)
     {
