@@ -28,7 +28,9 @@ class Order extends Model
         'branch',
         'payment_deadline',
         'txn_ref',
-        'region', 'shipping_provider', 'tracking_number'
+        'region',
+        'shipping_provider',
+        'tracking_number'
     ];
     const STATUS_PENDING = 0; // Chờ xử lý
     const STATUS_PREPARING = 1; // Chuẩn bị hàng
@@ -38,7 +40,7 @@ class Order extends Model
     const STATUS_CANCELED = 5; // Đã hủy
 
 
-//    Trạng thái trả hàng
+    //    Trạng thái trả hàng
     const RETURN_NONE = 0; // Không có yêu cầu trả hàng
     const RETURN_REQUESTED = 1; // Đang yêu cầu trả hàng
     const RETURN_APPROVED = 2; // Đã duyệt trả hàng
@@ -55,7 +57,7 @@ class Order extends Model
             OrderStatus::DELIVERED->value => [OrderStatus::COMPLETED, OrderStatus::RETURNED],
             OrderStatus::RETURNED->value => [OrderStatus::CANCELED],
         ];
-    
+
         return in_array($newStatus->value, $transitions[$this->status] ?? []);
     }
 
@@ -86,20 +88,20 @@ class Order extends Model
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
     public function returnOrder()
-{
-    return $this->hasOne(ReturnOrder::class, 'order_id');
-}
-public function shippingInfo()
-{
-    return $this->hasOne(Shipping::class); // Nếu bạn có bảng shipping riêng
-}
+    {
+        return $this->hasOne(ReturnOrder::class, 'order_id');
+    }
+    public function shippingInfo()
+    {
+        return $this->hasOne(Shipping::class); // Nếu bạn có bảng shipping riêng
+    }
 
-public function items()
+    public function items()
     {
         return $this->hasMany(OrderItem::class);
     }
 
-public function orderItems()
+    public function orderItems()
     {
         return $this->hasMany(OrderItem::class, 'order_id', 'id'); // Liên kết với bảng order_items thông qua order_id
     }
@@ -114,5 +116,4 @@ public function orderItems()
     {
         return $this->belongsTo(Promotion::class);
     }
-
 }
