@@ -155,67 +155,23 @@
         </div>
     </div>
     <!-- /Icon box -->
-    <!-- Grid Collection -->
-    <div class="flat-spacing-17">
-        <div class="container">
-            <div class="grid-cls grid-cls-v1 grid-cls-sport">
-                <div class="item1 wg-cls style-abs type-2 hover-img">
-                    <a href="shop-default.html" class="image img-style d-block">
-                        <img src="images/cls-categories/grid-cls/sport-wear-1.jpg"
-                            data-src="images/cls-categories/grid-cls/sport-wear-1.jpg" alt=""
-                            class=" ls-is-cached lazyloaded">
-                    </a>
-                    <div class="cls-btn text-center wow fadeInUp">
-                        <a href="shop-default.html"
-                            class="tf-btn fw-medium btn-large btn-white hover-dark radius-8">Tops</a>
-                    </div>
-                </div>
-                <div class="item2 wg-cls style-abs type-2 hover-img">
-                    <a href="shop-default.html" class="image img-style d-block">
-                        <img src="images/cls-categories/grid-cls/sport-wear-2.jpg"
-                            data-src="images/cls-categories/grid-cls/sport-wear-2.jpg" alt=""
-                            class=" ls-is-cached lazyloaded">
-                    </a>
-                    <div class="cls-btn text-center wow fadeInUp">
-                        <a href="shop-default.html" class="tf-btn fw-medium btn-large btn-white hover-dark radius-8">
-                            <span class="display-xs">
-                                Bottoms
-                            </span>
-                        </a>
-                    </div>
-                </div>
-                <div class="item3 wg-cls style-abs type-2 hover-img">
-                    <a href="shop-default.html" class="image img-style d-block">
-                        <img src="images/cls-categories/grid-cls/sport-wear-3.jpg"
-                            data-src="images/cls-categories/grid-cls/sport-wear-3.jpg" alt=""
-                            class=" ls-is-cached lazyloaded">
-                    </a>
-                    <div class="cls-btn text-center wow fadeInUp">
-                        <a href="shop-default.html" class="tf-btn fw-medium btn-large btn-white hover-dark radius-8">
-                            <span class="display-xs">
-                                Accessories
-                            </span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Grid Collection đã xóa -->
+
     <!-- /Grid Collection -->
     <!-- Trending -->
     <section>
-        <div class="container-2">
+        <div class="container-2" style="margin-top: 40px;">
             <div class="flat-animate-tab overflow-visible">
                 <div class="flat-title-tab-categories text-center wow fadeInUp">
-                    <h4 class="title">Trending Now</h4>
+                    <h4 class="title">Sản phẩm</h4>
                     <div class="tab-slide">
                         <ul class="menu-tab-fill style-primary justify-content-center" role="tablist">
                             <li class="item-slide-effect"></li>
                             <li class="nav-tab-item active" role="presentation">
-                                <a href="#womens" class="display-xs tab-link active" data-bs-toggle="tab">Women</a>
+                                <a href="#womens" class="display-xs tab-link active" data-bs-toggle="tab">Nam</a>
                             </li>
                             <li class="nav-tab-item" role="presentation">
-                                <a href="#mens" class="display-xs tab-link" data-bs-toggle="tab">Men</a>
+                                <a href="#mens" class="display-xs tab-link" data-bs-toggle="tab">Nữ</a>
                             </li>
                         </ul>
                     </div>
@@ -248,11 +204,13 @@
                                             <div class="card-product-wrapper">
                                                 <a href="product-detail.html" class="product-img">
                                                     <img class="img-product lazyload"
-                                                        data-src="images/products/sport/t-shirt.jpg"
-                                                        src="images/products/sport/t-shirt.jpg" alt="image-product">
+                                                        data-src="{{ asset('/images/Banner/sp1.jpg') }}"
+                                                        src="{{ asset('/images/Banner/sp1.jpg') }}"
+                                                        alt="image-product" />
                                                     <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/t-shirt2.jpg"
-                                                        src="images/products/sport/t-shirt2.jpg" alt="image-product">
+                                                        data-src="{{ asset('/images/Banner/sp1.jpg') }}"
+                                                        src="{{ asset('/images/Banner/sp1.jpg') }}"
+                                                        alt="image-product" />
                                                 </a>
                                                 <ul class="list-product-btn">
                                                     <li>
@@ -285,14 +243,7 @@
                                                         </a>
                                                     </li>
                                                 </ul>
-                                                <ul class="size-box">
-                                                    <li class="size-item text-xs text-white">XS</li>
-                                                    <li class="size-item text-xs text-white">S</li>
-                                                    <li class="size-item text-xs text-white">M</li>
-                                                    <li class="size-item text-xs text-white">L</li>
-                                                    <li class="size-item text-xs text-white">XL</li>
-                                                    <li class="size-item text-xs text-white">2XL</li>
-                                                </ul>
+
                                                 <div class="on-sale-wrap"><span class="on-sale-item">20% Off</span>
                                                 </div>
                                             </div>
@@ -303,376 +254,11 @@
                                                     <span class="price-new text-primary">$80.00</span>
                                                     <span class="price-old text-dark ">$100.00</span>
                                                 </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                        <span class="tooltip color-filter">Black</span>
-                                                        <span class="swatch-value bg-dark"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/t-shirt.jpg"
-                                                            src="images/products/sport/t-shirt.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Sky Blue</span>
-                                                        <span class="swatch-value bg-sky-blue"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/t-shirt4.jpg"
-                                                            src="images/products/sport/t-shirt4.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot ">
-                                                        <span class="tooltip color-filter">Grey</span>
-                                                        <span class="swatch-value bg-grey-6"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/t-shirt3.jpg"
-                                                            src="images/products/sport/t-shirt3.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                </ul>
+
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- item 2 -->
-                                    <div class="swiper-slide">
-                                        <div class="card-product style-1 card-product-size">
-                                            <div class="card-product-wrapper">
-                                                <a href="product-detail.html" class="product-img">
-                                                    <img class="img-product lazyload"
-                                                        data-src="images/products/sport/crop.jpg"
-                                                        src="images/products/sport/crop.jpg" alt="image-product">
-                                                    <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/crop2.jpg"
-                                                        src="images/products/sport/crop2.jpg" alt="image-product">
-                                                </a>
-                                                <ul class="list-product-btn">
-                                                    <li>
-                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-cart2"></span>
-                                                            <span class="tooltip">Add to Cart</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="wishlist">
-                                                        <a href="javascript:void(0);"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-heart2"></span>
-                                                            <span class="tooltip">Add to Wishlist</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#quickView" data-bs-toggle="modal"
-                                                            class="hover-tooltip tooltip-left box-icon quickview">
-                                                            <span class="icon icon-view"></span>
-                                                            <span class="tooltip">Quick View</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="compare">
-                                                        <a href="#compare" data-bs-toggle="modal"
-                                                            aria-controls="compare"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-compare"></span>
-                                                            <span class="tooltip">Add to Compare</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                                <div class="on-sale-wrap"><span class="on-sale-item">20% Off</span>
-                                                </div>
-                                            </div>
-                                            <div class="card-product-info">
-                                                <a href="product-detail.html"
-                                                    class="name-product link fw-medium text-md">Hyperflex 2 Crop</a>
-                                                <p class="price-wrap fw-medium">
-                                                    <span class="price-new text-primary">$115.00</span>
-                                                    <span class="price-old text-dark ">$130.00</span>
-                                                </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip line tooltip-bot active">
-                                                        <span class="tooltip color-filter">White</span>
-                                                        <span class="swatch-value bg-white"></span>
-                                                        <img class=" lazyload" data-src="images/products/sport/crop.jpg"
-                                                            src="images/products/sport/crop.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Brown</span>
-                                                        <span class="swatch-value bg-brown-6"></span>
-                                                        <img class="lazyload" data-src="images/products/sport/crop2.jpg"
-                                                            src="images/products/sport/crop2.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Green</span>
-                                                        <span class="swatch-value bg-olive-green"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/crop3.jpg"
-                                                            src="images/products/sport/crop3.jpg" alt="image-product">
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- item 3 -->
-                                    <div class="swiper-slide">
-                                        <div class="card-product style-1 card-product-size">
-                                            <div class="card-product-wrapper">
-                                                <a href="product-detail.html" class="product-img">
-                                                    <img class="img-product lazyload"
-                                                        data-src="images/products/sport/short.jpg"
-                                                        src="images/products/sport/short.jpg" alt="image-product">
-                                                    <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/short.jpg"
-                                                        src="images/products/sport/short.jpg" alt="image-product">
-                                                </a>
-                                                <ul class="list-product-btn">
-                                                    <li>
-                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-cart2"></span>
-                                                            <span class="tooltip">Add to Cart</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="wishlist">
-                                                        <a href="javascript:void(0);"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-heart2"></span>
-                                                            <span class="tooltip">Add to Wishlist</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#quickView" data-bs-toggle="modal"
-                                                            class="hover-tooltip tooltip-left box-icon quickview">
-                                                            <span class="icon icon-view"></span>
-                                                            <span class="tooltip">Quick View</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="compare">
-                                                        <a href="#compare" data-bs-toggle="modal"
-                                                            aria-controls="compare"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-compare"></span>
-                                                            <span class="tooltip">Add to Compare</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                                <ul class="size-box">
-                                                    <li class="size-item text-xs text-white">XS</li>
-                                                    <li class="size-item text-xs text-white">S</li>
-                                                    <li class="size-item text-xs text-white">M</li>
-                                                    <li class="size-item text-xs text-white">L</li>
-                                                    <li class="size-item text-xs text-white">XL</li>
-                                                </ul>
-                                                <div class="on-sale-wrap"><span
-                                                        class="on-sale-item trending">Trending</span></div>
-                                            </div>
-                                            <div class="card-product-info">
-                                                <a href="product-detail.html"
-                                                    class="name-product link fw-medium text-md">Hyperflex 2
-                                                    Short</a>
-                                                <p class="price-wrap fw-medium">
-                                                    <span class="price-new">$120.00</span>
-                                                </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                        <span class="tooltip color-filter">Light Blue</span>
-                                                        <span class="swatch-value bg-light-blue-2"></span>
-                                                        <img class="lazyload" data-src="images/products/sport/short.jpg"
-                                                            src="images/products/sport/short.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Red</span>
-                                                        <span class="swatch-value bg-red"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/short3.jpg"
-                                                            src="images/products/sport/short3.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot ">
-                                                        <span class="tooltip color-filter">Black</span>
-                                                        <span class="swatch-value bg-dark"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/short4.jpg"
-                                                            src="images/products/sport/short4.jpg" alt="image-product">
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- item 4 -->
-                                    <div class="swiper-slide">
-                                        <div class="card-product style-1 card-product-size">
-                                            <div class="card-product-wrapper">
-                                                <a href="product-detail.html" class="product-img">
-                                                    <img class="img-product lazyload"
-                                                        data-src="images/products/sport/graphic-short.jpg"
-                                                        src="images/products/sport/graphic-short.jpg"
-                                                        alt="image-product">
-                                                    <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/graphic-short2.jpg"
-                                                        src="images/products/sport/graphic-short2.jpg"
-                                                        alt="image-product">
-                                                </a>
-                                                <ul class="list-product-btn">
-                                                    <li>
-                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-cart2"></span>
-                                                            <span class="tooltip">Add to Cart</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="wishlist">
-                                                        <a href="javascript:void(0);"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-heart2"></span>
-                                                            <span class="tooltip">Add to Wishlist</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#quickView" data-bs-toggle="modal"
-                                                            class="hover-tooltip tooltip-left box-icon quickview">
-                                                            <span class="icon icon-view"></span>
-                                                            <span class="tooltip">Quick View</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="compare">
-                                                        <a href="#compare" data-bs-toggle="modal"
-                                                            aria-controls="compare"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-compare"></span>
-                                                            <span class="tooltip">Add to Compare</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                                <div class="on-sale-wrap"><span class="on-sale-item">20% Off</span>
-                                                </div>
-                                            </div>
-                                            <div class="card-product-info">
-                                                <a href="product-detail.html"
-                                                    class="name-product link fw-medium text-md">Fitness Graphic
-                                                    Shorts</a>
-                                                <p class="price-wrap fw-medium">
-                                                    <span class="price-new text-primary">$120.00</span>
-                                                    <span class="price-old text-dark">$140.00</span>
-                                                </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                        <span class="tooltip color-filter">Grey</span>
-                                                        <span class="swatch-value bg-grey-6"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/graphic-short.jpg"
-                                                            src="images/products/sport/graphic-short.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">red</span>
-                                                        <span class="swatch-value bg-red"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/graphic-short2.jpg"
-                                                            src="images/products/sport/graphic-short2.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Black</span>
-                                                        <span class="swatch-value bg-dark"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/graphic-short3.jpg"
-                                                            src="images/products/sport/graphic-short3.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- item 5 -->
-                                    <div class="swiper-slide">
-                                        <div class="card-product style-1 card-product-size">
-                                            <div class="card-product-wrapper">
-                                                <a href="product-detail.html" class="product-img">
-                                                    <img class="img-product lazyload"
-                                                        data-src="images/products/sport/t-shirt4.jpg"
-                                                        src="images/products/sport/t-shirt4.jpg" alt="image-product">
-                                                    <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/t-shirt4.jpg"
-                                                        src="images/products/sport/t-shirt4.jpg" alt="image-product">
-                                                </a>
-                                                <ul class="list-product-btn">
-                                                    <li>
-                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-cart2"></span>
-                                                            <span class="tooltip">Add to Cart</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="wishlist">
-                                                        <a href="javascript:void(0);"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-heart2"></span>
-                                                            <span class="tooltip">Add to Wishlist</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#quickView" data-bs-toggle="modal"
-                                                            class="hover-tooltip tooltip-left box-icon quickview">
-                                                            <span class="icon icon-view"></span>
-                                                            <span class="tooltip">Quick View</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="compare">
-                                                        <a href="#compare" data-bs-toggle="modal"
-                                                            aria-controls="compare"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-compare"></span>
-                                                            <span class="tooltip">Add to Compare</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                                <ul class="size-box">
-                                                    <li class="size-item text-xs text-white">XS</li>
-                                                    <li class="size-item text-xs text-white">S</li>
-                                                    <li class="size-item text-xs text-white">M</li>
-                                                    <li class="size-item text-xs text-white">L</li>
-                                                    <li class="size-item text-xs text-white">XL</li>
-                                                    <li class="size-item text-xs text-white">2XL</li>
-                                                </ul>
-                                                <div class="on-sale-wrap"><span class="on-sale-item">20% Off</span>
-                                                </div>
-                                            </div>
-                                            <div class="card-product-info">
-                                                <a href="product-detail.html"
-                                                    class="name-product link fw-medium text-md">Sport T-Shirt</a>
-                                                <p class="price-wrap fw-medium">
-                                                    <span class="price-new text-primary">$80.00</span>
-                                                    <span class="price-old text-dark ">$100.00</span>
-                                                </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                        <span class="tooltip color-filter">Sky Blue</span>
-                                                        <span class="swatch-value bg-sky-blue"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/t-shirt4.jpg"
-                                                            src="images/products/sport/t-shirt4.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Black</span>
-                                                        <span class="swatch-value bg-dark"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/t-shirt2.jpg"
-                                                            src="images/products/sport/t-shirt2.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot ">
-                                                        <span class="tooltip color-filter">Grey</span>
-                                                        <span class="swatch-value bg-grey-6"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/t-shirt3.jpg"
-                                                            src="images/products/sport/t-shirt3.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
+
                                 </div>
                                 <div class="d-flex d-xl-none sw-dot-default sw-pagination-women justify-content-center">
                                 </div>
@@ -708,11 +294,13 @@
                                             <div class="card-product-wrapper">
                                                 <a href="product-detail.html" class="product-img">
                                                     <img class="img-product lazyload"
-                                                        data-src="images/products/sport/tank1.jpg"
-                                                        src="images/products/sport/tank1.jpg" alt="image-product">
+                                                        data-src="{{ asset('/images/Banner/sp01.jpg') }}"
+                                                        src="{{ asset('/images/Banner/sp01.jpg') }}"
+                                                        alt="image-product">
                                                     <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/tank1.jpg"
-                                                        src="images/products/sport/tank1.jpg" alt="image-product">
+                                                        data-src="{{ asset('/images/Banner/sp01.jpg') }}"
+                                                        src="{{ asset('/images/Banner/sp01.jpg') }}"
+                                                        alt="image-product">
                                                 </a>
                                                 <ul class="list-product-btn">
                                                     <li>
@@ -745,14 +333,7 @@
                                                         </a>
                                                     </li>
                                                 </ul>
-                                                <ul class="size-box">
-                                                    <li class="size-item text-xs text-white">XS</li>
-                                                    <li class="size-item text-xs text-white">S</li>
-                                                    <li class="size-item text-xs text-white">M</li>
-                                                    <li class="size-item text-xs text-white">L</li>
-                                                    <li class="size-item text-xs text-white">XL</li>
-                                                    <li class="size-item text-xs text-white">2XL</li>
-                                                </ul>
+
                                                 <div class="on-sale-wrap"><span class="on-sale-item">20% Off</span>
                                                 </div>
                                             </div>
@@ -764,370 +345,11 @@
                                                     <span class="price-new text-primary">$125.00</span>
                                                     <span class="price-old text-dark ">$150.00</span>
                                                 </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                        <span class="tooltip color-filter">Green</span>
-                                                        <span class="swatch-value bg-olive-green"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/tank1.jpg"
-                                                            src="images/products/sport/tank1.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Black</span>
-                                                        <span class="swatch-value bg-dark"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/tank3.jpg"
-                                                            src="images/products/sport/tank3.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot ">
-                                                        <span class="tooltip color-filter">Yellow</span>
-                                                        <span class="swatch-value bg-yellow-4"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/tank2.jpg"
-                                                            src="images/products/sport/tank2.jpg" alt="image-product">
-                                                    </li>
-                                                </ul>
+
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- item 2 -->
-                                    <div class="swiper-slide">
-                                        <div class="card-product style-1 card-product-size">
-                                            <div class="card-product-wrapper">
-                                                <a href="product-detail.html" class="product-img">
-                                                    <img class="img-product lazyload"
-                                                        data-src="images/products/sport/short2.jpg"
-                                                        src="images/products/sport/short2.jpg" alt="image-product">
-                                                    <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/short3.jpg"
-                                                        src="images/products/sport/short3.jpg" alt="image-product">
-                                                </a>
-                                                <ul class="list-product-btn">
-                                                    <li>
-                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-cart2"></span>
-                                                            <span class="tooltip">Add to Cart</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="wishlist">
-                                                        <a href="javascript:void(0);"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-heart2"></span>
-                                                            <span class="tooltip">Add to Wishlist</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#quickView" data-bs-toggle="modal"
-                                                            class="hover-tooltip tooltip-left box-icon quickview">
-                                                            <span class="icon icon-view"></span>
-                                                            <span class="tooltip">Quick View</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="compare">
-                                                        <a href="#compare" data-bs-toggle="modal"
-                                                            aria-controls="compare"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-compare"></span>
-                                                            <span class="tooltip">Add to Compare</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                                <div class="on-sale-wrap"><span
-                                                        class="on-sale-item trending">Trending</span></div>
-                                            </div>
-                                            <div class="card-product-info">
-                                                <a href="product-detail.html"
-                                                    class="name-product link fw-medium text-md">Seamless Shorts</a>
-                                                <p class="price-wrap fw-medium">
-                                                    <span class="price-newy">$110.00</span>
-                                                </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                        <span class="tooltip color-filter">Grey</span>
-                                                        <span class="swatch-value bg-grey-6"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/short2.jpg"
-                                                            src="images/products/sport/short2.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Red</span>
-                                                        <span class="swatch-value bg-red"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/short3.jpg"
-                                                            src="images/products/sport/short3.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot ">
-                                                        <span class="tooltip color-filter">Black</span>
-                                                        <span class="swatch-value bg-dark"></span>
-                                                        <img class="lazyload"
-                                                            data-src="images/products/sport/short4.jpg"
-                                                            src="images/products/sport/short4.jpg" alt="image-product">
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- item 3 -->
-                                    <div class="swiper-slide">
-                                        <div class="card-product style-1 card-product-size">
-                                            <div class="card-product-wrapper">
-                                                <a href="product-detail.html" class="product-img">
-                                                    <img class="img-product lazyload"
-                                                        data-src="images/products/sport/tee.jpg"
-                                                        src="images/products/sport/tee.jpg" alt="image-product">
-                                                    <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/tee.jpg"
-                                                        src="images/products/sport/tee.jpg" alt="image-product">
-                                                </a>
-                                                <ul class="list-product-btn">
-                                                    <li>
-                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-cart2"></span>
-                                                            <span class="tooltip">Add to Cart</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="wishlist">
-                                                        <a href="javascript:void(0);"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-heart2"></span>
-                                                            <span class="tooltip">Add to Wishlist</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#quickView" data-bs-toggle="modal"
-                                                            class="hover-tooltip tooltip-left box-icon quickview">
-                                                            <span class="icon icon-view"></span>
-                                                            <span class="tooltip">Quick View</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="compare">
-                                                        <a href="#compare" data-bs-toggle="modal"
-                                                            aria-controls="compare"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-compare"></span>
-                                                            <span class="tooltip">Add to Compare</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                                <ul class="size-box">
-                                                    <li class="size-item text-xs text-white">XS</li>
-                                                    <li class="size-item text-xs text-white">S</li>
-                                                    <li class="size-item text-xs text-white">M</li>
-                                                    <li class="size-item text-xs text-white">L</li>
-                                                    <li class="size-item text-xs text-white">XL</li>
-                                                    <li class="size-item text-xs text-white">2XL</li>
-                                                </ul>
-                                                <div class="on-sale-wrap"><span class="on-sale-item">20% Off</span>
-                                                </div>
-                                            </div>
-                                            <div class="card-product-info">
-                                                <a href="product-detail.html"
-                                                    class="name-product link fw-medium text-md">Essential Oversize
-                                                    Tee</a>
-                                                <p class="price-wrap fw-medium">
-                                                    <span class="price-new text-primary">$100.00</span>
-                                                    <span class="price-old text-dark ">$120.00</span>
-                                                </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                        <span class="tooltip color-filter">Beige</span>
-                                                        <span class="swatch-value bg-beige"></span>
-                                                        <img class="lazyload" data-src="images/products/sport/tee.jpg"
-                                                            src="images/products/sport/tee.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Black</span>
-                                                        <span class="swatch-value bg-dark"></span>
-                                                        <img class="lazyload"
-                                                            data-src="images/products/sport/t-shirt.jpg"
-                                                            src="images/products/sport/t-shirt.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Grey</span>
-                                                        <span class="swatch-value bg-grey-6"></span>
-                                                        <img class="lazyload"
-                                                            data-src="images/products/sport/t-shirt3.jpg"
-                                                            src="images/products/sport/t-shirt3.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- item 4 -->
-                                    <div class="swiper-slide">
-                                        <div class="card-product style-1 card-product-size">
-                                            <div class="card-product-wrapper">
-                                                <a href="product-detail.html" class="product-img">
-                                                    <img class="img-product lazyload"
-                                                        data-src="images/products/sport/legging.jpg"
-                                                        src="images/products/sport/legging.jpg" alt="image-product">
-                                                    <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/legging2.jpg"
-                                                        src="images/products/sport/legging2.jpg" alt="image-product">
-                                                </a>
-                                                <ul class="list-product-btn">
-                                                    <li>
-                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-cart2"></span>
-                                                            <span class="tooltip">Add to Cart</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="wishlist">
-                                                        <a href="javascript:void(0);"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-heart2"></span>
-                                                            <span class="tooltip">Add to Wishlist</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#quickView" data-bs-toggle="modal"
-                                                            class="hover-tooltip tooltip-left box-icon quickview">
-                                                            <span class="icon icon-view"></span>
-                                                            <span class="tooltip">Quick View</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="compare">
-                                                        <a href="#compare" data-bs-toggle="modal"
-                                                            aria-controls="compare"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-compare"></span>
-                                                            <span class="tooltip">Add to Compare</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="card-product-info">
-                                                <a href="product-detail.html"
-                                                    class="name-product link fw-medium text-md">Seamless
-                                                    Leggings</a>
-                                                <p class="price-wrap fw-medium">
-                                                    <span class="price-new text-primary">$80.00</span>
-                                                    <span class="price-old text-dark ">$100.00</span>
-                                                </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                        <span class="tooltip color-filter">Grey</span>
-                                                        <span class="swatch-value bg-grey-4"></span>
-                                                        <img class="lazyload"
-                                                            data-src="images/products/sport/legging.jpg"
-                                                            src="images/products/sport/legging.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Sky Blue</span>
-                                                        <span class="swatch-value bg-sky-blue"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/legging3.jpg"
-                                                            src="images/products/sport/legging3.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Black</span>
-                                                        <span class="swatch-value bg-dark"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/legging2.jpg"
-                                                            src="images/products/sport/legging2.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- item 5 -->
-                                    <div class="swiper-slide">
-                                        <div class="card-product style-1 card-product-size">
-                                            <div class="card-product-wrapper">
-                                                <a href="product-detail.html" class="product-img">
-                                                    <img class="img-product lazyload"
-                                                        data-src="images/products/sport/tank3.jpg"
-                                                        src="images/products/sport/tank3.jpg" alt="image-product">
-                                                    <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/tank3.jpg"
-                                                        src="images/products/sport/tank3.jpg" alt="image-product">
-                                                </a>
-                                                <ul class="list-product-btn">
-                                                    <li>
-                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-cart2"></span>
-                                                            <span class="tooltip">Add to Cart</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="wishlist">
-                                                        <a href="javascript:void(0);"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-heart2"></span>
-                                                            <span class="tooltip">Add to Wishlist</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#quickView" data-bs-toggle="modal"
-                                                            class="hover-tooltip tooltip-left box-icon quickview">
-                                                            <span class="icon icon-view"></span>
-                                                            <span class="tooltip">Quick View</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="compare">
-                                                        <a href="#compare" data-bs-toggle="modal"
-                                                            aria-controls="compare"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-compare"></span>
-                                                            <span class="tooltip">Add to Compare</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                                <ul class="size-box">
-                                                    <li class="size-item text-xs text-white">XS</li>
-                                                    <li class="size-item text-xs text-white">S</li>
-                                                    <li class="size-item text-xs text-white">M</li>
-                                                    <li class="size-item text-xs text-white">L</li>
-                                                    <li class="size-item text-xs text-white">XL</li>
-                                                    <li class="size-item text-xs text-white">2XL</li>
-                                                </ul>
-                                                <div class="on-sale-wrap"><span class="on-sale-item">20% Off</span>
-                                                </div>
-                                            </div>
-                                            <div class="card-product-info">
-                                                <a href="product-detail.html"
-                                                    class="name-product link fw-medium text-md">Fitness Club Cut Off
-                                                    Tank</a>
-                                                <p class="price-wrap fw-medium">
-                                                    <span class="price-new text-primary">$125.00</span>
-                                                    <span class="price-old text-dark ">$150.00</span>
-                                                </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                        <span class="tooltip color-filter">Black</span>
-                                                        <span class="swatch-value bg-dark"></span>
-                                                        <img class="lazyload" data-src="images/products/sport/tank3.jpg"
-                                                            src="images/products/sport/tank3.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot ">
-                                                        <span class="tooltip color-filter">Yellow</span>
-                                                        <span class="swatch-value bg-yellow-4"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/tank2.jpg"
-                                                            src="images/products/sport/tank2.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Green</span>
-                                                        <span class="swatch-value bg-olive-green"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/tank1.jpg"
-                                                            src="images/products/sport/tank1.jpg" alt="image-product">
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
+
                                 </div>
                                 <div class="d-flex d-xl-none sw-dot-default sw-pagination-men justify-content-center">
                                 </div>
@@ -1146,21 +368,23 @@
         <div class="container">
             <div class="banner-content">
                 <a href="shop-default.html" class="image d-block">
-                    <img src="images/banner/sportwear.jpg" alt="images/banner/sportwear.jpg" class="lazyload">
+                    <img src="{{ asset('/images/Banner/banner00.jpg') }}" alt="images/banner/sportwear.jpg"
+                        class="lazyload">
                 </a>
                 <div class="box-content">
                     <div class="box-title-banner wow fadeInUp">
                         <h4 class="title display-md fw-medium">
-                            Elevate Your Performance
+                            Tôn Vinh Phong Cách Của Bạn
                         </h4>
                         <p class="sub text-md">
-                            Shop the latest activewear designed for <br> maximum comfort and style.
+                            Khám phá những mùi hương mới nhất <br> được thiết kế để khơi gợi cảm xúc và sự cuốn hút.
                         </p>
                     </div>
                     <div class="box-btn-banner wow fadeInUp">
-                        <a href="shop-default.html" class="tf-btn animate-btn">Shop Now</a>
+                        <a href="shop-default.html" class="tf-btn animate-btn">Mua Ngay</a>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
@@ -1172,13 +396,7 @@
                 <div class="flat-title-tab-2 text-center wow fadeInUp">
                     <ul class="menu-tab-fill-lg justify-content-sm-center" role="tablist">
                         <li class="nav-tab-item" role="presentation">
-                            <a href="#hot" class="tab-link active display-md" data-bs-toggle="tab">What’s Hot?</a>
-                        </li>
-                        <li class="nav-tab-item" role="presentation">
-                            <a href="#seller" class="tab-link display-md" data-bs-toggle="tab">Best Sellers</a>
-                        </li>
-                        <li class="nav-tab-item" role="presentation">
-                            <a href="#arrival" class="tab-link display-md" data-bs-toggle="tab">Just Arrivals</a>
+                            <a href="#hot" class="tab-link active display-md" data-bs-toggle="tab">Sản Phẩm Bán Chạy</a>
                         </li>
                     </ul>
                 </div>
@@ -1210,11 +428,13 @@
                                             <div class="card-product-wrapper">
                                                 <a href="product-detail.html" class="product-img">
                                                     <img class="img-product lazyload"
-                                                        data-src="images/products/sport/tank1.jpg"
-                                                        src="images/products/sport/tank1.jpg" alt="image-product">
+                                                        data-src="{{ asset('/images/Banner/sp01.jpg') }}"
+                                                        src="{{ asset('/images/Banner/sp01.jpg') }}"
+                                                        alt="image-product">
                                                     <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/tank1.jpg"
-                                                        src="images/products/sport/tank1.jpg" alt="image-product">
+                                                        data-src="{{ asset('/images/Banner/sp01.jpg') }}"
+                                                        src="{{ asset('/images/Banner/sp01.jpg') }}"
+                                                        alt="image-product">
                                                 </a>
                                                 <ul class="list-product-btn">
                                                     <li>
@@ -1247,14 +467,7 @@
                                                         </a>
                                                     </li>
                                                 </ul>
-                                                <ul class="size-box">
-                                                    <li class="size-item text-xs text-white">XS</li>
-                                                    <li class="size-item text-xs text-white">S</li>
-                                                    <li class="size-item text-xs text-white">M</li>
-                                                    <li class="size-item text-xs text-white">L</li>
-                                                    <li class="size-item text-xs text-white">XL</li>
-                                                    <li class="size-item text-xs text-white">2XL</li>
-                                                </ul>
+
                                                 <div class="on-sale-wrap"><span class="on-sale-item">20% Off</span>
                                                 </div>
                                             </div>
@@ -1266,370 +479,11 @@
                                                     <span class="price-new text-primary">$125.00</span>
                                                     <span class="price-old text-dark ">$150.00</span>
                                                 </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                        <span class="tooltip color-filter">Green</span>
-                                                        <span class="swatch-value bg-olive-green"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/tank1.jpg"
-                                                            src="images/products/sport/tank1.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Black</span>
-                                                        <span class="swatch-value bg-dark"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/tank3.jpg"
-                                                            src="images/products/sport/tank3.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot ">
-                                                        <span class="tooltip color-filter">Yellow</span>
-                                                        <span class="swatch-value bg-yellow-4"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/tank2.jpg"
-                                                            src="images/products/sport/tank2.jpg" alt="image-product">
-                                                    </li>
-                                                </ul>
+
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- item 2 -->
-                                    <div class="swiper-slide">
-                                        <div class="card-product style-1 card-product-size">
-                                            <div class="card-product-wrapper">
-                                                <a href="product-detail.html" class="product-img">
-                                                    <img class="img-product lazyload"
-                                                        data-src="images/products/sport/short2.jpg"
-                                                        src="images/products/sport/short2.jpg" alt="image-product">
-                                                    <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/short3.jpg"
-                                                        src="images/products/sport/short3.jpg" alt="image-product">
-                                                </a>
-                                                <ul class="list-product-btn">
-                                                    <li>
-                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-cart2"></span>
-                                                            <span class="tooltip">Add to Cart</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="wishlist">
-                                                        <a href="javascript:void(0);"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-heart2"></span>
-                                                            <span class="tooltip">Add to Wishlist</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#quickView" data-bs-toggle="modal"
-                                                            class="hover-tooltip tooltip-left box-icon quickview">
-                                                            <span class="icon icon-view"></span>
-                                                            <span class="tooltip">Quick View</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="compare">
-                                                        <a href="#compare" data-bs-toggle="modal"
-                                                            aria-controls="compare"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-compare"></span>
-                                                            <span class="tooltip">Add to Compare</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                                <div class="on-sale-wrap"><span
-                                                        class="on-sale-item trending">Trending</span></div>
-                                            </div>
-                                            <div class="card-product-info">
-                                                <a href="product-detail.html"
-                                                    class="name-product link fw-medium text-md">Seamless Shorts</a>
-                                                <p class="price-wrap fw-medium">
-                                                    <span class="price-newy">$110.00</span>
-                                                </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                        <span class="tooltip color-filter">Grey</span>
-                                                        <span class="swatch-value bg-grey-6"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/short2.jpg"
-                                                            src="images/products/sport/short2.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Red</span>
-                                                        <span class="swatch-value bg-red"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/short3.jpg"
-                                                            src="images/products/sport/short3.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot ">
-                                                        <span class="tooltip color-filter">Black</span>
-                                                        <span class="swatch-value bg-dark"></span>
-                                                        <img class="lazyload"
-                                                            data-src="images/products/sport/short4.jpg"
-                                                            src="images/products/sport/short4.jpg" alt="image-product">
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- item 3 -->
-                                    <div class="swiper-slide">
-                                        <div class="card-product style-1 card-product-size">
-                                            <div class="card-product-wrapper">
-                                                <a href="product-detail.html" class="product-img">
-                                                    <img class="img-product lazyload"
-                                                        data-src="images/products/sport/tee.jpg"
-                                                        src="images/products/sport/tee.jpg" alt="image-product">
-                                                    <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/tee.jpg"
-                                                        src="images/products/sport/tee.jpg" alt="image-product">
-                                                </a>
-                                                <ul class="list-product-btn">
-                                                    <li>
-                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-cart2"></span>
-                                                            <span class="tooltip">Add to Cart</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="wishlist">
-                                                        <a href="javascript:void(0);"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-heart2"></span>
-                                                            <span class="tooltip">Add to Wishlist</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#quickView" data-bs-toggle="modal"
-                                                            class="hover-tooltip tooltip-left box-icon quickview">
-                                                            <span class="icon icon-view"></span>
-                                                            <span class="tooltip">Quick View</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="compare">
-                                                        <a href="#compare" data-bs-toggle="modal"
-                                                            aria-controls="compare"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-compare"></span>
-                                                            <span class="tooltip">Add to Compare</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                                <ul class="size-box">
-                                                    <li class="size-item text-xs text-white">XS</li>
-                                                    <li class="size-item text-xs text-white">S</li>
-                                                    <li class="size-item text-xs text-white">M</li>
-                                                    <li class="size-item text-xs text-white">L</li>
-                                                    <li class="size-item text-xs text-white">XL</li>
-                                                    <li class="size-item text-xs text-white">2XL</li>
-                                                </ul>
-                                                <div class="on-sale-wrap"><span class="on-sale-item">20% Off</span>
-                                                </div>
-                                            </div>
-                                            <div class="card-product-info">
-                                                <a href="product-detail.html"
-                                                    class="name-product link fw-medium text-md">Essential Oversize
-                                                    Tee</a>
-                                                <p class="price-wrap fw-medium">
-                                                    <span class="price-new text-primary">$100.00</span>
-                                                    <span class="price-old text-dark ">$120.00</span>
-                                                </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                        <span class="tooltip color-filter">Beige</span>
-                                                        <span class="swatch-value bg-beige"></span>
-                                                        <img class="lazyload" data-src="images/products/sport/tee.jpg"
-                                                            src="images/products/sport/tee.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Black</span>
-                                                        <span class="swatch-value bg-dark"></span>
-                                                        <img class="lazyload"
-                                                            data-src="images/products/sport/t-shirt.jpg"
-                                                            src="images/products/sport/t-shirt.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Grey</span>
-                                                        <span class="swatch-value bg-grey-6"></span>
-                                                        <img class="lazyload"
-                                                            data-src="images/products/sport/t-shirt3.jpg"
-                                                            src="images/products/sport/t-shirt3.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- item 4 -->
-                                    <div class="swiper-slide">
-                                        <div class="card-product style-1 card-product-size">
-                                            <div class="card-product-wrapper">
-                                                <a href="product-detail.html" class="product-img">
-                                                    <img class="img-product lazyload"
-                                                        data-src="images/products/sport/legging.jpg"
-                                                        src="images/products/sport/legging.jpg" alt="image-product">
-                                                    <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/legging2.jpg"
-                                                        src="images/products/sport/legging2.jpg" alt="image-product">
-                                                </a>
-                                                <ul class="list-product-btn">
-                                                    <li>
-                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-cart2"></span>
-                                                            <span class="tooltip">Add to Cart</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="wishlist">
-                                                        <a href="javascript:void(0);"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-heart2"></span>
-                                                            <span class="tooltip">Add to Wishlist</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#quickView" data-bs-toggle="modal"
-                                                            class="hover-tooltip tooltip-left box-icon quickview">
-                                                            <span class="icon icon-view"></span>
-                                                            <span class="tooltip">Quick View</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="compare">
-                                                        <a href="#compare" data-bs-toggle="modal"
-                                                            aria-controls="compare"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-compare"></span>
-                                                            <span class="tooltip">Add to Compare</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="card-product-info">
-                                                <a href="product-detail.html"
-                                                    class="name-product link fw-medium text-md">Seamless
-                                                    Leggings</a>
-                                                <p class="price-wrap fw-medium">
-                                                    <span class="price-new text-primary">$80.00</span>
-                                                    <span class="price-old text-dark ">$100.00</span>
-                                                </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                        <span class="tooltip color-filter">Grey</span>
-                                                        <span class="swatch-value bg-grey-4"></span>
-                                                        <img class="lazyload"
-                                                            data-src="images/products/sport/legging.jpg"
-                                                            src="images/products/sport/legging.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Sky Blue</span>
-                                                        <span class="swatch-value bg-sky-blue"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/legging3.jpg"
-                                                            src="images/products/sport/legging3.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Black</span>
-                                                        <span class="swatch-value bg-dark"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/legging2.jpg"
-                                                            src="images/products/sport/legging2.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- item 5 -->
-                                    <div class="swiper-slide">
-                                        <div class="card-product style-1 card-product-size">
-                                            <div class="card-product-wrapper">
-                                                <a href="product-detail.html" class="product-img">
-                                                    <img class="img-product lazyload"
-                                                        data-src="images/products/sport/tank3.jpg"
-                                                        src="images/products/sport/tank3.jpg" alt="image-product">
-                                                    <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/tank3.jpg"
-                                                        src="images/products/sport/tank3.jpg" alt="image-product">
-                                                </a>
-                                                <ul class="list-product-btn">
-                                                    <li>
-                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-cart2"></span>
-                                                            <span class="tooltip">Add to Cart</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="wishlist">
-                                                        <a href="javascript:void(0);"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-heart2"></span>
-                                                            <span class="tooltip">Add to Wishlist</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#quickView" data-bs-toggle="modal"
-                                                            class="hover-tooltip tooltip-left box-icon quickview">
-                                                            <span class="icon icon-view"></span>
-                                                            <span class="tooltip">Quick View</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="compare">
-                                                        <a href="#compare" data-bs-toggle="modal"
-                                                            aria-controls="compare"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-compare"></span>
-                                                            <span class="tooltip">Add to Compare</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                                <ul class="size-box">
-                                                    <li class="size-item text-xs text-white">XS</li>
-                                                    <li class="size-item text-xs text-white">S</li>
-                                                    <li class="size-item text-xs text-white">M</li>
-                                                    <li class="size-item text-xs text-white">L</li>
-                                                    <li class="size-item text-xs text-white">XL</li>
-                                                    <li class="size-item text-xs text-white">2XL</li>
-                                                </ul>
-                                                <div class="on-sale-wrap"><span class="on-sale-item">20% Off</span>
-                                                </div>
-                                            </div>
-                                            <div class="card-product-info">
-                                                <a href="product-detail.html"
-                                                    class="name-product link fw-medium text-md">Fitness Club Cut Off
-                                                    Tank</a>
-                                                <p class="price-wrap fw-medium">
-                                                    <span class="price-new text-primary">$125.00</span>
-                                                    <span class="price-old text-dark ">$150.00</span>
-                                                </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                        <span class="tooltip color-filter">Black</span>
-                                                        <span class="swatch-value bg-dark"></span>
-                                                        <img class="lazyload" data-src="images/products/sport/tank3.jpg"
-                                                            src="images/products/sport/tank3.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot ">
-                                                        <span class="tooltip color-filter">Yellow</span>
-                                                        <span class="swatch-value bg-yellow-4"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/tank2.jpg"
-                                                            src="images/products/sport/tank2.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Green</span>
-                                                        <span class="swatch-value bg-olive-green"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/tank1.jpg"
-                                                            src="images/products/sport/tank1.jpg" alt="image-product">
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
+
                                 </div>
                                 <div class="d-flex d-xl-none sw-dot-default sw-pagination-hot justify-content-center">
                                 </div>
@@ -1638,923 +492,7 @@
                             <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-hot"></div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="seller" role="tabpanel">
-                        <div class="hover-sw-nav ">
-                            <div dir="ltr" class="swiper tf-swiper wrap-sw-over" data-swiper='{
-                                    "slidesPerView": 2,
-                                    "spaceBetween": 12,
-                                    "speed": 1000,
-                                    "observer": true,
-                                    "observeParents": true,
-                                    "slidesPerGroup": 2,
-                                    "navigation": {
-                                        "clickable": true,
-                                        "nextEl": ".nav-next-seller",
-                                        "prevEl": ".nav-prev-seller"
-                                    },
-                                    "pagination": { "el": ".sw-pagination-seller", "clickable": true },
-                                    "breakpoints": {
-                                    "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
-                                    "1200": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 4}
-                                    }
-                                }'>
-                                <div class="swiper-wrapper">
-                                    <!-- item 1 -->
-                                    <div class="swiper-slide">
-                                        <div class="card-product style-1 card-product-size">
-                                            <div class="card-product-wrapper">
-                                                <a href="product-detail.html" class="product-img">
-                                                    <img class="img-product lazyload"
-                                                        data-src="images/products/sport/t-shirt.jpg"
-                                                        src="images/products/sport/t-shirt.jpg" alt="image-product">
-                                                    <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/t-shirt2.jpg"
-                                                        src="images/products/sport/t-shirt2.jpg" alt="image-product">
-                                                </a>
-                                                <ul class="list-product-btn">
-                                                    <li>
-                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-cart2"></span>
-                                                            <span class="tooltip">Add to Cart</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="wishlist">
-                                                        <a href="javascript:void(0);"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-heart2"></span>
-                                                            <span class="tooltip">Add to Wishlist</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#quickView" data-bs-toggle="modal"
-                                                            class="hover-tooltip tooltip-left box-icon quickview">
-                                                            <span class="icon icon-view"></span>
-                                                            <span class="tooltip">Quick View</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="compare">
-                                                        <a href="#compare" data-bs-toggle="modal"
-                                                            aria-controls="compare"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-compare"></span>
-                                                            <span class="tooltip">Add to Compare</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                                <ul class="size-box">
-                                                    <li class="size-item text-xs text-white">XS</li>
-                                                    <li class="size-item text-xs text-white">S</li>
-                                                    <li class="size-item text-xs text-white">M</li>
-                                                    <li class="size-item text-xs text-white">L</li>
-                                                    <li class="size-item text-xs text-white">XL</li>
-                                                    <li class="size-item text-xs text-white">2XL</li>
-                                                </ul>
-                                                <div class="on-sale-wrap"><span class="on-sale-item">20% Off</span>
-                                                </div>
-                                            </div>
-                                            <div class="card-product-info">
-                                                <a href="product-detail.html"
-                                                    class="name-product link fw-medium text-md">Sport T-Shirt</a>
-                                                <p class="price-wrap fw-medium">
-                                                    <span class="price-new text-primary">$80.00</span>
-                                                    <span class="price-old text-dark ">$100.00</span>
-                                                </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                        <span class="tooltip color-filter">Black</span>
-                                                        <span class="swatch-value bg-dark"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/t-shirt.jpg"
-                                                            src="images/products/sport/t-shirt.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Sky Blue</span>
-                                                        <span class="swatch-value bg-sky-blue"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/t-shirt4.jpg"
-                                                            src="images/products/sport/t-shirt4.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot ">
-                                                        <span class="tooltip color-filter">Grey</span>
-                                                        <span class="swatch-value bg-grey-6"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/t-shirt3.jpg"
-                                                            src="images/products/sport/t-shirt3.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- item 2 -->
-                                    <div class="swiper-slide">
-                                        <div class="card-product style-1 card-product-size">
-                                            <div class="card-product-wrapper">
-                                                <a href="product-detail.html" class="product-img">
-                                                    <img class="img-product lazyload"
-                                                        data-src="images/products/sport/crop.jpg"
-                                                        src="images/products/sport/crop.jpg" alt="image-product">
-                                                    <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/crop2.jpg"
-                                                        src="images/products/sport/crop2.jpg" alt="image-product">
-                                                </a>
-                                                <ul class="list-product-btn">
-                                                    <li>
-                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-cart2"></span>
-                                                            <span class="tooltip">Add to Cart</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="wishlist">
-                                                        <a href="javascript:void(0);"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-heart2"></span>
-                                                            <span class="tooltip">Add to Wishlist</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#quickView" data-bs-toggle="modal"
-                                                            class="hover-tooltip tooltip-left box-icon quickview">
-                                                            <span class="icon icon-view"></span>
-                                                            <span class="tooltip">Quick View</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="compare">
-                                                        <a href="#compare" data-bs-toggle="modal"
-                                                            aria-controls="compare"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-compare"></span>
-                                                            <span class="tooltip">Add to Compare</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                                <div class="on-sale-wrap"><span class="on-sale-item">20% Off</span>
-                                                </div>
-                                            </div>
-                                            <div class="card-product-info">
-                                                <a href="product-detail.html"
-                                                    class="name-product link fw-medium text-md">Hyperflex 2 Crop</a>
-                                                <p class="price-wrap fw-medium">
-                                                    <span class="price-new text-primary">$115.00</span>
-                                                    <span class="price-old text-dark ">$130.00</span>
-                                                </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip line tooltip-bot active">
-                                                        <span class="tooltip color-filter">White</span>
-                                                        <span class="swatch-value bg-white"></span>
-                                                        <img class=" lazyload" data-src="images/products/sport/crop.jpg"
-                                                            src="images/products/sport/crop.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Brown</span>
-                                                        <span class="swatch-value bg-brown-6"></span>
-                                                        <img class="lazyload" data-src="images/products/sport/crop2.jpg"
-                                                            src="images/products/sport/crop2.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Green</span>
-                                                        <span class="swatch-value bg-olive-green"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/crop3.jpg"
-                                                            src="images/products/sport/crop3.jpg" alt="image-product">
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- item 3 -->
-                                    <div class="swiper-slide">
-                                        <div class="card-product style-1 card-product-size">
-                                            <div class="card-product-wrapper">
-                                                <a href="product-detail.html" class="product-img">
-                                                    <img class="img-product lazyload"
-                                                        data-src="images/products/sport/short.jpg"
-                                                        src="images/products/sport/short.jpg" alt="image-product">
-                                                    <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/short.jpg"
-                                                        src="images/products/sport/short.jpg" alt="image-product">
-                                                </a>
-                                                <ul class="list-product-btn">
-                                                    <li>
-                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-cart2"></span>
-                                                            <span class="tooltip">Add to Cart</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="wishlist">
-                                                        <a href="javascript:void(0);"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-heart2"></span>
-                                                            <span class="tooltip">Add to Wishlist</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#quickView" data-bs-toggle="modal"
-                                                            class="hover-tooltip tooltip-left box-icon quickview">
-                                                            <span class="icon icon-view"></span>
-                                                            <span class="tooltip">Quick View</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="compare">
-                                                        <a href="#compare" data-bs-toggle="modal"
-                                                            aria-controls="compare"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-compare"></span>
-                                                            <span class="tooltip">Add to Compare</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                                <ul class="size-box">
-                                                    <li class="size-item text-xs text-white">XS</li>
-                                                    <li class="size-item text-xs text-white">S</li>
-                                                    <li class="size-item text-xs text-white">M</li>
-                                                    <li class="size-item text-xs text-white">L</li>
-                                                    <li class="size-item text-xs text-white">XL</li>
-                                                </ul>
-                                                <div class="on-sale-wrap"><span
-                                                        class="on-sale-item trending">Trending</span></div>
-                                            </div>
-                                            <div class="card-product-info">
-                                                <a href="product-detail.html"
-                                                    class="name-product link fw-medium text-md">Hyperflex 2
-                                                    Short</a>
-                                                <p class="price-wrap fw-medium">
-                                                    <span class="price-new">$120.00</span>
-                                                </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                        <span class="tooltip color-filter">Light Blue</span>
-                                                        <span class="swatch-value bg-light-blue-2"></span>
-                                                        <img class="lazyload" data-src="images/products/sport/short.jpg"
-                                                            src="images/products/sport/short.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Red</span>
-                                                        <span class="swatch-value bg-red"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/short3.jpg"
-                                                            src="images/products/sport/short3.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot ">
-                                                        <span class="tooltip color-filter">Black</span>
-                                                        <span class="swatch-value bg-dark"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/short4.jpg"
-                                                            src="images/products/sport/short4.jpg" alt="image-product">
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- item 4 -->
-                                    <div class="swiper-slide">
-                                        <div class="card-product style-1 card-product-size">
-                                            <div class="card-product-wrapper">
-                                                <a href="product-detail.html" class="product-img">
-                                                    <img class="img-product lazyload"
-                                                        data-src="images/products/sport/graphic-short.jpg"
-                                                        src="images/products/sport/graphic-short.jpg"
-                                                        alt="image-product">
-                                                    <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/graphic-short2.jpg"
-                                                        src="images/products/sport/graphic-short2.jpg"
-                                                        alt="image-product">
-                                                </a>
-                                                <ul class="list-product-btn">
-                                                    <li>
-                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-cart2"></span>
-                                                            <span class="tooltip">Add to Cart</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="wishlist">
-                                                        <a href="javascript:void(0);"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-heart2"></span>
-                                                            <span class="tooltip">Add to Wishlist</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#quickView" data-bs-toggle="modal"
-                                                            class="hover-tooltip tooltip-left box-icon quickview">
-                                                            <span class="icon icon-view"></span>
-                                                            <span class="tooltip">Quick View</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="compare">
-                                                        <a href="#compare" data-bs-toggle="modal"
-                                                            aria-controls="compare"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-compare"></span>
-                                                            <span class="tooltip">Add to Compare</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                                <div class="on-sale-wrap"><span class="on-sale-item">20% Off</span>
-                                                </div>
-                                            </div>
-                                            <div class="card-product-info">
-                                                <a href="product-detail.html"
-                                                    class="name-product link fw-medium text-md">Fitness Graphic
-                                                    Shorts</a>
-                                                <p class="price-wrap fw-medium">
-                                                    <span class="price-new text-primary">$120.00</span>
-                                                    <span class="price-old text-dark">$140.00</span>
-                                                </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                        <span class="tooltip color-filter">Grey</span>
-                                                        <span class="swatch-value bg-grey-6"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/graphic-short.jpg"
-                                                            src="images/products/sport/graphic-short.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">red</span>
-                                                        <span class="swatch-value bg-red"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/graphic-short2.jpg"
-                                                            src="images/products/sport/graphic-short2.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Black</span>
-                                                        <span class="swatch-value bg-dark"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/graphic-short3.jpg"
-                                                            src="images/products/sport/graphic-short3.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- item 5 -->
-                                    <div class="swiper-slide">
-                                        <div class="card-product style-1 card-product-size">
-                                            <div class="card-product-wrapper">
-                                                <a href="product-detail.html" class="product-img">
-                                                    <img class="img-product lazyload"
-                                                        data-src="images/products/sport/t-shirt4.jpg"
-                                                        src="images/products/sport/t-shirt4.jpg" alt="image-product">
-                                                    <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/t-shirt4.jpg"
-                                                        src="images/products/sport/t-shirt4.jpg" alt="image-product">
-                                                </a>
-                                                <ul class="list-product-btn">
-                                                    <li>
-                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-cart2"></span>
-                                                            <span class="tooltip">Add to Cart</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="wishlist">
-                                                        <a href="javascript:void(0);"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-heart2"></span>
-                                                            <span class="tooltip">Add to Wishlist</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#quickView" data-bs-toggle="modal"
-                                                            class="hover-tooltip tooltip-left box-icon quickview">
-                                                            <span class="icon icon-view"></span>
-                                                            <span class="tooltip">Quick View</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="compare">
-                                                        <a href="#compare" data-bs-toggle="modal"
-                                                            aria-controls="compare"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-compare"></span>
-                                                            <span class="tooltip">Add to Compare</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                                <ul class="size-box">
-                                                    <li class="size-item text-xs text-white">XS</li>
-                                                    <li class="size-item text-xs text-white">S</li>
-                                                    <li class="size-item text-xs text-white">M</li>
-                                                    <li class="size-item text-xs text-white">L</li>
-                                                    <li class="size-item text-xs text-white">XL</li>
-                                                    <li class="size-item text-xs text-white">2XL</li>
-                                                </ul>
-                                                <div class="on-sale-wrap"><span class="on-sale-item">20% Off</span>
-                                                </div>
-                                            </div>
-                                            <div class="card-product-info">
-                                                <a href="product-detail.html"
-                                                    class="name-product link fw-medium text-md">Sport T-Shirt</a>
-                                                <p class="price-wrap fw-medium">
-                                                    <span class="price-new text-primary">$80.00</span>
-                                                    <span class="price-old text-dark ">$100.00</span>
-                                                </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                        <span class="tooltip color-filter">Sky Blue</span>
-                                                        <span class="swatch-value bg-sky-blue"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/t-shirt4.jpg"
-                                                            src="images/products/sport/t-shirt4.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Black</span>
-                                                        <span class="swatch-value bg-dark"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/t-shirt2.jpg"
-                                                            src="images/products/sport/t-shirt2.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot ">
-                                                        <span class="tooltip color-filter">Grey</span>
-                                                        <span class="swatch-value bg-grey-6"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/t-shirt3.jpg"
-                                                            src="images/products/sport/t-shirt3.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    class="d-flex d-xl-none sw-dot-default sw-pagination-seller justify-content-center">
-                                </div>
-                            </div>
-                            <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-seller"></div>
-                            <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-seller"></div>
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="arrival" role="tabpanel">
-                        <div class="hover-sw-nav ">
-                            <div dir="ltr" class="swiper tf-swiper wrap-sw-over" data-swiper='{
-                                        "slidesPerView": 2,
-                                        "spaceBetween": 12,
-                                        "speed": 1000,
-                                        "observer": true,
-                                        "observeParents": true,
-                                        "slidesPerGroup": 2,
-                                        "navigation": {
-                                            "clickable": true,
-                                            "nextEl": ".nav-next-arrival",
-                                            "prevEl": ".nav-prev-arrival"
-                                        },
-                                        "pagination": { "el": ".sw-pagination-arrival", "clickable": true },
-                                        "breakpoints": {
-                                        "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
-                                        "1200": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 4}
-                                        }
-                                }'>
-                                <div class="swiper-wrapper">
-                                    <!-- item 1 -->
-                                    <div class="swiper-slide">
-                                        <div class="card-product style-1 card-product-size">
-                                            <div class="card-product-wrapper">
-                                                <a href="product-detail.html" class="product-img">
-                                                    <img class="img-product lazyload"
-                                                        data-src="images/products/sport/tee.jpg"
-                                                        src="images/products/sport/tee.jpg" alt="image-product">
-                                                    <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/tee.jpg"
-                                                        src="images/products/sport/tee.jpg" alt="image-product">
-                                                </a>
-                                                <ul class="list-product-btn">
-                                                    <li>
-                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-cart2"></span>
-                                                            <span class="tooltip">Add to Cart</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="wishlist">
-                                                        <a href="javascript:void(0);"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-heart2"></span>
-                                                            <span class="tooltip">Add to Wishlist</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#quickView" data-bs-toggle="modal"
-                                                            class="hover-tooltip tooltip-left box-icon quickview">
-                                                            <span class="icon icon-view"></span>
-                                                            <span class="tooltip">Quick View</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="compare">
-                                                        <a href="#compare" data-bs-toggle="modal"
-                                                            aria-controls="compare"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-compare"></span>
-                                                            <span class="tooltip">Add to Compare</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                                <ul class="size-box">
-                                                    <li class="size-item text-xs text-white">XS</li>
-                                                    <li class="size-item text-xs text-white">S</li>
-                                                    <li class="size-item text-xs text-white">M</li>
-                                                    <li class="size-item text-xs text-white">L</li>
-                                                    <li class="size-item text-xs text-white">XL</li>
-                                                    <li class="size-item text-xs text-white">2XL</li>
-                                                </ul>
-                                                <div class="on-sale-wrap"><span class="on-sale-item">20% Off</span>
-                                                </div>
-                                            </div>
-                                            <div class="card-product-info">
-                                                <a href="product-detail.html"
-                                                    class="name-product link fw-medium text-md">Essential Oversize
-                                                    Tee</a>
-                                                <p class="price-wrap fw-medium">
-                                                    <span class="price-new text-primary">$100.00</span>
-                                                    <span class="price-old text-dark ">$120.00</span>
-                                                </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                        <span class="tooltip color-filter">Beige</span>
-                                                        <span class="swatch-value bg-beige"></span>
-                                                        <img class="lazyload" data-src="images/products/sport/tee.jpg"
-                                                            src="images/products/sport/tee.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Black</span>
-                                                        <span class="swatch-value bg-dark"></span>
-                                                        <img class="lazyload"
-                                                            data-src="images/products/sport/t-shirt.jpg"
-                                                            src="images/products/sport/t-shirt.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Grey</span>
-                                                        <span class="swatch-value bg-grey-6"></span>
-                                                        <img class="lazyload"
-                                                            data-src="images/products/sport/t-shirt3.jpg"
-                                                            src="images/products/sport/t-shirt3.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- item 2 -->
-                                    <div class="swiper-slide">
-                                        <div class="card-product style-1 card-product-size">
-                                            <div class="card-product-wrapper">
-                                                <a href="product-detail.html" class="product-img">
-                                                    <img class="img-product lazyload"
-                                                        data-src="images/products/sport/legging.jpg"
-                                                        src="images/products/sport/legging.jpg" alt="image-product">
-                                                    <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/legging2.jpg"
-                                                        src="images/products/sport/legging2.jpg" alt="image-product">
-                                                </a>
-                                                <ul class="list-product-btn">
-                                                    <li>
-                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-cart2"></span>
-                                                            <span class="tooltip">Add to Cart</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="wishlist">
-                                                        <a href="javascript:void(0);"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-heart2"></span>
-                                                            <span class="tooltip">Add to Wishlist</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#quickView" data-bs-toggle="modal"
-                                                            class="hover-tooltip tooltip-left box-icon quickview">
-                                                            <span class="icon icon-view"></span>
-                                                            <span class="tooltip">Quick View</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="compare">
-                                                        <a href="#compare" data-bs-toggle="modal"
-                                                            aria-controls="compare"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-compare"></span>
-                                                            <span class="tooltip">Add to Compare</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="card-product-info">
-                                                <a href="product-detail.html"
-                                                    class="name-product link fw-medium text-md">Seamless
-                                                    Leggings</a>
-                                                <p class="price-wrap fw-medium">
-                                                    <span class="price-new text-primary">$80.00</span>
-                                                    <span class="price-old text-dark ">$100.00</span>
-                                                </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                        <span class="tooltip color-filter">Grey</span>
-                                                        <span class="swatch-value bg-grey-4"></span>
-                                                        <img class="lazyload"
-                                                            data-src="images/products/sport/legging.jpg"
-                                                            src="images/products/sport/legging.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Sky Blue</span>
-                                                        <span class="swatch-value bg-sky-blue"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/legging3.jpg"
-                                                            src="images/products/sport/legging3.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Black</span>
-                                                        <span class="swatch-value bg-dark"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/legging2.jpg"
-                                                            src="images/products/sport/legging2.jpg"
-                                                            alt="image-product">
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- item 3 -->
-                                    <div class="swiper-slide">
-                                        <div class="card-product style-1 card-product-size">
-                                            <div class="card-product-wrapper">
-                                                <a href="product-detail.html" class="product-img">
-                                                    <img class="img-product lazyload"
-                                                        data-src="images/products/sport/tank1.jpg"
-                                                        src="images/products/sport/tank1.jpg" alt="image-product">
-                                                    <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/tank1.jpg"
-                                                        src="images/products/sport/tank1.jpg" alt="image-product">
-                                                </a>
-                                                <ul class="list-product-btn">
-                                                    <li>
-                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-cart2"></span>
-                                                            <span class="tooltip">Add to Cart</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="wishlist">
-                                                        <a href="javascript:void(0);"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-heart2"></span>
-                                                            <span class="tooltip">Add to Wishlist</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#quickView" data-bs-toggle="modal"
-                                                            class="hover-tooltip tooltip-left box-icon quickview">
-                                                            <span class="icon icon-view"></span>
-                                                            <span class="tooltip">Quick View</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="compare">
-                                                        <a href="#compare" data-bs-toggle="modal"
-                                                            aria-controls="compare"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-compare"></span>
-                                                            <span class="tooltip">Add to Compare</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                                <ul class="size-box">
-                                                    <li class="size-item text-xs text-white">XS</li>
-                                                    <li class="size-item text-xs text-white">S</li>
-                                                    <li class="size-item text-xs text-white">M</li>
-                                                    <li class="size-item text-xs text-white">L</li>
-                                                    <li class="size-item text-xs text-white">XL</li>
-                                                    <li class="size-item text-xs text-white">2XL</li>
-                                                </ul>
-                                                <div class="on-sale-wrap"><span class="on-sale-item">20% Off</span>
-                                                </div>
-                                            </div>
-                                            <div class="card-product-info">
-                                                <a href="product-detail.html"
-                                                    class="name-product link fw-medium text-md">Fitness Club Cut Off
-                                                    Tank</a>
-                                                <p class="price-wrap fw-medium">
-                                                    <span class="price-new text-primary">$125.00</span>
-                                                    <span class="price-old text-dark ">$150.00</span>
-                                                </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                        <span class="tooltip color-filter">Green</span>
-                                                        <span class="swatch-value bg-olive-green"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/tank1.jpg"
-                                                            src="images/products/sport/tank1.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Black</span>
-                                                        <span class="swatch-value bg-dark"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/tank3.jpg"
-                                                            src="images/products/sport/tank3.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot ">
-                                                        <span class="tooltip color-filter">Yellow</span>
-                                                        <span class="swatch-value bg-yellow-4"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/tank2.jpg"
-                                                            src="images/products/sport/tank2.jpg" alt="image-product">
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- item 4 -->
-                                    <div class="swiper-slide">
-                                        <div class="card-product style-1 card-product-size">
-                                            <div class="card-product-wrapper">
-                                                <a href="product-detail.html" class="product-img">
-                                                    <img class="img-product lazyload"
-                                                        data-src="images/products/sport/short2.jpg"
-                                                        src="images/products/sport/short2.jpg" alt="image-product">
-                                                    <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/short3.jpg"
-                                                        src="images/products/sport/short3.jpg" alt="image-product">
-                                                </a>
-                                                <ul class="list-product-btn">
-                                                    <li>
-                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-cart2"></span>
-                                                            <span class="tooltip">Add to Cart</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="wishlist">
-                                                        <a href="javascript:void(0);"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-heart2"></span>
-                                                            <span class="tooltip">Add to Wishlist</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#quickView" data-bs-toggle="modal"
-                                                            class="hover-tooltip tooltip-left box-icon quickview">
-                                                            <span class="icon icon-view"></span>
-                                                            <span class="tooltip">Quick View</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="compare">
-                                                        <a href="#compare" data-bs-toggle="modal"
-                                                            aria-controls="compare"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-compare"></span>
-                                                            <span class="tooltip">Add to Compare</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                                <div class="on-sale-wrap"><span
-                                                        class="on-sale-item trending">Trending</span></div>
-                                            </div>
-                                            <div class="card-product-info">
-                                                <a href="product-detail.html"
-                                                    class="name-product link fw-medium text-md">Seamless Shorts</a>
-                                                <p class="price-wrap fw-medium">
-                                                    <span class="price-newy">$110.00</span>
-                                                </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                        <span class="tooltip color-filter">Grey</span>
-                                                        <span class="swatch-value bg-grey-6"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/short2.jpg"
-                                                            src="images/products/sport/short2.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Red</span>
-                                                        <span class="swatch-value bg-red"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/short3.jpg"
-                                                            src="images/products/sport/short3.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot ">
-                                                        <span class="tooltip color-filter">Black</span>
-                                                        <span class="swatch-value bg-dark"></span>
-                                                        <img class="lazyload"
-                                                            data-src="images/products/sport/short4.jpg"
-                                                            src="images/products/sport/short4.jpg" alt="image-product">
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- item 5 -->
-                                    <div class="swiper-slide">
-                                        <div class="card-product style-1 card-product-size">
-                                            <div class="card-product-wrapper">
-                                                <a href="product-detail.html" class="product-img">
-                                                    <img class="img-product lazyload"
-                                                        data-src="images/products/sport/tank3.jpg"
-                                                        src="images/products/sport/tank3.jpg" alt="image-product">
-                                                    <img class="img-hover lazyload"
-                                                        data-src="images/products/sport/tank3.jpg"
-                                                        src="images/products/sport/tank3.jpg" alt="image-product">
-                                                </a>
-                                                <ul class="list-product-btn">
-                                                    <li>
-                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-cart2"></span>
-                                                            <span class="tooltip">Add to Cart</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="wishlist">
-                                                        <a href="javascript:void(0);"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-heart2"></span>
-                                                            <span class="tooltip">Add to Wishlist</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#quickView" data-bs-toggle="modal"
-                                                            class="hover-tooltip tooltip-left box-icon quickview">
-                                                            <span class="icon icon-view"></span>
-                                                            <span class="tooltip">Quick View</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="compare">
-                                                        <a href="#compare" data-bs-toggle="modal"
-                                                            aria-controls="compare"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-compare"></span>
-                                                            <span class="tooltip">Add to Compare</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                                <ul class="size-box">
-                                                    <li class="size-item text-xs text-white">XS</li>
-                                                    <li class="size-item text-xs text-white">S</li>
-                                                    <li class="size-item text-xs text-white">M</li>
-                                                    <li class="size-item text-xs text-white">L</li>
-                                                    <li class="size-item text-xs text-white">XL</li>
-                                                    <li class="size-item text-xs text-white">2XL</li>
-                                                </ul>
-                                                <div class="on-sale-wrap"><span class="on-sale-item">20% Off</span>
-                                                </div>
-                                            </div>
-                                            <div class="card-product-info">
-                                                <a href="product-detail.html"
-                                                    class="name-product link fw-medium text-md">Fitness Club Cut Off
-                                                    Tank</a>
-                                                <p class="price-wrap fw-medium">
-                                                    <span class="price-new text-primary">$125.00</span>
-                                                    <span class="price-old text-dark ">$150.00</span>
-                                                </p>
-                                                <ul class="list-color-product">
-                                                    <li
-                                                        class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                        <span class="tooltip color-filter">Black</span>
-                                                        <span class="swatch-value bg-dark"></span>
-                                                        <img class="lazyload" data-src="images/products/sport/tank3.jpg"
-                                                            src="images/products/sport/tank3.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot ">
-                                                        <span class="tooltip color-filter">Yellow</span>
-                                                        <span class="swatch-value bg-yellow-4"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/tank2.jpg"
-                                                            src="images/products/sport/tank2.jpg" alt="image-product">
-                                                    </li>
-                                                    <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                        <span class="tooltip color-filter">Green</span>
-                                                        <span class="swatch-value bg-olive-green"></span>
-                                                        <img class=" lazyload"
-                                                            data-src="images/products/sport/tank1.jpg"
-                                                            src="images/products/sport/tank1.jpg" alt="image-product">
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    class="d-flex d-xl-none sw-dot-default sw-pagination-arrival justify-content-center">
-                                </div>
-                            </div>
-                            <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-arrival"></div>
-                            <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-arrival"></div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -2566,8 +504,8 @@
             <div class="tf-grid-layout md-col-2">
                 <div class="wg-offer hover-img">
                     <a href="shop-default.html" class="image d-block img-style">
-                        <img src="images/section/offer-1.jpg" data-src="images/section/offer-1.jpg" alt=""
-                            class="lazyload">
+                        <img src="{{ asset('/images/Banner/featured_coll_2_1_img.jpg') }}"
+                            data-src="{{ asset('/images/Banner/featured_coll_2_1_img.jpg') }}" alt="" class="lazyload">
                     </a>
                     <div class="content text-center wow fadeInUp">
                         <div class="box-title">
@@ -2584,8 +522,8 @@
                 </div>
                 <div class="wg-offer hover-img">
                     <a href="shop-default.html" class="image d-block img-style">
-                        <img src="images/section/offer-2.jpg" data-src="images/section/offer-2.jpg" alt=""
-                            class="lazyload">
+                        <img src="{{ asset('/images/Banner/featured_coll_2_2_img.jpg') }}"
+                            data-src="{{ asset('/images/Banner/featured_coll_2_2_img.jpg') }}" alt="" class="lazyload">
                     </a>
                     <div class="content text-center wow fadeInUp">
                         <div class="box-title">
@@ -2608,67 +546,7 @@
     </section>
     <!-- /Offer -->
     <!-- Brand -->
-    <section>
-        <div class="container">
-            <div class="flat-title wow fadeInUp">
-                <h4 class="title">Shop by Brands</h4>
-            </div>
-            <div dir="ltr" class="swiper tf-swiper sw-brand wow fadeInUp" data-swiper='{
-                        "slidesPerView": 2,
-                        "spaceBetween": 0,
-                        "speed": 1000,
-                        "observer": true,
-                        "observeParents": true,
-                        "slidesPerGroup": 2,
-                        "pagination": { "el": ".sw-pagination-brand", "clickable": true },
-                        "breakpoints": {
-                        "575": { "slidesPerView": 3},
-                        "991": { "slidesPerView": 4},
-                        "1200": { "slidesPerView": 6}
-                        }
-                    }'>
-                <div class="swiper-wrapper">
-                    <!-- item 1 -->
-                    <div class="swiper-slide">
-                        <div class="brand-item">
-                            <img src="images/brand/zara.png" alt="brand">
-                        </div>
-                    </div>
-                    <!-- item 2 -->
-                    <div class="swiper-slide">
-                        <div class="brand-item">
-                            <img src="images/brand/bear.png" alt="brand">
-                        </div>
-                    </div>
-                    <!-- item 3 -->
-                    <div class="swiper-slide">
-                        <div class="brand-item">
-                            <img src="images/brand/nike.png" alt="brand">
-                        </div>
-                    </div>
-                    <!-- item 4 -->
-                    <div class="swiper-slide">
-                        <div class="brand-item">
-                            <img src="images/brand/asos.png" alt="brand">
-                        </div>
-                    </div>
-                    <!-- item 5 -->
-                    <div class="swiper-slide">
-                        <div class="brand-item">
-                            <img src="images/brand/burberry.png" alt="brand">
-                        </div>
-                    </div>
-                    <!-- item 6 -->
-                    <div class="swiper-slide">
-                        <div class="brand-item">
-                            <img src="images/brand/forever.png" alt="brand">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex d-xl-none sw-dot-default sw-pagination-brand justify-content-center"></div>
-        </div>
-    </section>
+
     <!-- /Brand -->
     <!-- Testimonial -->
     <div class="flat-spacing-3">
@@ -2679,14 +557,14 @@
                         <div class="swiper-wrapper">
                             <div class="swiper-slide hover-img">
                                 <div class="img-sw-thumb img-style">
-                                    <img class="lazyload" data-src="images/testimonial/tes-sport.jpg"
-                                        src="images/testimonial/tes-sport.jpg" alt="img">
+                                    <img class="lazyload" data-src="{{ asset('/images/Banner/bv.jpg') }}"
+                                        src="{{ asset('/images/Banner/bv.jpg') }}" alt="img">
                                 </div>
                             </div>
                             <div class="swiper-slide hover-img">
                                 <div class="img-sw-thumb img-style">
-                                    <img class="lazyload" data-src="images/testimonial/tes-sport2.jpg"
-                                        src="images/testimonial/tes-sport2.jpg" alt="img">
+                                    <img class="lazyload" data-src="{{ asset('/images/Banner/bv.jpg') }}"
+                                        src="{{ asset('/images/Banner/bv.jpg') }}" alt="img">
                                 </div>
                             </div>
                         </div>
@@ -2706,23 +584,22 @@
                                             <i class="text-yellow-2 icon-star"></i>
                                             <i class="text-yellow-2 icon-star"></i>
                                         </div>
-                                        <div class="text-md fw-medium text-uppercase">Elegance and Comfort Combined
-                                        </div>
+                                        <div class="text-md fw-medium text-uppercase">Sang Trọng Và Tinh Tế</div>
                                         <p class="text-review display-xs">
-                                            "I absolutely love the quality of the sportwear! It fits perfectly,
-                                            feels great, and looks amazing during my workouts."
+                                            "Tôi thực sự yêu thích hương nước hoa này! Mùi hương nhẹ nhàng nhưng cuốn
+                                            hút, lưu hương lâu và mang lại cảm giác tự tin suốt cả ngày."
                                         </p>
                                     </div>
 
                                     <div class="box-author">
                                         <div class="img d-md-none">
-                                            <img src="images/testimonial/tes-sport.jpg" alt="author">
+                                            <img src="{{ asset('/images/Banner/bv.jpg') }}" alt="author">
                                         </div>
                                         <div class="info">
                                             <div class="name text-md fw-medium">Vincent</div>
                                             <a href="product-detail.html" class="meta link">
-                                                <span class="text-main">Purchase item:</span>
-                                                <span class="fw-medium">Essential Oversize Tee</span></a>
+                                                <span class="text-main">Đã mua sản phẩm:</span>
+                                                <span class="fw-medium">Nước Hoa Luxe Intense</span></a>
                                         </div>
                                     </div>
                                 </div>
@@ -2738,22 +615,22 @@
                                             <i class="text-yellow-2 icon-star"></i>
                                             <i class="text-yellow-2 icon-star"></i>
                                         </div>
-                                        <div class="text-md fw-medium text-uppercase">Elegance Meets Comfort</div>
+                                        <div class="text-md fw-medium text-uppercase">Hương Thơm Hoàn Hảo</div>
                                         <p class="text-review display-xs">
-                                            "I’m absolutely impressed with the quality of the sportswear! It fits
-                                            flawlessly, feels incredible, and looks fantastic."
+                                            "Mùi hương tinh tế, không quá nồng nhưng đủ để gây ấn tượng. Thiết kế chai
+                                            đẹp và sang trọng nữa!"
                                         </p>
                                     </div>
 
                                     <div class="box-author">
                                         <div class="img d-md-none">
-                                            <img src="images/testimonial/tes-sport2.jpg" alt="author">
+                                            <img src="{{ asset('/images/Banner/bv.jpg') }}" alt="author">
                                         </div>
                                         <div class="info">
                                             <div class="name text-md fw-medium">Henry</div>
                                             <a href="product-detail.html" class="meta link">
-                                                <span class="text-main">Purchase item:</span>
-                                                <span class="fw-medium">Seamless Leggings</span></a>
+                                                <span class="text-main">Đã mua sản phẩm:</span>
+                                                <span class="fw-medium">Mystique Eau de Parfum</span></a>
                                         </div>
                                     </div>
                                 </div>
@@ -2768,97 +645,10 @@
             </div>
         </div>
     </div>
+
     <!-- /Testimonial -->
     <!-- Shop Gram -->
-    <section class="flat-spacing-4 pt-0">
-        <div class="container">
-            <div class="flat-title wow fadeInUp">
-                <h4 class="title">Shop by @Gram</h4>
-            </div>
-            <div dir="ltr" class="swiper tf-swiper" data-swiper='{
-                        "slidesPerView": 2,
-                        "spaceBetween": 10,
-                        "speed": 1000,
-                        "observer": true,
-                        "observeParents": true,
-                        "slidesPerGroup": 2,
-                        "pagination": { "el": ".sw-pagination-gallery", "clickable": true },
-                        "breakpoints": {
-                        "768": { "slidesPerView": 3},
-                        "1200": { "slidesPerView": 5}
-                        }
-                    }'>
-                <div class="swiper-wrapper wow fadeInUp">
-                    <!-- item 1 -->
-                    <div class="swiper-slide">
-                        <div class="gallery-item hover-img hover-overlay">
-                            <div class="image img-style">
-                                <img src="images/gallery/sport/gallery-1.jpg"
-                                    data-src="images/gallery/sport/gallery-1.jpg" alt="" class="lazyload">
-                            </div>
-                            <a href="product-detail.html" class="box-icon hover-tooltip">
-                                <span class="icon icon-cart2"></span>
-                                <span class="tooltip">View Product</span>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- item 2 -->
-                    <div class="swiper-slide">
-                        <div class="gallery-item hover-img hover-overlay">
-                            <div class="image img-style">
-                                <img src="images/gallery/sport/gallery-2.jpg"
-                                    data-src="images/gallery/sport/gallery-2.jpg" alt="" class="lazyload">
-                            </div>
-                            <a href="product-detail.html" class="box-icon hover-tooltip">
-                                <span class="icon icon-cart2"></span>
-                                <span class="tooltip">View Product</span>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- item 3 -->
-                    <div class="swiper-slide">
-                        <div class="gallery-item hover-img hover-overlay">
-                            <div class="image img-style">
-                                <img src="images/gallery/sport/gallery-3.jpg"
-                                    data-src="images/gallery/sport/gallery-3.jpg" alt="" class="lazyload">
-                            </div>
-                            <a href="product-detail.html" class="box-icon hover-tooltip">
-                                <span class="icon icon-cart2"></span>
-                                <span class="tooltip">View Product</span>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- item 4 -->
-                    <div class="swiper-slide">
-                        <div class="gallery-item hover-img hover-overlay">
-                            <div class="image img-style">
-                                <img src="images/gallery/sport/gallery-4.jpg"
-                                    data-src="images/gallery/sport/gallery-4.jpg" alt="" class="lazyload">
-                            </div>
-                            <a href="product-detail.html" class="box-icon hover-tooltip">
-                                <span class="icon icon-cart2"></span>
-                                <span class="tooltip">View Product</span>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- item 5 -->
-                    <div class="swiper-slide">
-                        <div class="gallery-item hover-img hover-overlay">
-                            <div class="image img-style">
-                                <img src="images/gallery/sport/gallery-5.jpg"
-                                    data-src="images/gallery/sport/gallery-5.jpg" alt="" class="lazyload">
-                            </div>
-                            <a href="product-detail.html" class="box-icon hover-tooltip">
-                                <span class="icon icon-cart2"></span>
-                                <span class="tooltip">View Product</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <span class="d-flex d-xl-none sw-dot-default sw-pagination-gallery justify-content-center"></span>
-            </div>
-        </div>
-    </section>
+
     <!-- /Shop Gram -->
 </div>
 

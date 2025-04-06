@@ -46,7 +46,7 @@ class Web2Controller extends Controller
         // Phân trang kết quả
         $list_product = $query->paginate(12);
 
-        return view('web2.Home.shop', compact('list_product', 'categories'));
+        return view('web3.Home.shop', compact('list_product', 'categories'));
     }
 
 
@@ -64,7 +64,7 @@ class Web2Controller extends Controller
             abort(404); // Hiển thị trang 404 nếu sản phẩm không tồn tại
         }
 
-        return view('web2.Home.shop-detail', compact('detailproduct', 'relatedProducts', 'categories'));
+        return view('web3.Home.shop-detail', compact('detailproduct', 'relatedProducts', 'categories'));
     }
 
     public function cart()

@@ -2,44 +2,13 @@
 
     <div id="wrapper">
         <footer id="footer" class="footer-default xl-pb-70">
-            <div class="footer-top">
-                <div class="container">
-                    <div class="footer-top-wrap">
-                        <div class="footer-logo">
-                            <a href="index-2.html">
-                                <img src="images/logo/logo.svg" class="logo" alt="logo">
-                            </a>
-                        </div>
-                        <ul class="tf-social-icon style-large">
-                            <li>
-                                <a href="https://www.facebook.com/" class="social-item social-facebook">
-                                    <i class="icon icon-fb"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.instagram.com/" class="social-item social-instagram">
-                                    <i class="icon icon-instagram"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.snapchat.com/" class="social-item social-linkedin"><i
-                                        class="icon icon-linkedin"></i></a>
-                            </li>
-                            <li>
-                                <a href="https://x.com/" class="social-item social-x">
-                                    <i class="icon icon-x"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+
             <div class="footer-body">
                 <div class="container">
                     <div class="row-footer">
                         <div class="footer-col-block s1">
                             <div class="footer-heading footer-heading-mobile text-xl fw-medium">
-                                Business Contact
+                                Liên Hệ
                             </div>
                             <div class="tf-collapse-content">
                                 <div class="footer-contact">
@@ -58,7 +27,8 @@
                                             </span>
                                             <a target="_blank"
                                                 href="https://www.google.com/maps?q=123Yarranst,Punchbowl,NSW2196,Australia">
-                                                123 Yarran st, Punchbowl, NSW 2196, Australia
+                                                FPT Polytechnic, P. Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà
+                                                Nội
                                             </a>
                                         </li>
                                         <li class="item">
@@ -70,7 +40,7 @@
                                                         fill="#0D0D0D" />
                                                 </svg>
                                             </span>
-                                            <a href="tel:18888383022">(64) 8342 1245</a>
+                                            <a href="tel:18888383022">0338889364</a>
                                         </li>
                                         <li class="item">
                                             <span class="box-icon">
@@ -81,13 +51,13 @@
                                                         fill="#0D0D0D" />
                                                 </svg>
                                             </span>
-                                            <a href="mailto:support@example.com">support@example.com</a>
+                                            <a href="mailto:support@example.com">etherealnoir04@gmail.com</a>
                                         </li>
                                     </ul>
-                                    <a href="https://www.google.com/maps?q=15Yarranst,Punchbowl,NSW,Australia"
+                                    <a href="https://www.google.com/maps/place/Tr%C6%B0%E1%BB%9Dng+Cao+%C4%91%E1%BA%B3ng+FPT+Polytechnic/@21.0381348,105.7446869,17z/data=!3m1!4b1!4m6!3m5!1s0x313455e940879933:0xcf10b34e9f1a03df!8m2!3d21.0381298!4d105.7472618!16s%2Fg%2F11krd97y__?hl=vi-VN&entry=ttu&g_ep=EgoyMDI1MDQwMi4xIKXMDSoASAFQAw%3D%3D"
                                         class="tf-btn btn-line-dark fw-normal">
                                         <span class="text-sm">
-                                            See location
+                                            Địa chỉ
                                         </span>
                                         <i class="icon-arrow-top-left fs-8"></i>
                                     </a>
@@ -96,13 +66,14 @@
                         </div>
                         <div class="footer-inner-wrap footer-col-block s2">
                             <div class="footer-heading footer-heading-mobile text-xl fw-medium">
-                                Subscribe Newsletter
+                                Đăng ký nhận tin
                             </div>
                             <div class="tf-collapse-content">
                                 <div class="footer-newsletter">
                                     <p>
-                                        We invite you to register to read the latest news, offers and events about
-                                        our company. We promise not spam your inbox.
+                                        Chúng tôi mời bạn đăng ký để đọc những tin tức, ưu đãi và sự kiện mới nhất về
+                                        công ty của chúng tôi.
+                                        Chúng tôi cam kết không gửi thư rác đến hộp thư của bạn.
                                     </p>
                                     <form action="#" class="form-newsletter" method="post" accept-charset="utf-8"
                                         data-mailchimp="true">
@@ -136,43 +107,37 @@
                         </div>
                         <div class="footer-inner-wrap s3">
                             <div class="footer-col-block inner-col">
-                                <div class="footer-heading footer-heading-mobile text-xl fw-medium">About Us</div>
+                                <div class="footer-heading footer-heading-mobile text-xl fw-medium">Sản phẩm</div>
                                 <div class="tf-collapse-content">
                                     <ul class="footer-menu-list">
                                         <li>
-                                            <a href="about-us.html">About Us</a>
+                                            <a href="about-us.html">Nước hoa nam</a>
                                         </li>
                                         <li>
-                                            <a href="contact-us.html">Contact Us</a>
+                                            <a href="contact-us.html">Nước hoa nữ</a>
                                         </li>
-                                        <li>
-                                            <a href="store-location.html">Our Store</a>
-                                        </li>
-                                        <li>
-                                            <a href="about-us.html">Our Story</a>
-                                        </li>
+
                                     </ul>
                                 </div>
                             </div>
                             <div class="footer-col-block inner-col">
-                                <div class="footer-heading footer-heading-mobile text-xl fw-medium">Resource</div>
+                                <div class="footer-heading footer-heading-mobile text-xl fw-medium">Mua sắm và ưu đãi
+                                </div>
                                 <div class="tf-collapse-content">
                                     <ul class="footer-menu-list">
                                         <li>
-                                            <a href="privacy-policy.html">Privacy Policies</a>
+                                            <a href="privacy-policy.html">Trang chủ</a>
                                         </li>
                                         <li>
-                                            <a href="term-and-condition.html">Terms & Conditions</a>
+                                            <a href="term-and-condition.html">Sản phẩm</a>
                                         </li>
                                         <li>
-                                            <a href="return-and-refund.html">Returns & Refunds</a>
+                                            <a href="return-and-refund.html">Bài viết</a>
                                         </li>
                                         <li>
-                                            <a href="faq.html">FAQ’s</a>
+                                            <a href="faq.html">Liên hệ</a>
                                         </li>
-                                        <li>
-                                            <a href="shipping.html">Shipping</a>
-                                        </li>
+
                                     </ul>
                                 </div>
                             </div>
@@ -180,26 +145,7 @@
                     </div>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <div class="container">
-                    <div class="footer-bottom-wrap">
-                        <p class="text-dark">Copyright © 2025 by <span class="fw-medium">Vineta.</span> All Rights
-                            Reserved.</p>
-                        <ul class="tf-payment">
-                            <li class="item"><img src="images/payment/EximBank.png" alt="payment"></li>
-                            <li class="item"><img src="images/payment/ApplePay.png" alt="payment"></li>
-                            <li class="item"><img src="images/payment/DinersClub.png" alt="payment"></li>
-                            <li class="item"><img src="images/payment/Discover.png" alt="payment"></li>
-                            <li class="item"><img src="images/payment/GooglePay.png" alt="payment"></li>
-                            <li class="item"><img src="images/payment/Mastercard-2.png" alt="payment"></li>
-                            <li class="item"><img src="images/payment/Mastercard.png" alt="payment"></li>
-                            <li class="item"><img src="images/payment/Shop.png" alt="payment"></li>
-                            <li class="item"><img src="images/payment/UnionPay.png" alt="payment"></li>
-                            <li class="item"><img src="images/payment/Visa.png" alt="payment"></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+
         </footer>
     </div>
 

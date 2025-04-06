@@ -88,7 +88,8 @@
 
                             </li>
                             <li class="menu-item">
-                                <a href="#" class="item-link">Shop<i class="icon icon-arr-down"></i></a>
+                                <a href="{{ route('web3.shop') }}" class="item-link">Shop<i
+                                        class="icon icon-arr-down"></i></a>
                                 <div class="sub-menu mega-menu mega-shop">
                                     <div class="wrapper-sub-menu">
                                         <div class="mega-menu-item">
@@ -96,29 +97,7 @@
                                             <ul class="menu-list">
                                                 <li><a href="shop-default.html" class="menu-link-text link">Default</a>
                                                 </li>
-                                                <li><a href="shop-left-sidebar.html" class="menu-link-text link">Filter
-                                                        Left Sidebar</a></li>
-                                                <li><a href="shop-right-sidebar.html" class="menu-link-text link">Filter
-                                                        Right Sidebar</a></li>
-                                                <li><a href="shop-horizontal-filter.html"
-                                                        class="menu-link-text link">Horizontal
-                                                        Filter</a></li>
-                                                <li><a href="shop-default.html" class="menu-link-text link">Filter
-                                                        Drawer</a></li>
-                                                <li><a href="shop-collection-list.html"
-                                                        class="menu-link-text link">Collection
-                                                        List</a></li>
-                                                <li><a href="shop-sub-collection.html" class="menu-link-text link">Sub
-                                                        Collection 1</a></li>
-                                                <li><a href="shop-sub-collection-02.html"
-                                                        class="menu-link-text link">Sub
-                                                        Collection 2</a></li>
-                                                <li><a href="shop-grid-3-columns.html" class="menu-link-text link">Grid
-                                                        3 Columns </a></li>
-                                                <li><a href="shop-default.html" class="menu-link-text link">Grid 4
-                                                        Columns</a></li>
-                                                <li><a href="shop-fullwidth.html" class="menu-link-text link">Full
-                                                        Width</a></li>
+
                                             </ul>
                                         </div>
 
@@ -172,40 +151,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- item 3 -->
-                                                <div class="swiper-slide">
-                                                    <div class="wg-cls style-abs asp-1 hover-img">
-                                                        <a href="shop-default.html" class="image img-style d-block">
-                                                            <img src="images/cls-categories/fashion/accessories.jpg"
-                                                                data-src="images/cls-categories/fashion/accessories.jpg"
-                                                                alt="" class="lazyload">
-                                                        </a>
-                                                        <div class="cls-btn text-center">
-                                                            <a href="shop-default.html"
-                                                                class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                                                                Accessories
-                                                                <i class="icon icon-arrow-top-left"></i>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- item 4 -->
-                                                <div class="swiper-slide">
-                                                    <div class="wg-cls style-abs asp-1 hover-img">
-                                                        <a href="shop-default.html" class="image img-style d-block">
-                                                            <img src="images/cls-categories/fashion/sportwear.jpg"
-                                                                data-src="images/cls-categories/fashion/sportwear.jpg"
-                                                                alt="" class="lazyload">
-                                                        </a>
-                                                        <div class="cls-btn text-center">
-                                                            <a href="shop-default.html"
-                                                                class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                                                                Sportwear
-                                                                <i class="icon icon-arrow-top-left"></i>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
+
                                             </div>
                                             <div
                                                 class="d-flex d-xl-none sw-dot-default sw-pagination-cls-header justify-content-center">
@@ -221,7 +167,8 @@
                                 </div>
                             </li>
                             <li class="menu-item">
-                                <a href="#" class="item-link">Products<i class="icon icon-arr-down"></i></a>
+                                <a href="{{ route('web3.shop.detail') }}" class="item-link">Products<i
+                                        class="icon icon-arr-down"></i></a>
                                 <div class="sub-menu mega-menu mega-product">
                                     <div class="wrapper-sub-menu">
                                         <div class="mega-menu-item">
@@ -229,24 +176,7 @@
                                             <ul class="menu-list">
                                                 <li><a href="product-detail.html" class="menu-link-text link">Product
                                                         Single</a></li>
-                                                <li><a href="product-right-thumbnail.html"
-                                                        class="menu-link-text link">Product
-                                                        Right Thumbnail</a></li>
-                                                <li><a href="product-detail.html" class="menu-link-text link">Product
-                                                        Left Thumbnail</a></li>
-                                                <li><a href="product-bottom-thumbnail.html"
-                                                        class="menu-link-text link">Product
-                                                        Bottom Thumbnail</a>
-                                                </li>
-                                                <li><a href="product-grid.html" class="menu-link-text link">Product
-                                                        Grid</a></li>
-                                                <li><a href="product-grid-02.html" class="menu-link-text link">Product
-                                                        Grid 2</a></li>
-                                                <li><a href="product-stacked.html" class="menu-link-text link">Product
-                                                        Stacked</a></li>
-                                                <li><a href="product-drawer-sidebar.html"
-                                                        class="menu-link-text link">Product
-                                                        Drawer Sidebar</a></li>
+
                                             </ul>
                                         </div>
                                         <div class="mega-menu-item">
@@ -255,73 +185,10 @@
                                                 <li><a href="product-inner-zoom.html"
                                                         class="menu-link-text link">Product Inner
                                                         Zoom</a></li>
-                                                <li><a href="product-inner-circle-zoom.html"
-                                                        class="menu-link-text link">Product
-                                                        Inner Circle Zoom</a>
-                                                </li>
-                                                <li><a href="product-no-zoom.html" class="menu-link-text link">Product
-                                                        No Zoom <span class="demo-label">Hot</span></a></li>
-                                                <li><a href="product-external-zoom.html"
-                                                        class="menu-link-text link">Product
-                                                        External Zoom</a></li>
-                                                <li><a href="product-open-lightbox.html"
-                                                        class="menu-link-text link">Product
-                                                        Open Lightbox <span class="demo-label bg-primary">New</span></a>
-                                                </li>
-                                                <li><a href="product-video.html" class="menu-link-text link">Product
-                                                        Video</a></li>
-                                                <li><a href="product-3d.html" class="menu-link-text link">Product
-                                                        3D/AR</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="mega-menu-item">
-                                            <div class="menu-heading">PRODUCT FEATURES</div>
-                                            <ul class="menu-list">
-                                                <li><a href="product-together.html" class="menu-link-text link">Buy
-                                                        Together</a></li>
 
-                                                <li><a href="product-countdown-timer.html"
-                                                        class="menu-link-text link">Countdown
-                                                        Timer</a></li>
+                                            </ul>
+                                        </div>
 
-                                                <li><a href="product-volume-discount.html"
-                                                        class="menu-link-text link">Volume
-                                                        Discount</a></li>
-                                                <li><a href="product-volume-discount-thumbnail.html"
-                                                        class="menu-link-text link">Volume Discount Thumbnail</a>
-                                                </li>
-                                                <li><a href="product-swatch-dropdown.html"
-                                                        class="menu-link-text link">Swatch
-                                                        Dropdown</a></li>
-                                                <li><a href="product-swatch-dropdown-color.html"
-                                                        class="menu-link-text link">Swatch Dropdown Color</a></li>
-                                                <li><a href="product-swatch-image.html"
-                                                        class="menu-link-text link">Swatch
-                                                        Image</a></li>
-                                                <li><a href="product-swatch-image-square.html"
-                                                        class="menu-link-text link">Swatch Image rectangle</a></li>
-                                                <li><a href="product-pickup-available.html"
-                                                        class="menu-link-text link">Pickup
-                                                        Available</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="mega-menu-item">
-                                            <div class="menu-heading">Product description</div>
-                                            <ul class="menu-list">
-                                                <li><a href="product-description-vertical.html"
-                                                        class="menu-link-text link">Product Description Vertical</a>
-                                                </li>
-                                                <li><a href="product-description-tab.html"
-                                                        class="menu-link-text link">Product
-                                                        Description Tab</a></li>
-                                                <li><a href="product-description-accordions.html"
-                                                        class="menu-link-text link">Product Description
-                                                        Accordions</a></li>
-                                                <li><a href="product-description-side-accordions.html"
-                                                        class="menu-link-text link">Product Description Side
-                                                        Accordions</a></li>
-                                            </ul>
-                                        </div>
                                     </div>
                                     <div class="wrapper-sub-product">
                                         <div dir="ltr" class="swiper tf-swiper wrap-sw-over" data-swiper='{
@@ -396,288 +263,11 @@
                                                                 <span class="price-new text-primary">$100.00</span>
                                                                 <span class="price-old">$130.00</span>
                                                             </p>
-                                                            <ul class="list-color-product justify-content-center">
-                                                                <li
-                                                                    class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                                    <span class="tooltip color-filter">Yellow</span>
-                                                                    <span class="swatch-value bg-light-orange-2"></span>
-                                                                    <img class="lazyload"
-                                                                        data-src="images/products/fashion/product-12.jpg"
-                                                                        src="images/products/fashion/product-12.jpg"
-                                                                        alt="image-product">
-                                                                </li>
-                                                                <li
-                                                                    class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                                    <span class="tooltip color-filter">Grey</span>
-                                                                    <span class="swatch-value bg-grey-4"></span>
-                                                                    <img class=" lazyload"
-                                                                        data-src="images/products/fashion/product-6.jpg"
-                                                                        src="images/products/fashion/product-6.jpg"
-                                                                        alt="image-product">
-                                                                </li>
-                                                                <li
-                                                                    class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                                    <span class="tooltip color-filter">Black</span>
-                                                                    <span class="swatch-value bg-dark"></span>
-                                                                    <img class=" lazyload"
-                                                                        data-src="images/products/fashion/product-20.jpg"
-                                                                        src="images/products/fashion/product-20.jpg"
-                                                                        alt="image-product">
-                                                                </li>
-                                                            </ul>
+
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- item 2 -->
-                                                <div class="swiper-slide">
-                                                    <div class="card-product style-1">
-                                                        <div class="card-product-wrapper">
-                                                            <a href="product-detail.html" class="product-img">
-                                                                <img class="img-product lazyload"
-                                                                    data-src="images/products/fashion/product-8.jpg"
-                                                                    src="images/products/fashion/product-8.jpg"
-                                                                    alt="image-product">
-                                                                <img class="img-hover lazyload"
-                                                                    data-src="images/products/fashion/product-7.jpg"
-                                                                    src="images/products/fashion/product-7.jpg"
-                                                                    alt="image-product">
-                                                            </a>
-                                                            <ul class="list-product-btn">
-                                                                <li>
-                                                                    <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                                        class="hover-tooltip tooltip-left box-icon">
-                                                                        <span class="icon icon-cart2"></span>
-                                                                        <span class="tooltip">Add to Cart</span>
-                                                                    </a>
-                                                                </li>
-                                                                <li class="wishlist">
-                                                                    <a href="javascript:void(0);"
-                                                                        class="hover-tooltip tooltip-left box-icon">
-                                                                        <span class="icon icon-heart2"></span>
-                                                                        <span class="tooltip">Add to
-                                                                            Wishlist</span>
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="#quickView" data-bs-toggle="modal"
-                                                                        class="hover-tooltip tooltip-left box-icon quickview">
-                                                                        <span class="icon icon-view"></span>
-                                                                        <span class="tooltip">Quick View</span>
-                                                                    </a>
-                                                                </li>
-                                                                <li class="compare">
-                                                                    <a href="#compare" data-bs-toggle="modal"
-                                                                        class="hover-tooltip tooltip-left box-icon">
-                                                                        <span class="icon icon-compare"></span>
-                                                                        <span class="tooltip">Add to
-                                                                            Compare</span>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="card-product-info text-center">
-                                                            <a href="product-detail.html"
-                                                                class="name-product link fw-medium text-md">Loose
-                                                                Fit Tee</a>
-                                                            <p class="price-wrap fw-medium">
-                                                                <span class="price-new">$130.00</span>
-                                                            </p>
-                                                            <ul class="list-color-product justify-content-center">
-                                                                <li
-                                                                    class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                                    <span class="tooltip color-filter">Purple</span>
-                                                                    <span class="swatch-value bg-light-purple"></span>
-                                                                    <img class=" lazyload"
-                                                                        data-src="images/products/fashion/product-8.jpg"
-                                                                        src="images/products/fashion/product-8.jpg"
-                                                                        alt="image-product">
-                                                                </li>
-                                                                <li
-                                                                    class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                                    <span class="tooltip color-filter">Grey</span>
-                                                                    <span class="swatch-value bg-grey-4"></span>
-                                                                    <img class=" lazyload"
-                                                                        data-src="images/products/fashion/product-7.jpg"
-                                                                        src="images/products/fashion/product-7.jpg"
-                                                                        alt="image-product">
-                                                                </li>
-                                                                <li
-                                                                    class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                                    <span class="tooltip color-filter">Light
-                                                                        Orange</span>
-                                                                    <span class="swatch-value bg-light-orange-2"></span>
-                                                                    <img class=" lazyload"
-                                                                        data-src="images/products/fashion/product-28.jpg"
-                                                                        src="images/products/fashion/product-28.jpg"
-                                                                        alt="image-product">
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- item 3 -->
-                                                <div class="swiper-slide">
-                                                    <div class="card-product style-1">
-                                                        <div class="card-product-wrapper">
-                                                            <a href="product-detail.html" class="product-img">
-                                                                <img class="img-product lazyload"
-                                                                    data-src="images/products/fashion/product-30.jpg"
-                                                                    src="images/products/fashion/product-30.jpg"
-                                                                    alt="image-product">
-                                                                <img class="img-hover lazyload"
-                                                                    data-src="images/products/fashion/product-10.jpg"
-                                                                    src="images/products/fashion/product-10.jpg"
-                                                                    alt="image-product">
-                                                            </a>
-                                                            <ul class="list-product-btn">
-                                                                <li>
-                                                                    <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                                        class="hover-tooltip tooltip-left box-icon">
-                                                                        <span class="icon icon-cart2"></span>
-                                                                        <span class="tooltip">Add to Cart</span>
-                                                                    </a>
-                                                                </li>
-                                                                <li class="wishlist">
-                                                                    <a href="javascript:void(0);"
-                                                                        class="hover-tooltip tooltip-left box-icon">
-                                                                        <span class="icon icon-heart2"></span>
-                                                                        <span class="tooltip">Add to
-                                                                            Wishlist</span>
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="#quickView" data-bs-toggle="modal"
-                                                                        class="hover-tooltip tooltip-left box-icon quickview">
-                                                                        <span class="icon icon-view"></span>
-                                                                        <span class="tooltip">Quick View</span>
-                                                                    </a>
-                                                                </li>
-                                                                <li class="compare">
-                                                                    <a href="#compare" data-bs-toggle="modal"
-                                                                        class="hover-tooltip tooltip-left box-icon">
-                                                                        <span class="icon icon-compare"></span>
-                                                                        <span class="tooltip">Add to
-                                                                            Compare</span>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="card-product-info text-center">
-                                                            <a href="product-detail.html"
-                                                                class="name-product link fw-medium text-md">Crop
-                                                                T-shirt</a>
-                                                            <p class="price-wrap fw-medium">
-                                                                <span class="price-new text-primary">$120.00</span>
-                                                                <span class="price-old">$140.00</span>
-                                                            </p>
-                                                            <ul class="list-color-product justify-content-center">
-                                                                <li
-                                                                    class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                                    <span class="tooltip color-filter">Purple</span>
-                                                                    <span class="swatch-value bg-purple-3"></span>
-                                                                    <img class=" lazyload"
-                                                                        data-src="images/products/fashion/product-30.jpg"
-                                                                        src="images/products/fashion/product-30.jpg"
-                                                                        alt="image-product">
-                                                                </li>
-                                                                <li
-                                                                    class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                                    <span class="tooltip color-filter">Light
-                                                                        Blue</span>
-                                                                    <span class="swatch-value bg-light-blue-2"></span>
-                                                                    <img class=" lazyload"
-                                                                        data-src="images/products/fashion/product-10.jpg"
-                                                                        src="images/products/fashion/product-10.jpg"
-                                                                        alt="image-product">
-                                                                </li>
 
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- item 4 -->
-                                                <div class="swiper-slide">
-                                                    <div class="card-product style-1">
-                                                        <div class="card-product-wrapper">
-                                                            <a href="product-detail.html" class="product-img">
-                                                                <img class="img-product lazyload"
-                                                                    data-src="images/products/fashion/product-6.jpg"
-                                                                    src="images/products/fashion/product-6.jpg"
-                                                                    alt="image-product">
-                                                                <img class="img-hover lazyload"
-                                                                    data-src="images/products/fashion/product-21.jpg"
-                                                                    src="images/products/fashion/product-21.jpg"
-                                                                    alt="image-product">
-                                                            </a>
-                                                            <ul class="list-product-btn">
-                                                                <li>
-                                                                    <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                                        class="box-icon hover-tooltip tooltip-left">
-                                                                        <span class="icon icon-cart2"></span>
-                                                                        <span class="tooltip">Add to Cart</span>
-                                                                    </a>
-                                                                </li>
-                                                                <li class="wishlist">
-                                                                    <a href="javascript:void(0);"
-                                                                        class="box-icon hover-tooltip tooltip-left">
-                                                                        <span class="icon icon-heart2"></span>
-                                                                        <span class="tooltip">Add to
-                                                                            Wishlist</span>
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="#quickView" data-bs-toggle="modal"
-                                                                        class="box-icon quickview hover-tooltip tooltip-left">
-                                                                        <span class="icon icon-view"></span>
-                                                                        <span class="tooltip">Quick View</span>
-                                                                    </a>
-                                                                </li>
-                                                                <li class="compare">
-                                                                    <a href="#compare" data-bs-toggle="modal"
-                                                                        class="box-icon hover-tooltip tooltip-left">
-                                                                        <span class="icon icon-compare"></span>
-                                                                        <span class="tooltip">Add to
-                                                                            Compare</span>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-
-
-                                                        </div>
-                                                        <div class="card-product-info text-center">
-                                                            <a href="product-detail.html"
-                                                                class="name-product link fw-medium text-md">Oversized
-                                                                Fit
-                                                                Tee</a>
-                                                            <p class="price-wrap fw-medium">
-                                                                <span class="price-new text-primary">$60.00</span>
-                                                                <span class="price-old">$80.00</span>
-                                                            </p>
-                                                            <ul class="list-color-product justify-content-center">
-                                                                <li
-                                                                    class="list-color-item color-swatch hover-tooltip tooltip-bot line active">
-                                                                    <span class="tooltip color-filter">White</span>
-                                                                    <span class="swatch-value bg-white"></span>
-                                                                    <img class=" lazyload"
-                                                                        data-src="images/products/fashion/product-6.jpg"
-                                                                        src="images/products/fashion/product-6.jpg"
-                                                                        alt="image-product">
-                                                                </li>
-                                                                <li
-                                                                    class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                                    <span class="tooltip color-filter">Dark
-                                                                        Green</span>
-                                                                    <span class="swatch-value bg-dark-green"></span>
-                                                                    <img class=" lazyload"
-                                                                        data-src="images/products/fashion/product-21.jpg"
-                                                                        src="images/products/fashion/product-21.jpg"
-                                                                        alt="image-product">
-                                                                </li>
-
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             </div>
                                             <div
                                                 class="sw-dot-default sw-pagination-product-header justify-content-center">
@@ -731,14 +321,7 @@
                                     <ul class="menu-list">
                                         <li><a href="blog-list-01.html" class="menu-link-text link">Blog List 1</a>
                                         </li>
-                                        <li><a href="blog-list-02.html" class="menu-link-text link">Blog List 2</a>
-                                        </li>
-                                        <li><a href="blog-grid-01.html" class="menu-link-text link">Blog Grid 1</a>
-                                        </li>
-                                        <li><a href="blog-grid-02.html" class="menu-link-text link">Blog Grid 2</a>
-                                        </li>
-                                        <li><a href="blog-single.html" class="menu-link-text link">Single Blog </a>
-                                        </li>
+
                                     </ul>
                                     <div class="wrapper-sub-blog">
                                         <div class="menu-heading">Recent Posts</div>
@@ -781,9 +364,7 @@
                                 </div>
 
                             </li>
-                            <li class="menu-item"><a href="https://themeforest.net/user/themesflat"
-                                    class="item-link">Buy
-                                    Theme!</a></li>
+
                         </ul>
                     </nav>
                 </div>

@@ -8,5 +8,22 @@
 <script src="{{ asset('website_3/js/wow.min.js') }}"></script>
 
 <script src="{{ asset('website_3/js/main.js') }}"></script>
-<script src="{{ asset('website/js/count-down.js') }}"></script>
-<script type="module" src="{{ asset('website/js/zoom.js') }}"></script>
+
+<script type="module" src="{{ asset('website_3/js/zoom.js') }}"></script>
+
+
+
+<script src="{{ asset('website_3/js/drift.min.js') }}"></script>
+
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/swiper-bundle.min.js"></script>
+<script src="js/carousel.js"></script>
+<script src="js/bootstrap-select.min.js"></script>
+<script src="js/lazysize.min.js"></script>
+<script src="js/count-down.js"></script>
+<script src="js/wow.min.js"></script>
+<script src="{{ asset('website_3/js/nouislider.min.js') }}"></script>
+<script src="{{ asset('website_3/js/shop.js') }}"></script>
+
+<script src="js/main.js"></script>
