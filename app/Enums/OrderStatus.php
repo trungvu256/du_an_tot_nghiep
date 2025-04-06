@@ -2,26 +2,26 @@
 
 namespace App\Enums;
 
-class OrderStatus
+enum OrderStatus: int
 {
-    const pending_confirmation = 'pending_confirmation';
-    const pending_pickup = 'pending_pickup';
-    const pending_delivery = 'pending_delivery';
-    const refunded = 'returned';
-    const delivered = 'delivered';
-    const canceled = 'canceled';
-    const confirm_delivered = 'confirm_delivered';
+    case PENDING = 0;        // Chờ xử lý
+    case READY_FOR_PICKUP = 1; // Chờ lấy hàng
+    case SHIPPING = 2;       // Đang giao
+    case DELIVERED = 3;      // Đã giao
+    case COMPLETED = 4;      // Hoàn tất
+    case RETURNED = 5;       // Trả hàng
+    case CANCELED = 6;       // Đã hủy
 
-    public static function all()
+    public function label(): string
     {
-        return [
-            self::pending_confirmation,
-            self::pending_pickup,
-            self::pending_delivery,
-            self::refunded,
-            self::delivered,
-            self::canceled,
-            self::confirm_delivered,
-        ];
+        return match($this) {
+            self::PENDING => 'Chờ xử lý',
+            self::READY_FOR_PICKUP => 'Chờ lấy hàng',
+            self::SHIPPING => 'Đang giao',
+            self::DELIVERED => 'Đã giao',
+            self::COMPLETED => 'Hoàn tất',
+            self::RETURNED => 'Trả hàng',
+            self::CANCELED => 'Đã hủy',
+        };
     }
 }
