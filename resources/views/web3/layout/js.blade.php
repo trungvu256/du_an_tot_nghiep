@@ -12,8 +12,9 @@
 <script type="module" src="{{ asset('website_3/js/zoom.js') }}"></script>
 
 
+<script src="{{ asset('website_3/js/multiple-modal.js') }}"></script>
 
-<script src="{{ asset('website_3/js/drift.min.js') }}"></script>
+<script src=""></script>
 
 <script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.min.js"></script>
