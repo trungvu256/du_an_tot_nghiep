@@ -51,15 +51,22 @@
                         <div class="d-flex align-items-center ms-auto">
                             <div class="input-group input-group-sm">
                                 {{-- Dropdown và nút cập nhật --}}
-                                <select name="status" class="form-select form-select-sm"
-                                    id="statusSelect" data-current-status="{{ $order->status }}">
-                                    <option value="0" {{ $order->status == 0 ? 'selected' : '' }}>-- Chờ xử lý --</option>
-                                    <option value="1" {{ $order->status == 1 ? 'selected' : '' }}>-- Chờ lấy hàng --</option>
-                                    <option value="2" {{ $order->status == 2 ? 'selected' : '' }}>-- Đang giao --</option>
-                                    <option value="3" {{ $order->status == 3 ? 'selected' : '' }}>-- Đã giao --</option>
-                                    <option value="4" {{ $order->status == 4 ? 'selected' : '' }}>-- Hoàn tất --</option>
-                                    <option value="5" {{ $order->status == 5 ? 'selected' : '' }}>-- Trả hàng --</option>
-                                    <option value="6" {{ $order->status == 6 ? 'selected' : '' }}>-- Đã hủy --</option>
+                                <select name="status" class="form-select form-select-sm" id="statusSelect"
+                                    data-current-status="{{ $order->status }}">
+                                    <option value="0" {{ $order->status == 0 ? 'selected' : '' }}>-- Chờ xử lý --
+                                    </option>
+                                    <option value="1" {{ $order->status == 1 ? 'selected' : '' }}>-- Chờ lấy hàng --
+                                    </option>
+                                    <option value="2" {{ $order->status == 2 ? 'selected' : '' }}>-- Đang giao --
+                                    </option>
+                                    <option value="3" {{ $order->status == 3 ? 'selected' : '' }}>-- Đã giao --
+                                    </option>
+                                    <option value="4" {{ $order->status == 4 ? 'selected' : '' }}>-- Hoàn tất --
+                                    </option>
+                                    <option value="5" {{ $order->status == 5 ? 'selected' : '' }}>-- Trả hàng --
+                                    </option>
+                                    <option value="6" {{ $order->status == 6 ? 'selected' : '' }}>-- Đã hủy --
+                                    </option>
                                 </select>
                                 <input type="hidden" name="order_id" value="{{ $order->id }}">
                                 <button type="submit" class="btn btn-primary btn-sm px-4">Cập nhật</button>
@@ -97,6 +104,7 @@
                         @case(5)
                             <span class="badge bg-dark">Trả hàng</span>
                         @break
+
                         @case(6)
                             <span class="badge bg-danger">Hủy</span>
                         @break
@@ -189,28 +197,63 @@
                 </tr>
             </table>
         @endif
-        <script>
-            document.getElementById('shipOrderButton').addEventListener('click', function() {
-                let orderId = this.getAttribute('data-order-id');
+    </div>
+    <script>
+        document.getElementById('shipOrderButton').addEventListener('click', function() {
+            let orderId = this.getAttribute('data-order-id');
 
-                fetch(`/admin/shipping/ship-order/${orderId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({
-                            shipping_provider: 'GHTK', // Có thể thay bằng dữ liệu động
-                            tracking_number: 'TRK' + Math.floor(Math.random() *
-                                1000000000) // Giả lập mã vận đơn
-                        })
+            fetch(`/admin/shipping/ship-order/${orderId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        shipping_provider: 'GHTK', // Có thể thay bằng dữ liệu động
+                        tracking_number: 'TRK' + Math.floor(Math.random() *
+                            1000000000) // Giả lập mã vận đơn
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        alert(data.message);
-                        location.reload(); // Cập nhật lại giao diện
-                    })
-                    .catch(error => console.error('Lỗi:', error));
-            });
-        </script>
-    @endsection
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    location.reload(); // Cập nhật lại giao diện
+                })
+                .catch(error => console.error('Lỗi:', error));
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const statusSelect = document.getElementById('statusSelect');
+
+            if (statusSelect) { // Kiểm tra xem phần tử có tồn tại không
+                const currentStatus = parseInt(statusSelect.dataset.currentStatus);
+
+                // Định nghĩa các trạng thái có thể chuyển tiếp từ mỗi trạng thái hiện tại
+                const validTransitions = {
+                    0: [1, 6],
+                    1: [2, 6],
+                    2: [3, 5],
+                    3: [4, 5],
+                    4: [],
+                    5: [6],
+                    6: []
+                };
+
+                // Duyệt qua các option trong dropdown và kiểm tra xem chúng có hợp lệ không
+                statusSelect.querySelectorAll('option').forEach(option => {
+                    const optionValue = parseInt(option.value);
+
+                    // Đảm bảo không disable option hiện tại
+                    const isCurrent = optionValue === currentStatus;
+
+                    // Kiểm tra xem trạng thái mới có hợp lệ không
+                    const isValidTransition = validTransitions[currentStatus]?.includes(optionValue);
+
+                    // Disable những option không hợp lệ
+                    option.disabled = !(isCurrent || isValidTransition);
+                });
+            }
+        });
+    </script>
+@endsection
