@@ -391,7 +391,7 @@ Route::middleware(['auth', 'user'])->group(function () {
         Route::get('/viewCart', [CartController::class, 'viewCart'])->name('cart.viewCart');
         Route::post('/add/{id}', [CartController::class, 'createAddTocart'])->name('cart.create');
         Route::post('/cart/update/{id}', [CartController::class, 'updateCart'])->name('cart.update');
-        Route::post('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+        Route::post('/cart/remove/{cartKey}', [CartController::class, 'removeFromCart'])->name('cart.remove');
         // Áp mã giảm giá
         Route::post('/cart/apply-promotion', [CartController::class, 'applyPromotion'])->name('cart.applyPromotion');
         Route::get('/viewCart/show', [CartController::class, 'showHeaderCart'])->name('cart.showHeaderCart');
