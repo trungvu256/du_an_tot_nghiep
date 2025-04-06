@@ -205,7 +205,7 @@
                 $("#successAlert").fadeOut(500, function() {
                     $(this).remove();
                 });
-            }, 4000);
+            }, 5000);
 
             // Khi hover vào, dừng ẩn thông báo
             $("#successAlert").hover(
