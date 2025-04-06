@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -45,7 +46,18 @@ class Order extends Model
     const RETURN_COMPLETED = 4; // Hoàn tất trả hàng
 
 
-
+    public function canTransitionTo(OrderStatus $newStatus): bool
+    {
+        $transitions = [
+            OrderStatus::PENDING->value => [OrderStatus::READY_FOR_PICKUP, OrderStatus::CANCELED],
+            OrderStatus::READY_FOR_PICKUP->value => [OrderStatus::SHIPPING, OrderStatus::CANCELED],
+            OrderStatus::SHIPPING->value => [OrderStatus::DELIVERED, OrderStatus::RETURNED],
+            OrderStatus::DELIVERED->value => [OrderStatus::COMPLETED, OrderStatus::RETURNED],
+            OrderStatus::RETURNED->value => [OrderStatus::CANCELED],
+        ];
+    
+        return in_array($newStatus->value, $transitions[$this->status] ?? []);
+    }
 
 
     const STATUS_PAID = 'paid';

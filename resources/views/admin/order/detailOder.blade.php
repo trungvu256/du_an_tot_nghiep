@@ -42,7 +42,8 @@
         <option value="2" {{ $order->status == 2 ? 'selected' : '' }}>Đang giao</option>
         <option value="3" {{ $order->status == 3 ? 'selected' : '' }}>Đã giao</option>
         <option value="4" {{ $order->status == 4 ? 'selected' : '' }}>Hoàn tất</option>
-        <option value="5" {{ $order->status == 5 ? 'selected' : '' }}>Hủy</option>
+        <option value="5" {{ $order->status == 5 ? 'selected' : '' }}>Trả hàng</option>
+        <option value="6" {{ $order->status == 6 ? 'selected' : '' }}>Đã hủy</option>
     </select>
     <button type="submit" class="btn btn-sm btn-primary" {{ $isFinalStatus ? 'disabled' : '' }}>Cập nhật</button>
 </form>
