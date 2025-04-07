@@ -74,7 +74,7 @@
                 </li>
                 <!-- Vận chuyển -->
 
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link menu-link" href="#menuShipping" data-bs-toggle="collapse" role="button">
                         <i class="ri-truck-line"></i> <span>Vận chuyển</span>
                     </a>
@@ -88,7 +88,7 @@
                             </li>
                         </ul>
                     </div>
-                </li>
+                </li> --}}
 
                 <!--Danh mục -->
                 <li class="nav-item">

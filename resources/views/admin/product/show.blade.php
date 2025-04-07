@@ -259,13 +259,38 @@
                                                     <h6>{{ $comment->user->name ?? 'Ẩn danh' }} -
                                                         <small>{{ optional($comment->created_at)->format('d M, Y') }}</small>
                                                     </h6>
-                                                    <span class="badge bg-success"><i class="mdi mdi-star"></i>
-                                                        {{ $comment->rating }}</span>
+                                                    {{-- <span class="badge bg-success"><i class="mdi mdi-star"></i>
+                                                        {{ $comment->rating }}</span> --}}
                                                 </div>
-                                                <p class="mb-1">{{ $comment->content }}</p>
+                                                <p class="mb-1">{{ $comment->comment }}</p>
                                             </div>
                                         @empty
                                             <p class="text-muted">Chưa có bình luận nào.</p>
+                                        @endforelse
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <div class="ps-lg-4">
+                                    <div class="d-flex flex-wrap align-items-start gap-3">
+                                        <h5 class="fs-14">Đánh giá: </h5>
+                                    </div>
+
+                                    <div class="list-group">
+                                        @forelse($product->reviews as $review)
+                                            <div class="list-group-item">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <h6>{{ $review->user->name ?? 'Ẩn danh' }} -
+                                                        <small>{{ optional($review->created_at)->format('d M, Y') }}</small>
+                                                    </h6>
+                                                    <span class="badge bg-success"><i class="mdi mdi-star"></i>
+                                                        {{ $review->rating }}</span>
+                                                </div>
+                                                <p class="mb-1">{{ $review->review }}</p>
+                                            </div>
+                                        @empty
+                                            <p class="text-muted">Chưa có đánh giá nào.</p>
                                         @endforelse
                                     </div>
                                 </div>

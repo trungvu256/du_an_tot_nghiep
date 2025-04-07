@@ -167,7 +167,7 @@
         </table>
 
         {{-- Form đẩy đơn cho đơn vị vận chuyển --}}
-        @if ($order->status < 3)
+        {{-- @if ($order->status < 3)
             <!-- Nếu đơn chưa được giao -->
             <h4>Giao hàng</h4>
             <form action="{{ route('admin.order.ship', $order->id) }}" method="POST">
@@ -183,9 +183,9 @@
                 </div>
                 <button id="shipOrderButton" data-order-id="{{ $order->id }}">Đẩy Đơn Hàng</button>
             </form>
-        @else
+        @else --}}
             <!-- Nếu đơn đã giao -->
-            <h4>Thông tin vận chuyển</h4>
+            {{-- <h4>Thông tin vận chuyển</h4>
             <table class="table table-bordered">
                 <tr>
                     <th>Đơn vị vận chuyển</th>
@@ -196,8 +196,8 @@
                     <td>{{ $order->tracking_number ?? 'Chưa có' }}</td>
                 </tr>
             </table>
-        @endif
-    </div>
+        @endif --}}
+    {{-- </div> --}}
     <script>
         document.getElementById('shipOrderButton').addEventListener('click', function() {
             let orderId = this.getAttribute('data-order-id');

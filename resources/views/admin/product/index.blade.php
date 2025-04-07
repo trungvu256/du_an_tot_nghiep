@@ -23,6 +23,35 @@
         @endif
 
         <div class="card-body">
+            <!-- Form lọc sản phẩm -->
+            <form action="{{ route('admin.product') }}" method="GET" class="mb-4">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label for="category" class="form-label">Danh mục</label>
+                        <select name="category" id="category" class="form-select">
+                            <option value="">Tất cả danh mục</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="date" class="form-label">Ngày tạo</label>
+                        <input type="date" class="form-control" id="date" name="date" value="{{ request('date') }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="search" class="form-label">Tìm kiếm sản phẩm</label>
+                        <input type="text" class="form-control" id="search" name="search" placeholder="Nhập tên sản phẩm..." value="{{ request('search') }}">
+                    </div>
+                    <div class="col-12 text-end">
+                        <button type="submit" class="btn btn-primary">Lọc</button>
+                        <a href="{{ route('admin.product') }}" class="btn btn-secondary">Xóa bộ lọc</a>
+                    </div>
+                </div>
+            </form>
+
             <table class="table table-bordered align-middle table-hover">
                 <thead class="table-primary text-center">
                     <tr>
