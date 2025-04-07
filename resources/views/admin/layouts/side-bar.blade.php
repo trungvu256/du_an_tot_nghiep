@@ -253,5 +253,63 @@
     list-style: none;
     padding-left: 0;
 }
+
+/* Thêm style cho icon dropdown */
+.menu-link[data-bs-toggle="collapse"] {
+    position: relative;
+}
+
+.menu-link[data-bs-toggle="collapse"]::after {
+    content: "\F0140" !important;
+    font-family: "Material Design Icons";
+    display: block !important;
+    position: absolute;
+    right: 16px;
+    font-size: 1.1rem;
+    transition: transform 0.2s;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.menu-link[data-bs-toggle="collapse"][aria-expanded="true"]::after {
+    transform: rotate(-180deg);
+}
+
+/* Canh lề cho text menu */
+.nav-link span {
+    flex: 1;
+}
+
+/* Style cho active submenu */
+.collapse.show + .menu-link[data-bs-toggle="collapse"]::after {
+    transform: rotate(-180deg);
+}
+
+/* Hover effect */
+.menu-link:hover::after {
+    color: #fff;
+}
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Thêm class active cho menu hiện tại
+    const currentPath = window.location.pathname;
+    const menuLinks = document.querySelectorAll('.nav-link');
+
+    menuLinks.forEach(link => {
+        if(link.getAttribute('href') === currentPath) {
+            link.classList.add('active');
+            // Nếu link nằm trong submenu, mở rộng parent menu
+            const parentCollapse = link.closest('.collapse');
+            if(parentCollapse) {
+                parentCollapse.classList.add('show');
+                const parentTrigger = document.querySelector(`[data-bs-toggle="collapse"][href="#${parentCollapse.id}"]`);
+                if(parentTrigger) {
+                    parentTrigger.setAttribute('aria-expanded', 'true');
+                }
+            }
+        }
+    });
+});
+</script>
 

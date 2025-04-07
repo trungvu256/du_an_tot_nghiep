@@ -48,17 +48,17 @@ class Order extends Model
     const RETURN_COMPLETED = 4; // Hoàn tất trả hàng
 
 
-    public function canTransitionTo(OrderStatus $newStatus): bool
+    public function canTransitionTo(int $newStatus): bool
     {
         $transitions = [
-            OrderStatus::PENDING->value => [OrderStatus::READY_FOR_PICKUP, OrderStatus::CANCELED],
-            OrderStatus::READY_FOR_PICKUP->value => [OrderStatus::SHIPPING, OrderStatus::CANCELED],
-            OrderStatus::SHIPPING->value => [OrderStatus::DELIVERED, OrderStatus::RETURNED],
-            OrderStatus::DELIVERED->value => [OrderStatus::COMPLETED, OrderStatus::RETURNED],
-            OrderStatus::RETURNED->value => [OrderStatus::CANCELED],
+            self::STATUS_PENDING => [self::STATUS_PREPARING, self::STATUS_CANCELED],
+            self::STATUS_PREPARING => [self::STATUS_DELIVERING, self::STATUS_CANCELED],
+            self::STATUS_DELIVERING => [self::STATUS_DELIVERED, self::RETURN_REQUESTED],
+            self::STATUS_DELIVERED => [self::STATUS_COMPLETED, self::RETURN_REQUESTED],
+            self::RETURN_REQUESTED => [self::STATUS_CANCELED],
         ];
 
-        return in_array($newStatus->value, $transitions[$this->status] ?? []);
+        return in_array($newStatus, $transitions[$this->status] ?? []);
     }
 
 

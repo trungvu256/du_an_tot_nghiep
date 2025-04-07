@@ -80,14 +80,14 @@
                                             @if ($promotion->type == 'percentage')
                                             {{ number_format(round($promotion->discount_value, -1), 0) }}%
                                             @elseif ($promotion->type == 'fixed_amount')
-                                            {{ number_format($promotion->discount_value, 0) }} VND
+                                            {{ number_format($promotion->discount_value, 0, ',', '.') }} VNĐ
                                             @else
                                             Free Shipping
                                             @endif
                                         </td>
                                         <td>
                                             @if ($promotion->min_order_value !== null)
-                                                {{ number_format($promotion->min_order_value, 2) }} VND
+                                                {{ number_format($promotion->min_order_value, 0, ',', '.') }} VNĐ
                                             @else
                                                 Không áp dụng
                                             @endif
@@ -101,7 +101,7 @@
                                         </td>
                                         <td>{{ $promotion->start_date }}</td>
                                         <td>{{ $promotion->end_date }}</td>
-                                        <td>{{ $promotion->max_value ?? 'Trống' }}</td>
+                                        <td>{{ $promotion->max_value ? number_format($promotion->max_value, 0, ',', '.') . ' VNĐ' : 'Trống' }}</td>
                                         <td>
                                             <a href="{{ route('promotions.edit', $promotion->id) }}" class="editRow"
                                                 title="Sửa" style="margin-right: 15px;">
