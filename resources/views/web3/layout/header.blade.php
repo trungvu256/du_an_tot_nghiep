@@ -1,3 +1,17 @@
+<style>
+.logo-header {
+    display: block;
+
+    margin: 0px !important;
+}
+
+.logo {
+    width: 270px !important;
+
+
+}
+</style>
+
 <body>
     <!-- Scroll Top -->
     <button id="goTop">
@@ -24,12 +38,12 @@
                         </div>
                         <div class="col-xl-3 col-md-4 col-6">
                             <a href="home-sportwear.html" class="logo-header">
-                                <img src="{{ asset('template/admin/velzon/assets/images/logo03.JPG') }}" alt="logo"
-                                    class="logo logo-dark">
-                                <img src="{{ asset('template/admin/velzon/assets/images/logo03.JPG') }}" alt="logo"
-                                    class="logo logo-white">
+                                <img src="{{ asset('/images/Banner/logo7.jpg') }}" alt="logo" class="logo logo-dark">
+                                <img src="{{ asset('/images/Banner/logo7.jpg') }}" alt="logo" class="logo logo-white">
                             </a>
                         </div>
+
+
                         <div class="col-xl-5 d-none d-xl-block text-center">
                             <div class="tf-form-search">
                                 <form class="form-search">
