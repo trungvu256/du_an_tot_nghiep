@@ -47,7 +47,7 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-xl-5 col-md-6">
+                                <div class="col-xl-6 col-md-6">
                                     <div class="card card-animate">
                                         <div class="card-body p-4">
                                             <div class="d-flex align-items-center">
@@ -79,10 +79,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-xl-3 col-md-6">
+                                <div class="col-xl-6 col-md-6">
                                     <div class="card card-animate">
                                         <div class="card-body p-4">
                                             <div class="d-flex align-items-center">
@@ -112,6 +109,10 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="row">
+                                
 
                                 <div class="col-xl-3 col-md-6">
                                     <div class="card card-animate">
@@ -170,6 +171,36 @@
                                                 <div class="avatar-sm flex-shrink-0">
                                                     <span class="avatar-title bg-success-subtle rounded fs-3">
                                                         <i class="bx bx-check-circle text-success"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="card card-animate">
+                                        <div class="card-body p-4">
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-grow-1 overflow-hidden">
+                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Đơn hàng hoàn tất</p>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    <h5 class="text-success fs-14 mb-0">
+                                                        {{-- <i class="ri-arrow-right-up-line fs-13 align-middle"></i>
+                                                        +16.24 % --}}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-end justify-content-between mt-4">
+                                                <div>
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4">{{ $completedOrderCount }}</h4>
+                                                    {{-- <a href="" class="text-decoration-underline">Xem chi tiết doanh
+                                                        thu</a> --}}
+                                                </div>
+                                                <div class="avatar-sm flex-shrink-0">
+                                                    <span class="avatar-title bg-success-subtle rounded fs-3">
+                                                        <i class="bx bx-like text-success"></i>
                                                     </span>
                                                 </div>
                                             </div>
@@ -305,20 +336,20 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-xl-4">
+                                <div class="col-xl-6">
                                     <div class="card">
                                         <div class="card-header align-items-center d-flex">
                                             <h4 class="card-title mb-0 flex-grow-1">Trạng thái đơn hàng</h4>
                                         </div>
 
                                         <div class="card-body">
-                                            <div id="order-status-chart" class="apex-charts" dir="ltr" style="min-height: 365px;">
+                                            <div id="order-status-chart" class="apex-charts" dir="ltr" style="min-height: 300px;">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-xl-8">
+                                <div class="col-xl-6">
                                     <div class="card">
                                         <div class="card-header align-items-center d-flex">
                                             <h4 class="card-title mb-0 flex-grow-1">Đơn hàng gần đây</h4>
@@ -1058,7 +1089,7 @@
                 series: Object.values(orderStatusData),
                 chart: {
                     type: 'pie',
-                    height: 365,
+                    height: 280,
                     toolbar: {
                         show: false
                     }
