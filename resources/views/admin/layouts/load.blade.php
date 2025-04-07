@@ -17,6 +17,7 @@
     justify-content: center;
     align-items: center;
     z-index: 9999;
+    transition: opacity 0.3s ease-out;
 }
 
 /* Vòng tròn xoay hiện đại */
@@ -37,4 +38,36 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+/* Class để ẩn loading */
+.loading-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Ẩn loading sau khi trang đã tải xong
+    const loadingWrapper = document.getElementById('loading-wrapper');
+    if (loadingWrapper) {
+        loadingWrapper.classList.add('loading-hidden');
+
+        // Xóa hoàn toàn loading sau khi animation kết thúc
+        setTimeout(() => {
+            loadingWrapper.style.display = 'none';
+        }, 300);
+    }
+});
+
+// Xử lý trường hợp có lỗi JavaScript
+window.addEventListener('error', function() {
+    const loadingWrapper = document.getElementById('loading-wrapper');
+    if (loadingWrapper) {
+        loadingWrapper.classList.add('loading-hidden');
+        setTimeout(() => {
+            loadingWrapper.style.display = 'none';
+        }, 300);
+    }
+});
+</script>

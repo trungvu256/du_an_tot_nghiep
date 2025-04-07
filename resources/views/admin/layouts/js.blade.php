@@ -1,4 +1,4 @@
-<script src="{{ asset('template/admin/velzon/assets/js/jquery.min.js') }}"></script>
+{{-- <script src="{{ asset('template/admin/velzon/assets/js/jquery.min.js') }}"></script>
 <script src="{{ asset('template/admin/velzon/assets/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('template/admin/velzon/assets/js/modernizr.js') }}"></script>
 <script src="{{ asset('template/admin/velzon/assets/js/moment.js') }}"></script>
@@ -66,4 +66,4 @@
 <!-- Custom Data tables -->
 <script src="{{ asset('template/admin/velzon/assets/vendor/datatables/custom/custom-datatables.js') }}"></script>
 
-
+ --}}

@@ -1,3 +1,9 @@
-<div class="app-footer">
-    <span>Ethereal Noir</span>
-</div>
+<footer class="footer">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <script>document.write(new Date().getFullYear())</script> © Ethereal Noir.
+            </div>
+        </div>
+    </div>
+</footer>
