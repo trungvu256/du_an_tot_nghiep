@@ -8,7 +8,7 @@
             <div class="container">
                 <ul class="breadcrumb-list">
                     <li class="item-breadcrumb">
-                        <a href="index-2.html" class="text">Home</a>
+                        <a href="index-2.html" class="text">Trang chủ</a>
                     </li>
                     <li class="item-breadcrumb dot">
                         <span></span>
@@ -808,4 +808,4 @@
     </div>
 </body>
 
-@endsection
+@endsection@endsection
