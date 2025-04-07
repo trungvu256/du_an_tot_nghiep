@@ -1,3 +1,17 @@
+<style>
+.logo-header {
+    display: block;
+
+    margin: 0px !important;
+}
+
+.logo {
+    width: 270px !important;
+
+
+}
+</style>
+
 <body>
 
     <!-- Scroll Top -->
@@ -23,7 +37,7 @@
                     </div>
                     <div class="col-xl-2 col-md-4 col-6">
                         <a href="index-2.html" class="logo-header">
-                            <img src="images/logo/logo.svg" alt="logo" class="logo">
+                            <img src="{{ asset('/images/Banner/logo7.jpg') }}" alt="logo" class="logo">
                         </a>
                     </div>
                     <div class="col-xl-8 d-none d-xl-block">
