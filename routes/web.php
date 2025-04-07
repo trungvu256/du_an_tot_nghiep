@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ProductReviewController;
 use App\Http\Controllers\Admin\ReviewResponseController;
 use App\Http\Controllers\Admin\CustomerGroupController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Web2\Web2Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Admin\LoginController;
@@ -356,8 +357,12 @@ Route::post('/checkout', [HomeController::class, 'checkoutPost'])->name('web.che
 //Login with Google
 Route::get('login/google', [HomeController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('login/google/callback', [HomeController::class, 'handleGoogleCallback']);
-
+//web 2
+Route::get('/web3', [Web2Controller::class, 'index'])->name('web3.home');
+Route::get('web3/shop', [Web2Controller::class, 'shop'])->name('web3.shop');
+Route::get('web3/shop-detail', [Web2Controller::class, 'shopdetail'])->name('web3.shop.detail');
 //web
+Route::get('/', [WebController::class, 'index'])->name('web.home');
 Route::get('/', [WebController::class, 'index'])->name('web.home');
 Route::get('/shop', [WebController::class, 'shop'])->name('web.shop');
 Route::get('/category/{cate_id}/products', [WebController::class, 'getProductsByCategory'])->name('web.shopByCate');
@@ -372,7 +377,8 @@ Route::get('/home/blog/{id}', [WebBlogController::class, 'detaiWebBlog'])->name(
 Route::get('/shop/detail/{id}', [CartController::class, 'shopdetail'])->name('web.shop-detail');
 
 // ví người dùng
-Route::middleware(['auth', 'user'])->group(function () {
+Route::middleware(['auth'])->group(function () {
+    Route::prefix('user')->group(function () {
     Route::prefix('wallet/user')->group(function () {
         Route::get('/wallet', [WebWalletController::class, 'show'])->name('wallet.index');
         Route::post('/wallet/deposit/vnpay', [WebWalletController::class, 'depositVNPay'])->name('wallet.deposit.vnpay');
@@ -385,23 +391,6 @@ Route::middleware(['auth', 'user'])->group(function () {
         Route::post('/wallet/withdraw', [WebWalletController::class, 'withdraw'])->name('wallet.withdraw');
     });
 
-    // Giỏ hàng
-    Route::prefix('cart')->group(function () {
-        Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-        Route::get('/viewCart', [CartController::class, 'viewCart'])->name('cart.viewCart');
-        Route::post('/add/{id}', [CartController::class, 'createAddTocart'])->name('cart.create');
-        Route::post('/cart/update/{id}', [CartController::class, 'updateCart'])->name('cart.update');
-        Route::post('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
-        // Áp mã giảm giá
-        Route::post('/cart/apply-promotion', [CartController::class, 'applyPromotion'])->name('cart.applyPromotion');
-        Route::get('/viewCart/show', [CartController::class, 'showHeaderCart'])->name('cart.showHeaderCart');
-        Route::post('/cart/removesss/{id}', [CartController::class, 'remove'])->name('cart.removess');
-        Route::post('/cart/checkout-selected', [CartController::class, 'checkoutSelected'])->name('cart.checkoutSelected');
-        // routes/web.php
-Route::post('/cart/select-items', [CartController::class, 'selectItems'])->name('cart.selectItems');
-
-
-    });
 
     // Thanh toán đơn hàng
     Route::prefix('checkout')->group(function () {
@@ -437,6 +426,8 @@ Route::post('/cart/select-items', [CartController::class, 'selectItems'])->name(
     Route::post('product/{product}/comment', [WebProductController::class, 'storeComment'])->name('client.storeComment');
     Route::post('comment/{comment}/reply', [WebProductController::class, 'storeReply'])->name('client.storeReply');
 });
+});
+
 
     // Bình luận và phản hồi
 
@@ -453,3 +444,18 @@ Route::post('/cart/select-items', [CartController::class, 'selectItems'])->name(
     // Đánh giá sản phẩm
     Route::post('/products/{product}/reviews', [WebProductController::class, 'storeReview'])->name('client.storeReview');
     Route::post('/reviews/{review}/responses', [WebProductController::class, 'storeResponse'])->name('client.storeReviewResponse');
+
+     // Giỏ hàng
+        Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+        Route::get('/viewCart', [CartController::class, 'viewCart'])->name('cart.viewCart');
+        Route::post('/add/{id}', [CartController::class, 'createAddTocart'])->name('cart.create');
+        Route::post('/cart/update/{id}', [CartController::class, 'updateCart'])->name('cart.update');
+        Route::post('/cart/remove/{cartKey}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+        // Áp mã giảm giá
+        Route::post('/cart/apply-promotion', [CartController::class, 'applyPromotion'])->name('cart.applyPromotion');
+        Route::get('/viewCart/show', [CartController::class, 'showHeaderCart'])->name('cart.showHeaderCart');
+        Route::post('/cart/removesss/{id}', [CartController::class, 'remove'])->name('cart.removess');
+        Route::post('/cart/checkout-selected', [CartController::class, 'checkoutSelected'])->name('cart.checkoutSelected');
+        // routes/web.php
+Route::post('/cart/select-items', [CartController::class, 'selectItems'])->name('cart.selectItems');
+

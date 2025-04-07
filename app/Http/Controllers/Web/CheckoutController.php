@@ -98,9 +98,8 @@ class CheckoutController extends Controller
     {
         try {
             if (!Auth::check()) {
-                return redirect()->route('login')->with('error', 'Bạn cần đăng nhập trước khi thanh toán');
+                return redirect()->route('web.login')->with('error', 'Bạn cần đăng nhập trước khi thanh toán');
             }
-
             $user = Auth::user();
             $selectedCart = session()->get('selected_cart', []);
             $cart = session()->get('cart', []);
