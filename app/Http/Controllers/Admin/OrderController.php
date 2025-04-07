@@ -17,7 +17,7 @@ class OrderController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Order::query();
+        $query = Order::query()->orderBy('created_at', 'desc');
 
         // Lọc theo trạng thái giao hàng
         if ($request->filled('status')) {

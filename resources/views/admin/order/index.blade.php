@@ -28,7 +28,7 @@
         @endphp
 
         {{-- Form lọc đơn hàng --}}
-        <div class="row mb-3">
+        {{-- <div class="row mb-3">
             <div class="col-md-6">
                 <form action="{{ route('admin.order') }}" method="GET" class="d-flex gap-2">
                     <select name="status" class="form-select">
@@ -45,7 +45,7 @@
                     <a href="{{ route('admin.order') }}" class="btn btn-secondary">Xóa bộ lọc</a>
                 </form>
             </div>
-        </div>
+        </div> --}}
 
         <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap">
             {{-- Tabs chuyển trạng thái --}}
@@ -98,12 +98,12 @@
                         ❌ Đã hủy
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="px-1 nav-link {{ $payment_status === '0' && is_null($status) ? 'active' : '' }}"
                         href="{{ route('admin.order', ['payment_status' => 0]) }}">
                         💰 Chưa thanh toán
                     </a>
-                </li>
+                </li> --}}
             </ul>
         </div>
 

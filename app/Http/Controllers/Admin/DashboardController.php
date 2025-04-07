@@ -29,7 +29,7 @@ class DashboardController extends Controller
     {
         // Enable query logging
         DB::enableQueryLog();
-        
+
         // Lấy thời gian từ request, nếu không có thì mặc định là today
         $startDate = $request->input('start_date') ? Carbon::parse($request->input('start_date'))->startOfDay() : Carbon::today()->startOfDay();
         $endDate = $request->input('end_date') ? Carbon::parse($request->input('end_date'))->endOfDay() : Carbon::today()->endOfDay();
@@ -40,7 +40,7 @@ class DashboardController extends Controller
             $startDate = $endDate;
             $endDate = $temp;
         }
-        
+
         // Đếm số đơn hàng theo trạng thái trong khoảng thời gian
         $orderCount = Order::whereBetween('created_at', [$startDate, $endDate])->count();
         $newOrderCount = Order::where('status', Order::STATUS_PENDING)
@@ -52,19 +52,22 @@ class DashboardController extends Controller
         $cancelOrderCount = Order::where('status', Order::STATUS_CANCELED)
             ->whereBetween('created_at', [$startDate, $endDate])
             ->count();
-        
+        $completedOrderCount = Order::where('status', Order::STATUS_COMPLETED)
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->count();
+
         // Tính tổng doanh thu từ các đơn hàng đã hoàn thành
         $totalSales = Order::where('status', Order::STATUS_COMPLETED)
             ->where('payment_status', 1)
             ->whereBetween('created_at', [$startDate, $endDate])
             ->sum('total_price');
-            
+
         // Debug log
         Log::info('Date Range:', [
             'start_date' => $startDate->format('Y-m-d H:i:s'),
             'end_date' => $endDate->format('Y-m-d H:i:s')
         ]);
-        
+
         // Lấy doanh thu theo ngày
         $dailyRevenue = Order::selectRaw('DATE(created_at) as date, SUM(total_price) as total')
             ->whereBetween('created_at', [$startDate, $endDate])
@@ -88,7 +91,7 @@ class DashboardController extends Controller
         // Cập nhật doanh thu cho các ngày có dữ liệu
         foreach ($dailyRevenue as $revenue) {
             $date = Carbon::parse($revenue->date)->format('d-m-Y');
-            $revenueData[$date] = (int)$revenue->total;
+            $revenueData[$date] = (int) $revenue->total;
         }
 
         // Chuyển đổi thành mảng cho view
@@ -173,6 +176,7 @@ class DashboardController extends Controller
             'newOrderCount',
             'doneOrderCount',
             'cancelOrderCount',
+            'completedOrderCount',
             'totalSales',
             'dates',
             'totals',
