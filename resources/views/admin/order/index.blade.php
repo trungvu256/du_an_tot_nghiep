@@ -27,6 +27,25 @@
             $payment_status = request('payment_status');
         @endphp
 
+        {{-- Form lọc đơn hàng --}}
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <form action="{{ route('admin.order') }}" method="GET" class="d-flex gap-2">
+                    <select name="status" class="form-select">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>Chờ xử lý</option>
+                        <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>Chờ lấy hàng</option>
+                        <option value="2" {{ request('status') == '2' ? 'selected' : '' }}>Đang giao</option>
+                        <option value="3" {{ request('status') == '3' ? 'selected' : '' }}>Đã giao</option>
+                        <option value="4" {{ request('status') == '4' ? 'selected' : '' }}>Hoàn tất</option>
+                        <option value="5" {{ request('status') == '5' ? 'selected' : '' }}>Trả hàng</option>
+                        <option value="6" {{ request('status') == '6' ? 'selected' : '' }}>Đã hủy</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Lọc</button>
+                    <a href="{{ route('admin.order') }}" class="btn btn-secondary">Xóa bộ lọc</a>
+                </form>
+            </div>
+        </div>
 
         <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap">
             {{-- Tabs chuyển trạng thái --}}
@@ -122,43 +141,39 @@
             </form>
         </div>
 
-
         {{-- Bảng danh sách đơn hàng --}}
         <div class="card mt-2 shadow-sm">
             <div class="card-body">
                 <table class="table table-hover text-center align-middle">
                     <thead class="table-primary">
                         <tr>
-                            @if (!$payment_status === '0' || !is_null($status))
-                                <th><input type="checkbox" id="select-all"></th>
-                            @endif
+                            <th>
+                                <input type="checkbox" id="select-all">
+                            </th>
                             <th>Mã đơn</th>
                             <th>Khách hàng</th>
                             <th>Thành tiền</th>
                             <th>Trạng thái thanh toán</th>
                             <th>Trạng thái đơn hàng</th>
+                            <th>Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($orders as $order)
-                            <tr onclick="window.location='{{ route('admin.show.order', $order->id) }}';"
-                                style="cursor: pointer;">
-                                @if (!$payment_status === '0' || !is_null($status))
-                                    <td onclick="event.stopPropagation();">
-                                        <input type="checkbox" name="order_ids[]" value="{{ $order->id }}"
-                                            class="order-checkbox" data-status="{{ $order->status }}">
-                                    </td>
-                                @endif
-                                <td>WD{{ $order->id }}</td>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="order_ids[]" value="{{ $order->id }}" class="order-checkbox">
+                                </td>
+                                <td>#ĐH{{ $order->id }}</td>
                                 <td>{{ $order->user->name ?? '---' }}</td>
                                 <td>{{ number_format($order->total_price, 0, ',', '.') }}₫</td>
                                 <td>
                                     @if ($order->payment_status == 0)
-                                        <span class="badge bg-warning text-dark">🟡 Chưa thanh toán</span>
+                                        <span class="badge bg-danger">🔴 Thanh toán thất bại</span>
                                     @elseif ($order->payment_status == 1)
                                         <span class="badge bg-success">🟢 Đã thanh toán</span>
-                                    @else
-                                        <span class="badge bg-danger">🔴 thanh toán thất bại</span>
+                                    @elseif ($order->payment_status == 2)
+                                        <span class="badge bg-warning text-dark">🟡 Chưa thanh toán</span>
                                     @endif
                                 </td>
                                 <td>
@@ -178,6 +193,11 @@
                                         <span class="badge bg-danger">❌ Đã hủy</span>
                                     @endif
                                 </td>
+                                <td>
+                                    <a href="{{ route('admin.show.order', $order->id) }}" class="btn btn-sm btn-info">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </td>
                             </tr>
                         @empty
                             <tr>
@@ -189,7 +209,7 @@
 
                 {{-- Phân trang --}}
                 <div class="d-flex justify-content-end">
-                    {{ $orders->appends(['status' => $status, 'payment_status' => $payment_status])->links() }}
+                    {{ $orders->appends(['status' => request('status')])->links() }}
                 </div>
             </div>
         </div>
