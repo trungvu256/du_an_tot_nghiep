@@ -32,6 +32,10 @@ class ProductController extends Controller
             $query->where('catalogue_id', $request->category);
         }
 
+        // Lọc theo thương hiệu
+        if ($request->has('brand') && $request->brand != '') {
+            $query->where('brand_id', $request->brand);
+        }
         // Lọc theo ngày tạo
         if ($request->has('date') && $request->date != '') {
             $query->whereDate('created_at', $request->date);
@@ -42,10 +46,11 @@ class ProductController extends Controller
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
-        $products = $query->with(['brand', 'catalogue'])->paginate(10);
+        $products = $query->with(['brand', 'catalogue'])->latest('created_at')->paginate(5);
         $categories = Catalogue::all();
+        $brands = Brand::all();
 
-        return view('admin.product.index', compact('products', 'categories'));
+        return view('admin.product.index', compact('products', 'categories', 'brands'));
     }
 
     public function create()
@@ -73,7 +78,7 @@ class ProductController extends Controller
             'variants' => 'nullable|string',
         ]);
 
-        $product_code= 'SP' . Carbon::now()->format('YmdHis') . rand(100, 999);
+        $product_code = 'SP' . Carbon::now()->format('YmdHis') . rand(100, 999);
 
         DB::beginTransaction();
         try {
@@ -168,8 +173,8 @@ class ProductController extends Controller
             } else {
                 Log::error('Dữ liệu biến thể không hợp lệ hoặc rỗng:', ['variants' => $variants]);
             }
-//             $productVariant = ProductVariant::with('attributes.attribute', 'attributes.attributeValue')->find($productVariant->id);
-// dd($productVariant->toArray());
+            //             $productVariant = ProductVariant::with('attributes.attribute', 'attributes.attributeValue')->find($productVariant->id);
+            // dd($productVariant->toArray());
 
             DB::commit();
             return redirect()->route('admin.product')->with('success', 'Thêm sản phẩm thành công');
