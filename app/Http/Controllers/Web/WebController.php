@@ -25,29 +25,35 @@ class WebController extends Controller
             ->take(4)
             ->get();
         $blogs = Blog::latest()->take(3)->get();
-        return view('web2.Home.home', compact('list_product', 'categories', 'bestSellers', 'blogs', 'products', 'productNews'));
+        return view('web3.Home.home', compact('list_product', 'categories', 'bestSellers', 'blogs', 'products', 'productNews'));
     }
     public function shop(Request $request)
-    {
-        $query = Product::query();
-        $categories = Catalogue::all();
-        // Lọc theo tên sản phẩm (nếu có)
-        if ($request->has('name') && !empty($request->name)) {
-            $query->where('name', 'LIKE', '%' . $request->name . '%');
-        }
+{
+    $query = Product::query();
+    $categories = Catalogue::all();
 
-        // Lọc theo danh mục (nếu có)
-        if ($request->has('category') && !empty($request->category)) {
-            $query->whereHas('category', function ($q) use ($request) {
-                $q->where('name', 'LIKE', '%' . $request->category . '%');
-            });
-        }
-
-        // Phân trang kết quả
-        $list_product = $query->paginate(12);
-
-        return view('web2.Home.shop', compact('list_product', 'categories'));
+    // Lọc theo tên sản phẩm (nếu có)
+    if ($request->has('name') && !empty($request->name)) {
+        $query->where('name', 'LIKE', '%' . $request->name . '%');
     }
+
+    // Lọc theo danh mục (dựa trên tên danh mục, nếu có)
+    if ($request->has('category') && !empty($request->category)) {
+        $query->whereHas('category', function ($q) use ($request) {
+            $q->where('name', 'LIKE', '%' . $request->category . '%');
+        });
+    }
+
+    // Lọc theo ID danh mục (nếu có)
+    if ($request->has('category_id') && !empty($request->category_id)) {
+        $query->where('catalogue_id', $request->category_id);
+    }
+
+    // Phân trang kết quả
+    $list_product = $query->paginate(12);
+
+    return view('web2.Home.shop', compact('list_product', 'categories'));
+}
 
 
     public function shopdetail($id)
@@ -89,13 +95,15 @@ class WebController extends Controller
     //     return view('web2.Home.shop-detail', compact('detailproduct'));
     // }
 
-    public function getProductsByCategory($cate_id)
+    public function getProductsByCategory($cate_id, $id)
     {
         $categories = Catalogue::all();
         $list_product = Product::where('catalogue_id', $cate_id)
         ->orderBy('id', 'DESC')
         ->paginate(12);
+        $category = Catalogue::findOrFail($id);
+    $products = $category->products()->paginate(20);
 
-        return view('web2.Home.shop', compact('list_product', 'categories'));
+        return view('web2.Home.shop', compact('list_product', 'categories','category', 'products'));
     }
 }

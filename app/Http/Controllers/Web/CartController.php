@@ -123,7 +123,7 @@ class CartController extends Controller
         'brands',
         'attributes',
         'variant',
-        'categories'
+        'categories',
     ));
 }
 

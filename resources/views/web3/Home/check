@@ -87,54 +87,29 @@
         </div>
     </section>
     <!-- /Slider -->
-    <!-- Icon box -->
-    <div class="flat-spacing-4 pb-0">
-        <div class="container">
-            <div dir="ltr" class="swiper tf-swiper" data-swiper='{
-                "slidesPerView": 1,
-                "spaceBetween": 10,
-                "speed": 800,
-                "observer": true,
-                "observeParents": true,
-                "slidesPerGroup": 1,
-                "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
-                "breakpoints": {
-                    "575": { "slidesPerView":2, "spaceBetween": 12}, 
-                    "991": { "slidesPerView": 3, "spaceBetween": 24}
-                }
-            }'>
-                <div class="swiper-wrapper">
-                    
-                  
-                   
-                </div>
-                <div class="d-flex d-lg-none sw-dot-default sw-pagination-iconbox justify-content-center">
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Icon box -->
-    <!-- Grid Collection đã xóa -->
-
-    <!-- /Grid Collection -->
     <!-- Trending -->
     @foreach ($categories as $category)
-    <section class="text-center">
+    <section >
         <div class="container-2" style="margin-top: 40px;">
             <div class="flat-animate-tab overflow-visible">
                 <div class="flat-title-tab-categories text-center wow fadeInUp">
-                   
                     <div class="tab-slide">
-                        <ul class="menu-tab-fill style-primary justify-content-center" role="tablist">
-                            <li class="item-slide-effect"></li>
-                            <li class="nav-tab-item active" role="presentation">
-                                <a href="{{ route('web.shop', ['category_id' => $category->id]) }}" class="display-xs tab-link active" >{{ $category->name }}</a>
-                            </li>
-                            {{-- <li class="nav-tab-item" role="presentation">
-                                <a href="#mens" class="display-xs tab-link" data-bs-toggle="tab">Nữ</a>
-                            </li> --}}
-                        </ul>
-                    </div>
+                        <div class="alert alert-success text-white text-uppercase py-6 px-3 mb-0" style="border-radius: 0; color: #00391b !important;">
+                            <a href="{{ route('web.shop', ['category_id' => $category->id]) }}"  style="font-weight: bold; font-size: 15px ">{{ $category->name }}</a >
+                        </div>
+                        <a 
+                            href="{{ route('web.shop', ['category_id' => $category->id]) }}" 
+                            class="nav-link tab-link {{ $loop->first ? 'active' : '' }}" 
+                            data-category-id="{{ $category->id }}"
+                        >
+                            <img 
+                                src="{{ asset('storage/' . $category->image) }}" 
+                                alt="{{ $category->name }}" 
+                                class="mb-2 img-fluid hover-zoom" 
+                                style="width: 100%; height: 30pc;"
+                            />
+                        </a>
+                    
                 </div>
                 <div class="tab-content">
                     <div class="tab-pane active show" id="womens" role="tabpanel">
@@ -159,6 +134,7 @@
                                 }'>
                                 <div class="swiper-wrapper">
                                     <!-- item 1 -->
+
                                     @foreach ($category->products as $product)
                                     @php
                                     $minPrice = $product->variants->isNotEmpty()
@@ -168,9 +144,9 @@
                                         ? $product->variants->max('price')
                                         : $product->price;
                                 @endphp
-
                                     <div class="swiper-slide">
                                         <div class="card-product style-1 card-product-size">
+                                            
                                             <div class="card-product-wrapper">
                                                 <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}" class="product-img">
                                                     <img class="img-product lazyload"
@@ -198,10 +174,10 @@
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
+                                                        <a href="#quickView" data-bs-toggle="modal"
                                                             class="hover-tooltip tooltip-left box-icon quickview">
                                                             <span class="icon icon-view"></span>
-                                                            <span class="tooltip">Chi tiết</span>
+                                                            <span class="tooltip">Quick View</span>
                                                         </a>
                                                     </li>
                                                     <li class="compare">
@@ -234,31 +210,23 @@
 
                                     @endforeach
 
-
-
                                 </div>
-                             
                                 <div class="d-flex d-xl-none sw-dot-default sw-pagination-women justify-content-center">
-                                    
                                 </div>
-                            </div> 
-
+                            </div>
                             <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-women"></div>
                             <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-women"></div>
                         </div>
                     </div>
                     <a 
-                    href="{{ route('web.shop', ['category_id' => $category->id]) }}" 
-                    class="btn btn-primary mt-3"
-                >
-                    Xem tất cả
-                </a>
-                   
+                            href="{{ route('web.shop', ['category_id' => $category->id]) }}" 
+                            class="btn btn-primary mt-3"
+                        >
+                        Xem tất cả
+                        </a>
                 </div>
             </div>
-        
         </div>
-        
     </section>
     @endforeach
     <!-- /Trending -->
@@ -409,7 +377,6 @@
             </div>
         </div>
     </div>
-
     <!-- /Best Product -->
     <!-- Offer -->
     <section class="flat-spacing-3">

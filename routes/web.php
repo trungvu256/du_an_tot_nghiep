@@ -341,7 +341,7 @@ Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->nam
 Route::get('/login', [WebLoginController::class, 'index'])->name('web.login');
 Route::post('/login', [WebLoginController::class, 'store'])->name('login.store.web');
 Route::get('/register', [WebLoginController::class, 'register'])->name('web.register');
-Route::post('/register', [WebLoginController::class, 'registerStore'])->name('web.register.store');
+Route::post('/', [WebLoginController::class, 'registerStore'])->name('web.register.store');
 Route::get('/logout', [WebLoginController::class, 'logout'])->name('web.logout');
 
 //Forget Password
