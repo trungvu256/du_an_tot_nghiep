@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Blog;
 use App\Models\Catalogue;
 use App\Models\Product;
+use App\Models\Brand;
+use App\Models\Attribute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -27,27 +29,119 @@ class WebController extends Controller
         $blogs = Blog::latest()->take(3)->get();
         return view('web2.Home.home', compact('list_product', 'categories', 'bestSellers', 'blogs', 'products', 'productNews'));
     }
+
     public function shop(Request $request)
-    {
-        $query = Product::query();
-        $categories = Catalogue::all();
-        // Lọc theo tên sản phẩm (nếu có)
-        if ($request->has('name') && !empty($request->name)) {
-            $query->where('name', 'LIKE', '%' . $request->name . '%');
-        }
+{
+    $query = Product::query()->with('variants', 'brand');
 
-        // Lọc theo danh mục (nếu có)
-        if ($request->has('category') && !empty($request->category)) {
-            $query->whereHas('category', function ($q) use ($request) {
-                $q->where('name', 'LIKE', '%' . $request->category . '%');
-            });
-        }
+    // Lấy danh mục & hãng
+    $categories = Catalogue::all();
+    $brands = Brand::all();
 
-        // Phân trang kết quả
-        $list_product = $query->paginate(12);
+    // Lấy các attribute value cho bộ lọc
+    $capacityAttr = Attribute::where('name', 'Thể tích')->first();
+    $concentrationAttr = Attribute::where('name', 'Nồng độ')->first();
+    $capacities = $capacityAttr ? $capacityAttr->values : collect();
+    $concentrations = $concentrationAttr ? $concentrationAttr->values : collect();
 
-        return view('web2.Home.shop', compact('list_product', 'categories'));
+    // === FILTER ===
+
+    // 1. Lọc khoảng giá
+    if ($request->filled('price_range')) {
+        $query->whereHas('variants', function ($q) use ($request) {
+            foreach ($request->price_range as $range) {
+                [$min, $max] = explode('-', $range);
+                $q->orWhereBetween('price', [(int)$min, (int)$max]);
+            }
+        });
     }
+
+    // 2. Lọc hãng
+    if ($request->filled('brand')) {
+        $query->whereIn('brand_id', $request->brand);
+    }
+
+    // 3. Lọc thể tích
+    if ($request->filled('capacity')) {
+        $query->whereHas('variants.attributeValues', function ($q) use ($request) {
+            $q->whereIn('value', $request->capacity)
+              ->whereHas('attribute', function ($a) {
+                  $a->where('name', 'Thể tích');
+              });
+        });
+    }
+
+    // 4. Lọc nồng độ
+    if ($request->filled('concentration')) {
+        $query->whereHas('variants.attributeValues', function ($q) use ($request) {
+            $q->whereIn('value', $request->concentration)
+              ->whereHas('attribute', function ($a) {
+                  $a->where('name', 'Nồng độ');
+              });
+        });
+    }
+
+    // === SORTING ===
+    $sort = $request->input('sort');
+    switch ($sort) {
+        case 'price_asc':
+            $query->with(['variants' => function ($q) {
+                $q->orderBy('price', 'asc');
+            }]);
+            break;
+
+        case 'price_desc':
+            $query->with(['variants' => function ($q) {
+                $q->orderBy('price', 'desc');
+            }]);
+            break;
+
+        case 'brand':
+            $query->join('brands', 'products.brand_id', '=', 'brands.id')
+                  ->orderBy('brands.name', 'asc');
+            break;
+
+        case 'capacity':
+            $query->whereHas('variants.attributeValues', function ($q) {
+                $q->whereHas('attribute', function ($a) {
+                    $a->where('name', 'Thể tích');
+                });
+            });
+            // Nếu cần sort theo value thì cần join thêm
+            break;
+
+        case 'concentration':
+            $query->whereHas('variants.attributeValues', function ($q) {
+                $q->whereHas('attribute', function ($a) {
+                    $a->where('name', 'Nồng độ');
+                });
+            });
+            // Như trên, sort theo giá trị cần join
+            break;
+    }
+    if ($request->ajax()) {
+        return view('web2.Home.product_list', compact('list_product'))->render();
+    }
+    if ($request->filled('search')) {
+        $query->where('name', 'like', '%' . $request->search . '%');
+    }
+
+    // === PHÂN TRANG VÀ TRẢ VỀ ===
+    $list_product = $query->paginate(12);
+
+   
+    
+
+    return view('web2.Home.shop', compact(
+        'list_product',
+        'categories',
+        'brands',
+        'capacities',
+        'concentrations'
+    ));
+}
+
+
 
 
     public function shopdetail($id)

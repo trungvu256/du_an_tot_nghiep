@@ -13,81 +13,30 @@
             <div class="row pb-3">
                 <div class="col-12 pb-1">
                     <div class="d-flex align-items-center justify-content-between mb-4">
-                    <form method="GET" action="{{ route('web.shop') }}">
-    <div class="input-group">
-        <input type="text" name="search" class="form-control" placeholder="Tìm Theo Tên Sản Phẩm" value="{{ request('search') }}">
-        <div class="input-group-append">
-            <button type="submit" class="input-group-text bg-transparent text-primary border-0">
-                <i class="fa fa-search"></i>
-            </button>
-        </div>
-    </div>
-</form>
-
-                        <!-- Bootstrap 4 CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
-<div class="dropdown ml-4">
-    <button class="btn border dropdown-toggle" type="button" id="triggerId"
-        data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        Sắp xếp theo
-    </button>
-    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
-        <a class="dropdown-item sort-option" data-sort="price_asc" href="#">Giá tăng dần</a>
-        <a class="dropdown-item sort-option" data-sort="price_desc" href="#">Giá giảm dần</a>
-        <a class="dropdown-item sort-option" data-sort="brand" href="#">Hãng (A-Z)</a>
-        <a class="dropdown-item sort-option" data-sort="concentration" href="#">Nồng độ (A-Z)</a>
-        <a class="dropdown-item sort-option" data-sort="capacity" href="#">Thể tích (A-Z)</a>
-    </div>
-</div>
-
-<input type="hidden" name="sort" id="sort-input" value="">
-<!-- jQuery + Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+                        <form action="">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search by name">
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-transparent text-primary">
+                                        <i class="fa fa-search"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="dropdown ml-4">
+                            <button class="btn border dropdown-toggle" type="button" id="triggerId"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Sort by
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
+                                <a class="dropdown-item" href="#">Latest</a>
+                                <a class="dropdown-item" href="#">Popularity</a>
+                                <a class="dropdown-item" href="#">Best Rating</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 0 20px;">
-                <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
-                <form id="filter-form">
-
-
-<h4>Khoảng giá</h4>
-<label><input type="checkbox" name="price_range[]" value="0-1000000" class="filter-checkbox"> Dưới 1 triệu</label><br>
-<label><input type="checkbox" name="price_range[]" value="1000000-2000000" class="filter-checkbox"> 1 - 2 triệu</label><br>
-<label><input type="checkbox" name="price_range[]" value="2000000-99999999" class="filter-checkbox"> Trên 2 triệu</label><br>
-
-
-<h4>Hãng</h4>
-@foreach($brands as $brand)
-    <label><input type="checkbox" name="brand[]" value="{{ $brand->id }}" class="filter-checkbox"> {{ $brand->name }}</label><br>
-@endforeach
-
-
-<h4>Dung lượng</h4>
-@foreach($capacities as $capacity)
-    <label>
-        <input type="checkbox" name="capacity[]" value="{{ $capacity->value }}" class="filter-checkbox">
-        {{ $capacity->value }}
-    </label><br>
-@endforeach
-
-<h4>Nồng độ</h4>
-@foreach($concentrations as $concentration)
-    <label>
-        <input type="checkbox" name="concentration[]" value="{{ $concentration->value }}" class="filter-checkbox">
-        {{ $concentration->value }}
-    </label><br>
-@endforeach
-
-<div style="margin-top: 10px;">
-    <button type="button" id="reset-filter">Reset bộ lọc</button>
-</div>
-
-</form>
-                </div>
-
-
-                    <div class="row justify-content-center px-xl-5 pb-3">
-
+                <div class="row justify-content-center px-xl-5 pb-3">
                         @foreach ($list_product as $product)
                         <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
                             <div class="card product-item border-0 shadow-sm rounded position-relative">
@@ -157,36 +106,6 @@
 </div>
 <!-- Shop End -->
 <script>
-    $(document).ready(function () {
-    function fetchProducts() {
-        let formData = $('#filter-form').serialize();
-        let search = $('input[name="search"]').val(); // lấy giá trị input search
-        formData += '&search=' + encodeURIComponent(search); // gắn vào request
-
-        $.ajax({
-            url: "/shop",
-            type: "GET",
-            data: formData,
-            success: function (response) {
-                $('#product-list').html(response); // phần hiển thị sản phẩm
-            }
-        });
-    }
-
-    $('.filter-checkbox, .sort-option').on('change click', function () {
-        fetchProducts();
-    });
-
-    $('input[name="search"]').on('keyup', function () {
-        fetchProducts();
-    });
-
-    $('#reset-filter').on('click', function () {
-        $('#filter-form')[0].reset();
-        fetchProducts();
-    });
-});
-
 $(function () {
     // Gọi lọc mỗi khi checkbox thay đổi
     $('.filter-checkbox').on('change', function () {
@@ -212,44 +131,6 @@ $(function () {
         });
     }
 });
-document.querySelectorAll('.filter-checkbox').forEach(function (checkbox) {
-        checkbox.addEventListener('change', function () {
-            let name = this.name;
-            // Nếu là checkbox trong nhóm đơn chọn:
-            if (['price_range[]', 'brand[]', 'capacity[]', 'concentration[]'].includes(name)) {
-                // Bỏ chọn tất cả checkbox cùng nhóm trừ cái vừa click
-                document.querySelectorAll('input[name="' + name + '"]').forEach(function (el) {
-                    if (el !== checkbox) el.checked = false;
-                });
-            }
-
-            // Gửi AJAX lọc
-            filterProducts();
-        });
-    });
-
-    document.getElementById('reset-filter').addEventListener('click', function () {
-        document.getElementById('filter-form').reset();
-        filterProducts();
-    });
-
-    function filterProducts() {
-        let form = document.getElementById('filter-form');
-        let formData = new FormData(form);
-
-        fetch("{{ route('web.shop') }}", {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: formData
-        })
-        .then(res => res.text())
-        .then(html => {
-            document.getElementById('product-list').innerHTML = html;
-        });
-    }
-    
 </script>
 
 <style>
