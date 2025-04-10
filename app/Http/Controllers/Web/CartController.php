@@ -405,19 +405,18 @@ public function removeFromCart(Request $request, $cartKey)
     }
     
 
-    public function remove($id)
-{
-    $cart = session('cart', []);
-    foreach ($cart as $key => $item) {
-        if ($item['id'] == $id) {
+    public function remove($key)
+    {
+        $cart = session('cart', []);
+    
+        if (isset($cart[$key])) {
             unset($cart[$key]);
+            session(['cart' => $cart]);
         }
+    
+        return response()->noContent(); // không cần trả JSON nếu chỉ reload lại
     }
-    session(['cart' => $cart]);
-
-    return response()->json(['success' => true]);
-}
-
+    
 // chọn số lượng
 
 // CartController.php
@@ -438,6 +437,20 @@ public function selectItems(Request $request)
     session()->put('selected_cart', $selectedCart);
 
     return redirect()->route('cart.viewCart')->with('success', 'Đã chọn sản phẩm để thanh toán.');
+}
+
+
+public function showHeaderCart()
+{
+    $cart = session('cart', []);
+    $total = collect($cart)->sum(fn($item) => (int) $item['quantity'] * (float) $item['price']);
+    $totalQuantity = collect($cart)->sum(fn($item) => (int) $item['quantity']);
+
+    return response()->json([
+        'cart' => array_values($cart), // Chuyển mảng thành chỉ số liên tục
+        'total' => $total,
+        'totalQuantity' => $totalQuantity
+    ]);
 }
 
 }

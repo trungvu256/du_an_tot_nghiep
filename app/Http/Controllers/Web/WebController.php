@@ -27,7 +27,8 @@ class WebController extends Controller
             ->take(4)
             ->get();
         $blogs = Blog::latest()->take(3)->get();
-        return view('web2.Home.home', compact('list_product', 'categories', 'bestSellers', 'blogs', 'products', 'productNews'));
+        $brands = Brand::all();
+        return view('web3.Home.home', compact('list_product', 'categories', 'bestSellers', 'blogs', 'products', 'productNews','brands'));
     }
 
     public function shop(Request $request)
