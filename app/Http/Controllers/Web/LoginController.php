@@ -107,10 +107,10 @@ class LoginController extends Controller
         $user->is_admin = 0;
         $user->save();
     
-        return response()->json([
-            'message' => 'Tạo tài khoản thành công!',
-            'redirect' => route('web.login')
-        ], 200);
+        return redirect()->back()->with(
+            'message' , 'Tạo tài khoản thành công!',
+            
+        );
     }
     
 
