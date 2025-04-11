@@ -424,9 +424,8 @@
                         <div class="box-title">
                             <h6><a href="{{ route('web3.shop') }}" class="link"> Hàng mới về</a></h6>
                             <p class="text-md text-main">
-                           
-Khám phá các xu hướng mới nhất trong trang phục năng động và nâng cấp tủ
-quần áo thể dục của bạn.
+                            Khám phá các xu hướng mới nhất trong trang phục năng động và nâng cấp tủ
+                            quần áo thể dục của bạn.
                             </p>
                         </div>
                         <div class="box-btn">
