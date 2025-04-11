@@ -46,8 +46,6 @@ class WebController extends Controller
     $concentrations = $concentrationAttr ? $concentrationAttr->values : collect();
 
     // === FILTER ===
-
-    // 1. Lọc khoảng giá
     if ($request->filled('price_range')) {
         $query->whereHas('variants', function ($q) use ($request) {
             foreach ($request->price_range as $range) {
@@ -57,12 +55,10 @@ class WebController extends Controller
         });
     }
 
-    // 2. Lọc hãng
     if ($request->filled('brand')) {
         $query->whereIn('brand_id', $request->brand);
     }
 
-    // 3. Lọc thể tích
     if ($request->filled('capacity')) {
         $query->whereHas('variants.attributeValues', function ($q) use ($request) {
             $q->whereIn('value', $request->capacity)
@@ -72,7 +68,6 @@ class WebController extends Controller
         });
     }
 
-    // 4. Lọc nồng độ
     if ($request->filled('concentration')) {
         $query->whereHas('variants.attributeValues', function ($q) use ($request) {
             $q->whereIn('value', $request->concentration)
@@ -82,7 +77,7 @@ class WebController extends Controller
         });
     }
 
-    // === SORTING ===
+    // Sắp xếp
     $sort = $request->input('sort');
     switch ($sort) {
         case 'price_asc':
@@ -101,39 +96,22 @@ class WebController extends Controller
             $query->join('brands', 'products.brand_id', '=', 'brands.id')
                   ->orderBy('brands.name', 'asc');
             break;
-
-        case 'capacity':
-            $query->whereHas('variants.attributeValues', function ($q) {
-                $q->whereHas('attribute', function ($a) {
-                    $a->where('name', 'Thể tích');
-                });
-            });
-            // Nếu cần sort theo value thì cần join thêm
-            break;
-
-        case 'concentration':
-            $query->whereHas('variants.attributeValues', function ($q) {
-                $q->whereHas('attribute', function ($a) {
-                    $a->where('name', 'Nồng độ');
-                });
-            });
-            // Như trên, sort theo giá trị cần join
-            break;
     }
-    if ($request->ajax()) {
-        return view('web2.Home.product_list', compact('list_product'))->render();
-    }
+
     if ($request->filled('search')) {
         $query->where('name', 'like', '%' . $request->search . '%');
     }
 
-    // === PHÂN TRANG VÀ TRẢ VỀ ===
+    // PHÂN TRANG
     $list_product = $query->paginate(12);
 
-   
-    
+    // Nếu là AJAX => chỉ trả về phần danh sách sản phẩm
+    if ($request->ajax()) {
+        return view('web3.Home.product_list', compact('list_product'))->render();
+    }
 
-    return view('web2.Home.shop', compact(
+    // Nếu là request thường => trả về cả trang shop
+    return view('web3.Home.shop', compact(
         'list_product',
         'categories',
         'brands',
@@ -145,11 +123,12 @@ class WebController extends Controller
 
 
 
+
     public function shopdetail($id)
     {
         $categories = Catalogue::all();
         $detailproduct = Product::find($id);
-        $relatedProducts = Product::where('category_id', $detailproduct->category_id)
+        $relatedProducts = Product::where('id', $detailproduct->category_id)
             ->where('id', '!=', $detailproduct->id)
             ->orderBy('id', 'DESC')
             ->take(4)
@@ -159,7 +138,7 @@ class WebController extends Controller
             abort(404); // Hiển thị trang 404 nếu sản phẩm không tồn tại
         }
 
-        return view('web2.Home.shop-detail', compact('detailproduct', 'relatedProducts', 'categories'));
+        return view('web3.Home.shop-detail', compact('detailproduct', 'relatedProducts', 'categories'));
     }
 
     public function cart()
@@ -187,10 +166,25 @@ class WebController extends Controller
     public function getProductsByCategory($cate_id)
     {
         $categories = Catalogue::all();
+        $brands = Brand::all();
+        $capacityAttr = Attribute::where('name', 'Thể tích')->first();
+$concentrationAttr = Attribute::where('name', 'Nồng độ')->first();
+
+$capacities = $capacityAttr ? $capacityAttr->values : collect();
+$concentrations = $concentrationAttr ? $concentrationAttr->values : collect();
         $list_product = Product::where('catalogue_id', $cate_id)
+        
         ->orderBy('id', 'DESC')
         ->paginate(12);
 
-        return view('web2.Home.shop', compact('list_product', 'categories'));
+        return view('web3.Home.shop', compact(
+            'list_product',
+            'categories',
+            'brands',
+            'capacities',
+            'concentrations'
+        ));
+        
+
     }
 }
