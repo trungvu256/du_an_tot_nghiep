@@ -29,7 +29,7 @@
                                                 </p>
                                             </div>
                                             <div class="box-btn-slider fade-item fade-item-3">
-                                                <a href="shop-default.html" class="tf-btn btn-white hover-primary">
+                                                <a href="{{ route('web3.shop') }}" class="tf-btn btn-white hover-primary">
                                                     Khám Phá Bộ Sưu Tập
                                                     <i class="icon icon-arr-right"></i>
                                                 </a>
@@ -64,7 +64,7 @@
                                                 </p>
                                             </div>
                                             <div class="box-btn-slider fade-item fade-item-3">
-                                                <a href="shop-default.html" class="tf-btn btn-white hover-primary">
+                                                <a href="{{ route('web3.shop') }}" class="tf-btn btn-white hover-primary">
                                                     Khám Phá Bộ Sưu Tập
                                                     <i class="icon icon-arr-right"></i>
                                                 </a>
@@ -248,7 +248,7 @@
                         </div>
                     </div>
                     <a 
-                    href="{{ route('web.shop', ['category_id' => $category->id]) }}" 
+                    href="{{ route('web3.shop') }}" 
                     class="btn btn-primary mt-3"
                 >
                     Xem tất cả
@@ -266,7 +266,7 @@
     <section class="s-banner-colection banner-cls-sportwear style-abs-2 flat-spacing-3">
         <div class="container">
             <div class="banner-content">
-                <a href="shop-default.html" class="image d-block">
+                <a href="{{ route('web3.shop') }}" class="image d-block">
                     <img src="{{ asset('/images/Banner/banner00.jpg') }}" alt="images/banner/sportwear.jpg"
                         class="lazyload">
                 </a>
@@ -280,7 +280,7 @@
                         </p>
                     </div>
                     <div class="box-btn-banner wow fadeInUp">
-                        <a href="shop-default.html" class="tf-btn animate-btn">Mua Ngay</a>
+                        <a href="{{ route('web3.shop') }}" class="tf-btn animate-btn">Mua Ngay</a>
                     </div>
                 </div>
 
@@ -416,40 +416,42 @@
         <div class="container">
             <div class="tf-grid-layout md-col-2">
                 <div class="wg-offer hover-img">
-                    <a href="shop-default.html" class="image d-block img-style">
+                    <a href="{{ route('web3.shop') }}" class="image d-block img-style">
                         <img src="{{ asset('/images/Banner/featured_coll_2_1_img.jpg') }}"
                             data-src="{{ asset('/images/Banner/featured_coll_2_1_img.jpg') }}" alt="" class="lazyload">
                     </a>
                     <div class="content text-center wow fadeInUp">
                         <div class="box-title">
-                            <h6><a href="shop-default.html" class="link">New Arrivals</a></h6>
+                            <h6><a href="{{ route('web3.shop') }}" class="link"> Hàng mới về</a></h6>
                             <p class="text-md text-main">
-                                Discover the latest trends in activewear and upgrade <br class="d-none d-xl-block">
-                                your fitness wardrobe.
+                           
+Khám phá các xu hướng mới nhất trong trang phục năng động và nâng cấp tủ
+quần áo thể dục của bạn.
                             </p>
                         </div>
                         <div class="box-btn">
-                            <a href="shop-default.html" class="tf-btn btn-out-line-dark-2">Shop Now</a>
+                            <a href="{{ route('web3.shop') }}" class="tf-btn btn-out-line-dark-2">Mua Ngay</a>
                         </div>
                     </div>
                 </div>
                 <div class="wg-offer hover-img">
-                    <a href="shop-default.html" class="image d-block img-style">
+                    <a href="{{ route('web3.shop') }}" class="image d-block img-style">
                         <img src="{{ asset('/images/Banner/featured_coll_2_2_img.jpg') }}"
                             data-src="{{ asset('/images/Banner/featured_coll_2_2_img.jpg') }}" alt="" class="lazyload">
                     </a>
                     <div class="content text-center wow fadeInUp">
                         <div class="box-title">
-                            <h6><a href="shop-default.html" class="link">Limited Time Offer</a></h6>
+                            <h6><a href="{{ route('web3.shop') }}" class="link">Ưu Đãi Có Hạn</a></h6>
                             <p class="text-md text-main">
-                                Get up to 30% off selected sportwear items. Don’t miss
+                            Giảm giá lên đến 30% cho các mặt hàng đồ thể thao được chọn.
+                            Đừng bỏ lỡ những ưu đãi này!
                                 <br class="d-none d-xl-block">
-                                out on these deals!
+                                Nhanh tay kẻo lỡ những ưu đãi cực hot này!
                             </p>
                         </div>
                         <div class="box-btn">
-                            <a href="shop-default.html" class="tf-btn btn-out-line-dark-2">
-                                Shop Now
+                            <a href="{{ route('web3.shop') }}" class="tf-btn btn-out-line-dark-2">
+                            Mua Ngay
                             </a>
                         </div>
                     </div>

@@ -50,13 +50,13 @@
                                                 <li class="cate-item">
                                                     <a class="text-sm link" href="shop-default.html">
                                                         <span>Nước hoa nam</span>
-                                                        <span class="count">(20)</span>
+                                                        <!-- <span class="count">(20)</span> -->
                                                     </a>
                                                 </li>
                                                 <li class="cate-item">
                                                     <a class="text-sm link" href="shop-default.html">
                                                         <span>Nước hoa nữ</span>
-                                                        <span class="count">(20)</span>
+                                                        <!-- <span class="count">(20)</span> -->
                                                     </a>
                                                 </li>
 
@@ -98,16 +98,16 @@
                                         <div id="size" class="collapse show">
                                             <div class="collapse-body filter-size-box flat-check-list">
                                                 <div class="check-item size-item size-check"><span
-                                                        class="size">5ml</span>&nbsp;<span class="count">(10)</span>
+                                                        <!-- class="size">5ml</span>&nbsp;<span class="count">(10)</span> -->
                                                 </div>
                                                 <div class="check-item size-item size-check"><span
-                                                        class="size">10ml</span>&nbsp;<span class="count">(8)</span>
+                                                        <!-- class="size">10ml</span>&nbsp;<span class="count">(8)</span> -->
                                                 </div>
                                                 <div class="check-item size-item size-check"><span
-                                                        class="size">20ml</span>&nbsp;<span class="count">(20)</span>
+                                                        <!-- class="size">20ml</span>&nbsp;<span class="count">(20)</span> -->
                                                 </div>
                                                 <div class="check-item size-item size-check"><span
-                                                        class="size">30ml</span>&nbsp;<span class="count">(10)</span>
+                                                        <!-- class="size">30ml</span>&nbsp;<span class="count">(10)</span> -->
                                                 </div>
 
                                             </div>
@@ -124,12 +124,12 @@
                                                 <li class="list-item">
                                                     <input type="radio" name="brand" class="tf-check" id="Vineta">
                                                     <label for="Vineta" class="label"><span>Vineta</span>&nbsp;<span
-                                                            class="count">(11)</span></label>
+                                                            <!-- class="count">(11)</span></label> -->
                                                 </li>
                                                 <li class="list-item">
                                                     <input type="radio" name="brand" class="tf-check" id="Zotac">
                                                     <label for="Zotac" class="label"><span>Zotac</span>&nbsp;<span
-                                                            class="count">(20)</span></label>
+                                                            <!-- class="count">(20)</span></label> -->
                                                 </li>
                                             </ul>
                                         </div>
