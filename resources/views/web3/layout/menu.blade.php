@@ -44,7 +44,7 @@
                         <nav class="box-navigation text-center">
                             <ul class="box-nav-menu">
                                 <li class="menu-item">
-                                    <a href="#" class="item-link">Home<i class="icon icon-arr-down"></i></a>
+                                    <a href="{{route('web3.home')}}" class="item-link">Home<i class="icon icon-arr-down"></i></a>
 
                                 </li>
                                 <li class="menu-item">
