@@ -365,7 +365,6 @@ Route::get('web3/shop-detail/{id}', [WebController::class, 'shopdetail'])->name(
 
 //web
 Route::get('/', [WebController::class, 'index'])->name('web.home');
-Route::get('/', [WebController::class, 'index'])->name('web.home');
 Route::get('/shop', [WebController::class, 'shop'])->name('web.shop');
 Route::get('/category/{cate_id}/products', [WebController::class, 'getProductsByCategory'])->name('web.shopByCate');
 

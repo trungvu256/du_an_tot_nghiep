@@ -1,311 +1,303 @@
 @extends('web3.layout.master2')
+
 @section('content')
-
-<body>
-    <div id="wrapper">
-        <!-- Breadcrumb -->
-        <div class="tf-breadcrumb">
-            <div class="container">
-                <ul class="breadcrumb-list">
-                    <li class="item-breadcrumb">
-                        <a href="index-2.html" class="text">Trang chủ</a>
-                    </li>
-                    <li class="item-breadcrumb dot">
-                        <span></span>
-                    </li>
-                    <li class="item-breadcrumb">
-                        <span class="text">Giỏ hàng</span>
-                    </li>
-                </ul>
+    <div class="container-fluid pt-5">
+        <div class="row px-xl-5">
+            <div class="col-lg-8 table-responsive mb-5">
+                <form id="cart-items-form">
+                    <table class="table table-bordered text-center mb-0">
+                        <thead class="bg-secondary text-dark">
+                            <tr>
+                                <th>Chọn</th>
+                                <th>Sản phẩm</th>
+                                <th>Giá</th>
+                                <th>Số lượng</th>
+                                <th>Tổng cộng</th>
+                                <th>Biến thể</th>
+                                <th>Xóa</th>
+                            </tr>
+                        </thead>
+                        <tbody class="align-middle">
+                            @foreach (session('cart', []) as $cartKey => $item)
+                                <tr id="cart-item-{{ $cartKey }}">
+                                    <td class="align-middle">
+                                        <input type="checkbox" class="product-checkbox" name="selected_products[]"
+                                            value="{{ $cartKey }}" onchange="updateSummary()">
+                                    </td>
+                                    <td class="align-middle">
+                                        <img src="{{ asset('storage/' . ($item['image'] ?? 'default.jpg')) }}"
+                                            alt="" style="width: 50px;">
+                                        {{ $item['name'] }}
+                                    </td>
+                                    <td class="align-middle text-center price" data-price="{{ $item['price'] }}"
+                                        id="price-{{ $cartKey }}">
+                                        {{ number_format($item['price'], 0, ',', '.') }}₫
+                                    </td>
+                                    <td class="align-middle">
+                                        <div
+                                            class="update-cart-form d-flex align-items-center justify-content-center gap-1">
+                                            <input type="hidden" name="quantity" id="quantity-{{ $cartKey }}"
+                                                value="{{ $item['quantity'] }}"
+                                                data-stock-quantity="{{ $item['stock_quantity'] ?? 0 }}">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary btn-minus"
+                                                data-cart-key="{{ $cartKey }}" data-action="decrease">
+                                                -
+                                            </button>
+                                            <input type="text"
+                                                class="form-control form-control-sm text-center bg-light quantity-display"
+                                                style="width: 100px;" id="quantity-display-{{ $cartKey }}"
+                                                value="{{ $item['quantity'] }}">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary btn-plus"
+                                                data-cart-key="{{ $cartKey }}" data-action="increase">
+                                                +
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle item-total" id="item-total-{{ $cartKey }}">
+                                        {{ number_format((float) $item['price'] * (int) $item['quantity'], 0, ',', '.') }}₫
+                                    </td>
+                                    <td class="align-middle">
+                                        @if (isset($item['variant']) && isset($item['variant']['attributes']) && count($item['variant']['attributes']) > 0)
+                                            @foreach ($item['variant']['attributes'] as $attrName => $attrValue)
+                                                <p><strong>{{ $attrName }}:</strong> {{ $attrValue }}</p>
+                                            @endforeach
+                                        @else
+                                            <p>Không có biến thể</p>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-danger btn-remove-item"
+                                            data-cart-key="{{ $cartKey }}" onclick="return confirm('Xóa khỏi giỏ hàng')">
+                                            x
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <a href="{{ route('web.shop') }}" class="btn btn-success">Thêm sản phẩm</a>
+                </form>
             </div>
-        </div>
-        <!-- /Breadcrumb -->
-        <!-- Title Page -->
-        <section class="page-title">
-            <div class="container">
-                <div class="box-title text-center justify-items-center">
-                    <h4 class="title">Giỏ Hàng</h4>
-                </div>
-            </div>
-        </section>
-        <!-- /Title Page -->
-        <!-- khu vực đổ ra -->
-        <!-- Cart Section -->
-        <div class="flat-spacing-2 pt-0">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-8">
-                        <div class="tf-page-cart-main">
-                            <form class="form-cart">
-                                <table class="table-page-cart">
-                                    <thead>
-                                        <tr>
-                                            <th>Sản phẩm</th>
-                                            <th>Giá</th>
-                                            <th>Số lượng</th>
-                                            <th>Tổng tiền</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="tf-cart-item file-delete">
-                                            <td class="tf-cart-item_product">
-                                                <a href="product-detail.html" class="img-box">
-                                                    <img src="images/products/fashion/product-1.jpg" alt="img-product">
-                                                </a>
-                                                <div class="cart-info">
-                                                    <a href="product-detail.html"
-                                                        class="name text-md link fw-medium">Tên sản phẩm</a>
-                                                    <div class="variants">Biến thể sản phẩm</div>
-                                                    <span class="remove-cart link remove">Xóa</span>
-                                                </div>
-                                            </td>
-                                            <td class="tf-cart-item_price text-center" data-cart-title="Price">
-                                                <span class="cart-price price-on-sale text-md fw-medium">$130.00</span>
-                                            </td>
-                                            <td class="tf-cart-item_quantity" data-cart-title="Quantity">
-                                                <div class="wg-quantity">
-                                                    <span class="btn-quantity btn-decrease">-</span>
-                                                    <input class="quantity-product" type="text" name="number" value="1">
-                                                    <span class="btn-quantity btn-increase">+</span>
-                                                </div>
-                                            </td>
-                                            <td class="tf-cart-item_total text-center" data-cart-title="Total">
-                                                <div class="cart-total total-price text-md fw-medium">$130.00</div>
-                                            </td>
-                                        </tr>
 
-                                    </tbody>
-                                </table>
-
-                                <div class="box-ip-discount">
-                                    <input type="text" placeholder="Mã giảm giá">
-                                    <button type="button" class="tf-btn radius-6 btn-out-line-dark-2">Áp dụng</button>
-                                </div>
-
-                            </form>
-                            <div class="fl-iconbox wow fadeInUp">
-                                <div dir="ltr" class="swiper tf-swiper sw-auto" data-swiper='{
-                                    "slidesPerView": 1,
-                                    "spaceBetween": 12,
-                                    "speed": 800,
-                                    "observer": true,
-                                    "observeParents": true,
-                                    "slidesPerGroup": 1,
-                                    "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
-                                    "breakpoints": {
-                                        "575": { "slidesPerView": 2, "spaceBetween": 12, "slidesPerGroup": 2}, 
-                                        "768": { "slidesPerView": 3, "spaceBetween": 24, "slidesPerGroup": 3},
-                                        "1200": { "slidesPerView": "auto", "spaceBetween": 24}
-                                    }
-                                }'>
-                                    <div class="swiper-wrapper">
-                                        <div class="swiper-slide">
-                                            <div
-                                                class="tf-icon-box justify-content-center justify-content-sm-start style-3">
-                                                <div class="box-icon">
-                                                    <i class="icon icon-shipping"></i>
-                                                </div>
-                                                <div class="content">
-                                                    <div class="title text-uppercase">Free Shipping</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div
-                                                class="tf-icon-box justify-content-center justify-content-sm-start style-3">
-                                                <div class="box-icon">
-                                                    <i class="icon icon-gift"></i>
-                                                </div>
-                                                <div class="content">
-                                                    <div class="title text-uppercase">Gift Package</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div
-                                                class="tf-icon-box justify-content-center justify-content-sm-start style-3">
-                                                <div class="box-icon">
-                                                    <i class="icon icon-return"></i>
-                                                </div>
-                                                <div class="content">
-                                                    <div class="title text-uppercase">Ease Returns</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div
-                                                class="tf-icon-box justify-content-center justify-content-sm-start style-3">
-                                                <div class="box-icon">
-                                                    <i class="icon icon-support"></i>
-                                                </div>
-                                                <div class="content">
-                                                    <div class="title text-uppercase text-nowrap">ONE YEAR WARRANTY
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div
-                                    class="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center">
-                                </div>
-                            </div>
+            <div class="col-lg-4">
+                <form action="{{ route('cart.applyPromotion') }}" method="POST">
+                    @csrf
+                    <div class="input-group">
+                        <input type="text" name="coupon_code" class="form-control p-4" placeholder="Nhập mã giảm giá">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary">Áp dụng mã</button>
                         </div>
                     </div>
-                    <div class="col-xl-4">
-                        <div class="tf-page-cart-sidebar">
-                            <!-- <form class="cart-box shipping-cart-box">
-                                <div class="text-lg title fw-medium">Shipping estimates</div>
-                                <fieldset class="field">
-                                    <label for="country" class="text-sm">Country</label>
-                                    <input type="text" id="country" placeholder="United State">
-                                </fieldset>
-                                <fieldset class="field">
-                                    <label for="state" class="text-sm">State/Province</label>
-                                    <input type="text" id="state" placeholder="State/Province">
-                                </fieldset>
-                                <fieldset class="field">
-                                    <label for="code" class="text-sm">Zipcode</label>
-                                    <input type="text" id="code" placeholder="41000">
-                                </fieldset>
-                                <button type="button" class="tf-btn btn-dark2 animate-btn w-100">Estimate</button>
-                            </form> -->
-                            <form action="https://vineta-html.vercel.app/checkout.html"
-                                class="cart-box checkout-cart-box">
-                                <div class="cart-head">
-                                    <div class="total-discount text-xl fw-medium">
-                                        <span>Total:</span>
-                                        <span class="total">$130.00 USD</span>
-                                    </div>
-                                    <p class="text-sm text-dark-4">Taxes and shipping calculated at checkout</p>
-                                </div>
-                                <div class="check-agree">
-                                    <input type="checkbox" class="tf-check" id="check-agree">
-                                    <label for="check-agree" class="label text-dark-4">I agree with <a
-                                            href="term-and-condition.html"
-                                            class="text-dark-4 fw-medium text-underline link">term and
-                                            conditions</a></label>
-                                </div>
-                                <div class="checkout-btn">
-                                    <button type="submit" class="tf-btn btn-dark2 animate-btn w-100">Thanh toán</button>
-                                </div>
+                </form>
+                @if (session('success'))
+                    <p class="text-success">{{ session('success') }}</p>
+                @endif
+                @if (session('error'))
+                    <p class="text-danger">{{ session('error') }}</p>
+                @endif
 
-                            </form>
+                <?php
+                $cart = session('cart', []);
+                $subtotal = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
+                $promotion = session('promotion');
+                $discount = $promotion['discount'] ?? 0;
+                $total = max(0, $subtotal - $discount);
+                ?>
 
+                <div class="card border-secondary mb-5">
+                    <div class="card-header bg-secondary border-0">
+                        <h4 class="font-weight-semi-bold m-0">Tóm tắt giỏ hàng</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3 pt-1">
+                            <h6 class="font-weight-medium">Tạm tính</h6>
+                            <h6 class="font-weight-medium" id="summary-subtotal">0₫</h6>
                         </div>
+                        @if ($promotion)
+                            <div class="d-flex justify-content-between mb-3 pt-1">
+                                <h6 class="font-weight-medium text-success">Giảm giá ({{ $promotion['code'] }})</h6>
+                                <h6 class="font-weight-medium text-success" id="summary-discount">-{{ number_format($discount, 0, ',', '.') }}₫</h6>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="card-footer border-secondary bg-transparent">
+                        <div class="d-flex justify-content-between mt-2">
+                            <h5 class="font-weight-bold">Tổng cộng</h5>
+                            <h5 class="font-weight-bold" id="summary-total">0₫</h5>
+                        </div>
+                        <form id="checkout-form" action="{{ route('checkout.view') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="selected_cart_items" id="selected_cart_items">
+                            <input type="hidden" name="subtotal" id="subtotal">
+                            <input type="hidden" name="discount" id="discount">
+                            <input type="hidden" name="total" id="total">
+
+                            <button type="submit" class="btn btn-block btn-primary my-3 py-3">
+                                Tiến hành thanh toán
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- /Cart Section -->
-        <!-- You May Also Like -->
-        <section class="flat-spacing pt-0">
-            <div class="container">
-                <div class="flat-title wow fadeInUp">
-                    <h4 class="title">Sản phẩm liên quan</h4>
-                </div>
-                <div class="fl-control-sw pos2">
-                    <div dir="ltr" class="swiper tf-swiper wrap-sw-over" data-swiper='{
-                            "slidesPerView": 2,
-                            "spaceBetween": 12,
-                            "speed": 800,
-                            "observer": true,
-                            "observeParents": true,
-                            "slidesPerGroup": 2,
-                            "navigation": {
-                                "clickable": true,
-                                "nextEl": ".nav-next-also",
-                                "prevEl": ".nav-prev-also"
-                            },
-                            "pagination": { "el": ".sw-pagination-also", "clickable": true },
-                            "breakpoints": {
-                            "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
-                            "1200": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 4}
-                            }
-                        }'>
-                        <div class="swiper-wrapper">
-                            <!-- item 1 -->
-                            <div class="swiper-slide">
-                                <div class="card-product style-2">
-                                    <div class="card-product-wrapper">
-                                        <a href="product-detail.html" class="product-img">
-                                            <img class="img-product lazyload"
-                                                data-src="images/products/fashion/product-36.jpg"
-                                                src="images/products/fashion/product-36.jpg" alt="image-product">
-                                            <img class="img-hover lazyload"
-                                                data-src="images/products/fashion/product-4.jpg"
-                                                src="images/products/fashion/product-4.jpg" alt="image-product">
-                                        </a>
-                                        <ul class="list-product-btn">
-                                            <li>
-                                                <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                    class="hover-tooltip box-icon">
-                                                    <span class="icon icon-cart2"></span>
-                                                    <span class="tooltip">Add to Cart</span>
-                                                </a>
-                                            </li>
-                                            <li class="wishlist">
-                                                <a href="javascript:void(0);" class="hover-tooltip box-icon">
-                                                    <span class="icon icon-heart2"></span>
-                                                    <span class="tooltip">Add to Wishlist</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#quickView" data-bs-toggle="modal"
-                                                    class="hover-tooltip box-icon quickview">
-                                                    <span class="icon icon-view"></span>
-                                                    <span class="tooltip">Quick View</span>
-                                                </a>
-                                            </li>
-                                            <li class="compare">
-                                                <a href="#compare" data-bs-toggle="modal"
-                                                    class="hover-tooltip box-icon">
-                                                    <span class="icon icon-compare"></span>
-                                                    <span class="tooltip">Add to Compare</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="card-product-info">
-                                        <a href="product-detail.html" class="name-product link fw-medium text-md">Loose
-                                            Fit Tee</a>
-                                        <p class="price-wrap fw-medium">
-                                            <span class="price-new text-primary">$120.00</span>
-                                            <span class="price-old">$150.00</span>
-                                        </p>
-                                        <ul class="list-color-product">
-                                            <li class="list-color-item hover-tooltip tooltip-bot color-swatch active">
-                                                <span class="tooltip color-filter">Beige</span>
-                                                <span class="swatch-value bg-beige"></span>
-                                                <img class=" lazyload" data-src="images/products/fashion/product-36.jpg"
-                                                    src="images/products/fashion/product-36.jpg" alt="image-product">
-                                            </li>
-                                            <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                <span class="tooltip color-filter">Black</span>
-                                                <span class="swatch-value bg-dark"></span>
-                                                <img class=" lazyload" data-src="images/products/fashion/product-9.jpg"
-                                                    src="images/products/fashion/product-9.jpg" alt="image-product">
-                                            </li>
-                                            <li class="list-color-item color-swatch hover-tooltip tooltip-bot line">
-                                                <span class="tooltip color-filter">White</span>
-                                                <span class="swatch-value bg-white"></span>
-                                                <img class=" lazyload" data-src="images/products/fashion/product-4.jpg"
-                                                    src="images/products/fashion/product-4.jpg" alt="image-product">
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="d-flex d-xl-none sw-dot-default sw-pagination-also justify-content-center"></div>
-                    </div>
-                    <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-also"></div>
-                    <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-also"></div>
-                </div>
-            </div>
-        </section>
     </div>
-</body>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Hàm định dạng tiền tệ
+        function formatCurrency(value) {
+            return value.toLocaleString('vi-VN') + '₫';
+        }
+
+        // Hàm lấy số từ chuỗi tiền tệ
+        function getCurrencyNumber(value) {
+            return parseInt(value.replace(/\D/g, '')) || 0;
+        }
+
+        // Hàm cập nhật số lượng qua AJAX
+        function updateCartQuantity(cartKey, quantity) {
+            const quantityInput = $('#quantity-' + cartKey);
+            const quantityDisplay = $('#quantity-display-' + cartKey);
+            const stockQuantity = parseInt(quantityInput.data('stock-quantity'));
+
+            // Giới hạn số lượng: tối thiểu 1, tối đa là stock
+            quantity = Math.max(1, Math.min(stockQuantity, parseInt(quantity) || 1));
+
+            // Cập nhật giao diện ngay lập tức
+            quantityInput.val(quantity);
+            quantityDisplay.val(quantity);
+
+            const price = parseInt($('#price-' + cartKey).data('price'));
+            const itemTotal = price * quantity;
+            $('#item-total-' + cartKey).text(formatCurrency(itemTotal));
+
+            // Gọi AJAX để cập nhật server
+            $.ajax({
+                url: '{{ route('cart.update', ':id') }}'.replace(':id', cartKey),
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    quantity: quantity
+                },
+                success: function(response) {
+                    if (response.success) {
+                        console.log('Updated quantity for cartKey:', cartKey, 'to:', quantity);
+                        updateSummary();
+                    }
+                },
+                error: function(xhr) {
+                    alert('Có lỗi xảy ra khi cập nhật giỏ hàng: ' + xhr.responseText);
+                    // Hoàn nguyên nếu lỗi
+                    quantityDisplay.val(quantityInput.val());
+                    updateSummary();
+                }
+            });
+        }
+
+        // Hàm cập nhật tóm tắt giỏ hàng
+        function updateSummary() {
+            let subtotal = 0;
+            $('.product-checkbox:checked').each(function() {
+                const row = $(this).closest('tr');
+                const price = parseInt(row.find('.price').data('price'));
+                const quantity = parseInt(row.find('.quantity-display').val());
+                subtotal += price * quantity;
+            });
+
+            // Lấy giá trị giảm giá từ giao diện
+            const discount = getCurrencyNumber(document.getElementById('summary-discount')?.innerText || '0');
+
+            // Tính tổng cộng
+            const total = Math.max(0, subtotal - discount);
+
+            // Cập nhật giao diện
+            $('#summary-subtotal').text(formatCurrency(subtotal));
+            $('#summary-total').text(formatCurrency(total));
+
+            // Cập nhật các input ẩn cho form checkout
+            $('#subtotal').val(subtotal);
+            $('#discount').val(discount);
+            $('#total').val(total);
+
+            console.log('updateSummary - Subtotal:', subtotal, 'Discount:', discount, 'Total:', total);
+        }
+
+        // Xử lý xóa sản phẩm
+        $(document).on('click', '.btn-remove-item', function(e) {
+            e.preventDefault();
+            let cartKey = $(this).data('cart-key');
+
+            $.ajax({
+                url: '{{ route('cart.remove', ':cartKey') }}'.replace(':cartKey', cartKey),
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                },
+                success: function(res) {
+                    if (res.success) {
+                        $('#cart-item-' + cartKey).remove();
+                        $('.cart-badge').text(res.cartCount);
+                        updateSummary();
+                    }
+                },
+                error: function(err) {
+                    alert("Xóa thất bại! Vui lòng thử lại.");
+                }
+            });
+        });
+
+        $(document).ready(function() {
+            // Xử lý nút tăng/giảm
+            $(document).on('click', '.btn-minus, .btn-plus', function(e) {
+                e.preventDefault();
+                const cartKey = $(this).data('cart-key');
+                const action = $(this).data('action');
+                const quantityDisplay = $('#quantity-display-' + cartKey);
+                let quantity = parseInt(quantityDisplay.val()) || 1;
+
+                if (action === 'increase') {
+                    quantity += 1; // Tăng 1 đơn vị
+                } else if (action === 'decrease') {
+                    quantity -= 1; // Giảm 1 đơn vị
+                }
+
+                updateCartQuantity(cartKey, quantity);
+            });
+
+            // Xử lý khi nhập tay vào input
+            $(document).on('input', '.quantity-display', function() {
+                const cartKey = $(this).attr('id').replace('quantity-display-', '');
+                let newQuantity = $(this).val();
+
+                // Chỉ cho phép nhập số
+                newQuantity = newQuantity.replace(/\D/g, '');
+                if (newQuantity === '') newQuantity = 1; // Mặc định là 1 nếu rỗng
+                $(this).val(newQuantity);
+
+                updateCartQuantity(cartKey, newQuantity);
+            });
+
+            // Gắn sự kiện checkbox
+            $('.product-checkbox').on('change', updateSummary);
+
+            // Cập nhật tóm tắt ban đầu
+            updateSummary();
+        });
+
+        // Xử lý submit form checkout
+        document.getElementById("checkout-form").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            const selected = Array.from(document.querySelectorAll(".product-checkbox:checked"))
+                .map(cb => cb.value);
+
+            if (selected.length === 0) {
+                alert("Vui lòng chọn ít nhất 1 sản phẩm để thanh toán.");
+                return;
+            }
+
+            document.getElementById("selected_cart_items").value = JSON.stringify(selected);
+            this.submit();
+        });
+    </script>
 @endsection
