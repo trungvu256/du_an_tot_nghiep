@@ -172,7 +172,7 @@
                                     <div class="swiper-slide">
                                         <div class="card-product style-1 card-product-size">
                                             <div class="card-product-wrapper">
-                                                <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}" class="product-img">
+                                                <a href="{{ route('web3.shop.detail', ['id' => $product->id]) }}" class="product-img">
                                                     <img class="img-product lazyload"
                                                         data-src="{{ asset('storage/' . $product->image) }}"
                                                         src="{{ asset('storage/' . $product->image) }}"
@@ -218,7 +218,7 @@
                                                 </div>
                                             </div>
                                             <div class="card-product-info">
-                                                <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
+                                                <a href="{{ route('web3.shop.detail', ['id' => $product->id]) }}"
                                                     class="name-product link fw-medium text-md">{{($product->name) }}</a>
                                                 <p class="price-wrap fw-medium">
                                                     <span class="price-new text-primary">{{ number_format($minPrice) }}₫
@@ -335,7 +335,7 @@
                                         <div class="card-product style-1 card-product-size">
                                             
                                             <div class="card-product-wrapper">
-                                                <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}" class="product-img">
+                                                <a href="{{ route('web3.shop.detail', ['id' => $product->id]) }}" class="product-img">
                                                     <img class="img-product lazyload"
                                                         data-src="{{ asset('storage/' . $product->image) }}"
                                                         src="{{ asset('storage/' . $product->image) }}"
