@@ -102,71 +102,70 @@
             <span class="title">Log in</span>
             <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
+        @if (session('error'))
+        <div class="alert alert-danger fw-bold text-center">
+            {{ session('error') }}
+        </div>
+        @endif
+
+        @if ($errors->any())
+        <div class="alert alert-danger fw-bold">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         <div class="canvas-body popup-inner">
-            <form action="https://vineta-html.vercel.app/account-page.html" accept-charset="utf-8" class="form-login">
-                <div>
-                    <fieldset class="email mb_12">
-                        <input type="email" class="" placeholder="Email*">
-                    </fieldset>
-                    <fieldset class="password">
-                        <input type="password" class="" placeholder="Password*">
-                    </fieldset>
+            @if(Auth::check())
+                {{-- Người dùng đã đăng nhập --}}
+                <div class="user-info">
+                    <h4>👋 Chào, {{ Auth::user()->name }}</h4>
+                    <p>Email: {{ Auth::user()->email }}</p>
+        
+                    <hr>
+                    <h5>🧾 Lịch sử mua hàng:</h5>
+                    
+        
+                    <a href="{{route('web.logout')}}" class="btn btn-danger">Đăng xuất</a>
                 </div>
-                <div class="bot">
-                    <a href="#resetPass" data-bs-toggle="offcanvas" class="text text-sm text-main-2">Forgot your
-                        password?</a>
-                    <div class="button-wrap">
-                        <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100"
-                            type="submit">Sign in</button>
-                        <button type="button" data-bs-target="#register" data-bs-toggle="offcanvas"
-                            class="tf-btn btn-out-line-dark2 w-100">Create an account</button>
+            @else
+                {{-- Form đăng nhập --}}
+                <form action="{{ route('login.store.web') }}" method="POST" accept-charset="utf-8" class="form-login">
+                    @csrf
+                    <div>
+                        <fieldset class="email mb_12">
+                            <input type="email" name="email" placeholder="Email*">
+                        </fieldset>
+                        <fieldset class="password">
+                            <input type="password" name="password" placeholder="Password*">
+                        </fieldset>
                     </div>
+                    <div class="bot">
+                        <div class="button-wrap">
+                            <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100"
+                                type="submit">Đăng nhập</button>
+                            <button type="button" data-bs-target="#register" data-bs-toggle="offcanvas"
+                                class="tf-btn btn-out-line-dark2 w-100">Đăng ký tài khoản</button>
+                        </div>
+                    </div>
+                </form>
+        
+                <div class="other-login mt-3">
+                    <p class="text-sm text-center text-main-2">Hoặc đăng nhập bằng:</p>
+                    <a href="account-page.html" class="w-100 text-md mb_8">
+                        {{-- Facebook Icon --}}
+                        <svg class="icon" width="32" height="32" viewBox="0 0 32 32"><!-- icon content --></svg>
+                        FACEBOOK
+                    </a>
+                    <a href="account-page.html" class="w-100 text-md bg-dark">
+                        {{-- Google Icon --}}
+                        <svg class="icon" width="32" height="32" viewBox="0 0 32 32"><!-- icon content --></svg>
+                        GOOGLE
+                    </a>
                 </div>
-            </form>
-            <div class="other-login">
-                <p class="text-sm text-center text-main-2">Or sign in with:</p>
-                <a href="account-page.html" class="w-100 text-md mb_8">
-                    <svg class="icon" width="32" height="32" viewBox="0 0 32 32" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="16" cy="16" r="16" fill="#3B5998" />
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M20.155 10.656L18.649 10.657C17.468 10.657 17.239 11.218 17.239 12.041V13.857H20.056L19.689 16.702H17.239V24H14.302V16.702H11.846V13.857H14.302V11.76C14.302 9.325 15.789 8 17.96 8C19 8 19.894 8.077 20.155 8.112V10.656ZM16 0C7.164 0 0 7.163 0 16C0 24.836 7.164 32 16 32C24.837 32 32 24.836 32 16C32 7.163 24.837 0 16 0Z"
-                            fill="white" />
-                    </svg>
-                    FACEBOOK
-                </a>
-                <a href="account-page.html" class="w-100 text-md bg-dark">
-                    <svg class="icon" width="32" height="32" viewBox="0 0 32 32" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <g clip-path="url(#clip0_235_18876)">
-                            <path
-                                d="M30.7919 13.218L17.7394 13.2174C17.163 13.2174 16.6958 13.6845 16.6958 14.2609V18.4306C16.6958 19.0068 17.163 19.4741 17.7393 19.4741H25.0897C24.2848 21.5629 22.7825 23.3122 20.8659 24.4237L24.0001 29.8493C29.0277 26.9416 32.0001 21.8398 32.0001 16.1287C32.0001 15.3155 31.9402 14.7342 31.8203 14.0796C31.7292 13.5823 31.2974 13.218 30.7919 13.218Z"
-                                fill="#167EE6" />
-                            <path
-                                d="M16.0002 25.7392C12.4031 25.7392 9.26282 23.7738 7.57625 20.8655L2.15088 23.9926C4.91182 28.7777 10.0839 32 16.0002 32C18.9025 32 21.6411 31.2186 24.0002 29.8568V29.8494L20.866 24.4237C19.4324 25.2552 17.7734 25.7392 16.0002 25.7392Z"
-                                fill="#12B347" />
-                            <path
-                                d="M24 29.8568V29.8493L20.8658 24.4237C19.4322 25.2551 17.7733 25.7391 16 25.7391V32C18.9023 32 21.641 31.2186 24 29.8568Z"
-                                fill="#0F993E" />
-                            <path
-                                d="M6.26088 16C6.26088 14.2269 6.74475 12.5681 7.57606 11.1346L2.15069 8.00745C0.781375 10.3591 0 13.0903 0 16C0 18.9098 0.781375 21.6409 2.15069 23.9926L7.57606 20.8654C6.74475 19.4319 6.26088 17.7731 6.26088 16Z"
-                                fill="#FFD500" />
-                            <path
-                                d="M16.0002 6.26088C18.3459 6.26088 20.5005 7.09437 22.1834 8.48081C22.5986 8.82281 23.2021 8.79813 23.5824 8.41781L26.5368 5.46344C26.9683 5.03194 26.9375 4.32562 26.4766 3.92575C23.6569 1.47956 19.9881 0 16.0002 0C10.0839 0 4.91182 3.22231 2.15088 8.00744L7.57625 11.1346C9.26282 8.22625 12.4031 6.26088 16.0002 6.26088Z"
-                                fill="#FF4B26" />
-                            <path
-                                d="M22.1833 8.48081C22.5984 8.82281 23.2019 8.79813 23.5822 8.41781L26.5366 5.46344C26.968 5.03194 26.9373 4.32562 26.4764 3.92575C23.6567 1.4795 19.9879 0 16 0V6.26088C18.3456 6.26088 20.5003 7.09437 22.1833 8.48081Z"
-                                fill="#D93F21" />
-                        </g>
-                        <defs>
-                            <clipPath>
-                                <rect width="32" height="32" fill="white" />
-                            </clipPath>
-                        </defs>
-                    </svg>
-                    GOOGLE
-                </a>
-            </div>
+            @endif
         </div>
     </div>
 </div>
@@ -180,24 +179,65 @@
             <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="canvas-body popup-inner">
-            <form action="https://vineta-html.vercel.app/account-page.html" class="form-login">
+            <form id="form_register" enctype="multipart/form-data" class="form-login" method="POST">
+                @csrf
                 <div class="">
                     <fieldset class="text mb_12">
-                        <input type="text" placeholder="First name">
+                        <input type="text" class="form-control rounded-3" id="first_name" name="first_name" placeholder="Nguyễn">
                     </fieldset>
                     <fieldset class="text mb_12">
-                        <input type="text" placeholder="Last name">
+                        <input type="text" class="form-control rounded-3" id="last_name" name="last_name"
+                        placeholder="Văn A" required>
                     </fieldset>
                     <fieldset class="email mb_12">
-                        <input type="email" placeholder="Email*">
+                        <input type="text" class="form-control rounded-3" id="name" name="name"
+                        placeholder="nguyenvana" required>
                     </fieldset>
-                    <fieldset class="password">
-                        <input type="password" placeholder="Password*">
+                    <fieldset class="text mb_12">
+                        <input type="email" class="form-control rounded-3" id="email" name="email"
+                        placeholder="example@mail.com" required>
+                    </fieldset>
+                    <fieldset class="text mb_12">
+                        <input type="password" class="form-control rounded-3" id="password" name="password"
+                            placeholder="********" required>
+                    </fieldset>
+                    <fieldset class="text mb_12">
+                        <input type="password" class="form-control rounded-3" id="password_confirm"
+                            name="password_confirmation" placeholder="********" required>
+                    </fieldset>
+
+                    <fieldset class="text mb_12">
+                         <input type="text" class="form-control rounded-3" id="phone" name="phone"
+                            placeholder="0123 456 789">
+                    </fieldset>
+                    <fieldset class="text mb_12">
+                        <select class="form-select rounded-3" id="gender" name="gender" required>
+                            <option value="">Chọn Giới Tính</option>
+                            <option value="Male">Nam</option>
+                            <option value="Female">Nữ</option>
+                            <option value="Other">Khác</option>
+                        </select>
+                    </fieldset>
+
+                    <fieldset class="text mb_12">
+                        <input type="text" class="form-control rounded-3" id="address" name="address"
+                        placeholder="123 Đường ABC, TP.HCM">
+                    </fieldset>
+
+                    <fieldset class="text mb_12">
+                        <input type="file" class="form-control rounded-3" id="avatar" name="avatar"
+                        accept="image/*">
+                    </fieldset>
+                    <fieldset class="text mb_12">
+                        <input type="checkbox" class="form-check-input" id="agree_terms" name="agree_terms"
+                                value="1" required>
+                            <label class="form-check-label text-muted" for="agree_terms">Tôi đồng ý với tất cả
+                                điều
+                                khoản</label>
                     </fieldset>
                 </div>
                 <div class="bot">
-                    <p class="text text-sm text-main-2">Sign up for early Sale access plus tailored new
-                        arrivals, trends and promotions. To opt out, click unsubscribe in our emails.</p>
+                    
                     <div class="button-wrap">
                         <button class="subscribe-button tf-btn animate-btn bg-dark-2 w-100" type="submit">Sign
                             up</button>
@@ -646,17 +686,7 @@
             <span class="icon-close icon-close-popup" data-bs-dismiss="offcanvas"></span>
         </div>
         <div class="wrap">
-            <div class="tf-mini-cart-threshold">
-                <div class="text">
-                    Spend <span class="fw-medium">$100</span> more to get <span class="fw-medium">Free
-                        Shipping</span>
-                </div>
-                <div class="tf-progress-bar tf-progress-ship">
-                    <div class="value" style="width: 0%;" data-progress="75">
-                        <i class="icon icon-car"></i>
-                    </div>
-                </div>
-            </div>
+          
             <div class="tf-mini-cart-wrap">
                 <div class="tf-mini-cart-main">
                     <div class="tf-mini-cart-sroll">
@@ -682,11 +712,7 @@
                                         <span class="new-price text-primary">$130.00</span>
                                         <span class="old-price text-decoration-line-through text-dark-1">$150.00</span>
                                     </p>
-                                    <div class="wg-quantity small">
-                                        <button class="btn-quantity minus-btn">-</button>
-                                        <input class="quantity-product font-4" type="text" name="number" value="1">
-                                        <button class="btn-quantity plus-btn">+</button>
-                                    </div>
+                                   
                                 </div>
                             </div>
                             <div class="tf-mini-cart-item file-delete">
@@ -710,161 +736,11 @@
                                         <span class="new-price text-primary">$130.00</span>
                                         <span class="old-price text-decoration-line-through text-dark-1">$150.00</span>
                                     </p>
-                                    <div class="wg-quantity small">
-                                        <button class="btn-quantity minus-btn">-</button>
-                                        <input class="quantity-product font-4" type="text" name="number" value="1">
-                                        <button class="btn-quantity plus-btn">+</button>
-                                    </div>
+                                   
                                 </div>
                             </div>
                         </div>
-                        <div class="tf-minicart-recommendations">
-                            <div
-                                class="tf-minicart-recommendations-heading d-flex justify-content-between align-items-end">
-                                <div class="tf-minicart-recommendations-title text-md fw-medium">You may also
-                                    like</div>
-                                <div class="d-flex gap-10">
-                                    <div class="swiper-button-prev nav-swiper arrow-1 size-30 nav-prev-also-product">
-                                    </div>
-                                    <div class="swiper-button-next nav-swiper arrow-1 size-30 nav-next-also-product">
-                                    </div>
-                                </div>
-                            </div>
-                            <div dir="ltr" class="swiper tf-swiper" data-swiper='{
-                                            "slidesPerView": 1,
-                                            "spaceBetween": 10,
-                                            "speed": 800,
-                                            "observer": true,
-                                            "observeParents": true,
-                                            "slidesPerGroup": 1,
-                                            "navigation": {
-                                                "clickable": true,
-                                                "nextEl": ".nav-next-also-product",
-                                                "prevEl": ".nav-prev-also-product"
-                                            }
-                                        }'>
-                                <div class="swiper-wrapper">
-                                    <div class="swiper-slide">
-                                        <div class="tf-mini-cart-item line radius-16">
-                                            <div class="tf-mini-cart-image">
-                                                <a href="product-detail.html">
-                                                    <img class="lazyload"
-                                                        data-src="images/products/fashion/product-1.jpg"
-                                                        src="images/products/fashion/product-1.jpg" alt="img-product">
-                                                </a>
-                                            </div>
-                                            <div class="tf-mini-cart-info justify-content-center">
-                                                <a class="title link text-md fw-medium" href="product-detail.html">Polo
-                                                    T-Shirt</a>
-                                                <p class="price-wrap text-sm fw-medium">
-                                                    <span class="new-price text-primary">$130.00</span>
-                                                    <span
-                                                        class="old-price text-decoration-line-through text-dark-1">$150.00</span>
-                                                </p>
-                                                <a href="#"
-                                                    class="tf-btn animate-btn d-inline-flex bg-dark-2 w-max-content">Add
-                                                    to cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <div class="tf-mini-cart-item line radius-16">
-                                            <div class="tf-mini-cart-image">
-                                                <a href="product-detail.html">
-                                                    <img class="lazyload"
-                                                        data-src="images/products/fashion/product-2.jpg"
-                                                        src="images/products/fashion/product-2.jpg" alt="img-product">
-                                                </a>
-                                            </div>
-                                            <div class="tf-mini-cart-info justify-content-center">
-                                                <a class="title link text-md fw-medium" href="product-detail.html">Short
-                                                    Sleeve Sweat</a>
-                                                <p class="price-wrap text-sm fw-medium">
-                                                    <span class="new-price text-primary">$100.00</span>
-                                                    <span
-                                                        class="old-price text-decoration-line-through text-dark-1">$115.00</span>
-                                                </p>
-                                                <a href="#"
-                                                    class="tf-btn animate-btn d-inline-flex bg-dark-2 w-max-content">Add
-                                                    to cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <div class="tf-mini-cart-item line radius-16">
-                                            <div class="tf-mini-cart-image">
-                                                <a href="product-detail.html">
-                                                    <img class="lazyload"
-                                                        data-src="images/products/fashion/product-3.jpg"
-                                                        src="images/products/fashion/product-3.jpg" alt="img-product">
-                                                </a>
-                                            </div>
-                                            <div class="tf-mini-cart-info justify-content-center">
-                                                <a class="title link text-md fw-medium" href="product-detail.html">Crop
-                                                    T-shirt</a>
-                                                <p class="price-wrap text-sm fw-medium">
-                                                    <span class="new-price text-primary">$80.00</span>
-                                                    <span
-                                                        class="old-price text-decoration-line-through text-dark-1">$100.00</span>
-                                                </p>
-                                                <a href="#"
-                                                    class="tf-btn animate-btn d-inline-flex bg-dark-2 w-max-content">Add
-                                                    to cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="tf-mini-cart-bottom">
-                    <div class="tf-mini-cart-tool">
-                        <div class="tf-mini-cart-tool-btn btn-add-gift">
-                            <i class="icon icon-gift2"></i>
-                            <div class="text-xxs">Add gift wrap</div>
-                        </div>
-                        <div class="tf-mini-cart-tool-btn btn-add-note">
-                            <i class="icon icon-note"></i>
-                            <div class="text-xxs">Order note</div>
-                        </div>
-                        <div class="tf-mini-cart-tool-btn btn-coupon">
-                            <i class="icon icon-coupon"></i>
-                            <div class="text-xxs">Coupon</div>
-                        </div>
-                        <div class="tf-mini-cart-tool-btn btn-estimate-shipping">
-                            <i class="icon icon-car"></i>
-                            <div class="text-xxs">Shipping</div>
-                        </div>
-                    </div>
-                    <div class="tf-mini-cart-bottom-wrap">
-                        <div class="tf-cart-totals-discounts">
-                            <div class="tf-cart-total text-xl fw-medium">Total:</div>
-                            <div class="tf-totals-total-value text-xl fw-medium">$130.00 USD</div>
-                        </div>
-                        <div class="tf-cart-tax text-sm opacity-8">Taxes and shipping calculated at checkout
-                        </div>
-                        <div class="tf-cart-checkbox">
-                            <div class="tf-checkbox-wrapp">
-                                <input class="" type="checkbox" id="CartDrawer-Form_agree" name="agree_checkbox">
-                                <div>
-                                    <i class="icon-check"></i>
-                                </div>
-                            </div>
-                            <label for="CartDrawer-Form_agree" class="text-sm">
-                                I agree with the
-                                <a href="term-and-condition.html" title="Terms of Service" class="fw-medium">terms
-                                    and conditions</a>
-                            </label>
-                        </div>
-                        <div class="tf-mini-cart-view-checkout">
-                            <a href="view-cart.html"
-                                class="tf-btn animate-btn d-inline-flex bg-dark-2 w-100 justify-content-center">View
-                                cart</a>
-                            <a href="checkout.html"
-                                class="tf-btn btn-out-line-dark2 w-100 justify-content-center"><span>Check
-                                    out</span></a>
-                        </div>
+                       
                     </div>
                 </div>
                 <div class="tf-mini-cart-tool-openable add-gift">
@@ -1144,3 +1020,121 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+$(document).ready(function () {
+    $('#form_register').submit(function (e) {
+        e.preventDefault();
+
+        let firstName = $('#first_name').val().trim();
+        let lastName = $('#last_name').val().trim();
+        let username = $('#name').val().trim();
+        let email = $('#email').val().trim();
+        let password = $('#password').val();
+        let confirmPassword = $('#password_confirm').val();
+        let phone = $('#phone').val().trim();
+        let address = $('#address').val().trim();
+        let gender = $('#gender').val();
+        let agreeTerms = $('#agree_terms').prop('checked');
+
+        if (firstName === '' || lastName === '') {
+            Swal.fire("Lỗi", "Họ và Tên không được để trống!", "error");
+            return;
+        }
+
+        if (username === '') {
+            Swal.fire("Lỗi", "Tên đăng nhập không được để trống!", "error");
+            return;
+        }
+
+        let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            Swal.fire("Lỗi", "Email không hợp lệ!", "error");
+            return;
+        }
+
+        if (password.length < 6) {
+            Swal.fire("Lỗi", "Mật khẩu phải có ít nhất 6 ký tự!", "error");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            Swal.fire("Lỗi", "Mật khẩu không trùng khớp!", "error");
+            return;
+        }
+
+        let phoneRegex = /^(0[1-9][0-9]{8,9})$/;
+        if (phone !== '' && !phoneRegex.test(phone)) {
+            Swal.fire("Lỗi", "Số điện thoại không hợp lệ!", "error");
+            return;
+        }
+
+        if (gender === '') {
+            Swal.fire("Lỗi", "Vui lòng chọn giới tính!", "error");
+            return;
+        }
+
+        if (!agreeTerms) {
+            Swal.fire("Lỗi", "Bạn phải đồng ý với các điều khoản!", "error");
+            return;
+        }
+
+        let formData = new FormData(this);
+        formData.append('status', 1);
+        formData.append('is_admin', 0);
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        let registerUrl = $('meta[name="register-url"]').attr('content');
+        console.log("Register URL:", registerUrl); // Ghi log URL để gỡ lỗi
+
+        if (!registerUrl) {
+            Swal.fire("Lỗi", "Không tìm thấy URL đăng ký! Vui lòng kiểm tra cấu hình.", "error");
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "{{ route('web.register.store') }}",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                console.log("Success:", response); // Ghi log phản hồi thành công
+                Swal.fire({
+                    title: "Thành Công",
+                    text: "Đăng ký thành công!",
+                    icon: "success",
+                    showConfirmButton: true // Hiển thị nút xác nhận để người dùng tự đóng
+                });
+            },
+            error: function (xhr) {
+                console.log("Error:", xhr); // Ghi log lỗi
+                console.log("Status:", xhr.status); // Ghi log mã trạng thái
+                console.log("Response:", xhr.responseText); // Ghi log phản hồi lỗi
+                if (xhr.status === 400 && xhr.responseJSON?.errors) {
+                    let errorMessages = "";
+                    $.each(xhr.responseJSON.errors, function (field, messages) {
+                        messages.forEach(message => {
+                            errorMessages += `<p>⚠️ ${message}</p>`;
+                        });
+                    });
+
+                    Swal.fire({
+                        title: "Lỗi!",
+                        html: errorMessages,
+                        icon: "error"
+                    });
+                } else {
+                    Swal.fire("Lỗi", "Đăng ký thất bại! Vui lòng thử lại. Status: " + xhr.status, "error");
+                }
+            }
+        });
+    });
+});
+</script>

@@ -1,3 +1,17 @@
+<style>
+.logo-header {
+    display: block;
+
+    margin: 0px !important;
+}
+
+.logo {
+    width: 270px !important;
+
+
+}
+</style>
+
 <body>
 
     <!-- Scroll Top -->
@@ -23,14 +37,14 @@
                     </div>
                     <div class="col-xl-2 col-md-4 col-6">
                         <a href="index-2.html" class="logo-header">
-                            <img src="images/logo/logo.svg" alt="logo" class="logo">
+                            <img src="{{ asset('/images/Banner/logo7.jpg') }}" alt="logo" class="logo">
                         </a>
                     </div>
                     <div class="col-xl-8 d-none d-xl-block">
                         <nav class="box-navigation text-center">
                             <ul class="box-nav-menu">
                                 <li class="menu-item">
-                                    <a href="#" class="item-link">Home<i class="icon icon-arr-down"></i></a>
+                                    <a href="{{route('web3.home')}}" class="item-link">Home<i class="icon icon-arr-down"></i></a>
 
                                 </li>
                                 <li class="menu-item">

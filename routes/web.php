@@ -341,7 +341,7 @@ Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->nam
 Route::get('/login', [WebLoginController::class, 'index'])->name('web.login');
 Route::post('/login', [WebLoginController::class, 'store'])->name('login.store.web');
 Route::get('/register', [WebLoginController::class, 'register'])->name('web.register');
-Route::post('/register', [WebLoginController::class, 'registerStore'])->name('web.register.store');
+Route::post('/', [WebLoginController::class, 'registerStore'])->name('web.register.store');
 Route::get('/logout', [WebLoginController::class, 'logout'])->name('web.logout');
 
 //Forget Password
@@ -361,6 +361,8 @@ Route::get('login/google/callback', [HomeController::class, 'handleGoogleCallbac
 Route::get('/web3', [Web2Controller::class, 'index'])->name('web3.home');
 Route::get('web3/shop', [Web2Controller::class, 'shop'])->name('web3.shop');
 Route::get('web3/shop-detail', [Web2Controller::class, 'shopdetail'])->name('web3.shop.detail');
+Route::get('web3/shop-detail/{id}', [WebController::class, 'shopdetail'])->name('web3.shop.detail');
+
 //web
 Route::get('/', [WebController::class, 'index'])->name('web.home');
 Route::get('/', [WebController::class, 'index'])->name('web.home');
@@ -454,7 +456,7 @@ Route::middleware(['auth'])->group(function () {
         // Áp mã giảm giá
         Route::post('/cart/apply-promotion', [CartController::class, 'applyPromotion'])->name('cart.applyPromotion');
         Route::get('/viewCart/show', [CartController::class, 'showHeaderCart'])->name('cart.showHeaderCart');
-        Route::post('/cart/removesss/{id}', [CartController::class, 'remove'])->name('cart.removess');
+        Route::post('/cart/removesss/{key}', [CartController::class, 'remove'])->name('cart.removess');
         Route::post('/cart/checkout-selected', [CartController::class, 'checkoutSelected'])->name('cart.checkoutSelected');
         // routes/web.php
 Route::post('/cart/select-items', [CartController::class, 'selectItems'])->name('cart.selectItems');

@@ -1,282 +1,89 @@
 @extends('web3.layout.master2')
-@section('content')
 
-<body>
-    <div id="wrapper">
-        <!-- Breadcrumb -->
-        <div class="tf-breadcrumb space-t">
-            <div class="container">
-                <ul class="breadcrumb-list">
-                    <li class="item-breadcrumb">
-                        <a href="index-2.html" class="text">Home</a>
-                    </li>
-                    <li class="item-breadcrumb dot">
-                        <span></span>
-                    </li>
-                    <li class="item-breadcrumb">
-                        <a href="shop-collection-list.html" class="text">Collections</a>
-                    </li>
-                    <li class="item-breadcrumb dot">
-                        <span></span>
-                    </li>
-                    <li class="item-breadcrumb">
-                        <span class="text">Women</span>
-                    </li>
-                </ul>
-            </div>
+@section('content')
+<div id="wrapper">
+    {{-- Breadcrumb --}}
+    <div class="tf-breadcrumb space-t">
+        <div class="container">
+            <ul class="breadcrumb-list">
+                <li class="item-breadcrumb">
+                    <a href="{{ route('web3.home') }}" class="text">Trang chủ</a>
+                </li>
+                <li class="item-breadcrumb dot">
+                    <span></span>
+                </li>
+                <li class="item-breadcrumb">
+                    <a href="{{ route('web3.shop') }}" class="text">Nước Hoa</a>
+                </li>
+            </ul>
         </div>
-        <!-- /Breadcrumb -->
-        <!-- Title Page -->
-        <section class="page-title flat-spacing-4 pt-0">
-            <div class="container">
-                <div class="box-title text-center justify-items-center">
-                    <h4 class="title">Women</h4>
-                    <p class="text-main">Discover our carefully curated women's collection, where timeless elegance
-                        meets modern style.</p>
-                    <a href="#" class="tf-btn btn-out-line-dark2">Read More</a>
-                </div>
-            </div>
-        </section>
-        <!-- /Title Page -->
-        <!-- Section Product -->
-        <section class="flat-spacing-2 pt-0">
+    </div>
+
+    <section class="flat-spacing-2 pt-0">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-3">
-                        <div class="canvas-sidebar sidebar-filter canvas-filter left">
-                            <div class="canvas-wrapper">
-                                <div class="canvas-header d-flex d-xl-none">
-                                    <span class="title">Filter</span>
-                                    <span class="icon-close icon-close-popup close-filter"></span>
-                                </div>
-                                <div class="canvas-body">
-                                    <div class="widget-facet">
-                                        <div class="facet-title text-xl fw-medium" data-bs-target="#collections"
-                                            data-bs-toggle="collapse" aria-expanded="true" aria-controls="collections">
-                                            <span>Collections</span>
-                                            <span class="icon icon-arrow-up"></span>
-                                        </div>
-                                        <div id="collections" class="collapse show">
-                                            <ul class="collapse-body list-categories current-scrollbar">
-                                                <li class="cate-item">
-                                                    <a class="text-sm link" href="shop-default.html">
-                                                        <span>Men’s top</span>
-                                                        <span class="count">(20)</span>
-                                                    </a>
-                                                </li>
-                                                <li class="cate-item">
-                                                    <a class="text-sm link" href="shop-default.html">
-                                                        <span>Men</span>
-                                                        <span class="count">(20)</span>
-                                                    </a>
-                                                </li>
-                                                <li class="cate-item">
-                                                    <a class="text-sm link" href="shop-default.html">
-                                                        <span>Women</span>
-                                                        <span class="count">(20)</span>
-                                                    </a>
-                                                </li>
-                                                <li class="cate-item">
-                                                    <a class="text-sm link" href="shop-default.html">
-                                                        <span>Kid</span>
-                                                        <span class="count">(20)</span>
-                                                    </a>
-                                                </li>
-                                                <li class="cate-item">
-                                                    <a class="text-sm link" href="shop-default.html">
-                                                        <span>T-shirt</span>
-                                                        <span class="count">(20)</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="widget-facet">
-                                        <div class="facet-title text-xl fw-medium" data-bs-target="#availability"
-                                            role="button" data-bs-toggle="collapse" aria-expanded="true"
-                                            aria-controls="availability">
-                                            <span>Availability</span>
-                                            <span class="icon icon-arrow-up"></span>
-                                        </div>
-                                        <div id="availability" class="collapse show">
-                                            <ul class="collapse-body filter-group-check current-scrollbar">
-                                                <li class="list-item">
-                                                    <input type="radio" name="availability" class="tf-check"
-                                                        id="inStock">
-                                                    <label for="inStock" class="label"><span>In stock</span>&nbsp;<span
-                                                            class="count">(20)</span></label>
-                                                </li>
-                                                <li class="list-item">
-                                                    <input type="radio" name="availability" class="tf-check"
-                                                        id="outStock">
-                                                    <label for="outStock" class="label"><span>Out of
-                                                            stock</span>&nbsp;<span class="count">(3)</span></label>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="widget-facet">
-                                        <div class="facet-title text-xl fw-medium" data-bs-target="#price" role="button"
-                                            data-bs-toggle="collapse" aria-expanded="true" aria-controls="price">
-                                            <span>Price</span>
-                                            <span class="icon icon-arrow-up"></span>
-                                        </div>
-                                        <div id="price" class="collapse show">
-                                            <div class="collapse-body widget-price filter-price">
-                                                <span class="reset-price">Reset</span>
-                                                <div class="price-val-range" id="price-value-range" data-min="0"
-                                                    data-max="500"></div>
-                                                <div class="box-value-price">
-                                                    <span class="text-sm">Price:</span>
-                                                    <div class="price-box">
-                                                        <div class="price-val" id="price-min-value" data-currency="$">
-                                                        </div>
-                                                        <span>-</span>
-                                                        <div class="price-val" id="price-max-value" data-currency="$">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="widget-facet">
-                                        <div class="facet-title text-xl fw-medium" data-bs-target="#color" role="button"
-                                            data-bs-toggle="collapse" aria-expanded="true" aria-controls="color">
-                                            <span>Color</span>
-                                            <span class="icon icon-arrow-up"></span>
-                                        </div>
-                                        <div id="color" class="collapse show">
-                                            <div class="collapse-body filter-color-box flat-check-list">
-                                                <div class="check-item color-item color-check"><span
-                                                        class="color bg-yellow"></span><span
-                                                        class="color-text">Yellow</span></div>
-                                                <div class="check-item color-item color-check"><span
-                                                        class="color bg-dark"></span><span
-                                                        class="color-text">Black</span></div>
-                                                <div class="check-item color-item color-check line"><span
-                                                        class="color bg-white"></span><span
-                                                        class="color-text">White</span></div>
-                                                <div class="check-item color-item color-check"><span
-                                                        class="color bg-purple-3"></span><span
-                                                        class="color-text">Purple</span></div>
-                                                <div class="check-item color-item color-check"><span
-                                                        class="color bg-light-orange"></span><span
-                                                        class="color-text">Light Orange</span></div>
-                                                <div class="check-item color-item color-check"><span
-                                                        class="color bg-light-pink-4"></span><span
-                                                        class="color-text">Light Pink</span></div>
-                                                <div class="check-item color-item color-check"><span
-                                                        class="color bg-pink"></span><span
-                                                        class="color-text">Pink</span></div>
-                                                <div class="check-item color-item color-check"><span
-                                                        class="color bg-dark-green"></span><span class="color-text">Dark
-                                                        Green</span></div>
-                                                <div class="check-item color-item color-check"><span
-                                                        class="color bg-grey-4"></span><span
-                                                        class="color-text">Grey</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="widget-facet">
-                                        <div class="facet-title text-xl fw-medium" data-bs-target="#size" role="button"
-                                            data-bs-toggle="collapse" aria-expanded="true" aria-controls="size">
-                                            <span>Size</span>
-                                            <span class="icon icon-arrow-up"></span>
-                                        </div>
-                                        <div id="size" class="collapse show">
-                                            <div class="collapse-body filter-size-box flat-check-list">
-                                                <div class="check-item size-item size-check"><span
-                                                        class="size">XS</span>&nbsp;<span class="count">(10)</span>
-                                                </div>
-                                                <div class="check-item size-item size-check"><span
-                                                        class="size">S</span>&nbsp;<span class="count">(8)</span></div>
-                                                <div class="check-item size-item size-check"><span
-                                                        class="size">L</span>&nbsp;<span class="count">(20)</span></div>
-                                                <div class="check-item size-item size-check"><span
-                                                        class="size">M</span>&nbsp;<span class="count">(10)</span></div>
-                                                <div class="check-item size-item size-check"><span
-                                                        class="size">XL</span>&nbsp;<span class="count">(20)</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="widget-facet">
-                                        <div class="facet-title text-xl fw-medium" data-bs-target="#brand" role="button"
-                                            data-bs-toggle="collapse" aria-expanded="true" aria-controls="brand">
-                                            <span>Brand</span>
-                                            <span class="icon icon-arrow-up"></span>
-                                        </div>
-                                        <div id="brand" class="collapse show">
-                                            <ul class="collapse-body filter-group-check current-scrollbar">
-                                                <li class="list-item">
-                                                    <input type="radio" name="brand" class="tf-check" id="Vineta">
-                                                    <label for="Vineta" class="label"><span>Vineta</span>&nbsp;<span
-                                                            class="count">(11)</span></label>
-                                                </li>
-                                                <li class="list-item">
-                                                    <input type="radio" name="brand" class="tf-check" id="Zotac">
-                                                    <label for="Zotac" class="label"><span>Zotac</span>&nbsp;<span
-                                                            class="count">(20)</span></label>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="widget-facet">
-                                        <div class="facet-title text-xl fw-medium"><span>On sale</span></div>
-                                        <ul class="collapse-body list-recent">
-                                            <li>
-                                                <div class="recent-blog-item">
-                                                    <a href="product-detail.html" class="img-product"><img
-                                                            src="images/products/recent/recent6.jpg" alt="img"></a>
-                                                    <div class="content">
-                                                        <a href="product-detail.html"
-                                                            class="title text-md link fw-medium">Striped short sleeve
-                                                            shirt</a>
-                                                        <div class="price text-md fw-medium">
-                                                            <span class="new-price">$120.00</span>
-                                                            <span class="old-price">$100.00</span>
-                                                        </div>
-                                                        <p class="text-sm">3 color available</p>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="recent-blog-item">
-                                                    <a href="product-detail.html" class="img-product"><img
-                                                            src="images/products/recent/recent7.jpg" alt="img"></a>
-                                                    <div class="content">
-                                                        <a href="product-detail.html"
-                                                            class="title text-md link fw-medium">Striped short sleeve
-                                                            shirt</a>
-                                                        <div class="price text-md fw-medium">
-                                                            <span class="new-price">$120.00</span>
-                                                            <span class="old-price">$100.00</span>
-                                                        </div>
-                                                        <p class="text-sm">3 color available</p>
+                    <form id="filter-form" method="GET">
+                    <ul class="collapse-body list-categories current-scrollbar">
+    @foreach($categories as $category)
+        <li class="cate-item">
+        <a href="{{ route('web.shopByCate', ['cate_id' => $category->id]) }}">
 
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="widget-facet">
-                                        <div class="sb-banner hover-img">
-                                            <div class="image img-style">
-                                                <img src="images/blog/sb-banner.jpg"
-                                                    data-src="./images/blog/sb-banner.jpg" alt="banner"
-                                                    class="lazyload">
-                                            </div>
-                                            <div class="banner-content">
-                                                <p class="title">
-                                                    Elevate <br> Your Style
-                                                </p>
-                                                <a href="#" class="tf-btn btn-white hover-primary">Shop Now</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <span>{{ $category->name }}</span>
+            </a>
+        </li>
+    @endforeach
+</ul>
+@php
+    $priceOptions = [
+        '0-500000' => 'Dưới 500K',
+        '500000-1000000' => '500K - 1 triệu',
+        '1000000-2000000' => '1 triệu - 2 triệu',
+        '2000000-99999999' => 'Trên 2 triệu'
+    ];
+@endphp
+
+@foreach($priceOptions as $range => $label)
+    <div class="check-item">
+        <input type="checkbox" name="price_range[]" value="{{ $range }}"
+            {{ in_array($range, (array) request()->price_range) ? 'checked' : '' }}>
+        <label>{{ $label }}</label>
+    </div>
+@endforeach
+<ul class="collapse-body filter-group-check current-scrollbar">
+    @foreach($brands as $brand)
+        <li class="list-item">
+            <input type="checkbox" name="brand[]" class="tf-check" id="brand_{{ $brand->id }}"
+                value="{{ $brand->id }}"
+                {{ in_array($brand->id, (array) request()->brand) ? 'checked' : '' }}>
+            <label for="brand_{{ $brand->id }}" class="label">
+                <span>{{ $brand->name }}</span>
+            </label>
+        </li>
+    @endforeach
+</ul>
+<div class="collapse-body filter-size-box flat-check-list">
+    @foreach($capacities as $value)
+        <div class="check-item size-item size-check">
+            <input type="checkbox" name="capacity[]" id="capacity_{{ $loop->index }}" value="{{ $value->value }}"
+                {{ in_array($value->value, (array) request()->capacity) ? 'checked' : '' }}>
+            <label for="capacity_{{ $loop->index }}">{{ $value->value }}</label>
+        </div>
+    @endforeach
+</div>
+<div class="collapse-body filter-size-box flat-check-list">
+    @foreach($concentrations as $value)
+        <div class="check-item">
+            <input type="checkbox" name="concentration[]" id="concentration_{{ $loop->index }}" value="{{ $value->value }}"
+                {{ in_array($value->value, (array) request()->concentration) ? 'checked' : '' }}>
+            <label for="concentration_{{ $loop->index }}">{{ $value->value }}</label>
+        </div>
+    @endforeach
+</div>
+
+
+</form>
+
                     </div>
                     <div class="col-xl-9">
                         <div class="tf-shop-control">
@@ -286,24 +93,24 @@
                                 </button>
                                 <div class="tf-dropdown-sort" data-bs-toggle="dropdown">
                                     <div class="btn-select">
-                                        <span class="text-sort-value">Best selling</span>
+                                        <span class="text-sort-value">Bán chạy nhất</span>
                                         <span class="icon icon-arr-down"></span>
                                     </div>
                                     <div class="dropdown-menu">
                                         <div class="select-item active" data-sort-value="best-selling">
-                                            <span class="text-value-item">Best selling</span>
+                                            <span class="text-value-item">Bán chạy nhất</span>
                                         </div>
                                         <div class="select-item" data-sort-value="a-z">
-                                            <span class="text-value-item">Alphabetically, A-Z</span>
+                                            <span class="text-value-item">A-Z</span>
                                         </div>
                                         <div class="select-item" data-sort-value="z-a">
-                                            <span class="text-value-item">Alphabetically, Z-A</span>
+                                            <span class="text-value-item">Z-A</span>
                                         </div>
                                         <div class="select-item" data-sort-value="price-low-high">
-                                            <span class="text-value-item">Price, low to high</span>
+                                            <span class="text-value-item">Giá thấp đến cao</span>
                                         </div>
                                         <div class="select-item" data-sort-value="price-high-low">
-                                            <span class="text-value-item">Price, high to low</span>
+                                            <span class="text-value-item">Giá cao xuống thấp</span>
                                         </div>
                                     </div>
                                 </div>
@@ -311,13 +118,7 @@
                             <ul class="tf-control-layout">
 
 
-                                <li class="tf-view-layout-switch sw-layout-3 active" data-value-layout="tf-col-3">
-                                    <div class="item icon-grid-3">
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
-                                    </div>
-                                </li>
+
                                 <li class="tf-view-layout-switch sw-layout-4" data-value-layout="tf-col-4">
                                     <div class="item icon-grid-4">
                                         <span></span>
@@ -335,219 +136,73 @@
                                 <div id="product-count-list" class="count-text"></div>
                                 <div id="applied-filters"></div>
                                 <button id="remove-all" class="remove-all-filters" style="display: none;"><i
-                                        class="icon icon-close"></i> Clear all filter</button>
+                                        class="icon icon-close"></i> Xóa tất cả bộ lọc</button>
                             </div>
-                            <div class="tf-list-layout wrapper-shop" id="listLayout" style="display: none;">
-                                <!-- Card Product 1 -->
-                                <div class="card-product style-list" data-availability="In stock" data-brand="Vineta">
-                                    <div class="card-product-wrapper">
-                                        <a href="product-detail.html" class="product-img">
-                                            <img class="img-product lazyload"
-                                                data-src="images/products/fashion/product-16.jpg"
-                                                src="images/products/fashion/product-16.jpg" alt="image-product">
-                                            <img class="img-hover lazyload"
-                                                data-src="images/products/fashion/product-9.jpg"
-                                                src="images/products/fashion/product-9.jpg" alt="image-product">
-                                        </a>
-                                    </div>
-                                    <div class="card-product-info">
-                                        <div class="info-list">
-                                            <a href="product-detail.html"
-                                                class="name-product link fw-medium text-md">Graphic Printed Pure Cotton
-                                                T-shirt</a>
-                                            <p class="price-wrap fw-medium text-md">
-                                                <span class="price-new text-primary">$50.00</span>
-                                                <span class="price-old">$70.00</span>
-                                            </p>
-                                            <p class="decs text-sm text-main text-line-clamp-2">
-                                                Product Specifications Care for fiber: 30% more recycled polyester. We
-                                                label
-                                                garments
-                                                manufactured using environmentally friendly technologies and raw
-                                                materials with the
-                                                Join
-                                                Life label.
-                                            </p>
-                                            <ul class="list-color-product">
-                                                <li class="list-color-item color-swatch active">
-                                                    <span class="d-none color-filter">Yellow</span>
-                                                    <span class="swatch-value bg-yellow"></span>
-                                                    <img class="lazyload"
-                                                        data-src="images/products/fashion/product-16.jpg"
-                                                        src="images/products/fashion/product-16.jpg"
-                                                        alt="image-product">
-                                                </li>
-                                                <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                    <span class="d-none color-filter">Black</span>
-                                                    <span class="swatch-value bg-dark"></span>
-                                                    <img class=" lazyload"
-                                                        data-src="images/products/fashion/product-9.jpg"
-                                                        src="images/products/fashion/product-9.jpg" alt="image-product">
-                                                </li>
-                                                <li class="list-color-item color-swatch">
-                                                    <span class="d-none color-filter">Grey</span>
-                                                    <span class="swatch-value bg-grey-4"></span>
-                                                    <img class=" lazyload"
-                                                        data-src="images/products/fashion/product-4.jpg"
-                                                        src="images/products/fashion/product-7.jpg" alt="image-product">
-                                                </li>
-                                            </ul>
-                                            <ul class="size-box">
-                                                <li class="size-item text-xs">S</li>
-                                                <li class="size-item text-xs">M</li>
-                                                <li class="size-item text-xs">L</li>
-                                                <li class="size-item text-xs">XL</li>
-                                            </ul>
-                                        </div>
-                                        <div class="list-product-btn">
-                                            <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                class="tf-btn btn-main-product animate-btn">Add
-                                                To
-                                                cart</a>
-                                            <a href="javascript:void(0);" class="box-icon wishlist hover-tooltip">
-                                                <span class="icon icon-heart2"></span>
-                                                <span class="tooltip">Add to Wishlist</span>
-                                            </a>
-                                            <a href="#compare" data-bs-toggle="offcanvas" aria-controls="compare"
-                                                class="box-icon compare hover-tooltip">
-                                                <span class="icon icon-compare3"></span>
-                                                <span class="tooltip">Add to Compare</span>
-                                            </a>
-                                        </div>
 
-                                    </div>
-                                </div>
-
-                                <!-- Pagination -->
-                                <ul class="wg-pagination">
-                                    <li class="active">
-                                        <div class="pagination-item">1</div>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="pagination-item">2</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="pagination-item">3</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="pagination-item"><i class="icon-arr-right2"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
                             <div class="wrapper-shop tf-grid-layout tf-col-3" id="gridLayout">
-                                <!-- Card Product 1 -->
-                                <div class="card-product grid style-1 card-product-size" data-availability="In stock"
-                                    data-brand="Vineta">
-                                    <div class="card-product-wrapper">
-                                        <a href="product-detail.html" class="product-img">
-                                            <img class="img-product lazyload"
-                                                data-src="images/products/fashion/product-19.jpg"
-                                                src="images/products/fashion/product-19.jpg" alt="image-product">
-                                            <img class="img-hover lazyload"
-                                                data-src="images/products/fashion/women-grey-2.jpg"
-                                                src="images/products/fashion/women-grey-2.jpg" alt="image-product">
-                                        </a>
-                                        <div class="on-sale-wrap"><span class="on-sale-item">20% Off</span></div>
-                                        <ul class="list-product-btn">
-                                            <li>
-                                                <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                    class="hover-tooltip tooltip-left box-icon">
-                                                    <span class="icon icon-cart2"></span>
-                                                    <span class="tooltip">Add to Cart</span>
-                                                </a>
-                                            </li>
-                                            <li class="wishlist">
-                                                <a href="javascript:void(0);"
-                                                    class="hover-tooltip tooltip-left box-icon">
-                                                    <span class="icon icon-heart2"></span>
-                                                    <span class="tooltip">Add to Wishlist</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#quickView" data-bs-toggle="modal"
-                                                    class="hover-tooltip tooltip-left box-icon quickview">
-                                                    <span class="icon icon-view"></span>
-                                                    <span class="tooltip">Quick View</span>
-                                                </a>
-                                            </li>
-                                            <li class="compare">
-                                                <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                                    class="hover-tooltip tooltip-left box-icon">
-                                                    <span class="icon icon-compare"></span>
-                                                    <span class="tooltip">Add to Compare</span>
-                                                </a>
-                                            </li>
-                                        </ul>
+                            <div class="wrapper-shop tf-grid-layout tf-col-3" id="gridLayout">
+    @include('web3.Home.product_list')
+</div>
 
-
-                                    </div>
-                                    <div class="card-product-info">
-                                        <a href="product-detail.html" class="name-product link fw-medium text-md">Loose
-                                            Fit Tee</a>
-                                        <p class="price-wrap fw-medium">
-                                            <span class="price-new text-primary">$120.00</span>
-                                            <span class="price-old">$150.00</span>
-                                        </p>
-                                        <ul class="list-color-product">
-                                            <li class="list-color-item hover-tooltip tooltip-bot color-swatch active">
-                                                <span class="tooltip color-filter">Grey</span>
-                                                <span class="swatch-value bg-grey-4"></span>
-                                                <img class=" lazyload" data-src="images/products/fashion/product-19.jpg"
-                                                    src="images/products/fashion/product-19.jpg" alt="image-product">
-                                            </li>
-                                            <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                <span class="tooltip color-filter">Black</span>
-                                                <span class="swatch-value bg-dark"></span>
-                                                <img class=" lazyload" data-src="images/products/fashion/product-9.jpg"
-                                                    src="images/products/fashion/product-9.jpg" alt="image-product">
-                                            </li>
-                                            <li class="list-color-item color-swatch hover-tooltip tooltip-bot line">
-                                                <span class="tooltip color-filter">White</span>
-                                                <span class="swatch-value bg-white"></span>
-                                                <img class=" lazyload" data-src="images/products/fashion/product-4.jpg"
-                                                    src="images/products/fashion/product-4.jpg" alt="image-product">
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <!-- Pagination -->
-                                <ul class="wg-pagination">
-                                    <li class="active">
-                                        <div class="pagination-item">1</div>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="pagination-item">2</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="pagination-item">3</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="pagination-item"><i class="icon-arr-right2"></i></a>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <div class="flat-spacing pt-0">
-            <div class="container">
-                <p class="text text-md text-center">
-                    Our women's collection brings you a unique blend of classic sophistication and the latest fashion
-                    trends. Whether you're looking for versatile daywear, stylish work attire, or statement pieces for
-                    special occasions, this collection has it all. Each garment is thoughtfully crafted with attention
-                    to detail, using high-quality fabrics to ensure lasting comfort and a flawless fit. From chic
-                    blouses and tailored pants to stunning dresses and outerwear, you'll find pieces that seamlessly
-                    blend elegance with practicality. Our collection is designed to empower women with confidence and
-                    style, no matter the occasion.
-                </p>
-                <p class="mt_12 text-md text-center">Looking for more? Don’t miss out on our other exciting collections
-                    for <span class="text-primary text-decoration-underline fw-medium">BAGS</span> and <span
-                        class="text-primary text-decoration-underline fw-medium">ACCESSORIES</span>.</p>
+
+    {{-- Icon box dịch vụ --}}
+    <div class="flat-spacing-5 line-top flat-wrap-iconbox">
+        <div class="container">
+            <div dir="ltr" class="swiper tf-swiper wow fadeInUp" data-swiper='{
+                "slidesPerView": 1,
+                "spaceBetween": 12,
+                "speed": 800,
+                "observer": true,
+                "observeParents": true,
+                "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
+                "breakpoints": {
+                    "575": { "slidesPerView": 2, "spaceBetween": 24}, 
+                    "768": { "slidesPerView": 3, "spaceBetween": 24},
+                    "1200": { "slidesPerView": 3, "spaceBetween": 100},
+                    "1440": { "slidesPerView": 3, "spaceBetween": 205}
+                }
+            }'>
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="tf-icon-box style-2">
+                            <svg width="48" height="48" ...>...</svg>
+                            <div class="content">
+                                <div class="title">Free Shipping</div>
+                                <p class="desc text-grey-2">Miễn phí vận chuyển cho đơn hàng từ 150.000đ</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="tf-icon-box style-2">
+                            <svg width="48" height="48" ...>...</svg>
+                            <div class="content">
+                                <div class="title">Hỗ trợ 24/7</div>
+                                <p class="desc text-grey-2">Luôn sẵn sàng hỗ trợ khách hàng</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="tf-icon-box style-2">
+                            <svg width="48" height="48" ...>...</svg>
+                            <div class="content">
+                                <div class="title">Đảm bảo chính hãng</div>
+                                <p class="desc text-grey-2">100% sản phẩm chính hãng, có hóa đơn</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sw-pagination-iconbox"></div>
             </div>
         </div>
+    </div>
+</div>
+
         <!-- /Section Product -->
         <div class="flat-spacing-5 line-top flat-wrap-iconbox">
             <div class="container">
@@ -618,4 +273,58 @@
     </div>
 </body>
 
+
 @endsection
+<script>
+    $(document).ready(function () {
+    function fetchFilteredProducts(url = null) {
+        const formData = new FormData();
+
+        // Lấy dữ liệu từ các filter
+        $('.filter-group-check input:checked').each(function () {
+            formData.append($(this).attr('name') + '[]', $(this).val());
+        });
+
+        // Lấy sort nếu có
+        const sort = $('.text-sort-value').data('sort-value');
+        if (sort) {
+            formData.append('sort', sort);
+        }
+
+        $.ajax({
+            url: url || '{{ route('web3.shop') }}',
+            method: 'GET',
+            data: Object.fromEntries(formData.entries()),
+            beforeSend: function () {
+                $('#gridLayout').html('<p>Đang tải...</p>');
+            },
+            success: function (data) {
+                $('#gridLayout').html(data);
+            },
+            error: function () {
+                alert('Có lỗi xảy ra, vui lòng thử lại.');
+            }
+        });
+    }
+
+    // Gọi khi nhấn vào các filter
+    $('.filter-group-check input, .flat-check-list input').on('change', function () {
+        fetchFilteredProducts();
+    });
+
+    // Gọi khi click chuyển trang
+    $(document).on('click', '.pagination a', function (e) {
+        e.preventDefault();
+        const url = $(this).attr('href');
+        fetchFilteredProducts(url);
+    });
+
+    // Sort
+    $('.select-item').on('click', function () {
+        const value = $(this).data('sort-value');
+        $('.text-sort-value').data('sort-value', value).text($(this).text());
+        fetchFilteredProducts();
+    });
+});
+
+</script>
