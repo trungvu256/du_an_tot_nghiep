@@ -1,144 +1,89 @@
 @extends('web3.layout.master2')
+
 @section('content')
-
-<body>
-    <div id="wrapper">
-        <!-- Breadcrumb -->
-        <div class="tf-breadcrumb space-t">
-            <div class="container">
-                <ul class="breadcrumb-list">
-                    <li class="item-breadcrumb">
-                        <a href="index-2.html" class="text">Trang chủ</a>
-                    </li>
-                    <li class="item-breadcrumb dot">
-                        <span></span>
-                    </li>
-                    <li class="item-breadcrumb">
-                        <a href="shop-collection-list.html" class="text">Nước Hoa</a>
-                    </li>
-                    <li class="item-breadcrumb dot">
-                        <span></span>
-                    </li>
-
-                </ul>
-            </div>
+<div id="wrapper">
+    {{-- Breadcrumb --}}
+    <div class="tf-breadcrumb space-t">
+        <div class="container">
+            <ul class="breadcrumb-list">
+                <li class="item-breadcrumb">
+                    <a href="{{ route('web3.home') }}" class="text">Trang chủ</a>
+                </li>
+                <li class="item-breadcrumb dot">
+                    <span></span>
+                </li>
+                <li class="item-breadcrumb">
+                    <a href="{{ route('web3.shop') }}" class="text">Nước Hoa</a>
+                </li>
+            </ul>
         </div>
-        <!-- /Breadcrumb -->
-        <!-- Title Page -->
+    </div>
 
-        <!-- /Title Page -->
-        <!-- Section Product -->
-        <section class="flat-spacing-2 pt-0">
+    <section class="flat-spacing-2 pt-0">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-3">
-                        <div class="canvas-sidebar sidebar-filter canvas-filter left">
-                            <div class="canvas-wrapper">
-                                <div class="canvas-header d-flex d-xl-none">
-                                    <span class="title">Filter</span>
-                                    <span class="icon-close icon-close-popup close-filter"></span>
-                                </div>
-                                <div class="canvas-body">
-                                    <div class="widget-facet">
-                                        <div class="facet-title text-xl fw-medium" data-bs-target="#collections"
-                                            data-bs-toggle="collapse" aria-expanded="true" aria-controls="collections">
-                                            <span>Danh mục</span>
-                                            <span class="icon icon-arrow-up"></span>
-                                        </div>
-                                        <div id="collections" class="collapse show">
-                                            <ul class="collapse-body list-categories current-scrollbar">
-                                                <li class="cate-item">
-                                                    <a class="text-sm link" href="shop-default.html">
-                                                        <span>Nước hoa nam</span>
-                                                        <span class="count">(20)</span>
-                                                    </a>
-                                                </li>
-                                                <li class="cate-item">
-                                                    <a class="text-sm link" href="shop-default.html">
-                                                        <span>Nước hoa nữ</span>
-                                                        <span class="count">(20)</span>
-                                                    </a>
-                                                </li>
+                    <form id="filter-form" method="GET">
+                    <ul class="collapse-body list-categories current-scrollbar">
+    @foreach($categories as $category)
+        <li class="cate-item">
+        <a href="{{ route('web.shopByCate', ['cate_id' => $category->id]) }}">
 
-                                            </ul>
-                                        </div>
-                                    </div>
+                <span>{{ $category->name }}</span>
+            </a>
+        </li>
+    @endforeach
+</ul>
+@php
+    $priceOptions = [
+        '0-500000' => 'Dưới 500K',
+        '500000-1000000' => '500K - 1 triệu',
+        '1000000-2000000' => '1 triệu - 2 triệu',
+        '2000000-99999999' => 'Trên 2 triệu'
+    ];
+@endphp
 
-                                    <div class="widget-facet">
-                                        <div class="facet-title text-xl fw-medium" data-bs-target="#price" role="button"
-                                            data-bs-toggle="collapse" aria-expanded="true" aria-controls="price">
-                                            <span>Giá</span>
-                                            <span class="icon icon-arrow-up"></span>
-                                        </div>
-                                        <div id="price" class="collapse show">
-                                            <div class="collapse-body widget-price filter-price">
-                                                <span class="reset-price">Đặt lại</span>
-                                                <div class="price-val-range" id="price-value-range" data-min="0"
-                                                    data-max="500"></div>
-                                                <div class="box-value-price">
-                                                    <span class="text-sm">Giá:</span>
-                                                    <div class="price-box">
-                                                        <div class="price-val" id="price-min-value" data-currency="$">
-                                                        </div>
-                                                        <span>-</span>
-                                                        <div class="price-val" id="price-max-value" data-currency="$">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="widget-facet">
-                                        <div class="facet-title text-xl fw-medium" data-bs-target="#size" role="button"
-                                            data-bs-toggle="collapse" aria-expanded="true" aria-controls="size">
-                                            <span>ML</span>
-                                            <span class="icon icon-arrow-up"></span>
-                                        </div>
-                                        <div id="size" class="collapse show">
-                                            <div class="collapse-body filter-size-box flat-check-list">
-                                                <div class="check-item size-item size-check"><span
-                                                        class="size">5ml</span>&nbsp;<span class="count">(10)</span>
-                                                </div>
-                                                <div class="check-item size-item size-check"><span
-                                                        class="size">10ml</span>&nbsp;<span class="count">(8)</span>
-                                                </div>
-                                                <div class="check-item size-item size-check"><span
-                                                        class="size">20ml</span>&nbsp;<span class="count">(20)</span>
-                                                </div>
-                                                <div class="check-item size-item size-check"><span
-                                                        class="size">30ml</span>&nbsp;<span class="count">(10)</span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="widget-facet">
-                                        <div class="facet-title text-xl fw-medium" data-bs-target="#brand" role="button"
-                                            data-bs-toggle="collapse" aria-expanded="true" aria-controls="brand">
-                                            <span>Thương hiệu</span>
-                                            <span class="icon icon-arrow-up"></span>
-                                        </div>
-                                        <div id="brand" class="collapse show">
-                                            <ul class="collapse-body filter-group-check current-scrollbar">
-                                                <li class="list-item">
-                                                    <input type="radio" name="brand" class="tf-check" id="Vineta">
-                                                    <label for="Vineta" class="label"><span>Vineta</span>&nbsp;<span
-                                                            class="count">(11)</span></label>
-                                                </li>
-                                                <li class="list-item">
-                                                    <input type="radio" name="brand" class="tf-check" id="Zotac">
-                                                    <label for="Zotac" class="label"><span>Zotac</span>&nbsp;<span
-                                                            class="count">(20)</span></label>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
+@foreach($priceOptions as $range => $label)
+    <div class="check-item">
+        <input type="checkbox" name="price_range[]" value="{{ $range }}"
+            {{ in_array($range, (array) request()->price_range) ? 'checked' : '' }}>
+        <label>{{ $label }}</label>
+    </div>
+@endforeach
+<ul class="collapse-body filter-group-check current-scrollbar">
+    @foreach($brands as $brand)
+        <li class="list-item">
+            <input type="checkbox" name="brand[]" class="tf-check" id="brand_{{ $brand->id }}"
+                value="{{ $brand->id }}"
+                {{ in_array($brand->id, (array) request()->brand) ? 'checked' : '' }}>
+            <label for="brand_{{ $brand->id }}" class="label">
+                <span>{{ $brand->name }}</span>
+            </label>
+        </li>
+    @endforeach
+</ul>
+<div class="collapse-body filter-size-box flat-check-list">
+    @foreach($capacities as $value)
+        <div class="check-item size-item size-check">
+            <input type="checkbox" name="capacity[]" id="capacity_{{ $loop->index }}" value="{{ $value->value }}"
+                {{ in_array($value->value, (array) request()->capacity) ? 'checked' : '' }}>
+            <label for="capacity_{{ $loop->index }}">{{ $value->value }}</label>
+        </div>
+    @endforeach
+</div>
+<div class="collapse-body filter-size-box flat-check-list">
+    @foreach($concentrations as $value)
+        <div class="check-item">
+            <input type="checkbox" name="concentration[]" id="concentration_{{ $loop->index }}" value="{{ $value->value }}"
+                {{ in_array($value->value, (array) request()->concentration) ? 'checked' : '' }}>
+            <label for="concentration_{{ $loop->index }}">{{ $value->value }}</label>
+        </div>
+    @endforeach
+</div>
 
 
-                                </div>
-                            </div>
-                        </div>
+</form>
+
                     </div>
                     <div class="col-xl-9">
                         <div class="tf-shop-control">
@@ -195,84 +140,68 @@
                             </div>
 
                             <div class="wrapper-shop tf-grid-layout tf-col-3" id="gridLayout">
-                                <!-- Card Product 1 -->
-                                <div class="card-product grid style-1 card-product-size" data-availability="In stock"
-                                    data-brand="Vineta">
-                                    <div class="card-product-wrapper">
-                                        <a href="product-detail.html" class="product-img">
-                                            <img class="img-product lazyload"
-                                                data-src="{{ asset('/images/Banner/sp1.jpg') }}"
-                                                src="{{ asset('/images/Banner/sp1.jpg') }}" alt="image-product">
-                                            <img class="img-hover lazyload"
-                                                data-src="{{ asset('/images/Banner/sp1.jpg') }}"
-                                                src="{{ asset('/images/Banner/sp1.jpg') }}" alt="image-product">
-                                        </a>
-                                        <div class="on-sale-wrap"><span class="on-sale-item">20% Off</span></div>
-                                        <ul class="list-product-btn">
-                                            <li>
-                                                <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                    class="hover-tooltip tooltip-left box-icon">
-                                                    <span class="icon icon-cart2"></span>
-                                                    <span class="tooltip">Add to Cart</span>
-                                                </a>
-                                            </li>
-                                            <li class="wishlist">
-                                                <a href="javascript:void(0);"
-                                                    class="hover-tooltip tooltip-left box-icon">
-                                                    <span class="icon icon-heart2"></span>
-                                                    <span class="tooltip">Add to Wishlist</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#quickView" data-bs-toggle="modal"
-                                                    class="hover-tooltip tooltip-left box-icon quickview">
-                                                    <span class="icon icon-view"></span>
-                                                    <span class="tooltip">Quick View</span>
-                                                </a>
-                                            </li>
-                                            <li class="compare">
-                                                <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                                    class="hover-tooltip tooltip-left box-icon">
-                                                    <span class="icon icon-compare"></span>
-                                                    <span class="tooltip">Add to Compare</span>
-                                                </a>
-                                            </li>
-                                        </ul>
+                            <div class="wrapper-shop tf-grid-layout tf-col-3" id="gridLayout">
+    @include('web3.Home.product_list')
+</div>
 
-
-                                    </div>
-                                    <div class="card-product-info">
-                                        <a href="product-detail.html" class="name-product link fw-medium text-md">Loose
-                                            Fit Tee</a>
-                                        <p class="price-wrap fw-medium">
-                                            <span class="price-new text-primary">$120.00</span>
-                                            <span class="price-old">$150.00</span>
-                                        </p>
-
-                                    </div>
-                                </div>
-
-                                <!-- Pagination -->
-                                <ul class="wg-pagination">
-                                    <li class="active">
-                                        <div class="pagination-item">1</div>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="pagination-item">2</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="pagination-item">3</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="pagination-item"><i class="icon-arr-right2"></i></a>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+
+    {{-- Icon box dịch vụ --}}
+    <div class="flat-spacing-5 line-top flat-wrap-iconbox">
+        <div class="container">
+            <div dir="ltr" class="swiper tf-swiper wow fadeInUp" data-swiper='{
+                "slidesPerView": 1,
+                "spaceBetween": 12,
+                "speed": 800,
+                "observer": true,
+                "observeParents": true,
+                "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
+                "breakpoints": {
+                    "575": { "slidesPerView": 2, "spaceBetween": 24}, 
+                    "768": { "slidesPerView": 3, "spaceBetween": 24},
+                    "1200": { "slidesPerView": 3, "spaceBetween": 100},
+                    "1440": { "slidesPerView": 3, "spaceBetween": 205}
+                }
+            }'>
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="tf-icon-box style-2">
+                            <svg width="48" height="48" ...>...</svg>
+                            <div class="content">
+                                <div class="title">Free Shipping</div>
+                                <p class="desc text-grey-2">Miễn phí vận chuyển cho đơn hàng từ 150.000đ</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="tf-icon-box style-2">
+                            <svg width="48" height="48" ...>...</svg>
+                            <div class="content">
+                                <div class="title">Hỗ trợ 24/7</div>
+                                <p class="desc text-grey-2">Luôn sẵn sàng hỗ trợ khách hàng</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="tf-icon-box style-2">
+                            <svg width="48" height="48" ...>...</svg>
+                            <div class="content">
+                                <div class="title">Đảm bảo chính hãng</div>
+                                <p class="desc text-grey-2">100% sản phẩm chính hãng, có hóa đơn</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sw-pagination-iconbox"></div>
+            </div>
+        </div>
+    </div>
+</div>
 
         <!-- /Section Product -->
         <div class="flat-spacing-5 line-top flat-wrap-iconbox">
@@ -344,4 +273,58 @@
     </div>
 </body>
 
+
 @endsection
+<script>
+    $(document).ready(function () {
+    function fetchFilteredProducts(url = null) {
+        const formData = new FormData();
+
+        // Lấy dữ liệu từ các filter
+        $('.filter-group-check input:checked').each(function () {
+            formData.append($(this).attr('name') + '[]', $(this).val());
+        });
+
+        // Lấy sort nếu có
+        const sort = $('.text-sort-value').data('sort-value');
+        if (sort) {
+            formData.append('sort', sort);
+        }
+
+        $.ajax({
+            url: url || '{{ route('web3.shop') }}',
+            method: 'GET',
+            data: Object.fromEntries(formData.entries()),
+            beforeSend: function () {
+                $('#gridLayout').html('<p>Đang tải...</p>');
+            },
+            success: function (data) {
+                $('#gridLayout').html(data);
+            },
+            error: function () {
+                alert('Có lỗi xảy ra, vui lòng thử lại.');
+            }
+        });
+    }
+
+    // Gọi khi nhấn vào các filter
+    $('.filter-group-check input, .flat-check-list input').on('change', function () {
+        fetchFilteredProducts();
+    });
+
+    // Gọi khi click chuyển trang
+    $(document).on('click', '.pagination a', function (e) {
+        e.preventDefault();
+        const url = $(this).attr('href');
+        fetchFilteredProducts(url);
+    });
+
+    // Sort
+    $('.select-item').on('click', function () {
+        const value = $(this).data('sort-value');
+        $('.text-sort-value').data('sort-value', value).text($(this).text());
+        fetchFilteredProducts();
+    });
+});
+
+</script>

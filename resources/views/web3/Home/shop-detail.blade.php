@@ -268,6 +268,7 @@
     </div>
 </body>
 
+
 <!-- JavaScript để xử lý chọn thuộc tính -->
 <script>
    document.addEventListener("DOMContentLoaded", function () {
@@ -482,5 +483,6 @@
     });
 });
 </script>
+
 
 @endsection
