@@ -9,7 +9,7 @@
         </div>
 
         {{-- Thông báo --}}
-        @if (session('success'))
+        {{-- @if (session('success'))
             <div id="successAlert" class="alert alert-success alert-dismissible fade show text-center" role="alert">
                 {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -20,7 +20,7 @@
                 {{ session('error') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        @endif
+        @endif --}}
 
         @php
             $status = request('status');
@@ -89,13 +89,13 @@
                 <li class="nav-item">
                     <a class="px-1 nav-link {{ $status == 5 ? 'active' : '' }}"
                         href="{{ route('admin.order', ['status' => 5]) }}">
-                        ↩️ Trả hàng
+                        ❌ Đã hủy
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="px-1 nav-link {{ $status == 6 ? 'active' : '' }}"
                         href="{{ route('admin.order', ['status' => 6]) }}">
-                        ❌ Đã hủy
+                         ↩️ Trả hàng
                     </a>
                 </li>
                 {{-- <li class="nav-item">
@@ -117,7 +117,7 @@
                     <input type="submit" class="btn btn-outline-primary rounded-pill px-3 py-0" value="Tìm kiếm">
                 </form>
             </div>
-            
+
             {{-- Form cập nhật trạng thái --}}
             <form action="{{ route('orders.updateStatus') }}" method="POST" id="bulk-update-form" class="col-4">
                 @csrf
@@ -150,7 +150,7 @@
                             <th>
                                 <input type="checkbox" id="select-all">
                             </th>
-                            <th>Mã đơn</th>
+                            <th>Mã đơn hàng</th>
                             <th>Khách hàng</th>
                             <th>Thành tiền</th>
                             <th>Trạng thái thanh toán</th>
@@ -164,34 +164,42 @@
                                 <td>
                                     <input type="checkbox" name="order_ids[]" value="{{ $order->id }}" class="order-checkbox">
                                 </td>
-                                <td>#ĐH{{ $order->id }}</td>
+                                <td>{{ $order->order_code }}</td>
                                 <td>{{ $order->user->name ?? '---' }}</td>
-                                <td>{{ number_format($order->total_price, 0, ',', '.') }}₫</td>
+                                <td>{{ number_format($order->total_price, 0, ',', '.') }} VNĐ</td>
                                 <td>
-                                    @if ($order->payment_status == 0)
-                                        <span class="badge bg-danger">🔴 Thanh toán thất bại</span>
-                                    @elseif ($order->payment_status == 1)
+                                    @if ($order->payment_status == 1)
                                         <span class="badge bg-success">🟢 Đã thanh toán</span>
                                     @elseif ($order->payment_status == 2)
-                                        <span class="badge bg-warning text-dark">🟡 Chưa thanh toán</span>
+                                        <span class="badge bg-info">🔵 Thanh toán khi nhận hàng</span>
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($order->status == 0)
-                                        <span class="badge bg-secondary">⏳ Chờ xử lý</span>
-                                    @elseif ($order->status == 1)
-                                        <span class="badge bg-info">📦 Chờ lấy hàng</span>
-                                    @elseif ($order->status == 2)
-                                        <span class="badge bg-warning">🚛 Đang giao</span>
-                                    @elseif ($order->status == 3)
-                                        <span class="badge bg-success">✅ Đã giao</span>
-                                    @elseif ($order->status == 4)
-                                        <span class="badge bg-dark">🏁 Hoàn tất</span>
-                                    @elseif ($order->status == 5)
-                                        <span class="badge bg-dark">↩️ Trả hàng</span>
-                                    @elseif ($order->status == 6)
-                                        <span class="badge bg-danger">❌ Đã hủy</span>
-                                    @endif
+                                    @switch($order->status)
+                                        @case(0)
+                                            <span class="badge bg-warning">⏳ Chờ xử lý</span>
+                                            @break
+                                        @case(1)
+                                            <span class="badge bg-info">📦 Chờ lấy hàng</span>
+                                            @break
+                                        @case(2)
+                                            <span class="badge bg-secondary">🚚 Đang giao</span>
+                                            @break
+                                        @case(3)
+                                            <span class="badge bg-success">✅ Đã giao</span>
+                                            @break
+                                        @case(4)
+                                            <span class="badge bg-dark">🏁 Hoàn tất</span>
+                                            @break
+                                        @case(5)
+                                            <span class="badge bg-danger">❌ Đã hủy</span>
+                                            @break
+                                        @case(6)
+                                            <span class="badge bg-secondary">↩️ Trả hàng</span>
+                                            @break
+                                        @default
+                                            <span class="badge bg-secondary">Không xác định</span>
+                                    @endswitch
                                 </td>
                                 <td>
                                     <a href="{{ route('admin.show.order', $order->id) }}" class="btn btn-sm btn-info">
@@ -214,6 +222,7 @@
             </div>
         </div>
     </div>
+
 
     {{-- Script xử lý checkbox và cập nhật trạng thái --}}
     <script>
@@ -314,4 +323,7 @@
             updateSelectedOrders();
         });
     </script>
+@endsection
+@section('scripts')
+@include('alert')
 @endsection

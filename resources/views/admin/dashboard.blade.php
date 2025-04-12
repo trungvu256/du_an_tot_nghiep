@@ -84,8 +84,10 @@
                                         <div class="card-body p-4">
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-grow-1 overflow-hidden">
-                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Tổng
-                                                        Đơn hàng</p>
+                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
+                                                        <a href="{{ route('admin.order') }}" class="text-decoration-none text-muted">Tổng
+                                                            Đơn hàng</a>
+                                                    </p>
                                                 </div>
                                                 <div class="flex-shrink-0">
                                                     <h5 class="text-success fs-14 mb-0">
@@ -112,14 +114,14 @@
                             </div>
 
                             <div class="row">
-                                
+
 
                                 <div class="col-xl-3 col-md-6">
                                     <div class="card card-animate">
                                         <div class="card-body p-4">
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-grow-1 overflow-hidden">
-                                                    <a href=""
+                                                    <a href="{{ route('admin.order', ['status' => 0]) }}"
                                                         class="text-uppercase fw-medium text-muted text-truncate mb-0">Đơn
                                                         hàng mới</a>
                                                 </div>
@@ -152,8 +154,9 @@
                                         <div class="card-body p-4">
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-grow-1 overflow-hidden">
-                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Đơn
-                                                        hàng đã giao</p>
+                                                    <a href="{{ route('admin.order', ['status' => 3]) }}"
+                                                        class="text-uppercase fw-medium text-muted text-truncate mb-0">Đơn
+                                                        hàng đã giao</a>
                                                 </div>
                                                 <div class="flex-shrink-0">
                                                     <h5 class="text-success fs-14 mb-0">
@@ -183,7 +186,8 @@
                                         <div class="card-body p-4">
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-grow-1 overflow-hidden">
-                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Đơn hàng hoàn tất</p>
+                                                    <a href="{{ route('admin.order', ['status' => 4]) }}"
+                                                        class="text-uppercase fw-medium text-muted text-truncate mb-0">Đơn hàng hoàn tất</a>
                                                 </div>
                                                 <div class="flex-shrink-0">
                                                     <h5 class="text-success fs-14 mb-0">
@@ -213,8 +217,9 @@
                                         <div class="card-body p-4">
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-grow-1 overflow-hidden">
-                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Đơn
-                                                        hàng đã huỷ</p>
+                                                        <a href="{{ route('admin.order', ['status' => 5]) }}"
+                                                        class="text-uppercase fw-medium text-muted text-truncate mb-0">Đơn
+                                                        hàng đã huỷ</a>
                                                 </div>
                                                 <div class="flex-shrink-0">
                                                     {{-- <h5 class="text-muted fs-14 mb-0">
@@ -306,7 +311,11 @@
                                                                     </div>
                                                                     <div class="flex-grow-1">
                                                                         <h5 class="fs-14 my-1">
-                                                                            <span class="text-reset">{{ $product->product_name }}</span>
+                                                                            <span class="text-reset">{{ $product->product_name }}
+                                                                                @if($product->size && $product->concentration)
+                                                                                    ({{ $product->size }}, {{ $product->concentration }})
+                                                                                @endif
+                                                                            </span>
                                                                         </h5>
                                                                     </div>
                                                                 </div>
@@ -360,7 +369,7 @@
                                                 <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
                                                     <thead class="text-muted table-light">
                                                         <tr>
-                                                            <th scope="col">Mã đơn</th>
+                                                            <th scope="col">Mã đơn hàng</th>
                                                             <th scope="col">Khách hàng</th>
                                                             <th scope="col">Sản phẩm</th>
                                                             <th scope="col">Tổng tiền</th>
@@ -373,25 +382,25 @@
                                                         @forelse($recentOrders as $order)
                                                             <tr>
                                                                 <td>
-                                                                    <span class="fw-medium">#ĐH{{ $order['id'] }}</span>
+                                                                    <span class="fw-medium">#{{ $order['order_code'] ?? 'N/A' }}</span>
                                                                 </td>
                                                                 <td>
                                                                     <div class="d-flex align-items-center">
-                                                                        <div class="flex-shrink-0 me-2">
-                                                                            <img src="{{ asset('storage/' . $order['user']['avatar']) }}" 
-                                                                                 alt="" 
+                                                                        {{-- <div class="flex-shrink-0 me-2">
+                                                                            <img src="{{ asset('storage/' . ($order['user']['avatar'] ?? 'default-avatar.png')) }}"
+                                                                                 alt=""
                                                                                  class="avatar-xs rounded-circle" />
-                                                                        </div>
-                                                                        <div class="flex-grow-1">{{ $order['user']['name'] }}</div>
+                                                                        </div> --}}
+                                                                        <div class="flex-grow-1">{{ $order['user']['name'] ?? 'Khách hàng' }}</div>
                                                                     </div>
                                                                 </td>
                                                                 <td>
-                                                                    <span class="text-truncate" style="max-width: 200px;" data-bs-toggle="tooltip" title="{{ $order['products'] }}">
-                                                                        {{ Str::limit($order['products'], 30) }}
+                                                                    <span class="text-truncate" style="max-width: 200px;" data-bs-toggle="tooltip" title="{{ $order['products'] ?? '' }}">
+                                                                        {{ Str::limit($order['products'] ?? '', 30) }}
                                                                     </span>
                                                                 </td>
                                                                 <td>
-                                                                    <span class="text-success">{{ number_format($order['total_price'], 0, ',', '.') }} VNĐ</span>
+                                                                    <span class="text-success">{{ number_format($order['total_price'] ?? 0, 0, ',', '.') }} VNĐ</span>
                                                                 </td>
                                                                 <td>
                                                                     @php
@@ -411,30 +420,36 @@
                                                                             3 => 'Đã giao',
                                                                             4 => 'Hoàn tất',
                                                                             5 => 'Đã hủy',
-                                                                            6 => 'Không xác định'
+                                                                            6 => 'Trả hàng'
                                                                         ];
+                                                                        $status = $order['status'] ?? 6;
+                                                                        $statusClassValue = $statusClass[$status] ?? $statusClass[6];
+                                                                        $statusTextValue = $statusText[$status] ?? $statusText[6];
                                                                     @endphp
-                                                                    <span class="badge {{ $statusClass[$order['status']] ?? $statusClass[6] }}">
-                                                                        {{ $statusText[$order['status']] ?? $statusText[6] }}
+                                                                    <span class="badge {{ $statusClassValue }}">
+                                                                        {{ $statusTextValue }}
                                                                     </span>
                                                                 </td>
                                                                 <td>
                                                                     @php
                                                                         $paymentClass = [
-                                                                            0 => 'bg-warning-subtle text-warning',    // Chưa thanh toán
-                                                                            1 => 'bg-success-subtle text-success'     // Đã thanh toán
+                                                                            1 => 'bg-success-subtle text-success',     // Đã thanh toán
+                                                                            2 => 'bg-info-subtle text-info'           // Thanh toán khi nhận hàng
                                                                         ];
                                                                         $paymentText = [
-                                                                            0 => 'Chưa thanh toán',
-                                                                            1 => 'Đã thanh toán'
+                                                                            1 => 'Đã thanh toán',
+                                                                            2 => 'Thanh toán khi nhận hàng'
                                                                         ];
+                                                                        $paymentStatus = $order['payment_status'] ?? 2;
+                                                                        $paymentClassValue = isset($paymentClass[$paymentStatus]) ? $paymentClass[$paymentStatus] : $paymentClass[2];
+                                                                        $paymentTextValue = isset($paymentText[$paymentStatus]) ? $paymentText[$paymentStatus] : $paymentText[2];
                                                                     @endphp
-                                                                    <span class="badge {{ $paymentClass[$order['payment_status']] ?? $paymentClass[0] }}">
-                                                                        {{ $paymentText[$order['payment_status']] ?? $paymentText[0] }}
+                                                                    <span class="badge {{ $paymentClassValue }}">
+                                                                        {{ $paymentTextValue }}
                                                                     </span>
                                                                 </td>
                                                                 <td>
-                                                                    <span class="text-muted">{{ $order['created_at']->format('d/m/Y H:i') }}</span>
+                                                                    <span class="text-muted">{{ isset($order['created_at']) ? \Carbon\Carbon::parse($order['created_at'])->format('d/m/Y H:i') : 'N/A' }}</span>
                                                                 </td>
                                                             </tr>
                                                         @empty
@@ -1075,15 +1090,22 @@
                 'completed': 'Hoàn tất',
                 'processing': 'Đang xử lý',
                 'delivering': 'Đang giao',
-                'canceled': 'Đã hủy'
+                'canceled': 'Đã hủy',
+                'returned': 'Đơn hoàn trả'
             };
 
             var orderStatusColors = [
                 '#0ab39c',  // Xanh lá - Hoàn tất
                 '#ffbe0b',  // Vàng - Đang xử lý
                 '#4b38b3',  // Tím - Đang giao
-                '#f06548'   // Đỏ - Đã hủy
+                '#f06548',  // Đỏ - Đã hủy
+                '#000000'   // Đen - Đơn hoàn trả
             ];
+
+            // Thêm dữ liệu đơn hàng trả hàng nếu chưa có
+            if (!orderStatusData.hasOwnProperty('returned')) {
+                orderStatusData.returned = 0;
+            }
 
             var orderStatusOptions = {
                 series: Object.values(orderStatusData),

@@ -17,7 +17,6 @@ class CreateProductReviewsTable extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('variant_id')->constrained('product_variants')->onDelete('cascade');
             $table->integer('rating');
             $table->text('review')->nullable();
             $table->softDeletes();

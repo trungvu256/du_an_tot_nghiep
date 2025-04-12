@@ -30,7 +30,8 @@ class Order extends Model
         'txn_ref',
         'region',
         'shipping_provider',
-        'tracking_number'
+        'tracking_number',
+        'order_code'
     ];
     const STATUS_PENDING = 0; // Chờ xử lý
     const STATUS_PREPARING = 1; // Chuẩn bị hàng
@@ -38,6 +39,7 @@ class Order extends Model
     const STATUS_DELIVERED = 3; // Đã giao
     const STATUS_COMPLETED = 4; // Hoàn tất
     const STATUS_CANCELED = 5; // Đã hủy
+    const STATUS_RETURNED = 6; // Đã trả hàng
 
 
     //    Trạng thái trả hàng
@@ -115,5 +117,23 @@ class Order extends Model
     public function promotion()
     {
         return $this->belongsTo(Promotion::class);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($order) {
+            if (empty($order->order_code)) {
+                $order->order_code = self::generateOrderCode();
+            }
+        });
+    }
+
+    public static function generateOrderCode()
+    {
+        $prefix = 'DH';
+        $random = strtoupper(substr(md5(uniqid(rand(), true)), 0, 6));
+        return $prefix . $random;
     }
 }

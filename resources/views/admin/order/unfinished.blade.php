@@ -18,35 +18,28 @@
                         <th>Trạng thái xử lý</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="unfinished-orders">
                     @foreach ($orders as $order)
+                        @if($order->status == 3)
                         <tr>
-                            <td><a href="{{ route('admin.show.order', $order->id) }}">WD{{ $order->id }}</a></td>
+                            <td><a href="{{ route('admin.show.order', $order->id) }}">{{ $order->order_code }}</a></td>
                             <td>{{ $order->created_at ? $order->created_at->format('d/m/Y H:i') : '---' }}</td>
                             <td>{{ $order->user->name ?? '---' }}</td>
-                            <td>{{ number_format($order->total_price, 0, ',', '.') }}₫</td>
+                            <td>{{ number_format($order->total_price, 0, ',', '.') }} VNĐ</td>
                             <td>
-                                @if ($order->payment_status == 0)
-                                    <span class="badge bg-warning text-dark">🟡 Chưa thanh toán</span>
-                                @else
+                                @if ($order->payment_status == 1)
                                     <span class="badge bg-success">🟢 Đã thanh toán</span>
+                                @else
+                                    <span class="badge bg-info">🔵 Thanh toán khi nhận hàng</span>
                                 @endif
                             </td>
                             <td>
-                                @if ($order->status == 0)
-                                    <span class="badge bg-secondary">⏳ Chờ xử lý</span>
-                                @elseif ($order->status == 1)
-                                    <span class="badge bg-info">📦 Chờ lấy hàng</span>
-                                @elseif ($order->status == 2)
-                                    <span class="badge bg-primary">🚚 Đơn vị vận chuyển đã lấy hàng</span>
-                                @elseif ($order->status == 3)
-                                    <span class="badge bg-warning">🚛 Đang giao</span>
-                                @elseif ($order->status == 4)
-                                    <span class="badge bg-success">✅ Đã giao</span>
-                                @endif
+                                <span class="badge bg-success">✅ Đã giao</span>
                             </td>
                         </tr>
+                        @endif
                     @endforeach
+
                 </tbody>
             </table>
 
@@ -69,10 +62,10 @@
         });
     }
 
-    // Gọi hàm refresh sau khi cập nhật đơn hàng
+    // Cập nhật trạng thái đơn hàng sang hoàn tất
     $(document).on("click", ".update-order-status", function () {
         let orderId = $(this).data("id");
-        let newStatus = 5; // Đơn hàng hoàn tất
+        let newStatus = 4; // Trạng thái hoàn tất
 
         $.ajax({
             url: "/admin/orders/update-status/" + orderId,
@@ -82,6 +75,7 @@
                 status: newStatus
             },
             success: function () {
+                // Refresh lại danh sách sau khi cập nhật
                 refreshUnfinishedOrders();
             }
         });

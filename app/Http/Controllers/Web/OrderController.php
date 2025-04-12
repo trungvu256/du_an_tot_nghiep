@@ -52,11 +52,21 @@ class OrderController extends Controller
 {
     $categories = Catalogue::all();
     $order = Order::with(['orderItems.product', 'shippingInfo', 'orderItems.productVariant'])->findOrFail($id);
-    $returnReasons = DB::table('return_reasons')->get();
 
-    return view('web2.Home.orderItem', compact('order','categories','returnReasons'));
-}
+        // Thêm danh sách lý do trả hàng
+        $returnReasons = [
+            'Sản phẩm không đúng mô tả',
+            'Sản phẩm bị lỗi',
+            'Thay đổi ý định mua hàng',
+            'Sản phẩm không phù hợp',
+            'Nhận được sản phẩm sau quá lâu',
+            'Sản phẩm bị hư hỏng trong quá trình vận chuyển',
+            'Sản phẩm không đúng với đơn hàng',
+            'Lý do khác'
+        ];
 
+        return view('web2.Home.orderItem', compact('order', 'categories', 'returnReasons'));
+    }
 
     public function updatePaymenStatus(Request $request,  $id)
     {
@@ -71,7 +81,6 @@ class OrderController extends Controller
 
         return redirect()->route('admin.order')->with('success', 'Cập nhật trạng thái thanh toán thành công!');
     }
-
 
      // Hủy đơn hàng
      public function cancel(Request $request, $id)
@@ -107,7 +116,6 @@ class OrderController extends Controller
      
          return redirect()->back()->with('error', 'Không tìm thấy đơn hàng!');
      }
-     
  
      // Xác nhận đã nhận được hàng
      public function received($id)
@@ -115,12 +123,26 @@ class OrderController extends Controller
          $order = Order::find($id);
  
          if ($order) {
-             if ($order->status == 3) {
-                 // Cập nhật trạng thái đơn hàng là đã giao
+            if ($order->status == 3) { // Nếu đơn hàng đang ở trạng thái "Đã giao"
+                DB::beginTransaction();
+                try {
+                    // Cập nhật trạng thái đơn hàng thành "Hoàn tất"
                  $order->status = 4;
+
+                    // Nếu là đơn hàng thanh toán khi nhận hàng (COD)
+                    if ($order->payment_status == 2) {
+                        // Cập nhật trạng thái thanh toán thành "Đã thanh toán"
+                        $order->payment_status = 1;
+                    }
+
                  $order->save();
- 
-                 return redirect()->back()->with('success', 'Đơn hàng đã được xác nhận là đã nhận!');
+                    DB::commit();
+
+                    return redirect()->back()->with('success', 'Đơn hàng đã được xác nhận là đã nhận và thanh toán thành công!');
+                } catch (\Exception $e) {
+                    DB::rollBack();
+                    return redirect()->back()->with('error', 'Có lỗi xảy ra khi cập nhật đơn hàng!');
+                }
              }
  
              return redirect()->back()->with('error', 'Không thể xác nhận đơn hàng này!');
@@ -132,35 +154,89 @@ class OrderController extends Controller
      // Xác nhận đã trả hàng
      public function returned($id)
      {
-         $order = Order::find($id);
- 
-         if ($order) {
-             if ($order->status == 4) {
-                 // Cập nhật trạng thái đơn hàng là trả hàng hoàn tất
-                 $order->status = 5;  // Hoặc một trạng thái nào đó bạn muốn sử dụng cho việc hoàn tất trả hàng
-                 $order->save();
- 
-                 return redirect()->back()->with('success', 'Đơn hàng đã được xác nhận là đã trả hàng!');
-             }
- 
-             return redirect()->back()->with('error', 'Không thể xác nhận đơn hàng này!');
-         }
- 
-         return redirect()->back()->with('error', 'Không tìm thấy đơn hàng!');
-     }
+        $order = Order::findOrFail($id);
+
+        // Kiểm tra điều kiện trả hàng
+        if ($order->status != 3 && $order->status != 4) {
+            return redirect()->back()->with('error', 'Chỉ đơn hàng đã giao hoặc hoàn tất mới có thể trả hàng.');
+        }
+
+        // Kiểm tra xem đã yêu cầu trả hàng chưa
+        if ($order->return_status == 0) {
+            return redirect()->back()->with('error', 'Bạn cần yêu cầu trả hàng trước khi xác nhận đã trả hàng. Vui lòng chọn "Yêu cầu trả hàng" trong menu thao tác của đơn hàng.');
+        }
+
+        // Kiểm tra xem yêu cầu trả hàng đã được duyệt chưa
+        if ($order->return_status != 2) {
+            return redirect()->back()->with('error', 'Yêu cầu trả hàng của bạn chưa được duyệt hoặc đã bị từ chối. Vui lòng liên hệ với chúng tôi để được hỗ trợ.');
+        }
+
+        try {
+            DB::beginTransaction();
+
+            // Chỉ cập nhật trạng thái trả hàng thành "Đã duyệt"
+            // Không tự động chuyển thành hoàn tất
+            $order->return_status = Order::RETURN_APPROVED;
+            $order->save();
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Xác nhận trả hàng thành công. Vui lòng đợi admin xác nhận hoàn tất.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Có lỗi xảy ra khi cập nhật trạng thái đơn hàng. Vui lòng thử lại sau.');
+        }
+    }
     //   Trả hàng
 
-    public function requestReturn($id)
+    public function requestReturn(Request $request, $id)
     {
         $order = Order::findOrFail($id);
 
-        if ($order->return_status !== 0) {
-            return redirect()->back()->with('error', 'Đơn hàng đã có yêu cầu hoàn trả.');
+        // Kiểm tra điều kiện trả hàng
+        if ($order->status != 3 && $order->status != 4) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Không thể yêu cầu trả hàng cho đơn hàng này!'
+            ], 400);
         }
 
-        $order->update(['return_status' => 1]);
+        // Kiểm tra xem đã có yêu cầu trả hàng chưa
+        if ($order->return_status != 0) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Đơn hàng đã có yêu cầu hoàn trả.'
+            ], 400);
+        }
 
-        return redirect()->back()->with('success', 'Đơn hàng hoàn trả đã được gửi');
+        // Kiểm tra lý do trả hàng
+        $returnReason = $request->input('return_reason');
+        if (empty($returnReason)) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Vui lòng chọn lý do trả hàng!'
+            ], 400);
+        }
+
+        DB::beginTransaction();
+        try {
+            // Cập nhật trạng thái trả hàng
+            $order->return_status = Order::RETURN_REQUESTED;
+            $order->return_reason = $returnReason;
+            $order->save();
+
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'Yêu cầu trả hàng đã được gửi'
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'error' => 'Có lỗi xảy ra: ' . $e->getMessage()
+            ], 500);
+        }
     }
     public function unfinishedOrders()
 {
@@ -176,7 +252,6 @@ public function ship($id)
     return view('admin.order.order', compact('order'));
 }
 
-
 // Bàn giao cho bên giao hàng
 public function shipOrder(Request $request, $id)
 {
@@ -190,7 +265,6 @@ public function shipOrder(Request $request, $id)
 
     return redirect()->back()->with('success', 'Đơn hàng đã được gửi đến đơn vị vận chuyển!');
 }
-
 
 public function pushToShipping(Request $request, $orderId)
 {
@@ -209,5 +283,4 @@ public function pushToShipping(Request $request, $orderId)
 
     return response()->json(['message' => 'Đơn hàng đã đẩy sang vận chuyển']);
 }
-
 }
