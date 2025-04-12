@@ -40,18 +40,14 @@
                                 </div>
 
                                 <div class="form-group mt-4">
-                                    <label for="status">Trạng Thái:</label>
-                                    <select id="status" name="status" class="form-control">
-                                        <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Kích hoạt
-                                        </option>
-                                        <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Không
-                                            kích hoạt
-                                        </option>
-                                        <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>Đang chờ
-                                        </option>
+                                    <label for="status" class="form-label">Trạng Thái:</label>
+                                    <select id="status" name="status" class="form-control" style="width: 51%; margin-right: 20px;">
+                                        <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Kích hoạt</option>
+                                        <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Không kích hoạt</option>
+                                        <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>Đang chờ</option>
                                     </select>
                                     @if ($errors->has('status'))
-                                        <div class="text-danger">{{ $errors->first('status') }}</div>
+                                        <div class="text-danger mt-2">{{ $errors->first('status') }}</div>
                                     @endif
                                 </div>
 
