@@ -104,6 +104,7 @@ class WebController extends Controller
 
     // PHÂN TRANG
     $list_product = $query->paginate(12);
+    $productNews = Product::orderBy('id', 'DESC')->take(4)->get();
 
     // Nếu là AJAX => chỉ trả về phần danh sách sản phẩm
     if ($request->ajax()) {
@@ -116,7 +117,8 @@ class WebController extends Controller
         'categories',
         'brands',
         'capacities',
-        'concentrations'
+        'concentrations',
+        'productNews'
     ));
 }
 

@@ -167,7 +167,7 @@
                                         <div class="mega-menu-item">
                                             <div class="menu-heading">SHOP LAYOUT</div>
                                             <ul class="menu-list">
-                                                <li><a href="shop-default.html" class="menu-link-text link">Default</a>
+                                                <li><a href="{{ route('web3.shop') }}" class="menu-link-text link">Default</a>
                                                 </li>
 
                                             </ul>
@@ -200,7 +200,7 @@
                                                         <div class="cls-btn text-center">
                                                             <a href="shop-default.html"
                                                                 class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                                                                Men
+                                                                Nam
                                                                 <i class="icon icon-arrow-top-left"></i>
                                                             </a>
                                                         </div>
@@ -217,7 +217,7 @@
                                                         <div class="cls-btn text-center">
                                                             <a href="shop-default.html"
                                                                 class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                                                                Women
+                                                                Nữ
                                                                 <i class="icon icon-arrow-top-left"></i>
                                                             </a>
                                                         </div>
@@ -239,7 +239,7 @@
                                 </div>
                             </li>
                             <li class="menu-item" style="position: relative;">
-                                <a href="#" class="item-link">Sản phẩm <i class="icon icon-arr-down"></i></a>
+                                <a href="{{ route('web3.shop') }}" class="item-link">Sản phẩm <i class="icon icon-arr-down"></i></a>
                                 <div class="sub-menu mega-menu" style="min-width: 220px; padding: 10px; background: white; box-shadow: 0 2px 6px rgba(0,0,0,0.1); position: absolute; top: 100%; left: 0; z-index: 1000;">
                                     <!-- DANH MỤC SẢN PHẨM -->
                                     <div class="mega-menu-item" style="margin-bottom: 10px;">

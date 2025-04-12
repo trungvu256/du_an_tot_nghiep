@@ -20,69 +20,87 @@
     </div>
 
     <section class="flat-spacing-2 pt-0">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-3">
-                    <form id="filter-form" method="GET">
-                    <ul class="collapse-body list-categories current-scrollbar">
-    @foreach($categories as $category)
-        <li class="cate-item">
-        <a href="{{ route('web.shopByCate', ['cate_id' => $category->id]) }}">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-3">
+                <form id="filter-form" method="GET">
+                    <!-- Danh mục -->
+                    <h5 class="mb-3">Danh mục</h5>
+                    <ul class="collapse-body list-categories current-scrollbar mb-4">
+                        @foreach($categories as $category)
+                            <li class="cate-item">
+                                <a href="{{ route('web.shopByCate', ['cate_id' => $category->id]) }}">
+                                    <span>{{ $category->name }}</span>
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
 
-                <span>{{ $category->name }}</span>
-            </a>
-        </li>
-    @endforeach
-</ul>
-@php
-    $priceOptions = [
-        '0-500000' => 'Dưới 500K',
-        '500000-1000000' => '500K - 1 triệu',
-        '1000000-2000000' => '1 triệu - 2 triệu',
-        '2000000-99999999' => 'Trên 2 triệu'
-    ];
-@endphp
+                    <!-- Giá -->
+                    <h5 class="mb-3">Khoảng giá</h5>
+                    @php
+                        $priceOptions = [
+                            '0-500000' => 'Dưới 500K',
+                            '500000-1000000' => '500K - 1 triệu',
+                            '1000000-2000000' => '1 triệu - 2 triệu',
+                            '2000000-99999999' => 'Trên 2 triệu'
+                        ];
+                    @endphp
+                    <div class="mb-4">
+                        @foreach($priceOptions as $range => $label)
+                            <div class="check-item">
+                                <input type="checkbox" name="price_range[]" value="{{ $range }}"
+                                    {{ in_array($range, (array) request()->price_range) ? 'checked' : '' }}>
+                                <label>{{ $label }}</label>
+                            </div>
+                        @endforeach
+                    </div>
 
-@foreach($priceOptions as $range => $label)
-    <div class="check-item">
-        <input type="checkbox" name="price_range[]" value="{{ $range }}"
-            {{ in_array($range, (array) request()->price_range) ? 'checked' : '' }}>
-        <label>{{ $label }}</label>
-    </div>
-@endforeach
-<ul class="collapse-body filter-group-check current-scrollbar">
-    @foreach($brands as $brand)
-        <li class="list-item">
-            <input type="checkbox" name="brand[]" class="tf-check" id="brand_{{ $brand->id }}"
-                value="{{ $brand->id }}"
-                {{ in_array($brand->id, (array) request()->brand) ? 'checked' : '' }}>
-            <label for="brand_{{ $brand->id }}" class="label">
-                <span>{{ $brand->name }}</span>
-            </label>
-        </li>
-    @endforeach
-</ul>
-<div class="collapse-body filter-size-box flat-check-list">
-    @foreach($capacities as $value)
-        <div class="check-item size-item size-check">
-            <input type="checkbox" name="capacity[]" id="capacity_{{ $loop->index }}" value="{{ $value->value }}"
-                {{ in_array($value->value, (array) request()->capacity) ? 'checked' : '' }}>
-            <label for="capacity_{{ $loop->index }}">{{ $value->value }}</label>
-        </div>
-    @endforeach
-</div>
-<div class="collapse-body filter-size-box flat-check-list">
-    @foreach($concentrations as $value)
-        <div class="check-item">
-            <input type="checkbox" name="concentration[]" id="concentration_{{ $loop->index }}" value="{{ $value->value }}"
-                {{ in_array($value->value, (array) request()->concentration) ? 'checked' : '' }}>
-            <label for="concentration_{{ $loop->index }}">{{ $value->value }}</label>
-        </div>
-    @endforeach
-</div>
+                    <!-- Thương hiệu -->
+                    <h5 class="mb-3">Thương hiệu</h5>
+                    <ul class="collapse-body filter-group-check current-scrollbar mb-4">
+                        @foreach($brands as $brand)
+                            <li class="list-item">
+                                <input type="checkbox" name="brand[]" class="tf-check" id="brand_{{ $brand->id }}"
+                                    value="{{ $brand->id }}"
+                                    {{ in_array($brand->id, (array) request()->brand) ? 'checked' : '' }}>
+                                <label for="brand_{{ $brand->id }}" class="label">
+                                    <span>{{ $brand->name }}</span>
+                                </label>
+                            </li>
+                        @endforeach
+                    </ul>
 
+                    <!-- Dung tích -->
+                    <h5 class="mb-3">Dung tích</h5>
+                    <div class="collapse-body filter-size-box flat-check-list mb-4">
+                        @foreach($capacities as $value)
+                            <div class="check-item size-item size-check">
+                                <input type="checkbox" name="capacity[]" id="capacity_{{ $loop->index }}" value="{{ $value->value }}"
+                                    {{ in_array($value->value, (array) request()->capacity) ? 'checked' : '' }}>
+                                <label for="capacity_{{ $loop->index }}">{{ $value->value }}</label>
+                            </div>
+                        @endforeach
+                    </div>
 
-</form>
+                    <!-- Nồng độ -->
+                    <h5 class="mb-3">Nồng độ</h5>
+                    <div class="collapse-body filter-size-box flat-check-list mb-4">
+                        @foreach($concentrations as $value)
+                            <div class="check-item">
+                                <input type="checkbox" name="concentration[]" id="concentration_{{ $loop->index }}" value="{{ $value->value }}"
+                                    {{ in_array($value->value, (array) request()->concentration) ? 'checked' : '' }}>
+                                <label for="concentration_{{ $loop->index }}">{{ $value->value }}</label>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <!-- Nút Reset -->
+                    <div class="mt-4">
+                        <a href="{{ url()->current() }}" class="btn btn-secondary w-100">Reset bộ lọc</a>
+                    </div>
+                </form>
+       
 
                     </div>
                     <div class="col-xl-9">
