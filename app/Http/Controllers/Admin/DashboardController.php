@@ -55,6 +55,9 @@ class DashboardController extends Controller
         $completedOrderCount = Order::where('status', Order::STATUS_COMPLETED)
             ->whereBetween('created_at', [$startDate, $endDate])
             ->count();
+        $returnOrderCount = Order::where('status', Order::STATUS_RETURNED)
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->count();
 
         // Tính tổng doanh thu từ các đơn hàng đã hoàn thành
         $totalSales = Order::where('status', Order::STATUS_COMPLETED)
@@ -104,15 +107,18 @@ class DashboardController extends Controller
                 'order_items.product_id',
                 'products.name as product_name',
                 'products.image as product_image',
+                'product_variants.size',
+                'product_variants.concentration',
                 DB::raw('SUM(order_items.quantity) as total_quantity'),
                 DB::raw('SUM(order_items.quantity * order_items.price) as total_revenue')
             )
             ->join('products', 'order_items.product_id', '=', 'products.id')
+            ->leftJoin('product_variants', 'order_items.product_variant_id', '=', 'product_variants.id')
             ->join('orders', 'order_items.order_id', '=', 'orders.id')
             ->where('orders.status', Order::STATUS_COMPLETED)
             ->where('orders.payment_status', 1)
             ->whereBetween('orders.created_at', [$startDate, $endDate])
-            ->groupBy('order_items.product_id', 'products.name', 'products.image')
+            ->groupBy('order_items.product_id', 'products.name', 'products.image', 'product_variants.size', 'product_variants.concentration')
             ->orderBy('total_quantity', 'desc')
             ->limit(5)
             ->get();
@@ -143,18 +149,21 @@ class DashboardController extends Controller
                 ->count(),
             'canceled' => Order::where('status', Order::STATUS_CANCELED)
                 ->whereBetween('created_at', [$startDate, $endDate])
+                ->count(),
+            'returned' => Order::where('status', Order::STATUS_RETURNED)
+                ->whereBetween('created_at', [$startDate, $endDate])
                 ->count()
         ];
 
         // Lấy danh sách đơn hàng gần đây
-        $recentOrders = Order::with(['user', 'orderItems.product'])
+        $recentOrders = Order::with(['user', 'orderItems.product', 'orderItems.productVariant'])
             ->whereBetween('created_at', [$startDate, $endDate])
             ->latest()
             ->take(5)
             ->get()
             ->map(function ($order) {
                 return [
-                    'id' => $order->id,
+                    'order_code' => $order->order_code,
                     'user' => [
                         'name' => $order->user->name,
                         'avatar' => $order->user->avatar ?? 'default-avatar.jpg'
@@ -164,7 +173,9 @@ class DashboardController extends Controller
                     'payment_status' => $order->payment_status,
                     'created_at' => $order->created_at,
                     'products' => $order->orderItems->map(function ($item) {
-                        return $item->product->name;
+                        $variantInfo = $item->productVariant ?
+                            "({$item->productVariant->size}, {$item->productVariant->concentration})" : '';
+                        return $item->product->name . $variantInfo;
                     })->implode(', ')
                 ];
             });
@@ -182,7 +193,8 @@ class DashboardController extends Controller
             'totals',
             'topProducts',
             'recentOrders',
-            'ordersByStatusForChart'
+            'ordersByStatusForChart',
+            'returnOrderCount'
         ));
     }
 }

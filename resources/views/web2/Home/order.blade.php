@@ -59,26 +59,28 @@
                             @if ($order->payment_status == 0)
                                 <span class="badge bg-warning text-dark rounded-pill px-3 py-2">🟡 Chưa thanh toán</span>
                             @elseif ($order->payment_status == 1)
-                                <span class="badge bg-success rounded-pill px-3 py-2">🟢 Đã thanh toán bằng vnpay</span>
+                                <span class="badge bg-success rounded-pill px-3 py-2">🟢 Đã thanh toán</span>
                             @elseif ($order->payment_status == 2)
-                                <span class="badge bg-success rounded-pill px-3 py-2">🟢 Thanh toán khi nhận hàng</span>
+                                <span class="badge bg-info rounded-pill px-3 py-2">🔵 Thanh toán khi nhận hàng</span>
                             @else
                                 <span class="badge bg-danger rounded-pill px-3 py-2">🔴 Thất bại</span>
                             @endif
                         </div>
                         <div class="col-md-3 text-end">
                             @if ($order->status == 0)
-                                <span class="badge bg-secondary rounded-pill px-3 py-2">⏳ Chờ xác nhận</span>
+                                <span class="badge bg-warning rounded-pill px-3 py-2">⏳ Chờ xác nhận</span>
                             @elseif ($order->status == 1)
                                 <span class="badge bg-info rounded-pill px-3 py-2">📦 Chờ lấy hàng</span>
                             @elseif ($order->status == 2)
-                                <span class="badge bg-primary rounded-pill px-3 py-2">🚚 Chờ giao hàng</span>
+                                <span class="badge bg-secondary rounded-pill px-3 py-2">🚚 Chờ giao hàng</span>
                             @elseif ($order->status == 3)
-                                <span class="badge bg-warning rounded-pill px-3 py-2">✅ Đã giao</span>
+                                <span class="badge bg-success rounded-pill px-3 py-2">✅ Đã giao</span>
                             @elseif ($order->status == 4)
-                                <span class="badge bg-success rounded-pill px-3 py-2">🚛 Trả hàng</span>
+                                <span class="badge bg-dark rounded-pill px-3 py-2">🏁 Hoàn tất</span>
                             @elseif ($order->status == 5)
-                                <span class="badge bg-dark rounded-pill px-3 py-2">❌ Đã hủy</span>
+                                <span class="badge bg-danger rounded-pill px-3 py-2">❌ Đã hủy</span>
+                            @elseif ($order->status == 6)
+                                <span class="badge bg-secondary rounded-pill px-3 py-2">↩️ Trả hàng</span>
                             @endif
                         </div>
                     </div>
@@ -105,10 +107,10 @@
                     <a href="{{ route('order.continuePayment', $order->id) }}"
                         class="btn btn-primary rounded-pill px-3 me-2">Thanh toán ngay</a>
                 @endif
-                
+
                     @if ($order->status == 0 || $order->status == 1)
                         <!-- Nút hủy đơn hàng -->
-<a href="javascript:void(0);" class="btn btn-danger rounded-pill px-3 me-2" 
+<a href="javascript:void(0);" class="btn btn-danger rounded-pill px-3 me-2"
 data-bs-toggle="modal" data-bs-target="#cancelModal{{ $order->id }}">Hủy đơn</a>
 
 <!-- Modal for selecting cancel reason -->
@@ -135,9 +137,9 @@ data-bs-toggle="modal" data-bs-target="#cancelModal{{ $order->id }}">Hủy đơn
                      @endphp
                      @foreach ($reasons as $reason)
                          <div class="form-check">
-                             <input class="form-check-input d-none" type="radio" name="cancel_reason" 
+                             <input class="form-check-input d-none" type="radio" name="cancel_reason"
                                     id="reason_{{ $loop->index }}_{{ $order->id }}" value="{{ $reason }}" required>
-                             <label class="btn btn-outline-secondary w-100 text-start rounded-pill px-3 py-2" 
+                             <label class="btn btn-outline-secondary w-100 text-start rounded-pill px-3 py-2"
                                     for="reason_{{ $loop->index }}_{{ $order->id }}">
                                  {{ $reason }}
                              </label>
@@ -200,6 +202,9 @@ data-bs-toggle="modal" data-bs-target="#cancelModal{{ $order->id }}">Hủy đơn
                         <a href="{{ route('order.received', $order->id) }}"
                             class="btn btn-success rounded-pill px-3 me-2"
                             onclick="return confirm('Bạn đã nhận được hàng?')">Đã nhận</a>
+                        <a href="{{ route('order.returned', $order->id) }}"
+                            class="btn btn-warning rounded-pill px-3 me-2"
+                            onclick="return confirm('Bạn chắc chắn muốn xác nhận đã trả hàng?')">Trả hàng</a>
                     @elseif ($order->status == 4)
                         <a href="{{ route('order.returned', $order->id) }}"
                             class="btn btn-warning rounded-pill px-3 me-2"
@@ -213,10 +218,60 @@ data-bs-toggle="modal" data-bs-target="#cancelModal{{ $order->id }}">Hủy đơn
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $order->id }}">
                             <li><a class="dropdown-item" href="{{ route('donhang.show', $order->id) }}">Xem chi tiết</a></li>
                             @if ($order->status == 3 || $order->status == 4)
-                                <li><a class="dropdown-item" href="#">Yêu cầu trả hàng/hoàn tiền</a></li>
+                                <li>
+                                    @if($order->return_status == 0)
+                                        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#returnModal{{ $order->id }}">
+                                            Yêu cầu trả hàng
+                                        </a>
+                                    @elseif($order->return_status == 1)
+                                        <a class="dropdown-item" href="#">Đang yêu cầu trả hàng</a>
+                                    @elseif($order->return_status == 2)
+                                        <a class="dropdown-item" href="{{ route('order.returned', $order->id) }}" onclick="return confirm('Bạn chắc chắn muốn xác nhận đã trả hàng?')">
+                                            Xác nhận đã trả hàng
+                                        </a>
+                                    @elseif($order->return_status == 3)
+                                        <a class="dropdown-item" href="#">Yêu cầu trả hàng bị từ chối</a>
+                                    @elseif($order->return_status == 4)
+                                        <a class="dropdown-item" href="#">Đã hoàn tất trả hàng</a>
+                                    @endif
+                                </li>
                             @endif
                         </ul>
                     </div>
+
+                    <!-- Modal yêu cầu trả hàng -->
+                    @if($order->status == 3 || $order->status == 4)
+                    <div class="modal fade" id="returnModal{{ $order->id }}" tabindex="-1" aria-labelledby="returnModalLabel{{ $order->id }}" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="returnModalLabel{{ $order->id }}">Yêu cầu trả hàng</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form action="{{ route('order.requestReturn', $order->id) }}" method="POST">
+                                    @csrf
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="return_reason" class="form-label">Lý do trả hàng</label>
+                                            <select class="form-select" id="return_reason" name="return_reason" required>
+                                                <option value="">-- Chọn lý do --</option>
+                                                <option value="Sản phẩm không đúng mô tả">Sản phẩm không đúng mô tả</option>
+                                                <option value="Sản phẩm bị lỗi">Sản phẩm bị lỗi</option>
+                                                <option value="Thay đổi ý định mua hàng">Thay đổi ý định mua hàng</option>
+                                                <option value="Sản phẩm không phù hợp">Sản phẩm không phù hợp</option>
+                                                <option value="Nhận được sản phẩm sau quá lâu">Nhận được sản phẩm sau quá lâu</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                        <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </div>
         @endforeach

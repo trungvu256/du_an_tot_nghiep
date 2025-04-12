@@ -1,11 +1,15 @@
 @extends('web2.layout.master')
 @section('content')
+    <!-- Thêm SweetAlert2 CSS và JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4/bootstrap-4.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <div class="container">
         <div class="d-flex align-items-center justify-content-between">
             <a href="{{ route('donhang.index') }}" class="btn btn-link text-decoration-none">&larr; Quay lại</a>
             <h2 class="my-4 text-center text-primary flex-grow-1 text-center">Chi tiết đơn hàng #{{ $order->id }}</h2>
         </div>
-        
+
         <hr class="my-3">
 
         <!-- Thông tin khách hàng -->
@@ -40,9 +44,10 @@
                         @case(0) <span class="badge bg-warning">⏳ Chờ xác nhận</span> @break
                         @case(1) <span class="badge bg-info">📦 Chờ lấy hàng</span> @break
                         @case(2) <span class="badge bg-secondary">🚚 chờ giao hàng</span> @break
-                        @case(3) <span class="badge bg-primary">✅ đã giao</span> @break
-                        @case(4) <span class="badge bg-success">🚛 trả hàng</span> @break
-                        @case(5) <span class="badge bg-dark">❌ Đã hủy</span> @break
+                        @case(3) <span class="badge bg-success">✅ đã giao</span> @break
+                        @case(4) <span class="badge bg-dark">🏁 Hoàn tất</span> @break
+                        @case(5) <span class="badge bg-danger">❌ Đã hủy</span> @break
+                        @case(6) <span class="badge bg-secondary">↩️ Trả hàng</span> @break
                     @endswitch
                 </td>
             </tr>
@@ -50,13 +55,104 @@
                 <th>Trạng thái thanh toán</th>
                 <td>
                     @switch($order->payment_status)
-                        @case(0) <span class="badge bg-warning">Chưa thanh toán</span> @break
-                        @case(1) <span class="badge bg-info">Đã thanh toán bằng vnpay</span> @break
-                        @case(2) <span class="badge bg-secondary">Thanh toán khi nhận hàng</span> @break
+                        @case(1) <span class="badge bg-success">Đã thanh toán</span> @break
+                        @case(2) <span class="badge bg-info">Thanh toán khi nhận hàng</span> @break
+                    @endswitch
+                </td>
+            </tr>
+            <tr>
+                <th>Trạng thái trả hàng</th>
+                <td>
+                    @switch($order->return_status)
+                        @case(0)
+                            <span class="badge bg-secondary">Không có yêu cầu trả hàng</span>
+                            @if($order->status == 3 || $order->status == 4)
+                                <div class="mt-2">
+                                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#returnModal">
+                                        Yêu cầu trả hàng
+                                    </button>
+                                </div>
+                            @endif
+                        @break
+                        @case(1)
+                            <span class="badge bg-warning">Đang yêu cầu trả hàng</span>
+                            @if($order->return_reason)
+                                <br>
+                                <small class="text-muted">Lý do: {{ $order->return_reason }}</small>
+                            @endif
+                        @break
+                        @case(2)
+                            <span class="badge bg-success">Đã duyệt trả hàng</span>
+                            @if($order->return_reason)
+                                <br>
+                                <small class="text-muted">Lý do: {{ $order->return_reason }}</small>
+                            @endif
+                            {{-- <div class="mt-2">
+                                <form action="{{ route('order.requestReturn', $order->id) }}" method="POST" id="returnForm">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="return_reason">Lý do trả hàng</label>
+                                        <select class="form-control" id="return_reason" name="return_reason" required>
+                                            <option value="">Chọn lý do trả hàng</option>
+                                            <option value="Sản phẩm không đúng mô tả">Sản phẩm không đúng mô tả</option>
+                                            <option value="Sản phẩm bị hỏng">Sản phẩm bị hỏng</option>
+                                            <option value="Sản phẩm không phù hợp">Sản phẩm không phù hợp</option>
+                                            <option value="Lý do khác">Lý do khác</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
+                                </form>
+                            </div> --}}
+                        @break
+                        @case(3)
+                            <span class="badge bg-danger">Đã từ chối trả hàng</span>
+                            @if($order->return_reason)
+                                <br>
+                                <small class="text-muted">Lý do: {{ $order->return_reason }}</small>
+                            @endif
+                        @break
+                        @case(4)
+                            <span class="badge bg-info">Đã hoàn tất trả hàng</span>
+                            @if($order->return_reason)
+                                <br>
+                                <small class="text-muted">Lý do: {{ $order->return_reason }}</small>
+                            @endif
+                        @break
                     @endswitch
                 </td>
             </tr>
         </table>
+
+        <!-- Modal yêu cầu trả hàng -->
+        <div class="modal fade" id="returnModal" tabindex="-1" aria-labelledby="returnModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="returnModalLabel">Yêu cầu trả hàng</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ route('order.requestReturn', $order->id) }}" method="POST" id="returnForm">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="return_reason" class="form-label">Lý do trả hàng</label>
+                                <select class="form-select" id="return_reason" name="return_reason" required>
+                                    <option value="">-- Chọn lý do --</option>
+                                    <option value="Sản phẩm không đúng mô tả">Sản phẩm không đúng mô tả</option>
+                                    <option value="Sản phẩm bị hỏng">Sản phẩm bị hỏng</option>
+                                    <option value="Sản phẩm không phù hợp">Sản phẩm không phù hợp</option>
+                                    <option value="Lý do khác">Lý do khác</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
         <!-- Sản phẩm trong đơn -->
         <h4 class="my-3 text-secondary">Sản phẩm trong đơn</h4>
@@ -70,8 +166,8 @@
                 </tr>
             </thead>
             <tbody>
-                @php 
-                    $totalOrderPrice = 0; 
+                @php
+                    $totalOrderPrice = 0;
                 @endphp
                 @if ($order->orderItems && count($order->orderItems) > 0)
                     @foreach ($order->orderItems as $detail)
@@ -110,14 +206,10 @@
                     </tr>
                 @endif
             </tbody>
-            
-            
-            
-            
         </table>
 
         <!-- Thông tin vận chuyển -->
-        <h4 class="my-3 text-secondary">Thông tin vận chuyển</h4>
+        {{-- <h4 class="my-3 text-secondary">Thông tin vận chuyển</h4>
         <table class="table table-striped table-bordered">
             <tr>
                 <th>Đơn vị vận chuyển</th>
@@ -127,6 +219,61 @@
                 <th>Mã vận đơn</th>
                 <td>{{ $order->tracking_number ?? 'Chưa có' }}</td>
             </tr>
-        </table>
+        </table> --}}
     </div>
+
+    <script>
+    $(document).ready(function() {
+        $('#returnForm').on('submit', function(e) {
+            e.preventDefault();
+
+            if (!$('#return_reason').val()) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Thông báo',
+                    text: 'Vui lòng chọn lý do trả hàng',
+                    confirmButtonText: 'Đóng',
+                    confirmButtonColor: '#3085d6'
+                });
+                return;
+            }
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: 'POST',
+                data: $(this).serialize(),
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thành công!',
+                            text: 'Yêu cầu trả hàng đã được gửi thành công',
+                            showConfirmButton: true,
+                            confirmButtonText: 'Đóng',
+                            confirmButtonColor: '#28a745'
+                        }).then((result) => {
+                            $('#returnModal').modal('hide');
+                            location.reload();
+                        });
+                    }
+                },
+                error: function(xhr) {
+                    let errorMessage = 'Có lỗi xảy ra. Vui lòng thử lại sau.';
+                    if (xhr.responseJSON && xhr.responseJSON.error) {
+                        errorMessage = xhr.responseJSON.error;
+                    }
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: errorMessage,
+                        showConfirmButton: true,
+                        confirmButtonText: 'Đóng',
+                        confirmButtonColor: '#dc3545'
+                    });
+                }
+            });
+        });
+    });
+    </script>
 @endsection

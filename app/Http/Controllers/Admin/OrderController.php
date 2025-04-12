@@ -137,8 +137,8 @@ class OrderController extends Controller
             1 => [2, 6],      // Chờ lấy hàng → Đang giao, Đã hủy
             2 => [3, 5],      // Đang giao → Đã giao, Trả hàng
             3 => [4, 5],      // Đã giao → Hoàn tất, Trả hàng
-            4 => [],          // Hoàn tất → không chuyển tiếp
-            5 => [6],         // Trả hàng → Đã hủy (hoặc giữ nguyên)
+            4 => [5],         // Hoàn tất → Trả hàng
+            5 => [6],         // Trả hàng → Đã hủy
             6 => [],          // Đã hủy → không chuyển tiếp
         ];
 
@@ -175,17 +175,92 @@ class OrderController extends Controller
 
 
 
-    public function requestReturn($id)
+    public function requestReturn(Request $request, $id)
     {
-        $order = Order::findOrFail($id);
+        $order = Order::with(['orderItems.product', 'orderItems.productVariant'])->findOrFail($id);
+        Log::info("Bắt đầu xử lý trả hàng cho đơn hàng #{$id}");
 
-        if ($order->return_status !== 0) {
-            return redirect()->back()->with('error', 'Đơn hàng đã có yêu cầu hoàn trả.');
+        // Kiểm tra xem đơn hàng có yêu cầu trả hàng không
+        if ($order->return_status != Order::RETURN_REQUESTED) {
+            Log::warning("Đơn hàng #{$id} không có yêu cầu hoàn trả");
+            return redirect()->back()->with('error', 'Đơn hàng không có yêu cầu hoàn trả.');
         }
 
-        $order->update(['return_status' => 1]);
+        // Lấy hành động từ request (approve hoặc decline)
+        $action = $request->input('action');
+        Log::info("Hành động yêu cầu: {$action}");
 
-        return redirect()->back()->with('success', 'Đơn hàng hoàn trả đã được gửi');
+        DB::beginTransaction();
+        try {
+            if ($action === 'approve') {
+                // Duyệt yêu cầu trả hàng
+                $order->return_status = Order::RETURN_APPROVED;
+                $order->save();
+
+                DB::commit();
+                return redirect()->back()->with('success', 'Đã duyệt yêu cầu trả hàng');
+            } elseif ($action === 'decline') {
+                // Từ chối yêu cầu trả hàng
+                $order->return_status = Order::RETURN_DECLINED;
+                $order->save();
+
+                DB::commit();
+                return redirect()->back()->with('success', 'Đã từ chối yêu cầu trả hàng');
+            } elseif ($action === 'complete') {
+                Log::info("Bắt đầu xử lý hoàn tất trả hàng");
+                // Xác nhận hoàn tất trả hàng
+                $order->return_status = Order::RETURN_COMPLETED;
+                $order->status = Order::STATUS_RETURNED;
+
+                // Cộng lại số lượng sản phẩm vào kho
+                Log::info("Số lượng order items: " . count($order->orderItems));
+                foreach ($order->orderItems as $item) {
+                    Log::info("Xử lý order item #{$item->id}");
+                    $product = $item->product;
+                    if ($product) {
+                        Log::info("Sản phẩm #{$product->id}");
+                        // Nếu có variant, cập nhật số lượng variant
+                        if ($item->productVariant) {
+                            $variant = $item->productVariant;
+                            Log::info("Variant #{$variant->id} - Số lượng hiện tại: {$variant->stock_quantity}");
+
+                            // Lấy số lượng hiện tại
+                            $currentStock = $variant->stock_quantity;
+                            $addQuantity = $item->quantity;
+                            $newStock = $currentStock + $addQuantity;
+
+                            Log::info("Cập nhật số lượng variant: {$currentStock} + {$addQuantity} = {$newStock}");
+
+                            // Cập nhật trực tiếp bằng query để đảm bảo
+                            DB::table('product_variants')
+                                ->where('id', $variant->id)
+                                ->update(['stock_quantity' => $newStock]);
+
+                            Log::info("Đã cập nhật số lượng variant thành: {$newStock}");
+                        }
+
+                        // Cập nhật tổng số lượng tồn kho của sản phẩm
+                        Log::info("Cập nhật tổng tồn kho cho sản phẩm #{$product->id}");
+                        $product->updateTotalStock();
+                    }
+                }
+
+                $order->save();
+
+                DB::commit();
+                Log::info("Hoàn tất xử lý trả hàng thành công");
+                return redirect()->back()->with('success', 'Đã xác nhận hoàn tất trả hàng và cập nhật số lượng sản phẩm trong kho');
+            } else {
+                DB::rollBack();
+                Log::warning("Hành động không hợp lệ: {$action}");
+                return redirect()->back()->with('error', 'Hành động không hợp lệ!');
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error("Lỗi khi xử lý trả hàng cho đơn #{$id}: " . $e->getMessage());
+            Log::error("Stack trace: " . $e->getTraceAsString());
+            return redirect()->back()->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
+        }
     }
     public function unfinishedOrders()
     {

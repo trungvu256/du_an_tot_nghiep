@@ -106,8 +106,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::prefix('order')->group(function () {
             route::get('/order', [OrderController::class, 'index'])->name('admin.order');
             route::get('/order/{id}', [OrderController::class, 'show'])->name('admin.show.order');
-            route::post('/orders/{id}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+            route::post('/orders/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
             route::post('/orders/{id}/updatePaymenStatus', [OrderController::class, 'updatePaymenStatus'])->name('orders.updatePaymenStatus');
+            route::get('/admin/orders/unfinished', [OrderController::class, 'unfinishedOrders'])->name('admin.orders.unfinished');
+            Route::post('/admin/orders/ship/{id}', [OrderController::class, 'shipOrder'])->name('admin.order.ship');
+            Route::post('/order/{id}/request-return', [OrderController::class, 'requestReturn'])->name('admin.order.requestReturn');
         });
 
         // ví điện tử
@@ -197,6 +200,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('catalogues-trash', [CatalogueController::class, 'trash'])->name('catalogues.trash');
         Route::post('catalogues/{id}/restore', [CatalogueController::class, 'restore'])->name('catalogues.restore');
         Route::delete('catalogues/{id}/force-delete', [CatalogueController::class, 'forceDelete'])->name('catalogues.forceDelete');
+
+        // Route quản lý trả hàng
+        Route::get('returns', [ReturnOrderController::class, 'index'])->name('admin.returns.index');
+        Route::post('returns/{id}/update', [ReturnOrderController::class, 'update'])->name('admin.returns.update');
+        Route::get('returns/export', [ReturnOrderController::class, 'export'])->name('admin.returns.export');
 
         // Route Brand
         Route::resource('brands', BrandController::class);
@@ -419,6 +427,9 @@ Route::middleware(['auth'])->group(function () {
 
         // Route xác nhận đã trả hàng
         Route::get('order/{id}/returned', [WebOrderController::class, 'returned'])->name('order.returned');
+
+        // Route yêu cầu trả hàng
+        Route::post('order/{id}/request-return', [WebOrderController::class, 'requestReturn'])->name('order.requestReturn');
     });
 
 
@@ -460,4 +471,5 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/cart/checkout-selected', [CartController::class, 'checkoutSelected'])->name('cart.checkoutSelected');
         // routes/web.php
 Route::post('/cart/select-items', [CartController::class, 'selectItems'])->name('cart.selectItems');
+
 
