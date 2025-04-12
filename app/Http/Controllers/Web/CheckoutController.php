@@ -521,6 +521,7 @@ public function vnpayCallback(Request $request)
     
                     $variant->decrement('stock_quantity', $quantity);
                     event(new EventsOrderPlaced($order));
+                    Mail::to($user->email)->send(new OrderPlacedMail($order));
                     unset($cart[$itemKey]);
                 }
     

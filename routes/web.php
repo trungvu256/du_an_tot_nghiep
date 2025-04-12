@@ -32,6 +32,7 @@ use App\Http\Controllers\Admin\DiscountController as AdminDiscountController;
 use App\Http\Controllers\Admin\PerfumeVariantController;
 use App\Http\Controllers\Admin\PromotionController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\Web\BlogController as WebBlogController;
 use App\Http\Controllers\Web\CartController;
@@ -470,5 +471,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/cart/checkout-selected', [CartController::class, 'checkoutSelected'])->name('cart.checkoutSelected');
         // routes/web.php
 Route::post('/cart/select-items', [CartController::class, 'selectItems'])->name('cart.selectItems');
+
+Route::get('/gmail', [Controller::class, 'gmail'])->name('web.gmail');
 
 
