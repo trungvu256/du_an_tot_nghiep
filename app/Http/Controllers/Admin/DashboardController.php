@@ -159,7 +159,7 @@ class DashboardController extends Controller
         $recentOrders = Order::with(['user', 'orderItems.product', 'orderItems.productVariant'])
             ->whereBetween('created_at', [$startDate, $endDate])
             ->latest()
-            ->take(5)
+            ->take(6)
             ->get()
             ->map(function ($order) {
                 return [

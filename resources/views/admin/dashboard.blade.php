@@ -1129,7 +1129,7 @@
                         radius: 6
                     },
                     formatter: function(seriesName, opts) {
-                        return seriesName; // Chỉ hiển thị tên trạng thái
+                        return seriesName;
                     }
                 },
                 stroke: {
@@ -1142,8 +1142,20 @@
                 },
                 dataLabels: {
                     enabled: true,
-                    formatter: function(val) {
-                        return Math.round(val) + '%';
+                    formatter: function(val, opts) {
+                        // Lấy tổng của tất cả các giá trị
+                        const total = opts.w.globals.seriesTotals.reduce((a, b) => a + b, 0);
+                        // Tính phần trăm chính xác
+                        const percent = (opts.w.globals.seriesTotals[opts.seriesIndex] / total) * 100;
+
+                        // Nếu là phần tử cuối cùng và tổng chưa đạt 100%, điều chỉnh để đạt đúng 100%
+                        if (opts.seriesIndex === opts.w.globals.series.length - 1) {
+                            const currentTotal = opts.w.globals.series.slice(0, -1)
+                                .reduce((sum, value) => sum + Math.round((value / total) * 100), 0);
+                            return (100 - currentTotal) + '%';
+                        }
+
+                        return Math.round(percent) + '%';
                     },
                     style: {
                         fontSize: '14px',
