@@ -368,7 +368,7 @@ Route::get('login/google', [HomeController::class, 'redirectToGoogle'])->name('l
 Route::get('login/google/callback', [HomeController::class, 'handleGoogleCallback']);
 //web 2
 Route::get('/web3', [Web2Controller::class, 'index'])->name('web3.home');
-Route::get('web3/shop', [Web2Controller::class, 'shop'])->name('web3.shop');
+Route::get('web3/shop', [WebController::class, 'shop'])->name('web3.shop');
 Route::get('web3/shop-detail', [Web2Controller::class, 'shopdetail'])->name('web3.shop.detail');
 Route::get('web3/shop-detail/{id}', [WebController::class, 'shopdetail'])->name('web3.shop.detail');
 
