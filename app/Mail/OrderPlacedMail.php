@@ -20,7 +20,7 @@ class OrderPlacedMail extends Mailable
     public function build()
     {
         return $this->subject('Xác nhận đơn hàng')
-                    ->view('order.order')->with([
+                    ->view('email')->with([
                         'order' => $this->order,
                     ]);;
     }
