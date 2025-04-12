@@ -23,6 +23,7 @@ class CartController extends Controller
     $detailproduct = Product::findOrFail($id);
     $product = Product::with(['comments', 'reviews'])->find($id);
     $description_images = Images::where('product_id', $id)->get();
+    $productNews = Product::orderBy('id', 'DESC')->take(4)->get();
 
 
     // Lấy danh sách các danh mục liên quan
@@ -112,7 +113,7 @@ class CartController extends Controller
     }
 
     // Trả về view với tất cả các dữ liệu đã truy vấn, bao gồm các thuộc tính của sản phẩm
-    return view('web2.Home.shop-detail', compact(
+    return view('web3.Home.shop-detail', compact(
         'detailproduct',
         'product',
         'description_images',
@@ -123,7 +124,8 @@ class CartController extends Controller
         'brands',
         'attributes',
         'variant',
-        'categories'
+        'categories',
+        'productNews'
     ));
 }
 
@@ -138,6 +140,7 @@ class CartController extends Controller
 
     public function viewCart()
     {
+        $productNews = Product::orderBy('id', 'DESC')->take(4)->get();
         $categories = Catalogue::all();
         $cart = session()->get('cart', []);
         $totalAmount = 0;
@@ -147,7 +150,7 @@ class CartController extends Controller
             $totalAmount += $item['price'] * $item['quantity'];
         }
         // dd($cart);
-        return view('web2.Home.cart', compact('cart', 'totalAmount', 'categories'));
+        return view('web3.Home.cart', compact('cart', 'totalAmount', 'categories','productNews'));
     }
 
     public function createAddTocart(Request $request, $id)

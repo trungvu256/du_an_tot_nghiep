@@ -125,7 +125,7 @@
                     <p>Email: {{ Auth::user()->email }}</p>
         
                     <hr>
-                    <h5>🧾 Lịch sử mua hàng:</h5>
+                    <li><a href="{{route('donhang.index')}}">Đơn hàng của bạn</a></li>
                     
         
                     <a href="{{route('web.logout')}}" class="btn btn-danger">Đăng xuất</a>
