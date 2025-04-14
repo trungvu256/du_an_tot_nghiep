@@ -2,6 +2,8 @@
 <html lang="en">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 <head>
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.min.css" rel="stylesheet">
     @include('web3.layout.css')
     @include('web3.layout.menu')
     <style>
@@ -48,6 +50,7 @@
             color: #888;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>

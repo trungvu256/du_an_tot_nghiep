@@ -319,66 +319,123 @@
                                 <div>
                                     <div class="mt-5">
                                         <div>
-                                                <h5 class="fs-14 mb-3">Bình luận & đánh giá</h5>
-                                            </div>
-                                            <div class="row gy-4 gx-0">
-                                                <div class="col-lg-4">
-
-                                                </div>
-                                                <!-- end col -->
-
-                                                <div class="col-lg-12">
-                                                    <div class="ps-lg-4">
-                                                        <div class="d-flex flex-wrap align-items-start gap-3">
-                                                            <h5 class="fs-14">Bình luận: </h5>
+                                            <h5 class="fs-14 mb-3">Bình luận & đánh giá: </h5>
+                                        </div>
+                                        <div class="row gy-4 gx-0 justify-content-center">
+                                            <div class="col-lg-5">
+                                                <div class="card border shadow-none h-100">
+                                                    <div class="card-body d-flex flex-column">
+                                                        <div class="d-flex align-items-center mb-3">
+                                                            <div class="flex-grow-1">
+                                                                <h5 class="card-title mb-0">Bình luận</h5>
+                                                            </div>
+                                                            <div class="flex-shrink-0">
+                                                                <span class="badge bg-primary rounded-pill">{{ $product->comments()->count() }}</span>
+                                                            </div>
                                                         </div>
-
-                                                        <div class="list-group">
-                                                            @forelse($product->comments as $comment)
-                                                                <div class="list-group-item">
-                                                                    <div class="d-flex justify-content-between align-items-center">
-                                                                        <h6>{{ $comment->user->name ?? 'Ẩn danh' }} -
-                                                                            <small>{{ optional($comment->created_at)->format('d M, Y') }}</small>
-                                                                        </h6>
-                                                                        {{-- <span class="badge bg-success"><i class="mdi mdi-star"></i>
-                                                                            {{ $comment->rating }}</span> --}}
-                                                                    </div>
-                                                                    <p class="mb-1">{{ $comment->comment }}</p>
-                                                                </div>
-                                                            @empty
-                                                                <p class="text-muted">Chưa có bình luận nào.</p>
-                                                            @endforelse
+                                                        <div class="mt-auto text-center">
+                                                            <button class="btn btn-light w-100" type="button" data-bs-toggle="collapse" data-bs-target="#commentsCollapse" aria-expanded="false" aria-controls="commentsCollapse">
+                                                                Xem bình luận
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
 
-                                                <div class="col-lg-12">
-                                                    <div class="ps-lg-4">
-                                                        <div class="d-flex flex-wrap align-items-start gap-3">
-                                                            <h5 class="fs-14">Đánh giá: </h5>
+                                            <div class="col-lg-5">
+                                                <div class="card border shadow-none h-100">
+                                                    <div class="card-body d-flex flex-column">
+                                                        <div class="d-flex align-items-center mb-3">
+                                                            <div class="flex-grow-1">
+                                                                <h5 class="card-title mb-0">Đánh giá</h5>
+                                                            </div>
+                                                            <div class="flex-shrink-0">
+                                                                <span class="badge bg-primary rounded-pill">{{ $product->reviews()->count() }}</span>
+                                                            </div>
                                                         </div>
-
-                                                        <div class="list-group">
-                                                            @forelse($product->reviews as $review)
-                                                                <div class="list-group-item">
-                                                                    <div class="d-flex justify-content-between align-items-center">
-                                                                        <h6>{{ $review->user->name ?? 'Ẩn danh' }} -
-                                                                            <small>{{ optional($review->created_at)->format('d M, Y') }}</small>
-                                                                        </h6>
-                                                                        <span class="badge bg-success"><i class="mdi mdi-star"></i>
-                                                                            {{ $review->rating }}</span>
-                                                                    </div>
-                                                                    <p class="mb-1">{{ $review->review }}</p>
-                                                                </div>
-                                                            @empty
-                                                                <p class="text-muted">Chưa có đánh giá nào.</p>
-                                                            @endforelse
+                                                        <div class="mt-auto text-center">
+                                                            <button class="btn btn-light w-100" type="button" data-bs-toggle="collapse" data-bs-target="#reviewsCollapse" aria-expanded="false" aria-controls="reviewsCollapse">
+                                                                Xem đánh giá
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- end col -->
                                             </div>
-                                            <!-- end Ratings & Reviews -->
+                                        </div>
+
+                                        <div class="collapse mt-4" id="commentsCollapse">
+                                            <div class="card border shadow-none">
+                                                <div class="card-body">
+                                                    <h5 class="card-title mb-3">Danh sách bình luận</h5>
+                                                    <div class="list-group" id="comments-list">
+                                                        @forelse($product->comments()->paginate(3) as $comment)
+                                                            <div class="list-group-item">
+                                                                <div class="d-flex justify-content-between align-items-center">
+                                                                    <h6>{{ $comment->user->name ?? 'Ẩn danh' }} -
+                                                                        <small>{{ optional($comment->created_at)->format('d M, Y') }}</small>
+                                                                    </h6>
+                                                                </div>
+                                                                <p class="mb-1">{{ $comment->comment }}</p>
+                                                            </div>
+                                                        @empty
+                                                            <p class="text-muted">Chưa có bình luận nào.</p>
+                                                        @endforelse
+                                                    </div>
+
+                                                    @if($product->comments()->count() > 3)
+                                                        <div class="mt-3">
+                                                            {{ $product->comments()->paginate(3)->links() }}
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="collapse mt-4" id="reviewsCollapse">
+                                            <div class="card border shadow-none">
+                                                <div class="card-body">
+                                                    <h5 class="card-title mb-3">Danh sách đánh giá</h5>
+                                                    <div class="list-group" id="reviews-list">
+                                                        @forelse($product->reviews()->paginate(3) as $review)
+                                                            <div class="list-group-item">
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <h6 class="mb-0">{{ $review->user->name ?? 'Ẩn danh' }} -
+                                                                        <small class="text-muted">{{ optional($review->created_at)->format('d M, Y') }}</small>
+                                                                    </h6>
+                                                                </div>
+                                                                @if($review->variant)
+                                                                <div class="mb-2">
+                                                                    <span class="badge bg-light text-dark">
+                                                                        <span style="font-size: larger; font-style: italic;">{{ $product->name }}: Dung tích: {{ $review->variant->concentration }} - Nồng độ: {{ $review->variant->size }}</span>
+                                                                        @if($review->variant->special_edition)
+                                                                            - {{ $review->variant->special_edition }}
+                                                                        @endif
+                                                                    </span>
+                                                                </div>
+                                                                @endif
+                                                                <div class="mb-2">
+                                                                    @for($i = 1; $i <= 5; $i++)
+                                                                        @if($i <= $review->rating)
+                                                                            <i class="mdi mdi-star text-warning"></i>
+                                                                        @else
+                                                                            <i class="mdi mdi-star-outline text-muted"></i>
+                                                                        @endif
+                                                                    @endfor
+                                                                </div>
+                                                                <p class="mb-1">{{ $review->review }}</p>
+                                                            </div>
+                                                        @empty
+                                                            <p class="text-muted">Chưa có đánh giá nào.</p>
+                                                        @endforelse
+                                                    </div>
+
+                                                    @if($product->reviews()->count() > 3)
+                                                        <div class="mt-3">
+                                                            {{ $product->reviews()->paginate(3)->links() }}
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -398,3 +455,25 @@
     <!-- end card body -->
     </div>
 @endsection
+
+@push('scripts')
+<script>
+    // Ẩn nội dung bình luận và đánh giá ban đầu
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('comments-list').style.display = 'none';
+        document.getElementById('reviews-list').style.display = 'none';
+    });
+
+    // Xử lý sự kiện click tab
+    document.querySelectorAll('.nav-link').forEach(tab => {
+        tab.addEventListener('click', function() {
+            const targetId = this.getAttribute('href');
+            if (targetId === '#nav-comment') {
+                // Hiển thị nội dung khi click vào tab bình luận
+                document.getElementById('comments-list').style.display = 'block';
+                document.getElementById('reviews-list').style.display = 'block';
+            }
+        });
+    });
+</script>
+@endpush

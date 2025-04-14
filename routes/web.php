@@ -408,11 +408,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/checkout/ofline', [CheckoutController::class, 'offline'])->name('checkout.offline');
     });
 
-
-
     Route::prefix('donhang')->group(function () {
-        Route::get('/donhang', [WebOrderController::class, 'index'])->name('donhang.index');
-        Route::get('/donhang/show/{id}', [WebOrderController::class, 'show'])->name('donhang.show');
+        Route::get('/', [WebOrderController::class, 'index'])->name('donhang.index');
+        Route::get('/show/{id}', [WebOrderController::class, 'show'])->name('donhang.show');
         // Route hủy đơn hàng
         Route::post('order/{id}/cancel', [WebOrderController::class, 'cancel'])->name('order.cancel');
 

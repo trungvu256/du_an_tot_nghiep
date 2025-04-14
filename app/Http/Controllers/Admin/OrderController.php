@@ -180,6 +180,12 @@ class OrderController extends Controller
         $order = Order::with(['orderItems.product', 'orderItems.productVariant'])->findOrFail($id);
         Log::info("Bắt đầu xử lý trả hàng cho đơn hàng #{$id}");
 
+        // Kiểm tra nếu đơn hàng đã thanh toán qua VNPay thì không cho phép trả hàng
+        if ($order->payment_status == 1 && $order->payment_method == 1) {
+            Log::warning("Đơn hàng #{$id} đã thanh toán qua VNPay không được phép trả hàng");
+            return redirect()->back()->with('error', 'Đơn hàng đã thanh toán qua VNPay không được phép trả hàng.');
+        }
+
         // Kiểm tra xem đơn hàng có yêu cầu trả hàng không
         if ($order->return_status != Order::RETURN_REQUESTED) {
             Log::warning("Đơn hàng #{$id} không có yêu cầu hoàn trả");

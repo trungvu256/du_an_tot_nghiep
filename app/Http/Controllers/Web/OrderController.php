@@ -44,7 +44,7 @@ class OrderController extends Controller
 
         $orders = $query->paginate(10);
 
-        return view('web2.Home.order', compact('orders','categories'));
+        return view('web3.Home.order', compact('orders','categories'));
     }
 
     // show order
@@ -65,7 +65,7 @@ class OrderController extends Controller
             'Lý do khác'
         ];
 
-        return view('web2.Home.orderItem', compact('order', 'categories', 'returnReasons'));
+        return view('web3.Home.orderItems', compact('order', 'categories', 'returnReasons'));
     }
 
     public function updatePaymenStatus(Request $request,  $id)
@@ -88,7 +88,7 @@ class OrderController extends Controller
          $order = Order::find($id);
          $returnReason = $request->input('return_reason'); // Lý do hủy đơn hàng
          $quantity = $request->input('quantity'); // Số lượng trả về kho
-     
+
          if ($order) {
              // Kiểm tra trạng thái đơn hàng
              if ($order->status == 0 || $order->status == 1) {
@@ -96,7 +96,7 @@ class OrderController extends Controller
                  $order->status = 5;
                  $order->return_reason = $returnReason; // Lý do hủy
                  $order->save();
-     
+
                  // Xử lý trả lại hàng về kho nếu có số lượng
                  if ($quantity > 0) {
                      // Ví dụ: Cập nhật lại số lượng kho
@@ -107,21 +107,21 @@ class OrderController extends Controller
                          }
                      }
                  }
-     
+
                  return redirect()->back()->with('success', 'Đơn hàng đã được hủy và hàng đã được trả về kho!');
              }
-     
+
              return redirect()->back()->with('error', 'Không thể hủy đơn hàng này!');
          }
-     
+
          return redirect()->back()->with('error', 'Không tìm thấy đơn hàng!');
      }
- 
+
      // Xác nhận đã nhận được hàng
      public function received($id)
      {
          $order = Order::find($id);
- 
+
          if ($order) {
             if ($order->status == 3) { // Nếu đơn hàng đang ở trạng thái "Đã giao"
                 DB::beginTransaction();
@@ -144,17 +144,22 @@ class OrderController extends Controller
                     return redirect()->back()->with('error', 'Có lỗi xảy ra khi cập nhật đơn hàng!');
                 }
              }
- 
+
              return redirect()->back()->with('error', 'Không thể xác nhận đơn hàng này!');
          }
- 
+
          return redirect()->back()->with('error', 'Không tìm thấy đơn hàng!');
      }
- 
+
      // Xác nhận đã trả hàng
      public function returned($id)
      {
         $order = Order::findOrFail($id);
+
+        // Kiểm tra nếu đơn hàng đã thanh toán qua VNPay thì không cho phép trả hàng
+        if ($order->payment_status == 1 && $order->payment_method == 1) {
+            return redirect()->back()->with('error', 'Đơn hàng đã thanh toán qua VNPay không được phép trả hàng!');
+        }
 
         // Kiểm tra điều kiện trả hàng
         if ($order->status != 3 && $order->status != 4) {
@@ -193,12 +198,20 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($id);
 
+        // Kiểm tra nếu đơn hàng đã thanh toán qua VNPay thì không cho phép trả hàng
+        if ($order->payment_status == 1 && $order->payment_method == 1) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Đơn hàng đã thanh toán qua VNPay không được phép trả hàng!'
+            ]);
+        }
+
         // Kiểm tra điều kiện trả hàng
         if ($order->status != 3 && $order->status != 4) {
             return response()->json([
                 'success' => false,
                 'error' => 'Không thể yêu cầu trả hàng cho đơn hàng này!'
-            ], 400);
+            ]);
         }
 
         // Kiểm tra xem đã có yêu cầu trả hàng chưa
