@@ -8,9 +8,10 @@ use App\Models\Catalogue;
 use App\Models\Product;
 use App\Models\Brand;
 use App\Models\Attribute;
+use App\Models\ProductVariant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Log;
 class WebController extends Controller
 {
     //
@@ -31,100 +32,152 @@ class WebController extends Controller
         return view('web3.Home.home', compact('list_product', 'categories', 'bestSellers', 'blogs', 'products', 'productNews','brands'));
     }
 
+
     public function shop(Request $request)
-{
-    $query = Product::query()->with('variants', 'brand');
-
-    // Lấy danh mục & hãng
-    $categories = Catalogue::all();
-    $brands = Brand::all();
-
-    // Lấy các attribute value cho bộ lọc
-    $capacityAttr = Attribute::where('name', 'Thể tích')->first();
-    $concentrationAttr = Attribute::where('name', 'Nồng độ')->first();
-    $capacities = $capacityAttr ? $capacityAttr->values : collect();
-    $concentrations = $concentrationAttr ? $concentrationAttr->values : collect();
-
-    // === FILTER ===
-    if ($request->filled('price_range')) {
-        $query->whereHas('variants', function ($q) use ($request) {
-            foreach ($request->price_range as $range) {
-                [$min, $max] = explode('-', $range);
-                $q->orWhereBetween('price', [(int)$min, (int)$max]);
-            }
-        });
-    }
-
-    if ($request->filled('brand')) {
-        $query->whereIn('brand_id', $request->brand);
-    }
-
-    if ($request->filled('capacity')) {
-        $query->whereHas('variants.attributeValues', function ($q) use ($request) {
-            $q->whereIn('value', $request->capacity)
-              ->whereHas('attribute', function ($a) {
-                  $a->where('name', 'Thể tích');
-              });
-        });
-    }
-
-    if ($request->filled('concentration')) {
-        $query->whereHas('variants.attributeValues', function ($q) use ($request) {
-            $q->whereIn('value', $request->concentration)
-              ->whereHas('attribute', function ($a) {
-                  $a->where('name', 'Nồng độ');
-              });
-        });
-    }
-
-    // Sắp xếp
-    $sort = $request->input('sort');
-    switch ($sort) {
-        case 'price_asc':
-            $query->with(['variants' => function ($q) {
-                $q->orderBy('price', 'asc');
-            }]);
-            break;
-
-        case 'price_desc':
-            $query->with(['variants' => function ($q) {
-                $q->orderBy('price', 'desc');
-            }]);
-            break;
-
-        case 'brand':
-            $query->join('brands', 'products.brand_id', '=', 'brands.id')
-                  ->orderBy('brands.name', 'asc');
-            break;
-    }
-
-    if ($request->filled('search')) {
-        $query->where('name', 'like', '%' . $request->search . '%');
-    }
-
-    // PHÂN TRANG
-    $list_product = $query->paginate(12);
-    $productNews = Product::orderBy('id', 'DESC')->take(4)->get();
-
-    // Nếu là AJAX => chỉ trả về phần danh sách sản phẩm
-    if ($request->ajax()) {
-        return view('web3.Home.product_list', compact('list_product'))->render();
-    }
-
-    // Nếu là request thường => trả về cả trang shop
-    return view('web3.Home.shop', compact(
-        'list_product',
-        'categories',
-        'brands',
-        'capacities',
-        'concentrations',
-        'productNews'
-    ));
+    {
+        $query = Product::query()->with(['variants', 'brand']);
+        $productNews = Product::orderBy('id', 'DESC')->take(4)->get();
+        // Lấy danh mục & hãng
+        $categories = Catalogue::all();
+        $brands = Brand::all();
+        
+        // Lấy thông tin danh mục đã chọn (nếu có)
+        $selectedCategory = null;
+        if ($request->filled('cate_id')) {
+            $selectedCategory = Catalogue::find($request->input('cate_id'));
+        }
+      
+        $selectedBrand = null;
+if ($request->filled('brand_id')) {
+    $selectedBrand = Brand::find($request->input('brand_id'));
+    $query->where('brand_id', $request->input('brand_id'));
 }
+        
+        // Debug dữ liệu đầu vào
+        Log::info('Filter Input:', $request->all());
+        
+        // === FILTER ===
+        // Lọc theo danh mục
+        $cateId = null;
+        if ($request->filled('cate_id')) {
+            $cateId = $request->input('cate_id');
+            $query->where('catalogue_id', $cateId);
+            Log::info('Filtering by category:', ['cate_id' => $cateId]);
+        } else {
+            $nuocHoaCategory = Catalogue::where('name', 'Nước Hoa')->first();
+            if ($nuocHoaCategory) {
+                $cateId = $nuocHoaCategory->id;
+                $query->where('catalogue_id', $cateId);
+                Log::info('Default category:', ['cate_id' => $cateId]);
+            } else {
+                Log::warning('Default category "Nước Hoa" not found.');
+            }
 
-
-
-
+        }
+        
+        // Lọc theo giá
+        if ($request->filled('price_range')) {
+            $priceRanges = $request->input('price_range');
+            
+            $query->whereHas('variants', function ($q) use ($priceRanges) {
+                $q->where(function ($query) use ($priceRanges) {
+                    foreach ($priceRanges as $range) {
+                        [$min, $max] = array_map('intval', explode('-', $range));
+                        $query->orWhereRaw("
+                            (CASE 
+                                WHEN price_sale IS NOT NULL AND price_sale > 0 THEN price_sale 
+                                ELSE price 
+                            END) BETWEEN ? AND ?
+                        ", [$min, $max]);
+                    }
+                });
+            });
+        }
+        
+        // Lọc theo thương hiệu
+        if ($request->filled('brand')) {
+            $query->whereIn('brand_id', $request->input('brand'));
+            Log::info('Filtering by brand:', ['brand' => $request->input('brand')]);
+        }
+        
+        // Sắp xếp
+        $sort = $request->input('sort');
+        switch ($sort) {
+            case 'new':
+                $query->orderBy('created_at', 'desc');
+                break;
+        
+            case 'price-low-high':
+                $query->select('products.*')
+                      ->addSelect([
+                          'effective_price' => ProductVariant::selectRaw('
+                              CASE 
+                                  WHEN price_sale IS NOT NULL AND price_sale > 0 THEN price_sale
+                                  ELSE price
+                              END
+                          ')
+                          ->whereColumn('product_variants.product_id', 'products.id')
+                          ->orderByRaw('
+                              CASE 
+                                  WHEN price_sale IS NOT NULL AND price_sale > 0 THEN price_sale
+                                  ELSE price
+                              END
+                          ')
+                          ->limit(1)
+                      ])
+                      ->orderBy('effective_price', 'asc');
+                break;
+        
+            case 'price-high-low':
+                $query->select('products.*')
+                      ->addSelect([
+                          'effective_price' => ProductVariant::selectRaw('
+                              CASE 
+                                  WHEN price_sale IS NOT NULL AND price_sale > 0 THEN price_sale
+                                  ELSE price
+                              END
+                          ')
+                          ->whereColumn('product_variants.product_id', 'products.id')
+                          ->orderByRaw('
+                              CASE 
+                                  WHEN price_sale IS NOT NULL AND price_sale > 0 THEN price_sale
+                                  ELSE price
+                              END DESC
+                          ')
+                          ->limit(1)
+                      ])
+                      ->orderByDesc('effective_price');
+                break;
+        
+            default:
+                $query->orderBy('created_at', 'desc');
+                break;
+        }
+        
+        // PHÂN TRANG
+        $list_product = $query->paginate(12);
+        
+        // Debug truy vấn SQL và kết quả
+        Log::info('SQL Query:', ['query' => $query->toSql(), 'bindings' => $query->getBindings()]);
+        Log::info('Product count:', ['count' => $list_product->count()]);
+        
+        // Nếu là AJAX => trả về danh sách sản phẩm
+        if ($request->ajax()) {
+            return view('web3.Home.product_list', compact('list_product'))->render();
+        }
+        
+        // Nếu là request thường => trả về cả trang shop
+        return view('web3.Home.shop', compact(
+            'list_product',
+            'categories',
+            'brands',
+            'productNews',
+            'selectedCategory',  // Truyền tên danh mục vào view
+            'selectedBrand'
+        ));
+    }
+    
+    
 
     public function shopdetail($id)
     {
@@ -165,28 +218,5 @@ class WebController extends Controller
     //     return view('web2.Home.shop-detail', compact('detailproduct'));
     // }
 
-    public function getProductsByCategory($cate_id)
-    {
-        $categories = Catalogue::all();
-        $brands = Brand::all();
-        $capacityAttr = Attribute::where('name', 'Thể tích')->first();
-$concentrationAttr = Attribute::where('name', 'Nồng độ')->first();
-
-$capacities = $capacityAttr ? $capacityAttr->values : collect();
-$concentrations = $concentrationAttr ? $concentrationAttr->values : collect();
-        $list_product = Product::where('catalogue_id', $cate_id)
-        
-        ->orderBy('id', 'DESC')
-        ->paginate(12);
-
-        return view('web3.Home.shop', compact(
-            'list_product',
-            'categories',
-            'brands',
-            'capacities',
-            'concentrations'
-        ));
-        
-
-    }
+   
 }

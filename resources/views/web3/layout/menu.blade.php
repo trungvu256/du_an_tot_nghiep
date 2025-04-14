@@ -44,88 +44,42 @@
                         <nav class="box-navigation text-center">
                             <ul class="box-nav-menu">
                                 <li class="menu-item">
-
-                                    <a href="#" class="item-link">Home<i class="icon icon-arr-down"></i></a>
-    
+                                    <a href="{{route('web.home')}}" class="item-link">Trang chủ</a>
 
                                 </li>
-                                <li class="menu-item">
-                                    <a href="{{ route('web3.shop') }}" class="item-link">Shop<i
-                                            class="icon icon-arr-down"></i></a>
-                                    <div class="sub-menu mega-menu mega-shop">
-                                        <div class="wrapper-sub-menu">
-                                            <div class="mega-menu-item">
-                                                <div class="menu-heading">SHOP LAYOUT</div>
-                                                <ul class="menu-list">
-                                                    <li><a href="shop-default.html" class="menu-link-text link">Default</a>
-                                                    </li>
-    
-                                                </ul>
-                                            </div>
-    
-                                        </div>
-                                        <div class="wrapper-sub-collection">
-                                            <div dir="ltr" class="swiper tf-swiper hover-sw-nav wow fadeInUp" data-swiper='{
-                                                    "slidesPerView": 2,
-                                                    "spaceBetween": 24,
-                                                    "speed": 800,
-                                                    "observer": true,
-                                                    "observeParents": true,
-                                                    "slidesPerGroup": 2,
-                                                    "navigation": {
-                                                        "clickable": true,
-                                                        "nextEl": ".nav-next-cls-header",
-                                                        "prevEl": ".nav-prev-cls-header"
-                                                    },
-                                                    "pagination": { "el": ".sw-pagination-cls-header", "clickable": true }
-                                                }'>
-                                                <div class="swiper-wrapper">
-                                                    <div class="swiper-slide">
-                                                        <div class="wg-cls style-abs asp-1 hover-img">
-                                                            <a href="shop-default.html" class="image img-style d-block">
-                                                                <img src="images/cls-categories/fashion/men-2.jpg"
-                                                                    data-src="images/cls-categories/fashion/men-2.jpg"
-                                                                    alt="" class="lazyload">
-                                                            </a>
-                                                            <div class="cls-btn text-center">
-                                                                <a href="shop-default.html"
-                                                                    class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                                                                    Men
-                                                                    <i class="icon icon-arrow-top-left"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- item 2 -->
-                                                    <div class="swiper-slide">
-                                                        <div class="wg-cls style-abs asp-1 hover-img">
-                                                            <a href="shop-default.html" class="image img-style d-block">
-                                                                <img src="images/cls-categories/fashion/women.jpg"
-                                                                    data-src="images/cls-categories/fashion/women.jpg"
-                                                                    alt="" class="lazyload">
-                                                            </a>
-                                                            <div class="cls-btn text-center">
-                                                                <a href="shop-default.html"
-                                                                    class="tf-btn btn-cls btn-white hover-dark hover-icon-2">
-                                                                    Women
-                                                                    <i class="icon icon-arrow-top-left"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-    
-                                                </div>
-                                                <div
-                                                    class="d-flex d-xl-none sw-dot-default sw-pagination-cls-header justify-content-center">
-                                                </div>
-                                                <div
-                                                    class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls-header">
-                                                </div>
-                                                <div
-                                                    class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls-header">
-                                                </div>
-                                            </div>
-                                        </div>
+                                <li class="menu-item" style="position: relative;">
+                                    <a href="#" class="item-link">Thương hiệu <i class="icon icon-arr-down"></i></a>
+                                
+                                    <div class="sub-menu mega-menu mega-shop" 
+                                         style="position: absolute;
+                                                top: 100%;
+                                                left: 0;
+                                                background: #fff;
+                                                padding: 20px;
+                                                border-radius: 15px;
+                                                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                                                display: inline-block;
+                                                min-width: 200px;
+                                                max-width: 100%;
+                                                z-index: 1000;">
+                                        
+                                        <ul class="menu-list"
+                                            style="display: grid;
+                                                   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                                                   gap: 10px;
+                                                   list-style: none;
+                                                   padding: 0;
+                                                   margin: 0;">
+                                            @foreach ($brands as $brand)
+                                                <li>
+                                                    <a href="{{ route('web.shop', ['brand_id' => $brand->id]) }}"
+                                                        class="menu-link-text link"
+                                                        style="font-size: 16px; color: #000; text-decoration: none; display: block;">
+                                                         {{ $brand->name }}
+                                                     </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
                                     </div>
                                 </li>
                                 <li class="menu-item" style="position: relative;">
@@ -137,7 +91,7 @@
                                             <ul class="menu-list">
                                                 @foreach ($categories as $category)
                                                     <li style="margin-bottom: 5px;">
-                                                        <a href="" class="menu-link-text link" style="font-size: 16px; color: #000; text-decoration: none;">
+                                                        <a href="{{ route('web.shop', ['cate_id' => $category->id]) }}" class="menu-link-text link" style="font-size: 16px; color: #000; text-decoration: none;">
                                                             <h7>{{ $category->name }}</h7>
                                                         </a>
                                                     </li>
@@ -159,92 +113,12 @@
                                 
                                 
                                 <li class="menu-item position-relative">
-                                    <a href="#" class="item-link">Pages<i class="icon icon-arr-down"></i></a>
-                                    <div class="sub-menu sub-menu-style-2">
-                                        <ul class="menu-list">
-                                            <li><a href="about-us.html" class="menu-link-text link">About</a></li>
-                                            <li><a href="contact-us.html" class="menu-link-text link">Contact</a></li>
-                                            <li><a href="store-location.html" class="menu-link-text link">Store
-                                                    location</a></li>
-                                            <li><a href="account-page.html" class="menu-link-text link">Login
-                                                    register</a></li>
-                                            <li><a href="faq.html" class="menu-link-text link">FAQ</a></li>
-                                            <li><a href="cart-empty.html" class="menu-link-text link">Cart empty</a>
-                                            </li>
-                                            <li><a href="cart-drawer-v2.html" class="menu-link-text link">Cart drawer
-                                                    v2</a></li>
-                                            <li><a href="view-cart.html" class="menu-link-text link">View cart</a></li>
-                                            <li><a href="before-you-leave.html" class="menu-link-text link">Before you
-                                                    leave</a></li>
-                                            <li><a href="cookies.html" class="menu-link-text link">Cookies</a></li>
-                                            <li><a href="home-fashion-02.html" class="menu-link-text link">Sub navtab
-                                                    products</a></li>
-                                            <li><a href="404-3.html" class="menu-link-text link">404</a></li>
-                                            <li><a href="coming-soon.html" class="menu-link-text link">Coming Soon!</a>
-                                            </li>
-                                        </ul>
-                                        <div class="banner hover-img">
-                                            <a href="blog-single.html" class="img-style">
-                                                <img src="images/blog/banner-header.jpg" alt="banner">
-                                            </a>
-                                            <div class="content">
-                                                <div class="title">
-                                                    Unveiling the latest gear
-                                                </div>
-                                                <a href="blog-single.html" class="box-icon animate-btn"><i
-                                                        class="icon icon-arrow-top-left"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <a href="#" class="item-link">Liên hệ</a>
+                                    
                                 </li>
                                 <li class="menu-item position-relative">
-                                    <a href="#" class="item-link">Blog<i class="icon icon-arr-down"></i></a>
-                                    <div class="sub-menu sub-menu-style-3">
-                                        <ul class="menu-list">
-                                            <li><a href="blog-list-01.html" class="menu-link-text link">Blog List 1</a>
-                                            </li>
-    
-                                        </ul>
-                                        <div class="wrapper-sub-blog">
-                                            <div class="menu-heading">Recent Posts</div>
-                                            <ul class="list-recent-blog">
-                                                <li class="item">
-                                                    <a href="blog-single.html" class="img-box">
-                                                        <img src="images/blog/recent-1.jpg" alt="img-recent-blog">
-                                                    </a>
-                                                    <div class="content">
-                                                        <a href="blog-single.html" class="fw-medium text-sm link title">The
-                                                            Power of
-                                                            Monochrome: Styling One Color</a>
-                                                        <span class="text-xxs text-grey date-post">Sep 19 2024</span>
-                                                    </div>
-                                                </li>
-                                                <li class="item">
-                                                    <a href="blog-single.html" class="img-box">
-                                                        <img src="images/blog/recent-2.jpg" alt="img-recent-blog">
-                                                    </a>
-                                                    <div class="content">
-                                                        <a href="blog-single.html" class="fw-medium text-sm link title">10
-                                                            Must-Have
-                                                            Accessories for Every Season</a>
-                                                        <span class="text-xxs text-grey date-post">Sep 19 2024</span>
-                                                    </div>
-                                                </li>
-                                                <li class="item">
-                                                    <a href="blog-single.html" class="img-box">
-                                                        <img src="images/blog/recent-3.jpg" alt="img-recent-blog">
-                                                    </a>
-                                                    <div class="content">
-                                                        <a href="blog-single.html" class="fw-medium text-sm link title">How
-                                                            to Elevate Your
-                                                            Look with Layering</a>
-                                                        <span class="text-xxs text-grey date-post">Sep 19 2024</span>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-    
+                                    <a href="#" class="item-link">Bài viết</a>
+                                    
                                 </li>
     
                             </ul>
@@ -328,5 +202,5 @@
     </div>
 
 
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
