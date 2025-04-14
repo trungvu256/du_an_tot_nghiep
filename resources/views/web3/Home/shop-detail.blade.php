@@ -129,7 +129,7 @@
                                             <span class="badge-sale" id="discount-badge" style="display: none;">Giảm 20%</span>
                                         </div>
                                         <div class="mb-4">
-                                            <p class="text-dark font-weight-medium mb-0 mr-3">Thương hiệu: {{ $brands->name }}</p>
+                                            <p class="text-dark font-weight-medium mb-0 mr-3">Thương hiệu: {{ $brand->name }}</p>
                                         </div>
                                         <div class="mb-4">
                                             <p class="text-dark font-weight-medium mb-0 mr-3">Loại sản phẩm: {{ $category->name }}</p>
