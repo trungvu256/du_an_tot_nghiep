@@ -177,6 +177,7 @@ class CheckoutController extends Controller
 
                     $variant->decrement('stock_quantity', $quantity);
                     event(new EventsOrderPlaced($order));
+                    Mail::to($user->email)->send(new OrderPlacedMail($order));
                     unset($cart[$itemKey]);
                 }
 

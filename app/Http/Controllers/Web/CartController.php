@@ -18,6 +18,7 @@ class CartController extends Controller
 {
     public function shopdetail($id)
 {
+    $brands = Brand::all();
     // Lấy sản phẩm chi tiết
     $categories = Catalogue::all();
     $detailproduct = Product::findOrFail($id);
@@ -65,7 +66,7 @@ class CartController extends Controller
 
     // Lấy thông tin danh mục và thương hiệu
     $category = Catalogue::find($detailproduct->catalogue_id);
-    $brands = Brand::find($detailproduct->brand_id);
+    $brand = Brand::find($detailproduct->brand_id);
 
     // Truy vấn tất cả thuộc tính của sản phẩm
     $attributes = [];
@@ -125,7 +126,8 @@ class CartController extends Controller
         'attributes',
         'variant',
         'categories',
-        'productNews'
+        'productNews',
+        'brand'
     ));
 }
 

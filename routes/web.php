@@ -366,18 +366,12 @@ Route::post('/checkout', [HomeController::class, 'checkoutPost'])->name('web.che
 //Login with Google
 Route::get('login/google', [HomeController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('login/google/callback', [HomeController::class, 'handleGoogleCallback']);
-//web 2
-Route::get('/web3', [Web2Controller::class, 'index'])->name('web3.home');
-Route::get('web3/shop', [Web2Controller::class, 'shop'])->name('web3.shop');
-Route::get('web3/shop-detail', [Web2Controller::class, 'shopdetail'])->name('web3.shop.detail');
-Route::get('web3/shop-detail/{id}', [WebController::class, 'shopdetail'])->name('web3.shop.detail');
+
 
 //web
 Route::get('/', [WebController::class, 'index'])->name('web.home');
 Route::get('/shop', [WebController::class, 'shop'])->name('web.shop');
-Route::get('/category/{cate_id}/products', [WebController::class, 'getProductsByCategory'])->name('web.shopByCate');
 
-// Route::get('/product/detail/{id}' , [WebController::class, 'detail'])->name('web.product.detail');
 
 // blog
 Route::get('/home/blog', [WebBlogController::class, 'listBlog'])->name('web.listBlog.blog');
