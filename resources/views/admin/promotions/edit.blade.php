@@ -50,7 +50,7 @@
 
                                         <div class="mb-3">
                                             <label for="status" class="form-label">Trạng Thái</label>
-                                            <select id="status" name="status" class="form-control">
+                                            <select id="status" name="status" class="form-control" style="width: 51%; margin-right: 20px;">
                                                 <option value="active"
                                                     {{ old('status', $promotion->status) == 'active' ? 'selected' : '' }}>
                                                     Kích hoạt</option>

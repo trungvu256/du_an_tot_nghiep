@@ -367,6 +367,7 @@ Route::post('/checkout', [HomeController::class, 'checkoutPost'])->name('web.che
 Route::get('login/google', [HomeController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('login/google/callback', [HomeController::class, 'handleGoogleCallback']);
 
+
 //web
 Route::get('/', [WebController::class, 'index'])->name('web.home');
 Route::get('/shop', [WebController::class, 'shop'])->name('web.shop');

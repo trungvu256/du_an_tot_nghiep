@@ -19,6 +19,7 @@
     </div>
 
     <section class="flat-spacing-2 pt-0">
+
         <div class="container">
             <div class="row d-flex">
                 <div class="col-xl-3">
@@ -40,6 +41,7 @@
                                     <div class="input-group mb-3">
                                         <input type="text" id="brand-search" class="form-control" placeholder="Tìm Thương hiệu">
                                         <span class="input-group-text"><i class="fas fa-search"></i></span>
+
                                     </div>
                                     <div class="filter-scroll" id="brand-list">
                                         @foreach($brands as $brand)

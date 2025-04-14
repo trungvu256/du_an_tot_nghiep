@@ -72,6 +72,7 @@ if ($request->filled('brand_id')) {
             } else {
                 Log::warning('Default category "Nước Hoa" not found.');
             }
+
         }
         
         // Lọc theo giá
@@ -177,6 +178,7 @@ if ($request->filled('brand_id')) {
     }
     
     
+
     public function shopdetail($id)
     {
         $categories = Catalogue::all();
