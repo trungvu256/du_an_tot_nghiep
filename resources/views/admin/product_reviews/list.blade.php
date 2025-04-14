@@ -12,12 +12,7 @@
                             <div class="card-header mb-5">
                                 <div class="card-title">Danh sách đánh giá sản phẩm</div>
                             </div>
-                            <div>
-                                <a href=""
-                                    class="btn btn-primary btn-rounded d-flex align-items-center mt-3">
-                                    <i class="bi bi-trash me-2"></i> Thùng Rác
-                                </a>
-                            </div>
+            
                         </div>
 
                         <div class="card-body">
@@ -44,6 +39,7 @@
                                             <th>STT</th>
                                             <th>Người dùng</th>
                                             <th>Sản phẩm</th>
+                                            <th>Biến thể</th>
                                             <th>Xếp hạng</th>
                                             <th>Đánh giá</th>
                                             <th>Phản hồi</th>
@@ -56,7 +52,29 @@
                                                 <td>{{ $index + 1 }}</td>
                                                 <td>{{ $review->user->name ?? 'N/A' }}</td>
                                                 <td>{{ $review->product->name ?? 'N/A' }}</td>
-                                                <td>{{ $review->rating }}</td>
+                                                <td>
+                                                    @if($review->variant)
+                                                        <span class="badge bg-light text-dark">
+                                                            <span style="font-size: larger; font-style: italic;">
+                                                                Dung tích: {{ $review->variant->concentration }} - Nồng độ: {{ $review->variant->size }}
+                                                                @if($review->variant->special_edition)
+                                                                    - {{ $review->variant->special_edition }}
+                                                                @endif
+                                                            </span>
+                                                        </span>
+                                                    @else
+                                                        <span class="text-muted">Không có biến thể</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @for($i = 1; $i <= 5; $i++)
+                                                        @if($i <= $review->rating)
+                                                            <i class="mdi mdi-star text-warning"></i>
+                                                        @else
+                                                            <i class="mdi mdi-star-outline text-muted"></i>
+                                                        @endif
+                                                    @endfor
+                                                </td>
                                                 <td>{{ $review->review }}</td>
                                                 <td>
                                                     @if ($review->responses->count() > 0)
