@@ -30,7 +30,9 @@ class CheckoutController extends Controller
         // Lọc giỏ hàng chỉ lấy các sản phẩm được chọn
         $filteredCart = collect($cart)->only($selectedCartKeys)->toArray();
 
-        $subtotal = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $filteredCart));
+        $subtotal = array_sum(array_map(function($item) {
+            return $item['price'] * $item['quantity'];
+        }, $filteredCart));
         $promotion = session('promotion');
         // $shippingFee = 10000;
 
@@ -136,6 +138,7 @@ class CheckoutController extends Controller
                     'payment_status' => 0,
                     'status' => Order::STATUS_PENDING,
                     'payment_deadline' => $paymentDeadline,
+                    'payment_method' => Order::PAYMENT_METHOD_VNPAY,
                 ]);
 
                 $orderTotal = 0;
@@ -189,9 +192,30 @@ class CheckoutController extends Controller
                 // Kiểm tra tính hợp lệ của amount từ form
                 $discount = session('promotion')['discount'] ?? 0;
                 $expectedTotal = max(0, $orderTotal - $discount);
-                if (abs($finalTotal - $expectedTotal) > 1) {
-                    DB::rollBack();
-                    return redirect()->route('cart.viewCart')->with('error', 'Giá trị thanh toán không khớp với giỏ hàng!');
+
+                // Làm tròn số để tránh lỗi do số thập phân
+                $finalTotal = round($finalTotal);
+                $expectedTotal = round($expectedTotal);
+
+                // Thêm log để debug
+                Log::info('Payment values', [
+                    'finalTotal' => $finalTotal,
+                    'expectedTotal' => $expectedTotal,
+                    'orderTotal' => $orderTotal,
+                    'discount' => $discount,
+                    'selectedCart' => $selectedCart
+                ]);
+
+                // Kiểm tra xem có sự khác biệt giữa giá trị thanh toán và giá trị giỏ hàng
+                if ($finalTotal != $expectedTotal) {
+                    // Nếu giá trị thanh toán nhỏ hơn giá trị giỏ hàng, có thể do mã giảm giá
+                    if ($finalTotal < $expectedTotal && $discount > 0) {
+                        // Cập nhật lại giá trị thanh toán để khớp với giá trị giỏ hàng
+                        $finalTotal = $expectedTotal;
+                    } else {
+                        DB::rollBack();
+                        return redirect()->route('cart.viewCart')->with('error', 'Giá trị thanh toán không khớp với giỏ hàng! (Giá trị thanh toán: ' . number_format($finalTotal) . 'đ, Giá trị giỏ hàng: ' . number_format($expectedTotal) . 'đ)');
+                    }
                 }
 
                 // Cấu hình VNPay
@@ -368,7 +392,7 @@ public function vnpayCallback(Request $request)
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('web2.Home.order', compact('orders', 'categories'));
+        return view('web3.Home.order', compact('orders', 'categories'));
     }
 
     public function continuePayment($id, Request $request)
@@ -469,18 +493,19 @@ public function vnpayCallback(Request $request)
             DB::beginTransaction();
 
             try {
-                $txnRef = now()->timestamp . rand(1000, 9999);
                 $order = Order::create([
                     'user_id' => $user->id,
                     'name' => $user->name ?? 'Không rõ tên',
                     'email' => $user->email ?? 'no-email@example.com',
                     'phone' => $user->phone ?? '0000000000',
                     'address' => $user->address ?? 'Chưa cập nhật',
-                    'txn_ref' => $txnRef,
+                    'txn_ref' => now()->timestamp . rand(1000, 9999),
                     'total_price' => $finalTotal,
-                    'payment_status' => 0,
+                    'payment_status' => Order::PAYMENT_PENDING,
                     'status' => Order::STATUS_PENDING,
-                    'payment_deadline' => now()->addDays(3), // Ví dụ: 3 ngày để thanh toán
+                    'return_status' => Order::RETURN_NONE,
+                    'payment_deadline' => now()->addDays(3),
+                    'payment_method' => Order::PAYMENT_METHOD_COD,
                 ]);
 
                 $orderTotal = 0;
@@ -521,8 +546,6 @@ public function vnpayCallback(Request $request)
                     ]);
 
                     $variant->decrement('stock_quantity', $quantity);
-                    event(new EventsOrderPlaced($order));
-                    Mail::to($user->email)->send(new OrderPlacedMail($order));
                     unset($cart[$itemKey]);
                 }
 
@@ -533,20 +556,39 @@ public function vnpayCallback(Request $request)
 
                 $discount = session('promotion')['discount'] ?? 0;
                 $expectedTotal = max(0, $orderTotal - $discount);
+
+                // Làm tròn số để tránh lỗi do số thập phân
+                $finalTotal = round($finalTotal);
+                $expectedTotal = round($expectedTotal);
+
+                // Thêm log để debug
+                Log::info('Offline payment values', [
+                    'finalTotal' => $finalTotal,
+                    'expectedTotal' => $expectedTotal,
+                    'orderTotal' => $orderTotal,
+                    'discount' => $discount
+                ]);
+
+                // Sử dụng so sánh với sai số nhỏ để tránh lỗi do làm tròn
                 if (abs($finalTotal - $expectedTotal) > 1) {
                     DB::rollBack();
-                    return redirect()->route('cart.viewCart')->with('error', 'Giá trị thanh toán không khớp với giỏ hàng!');
+                    return redirect()->route('cart.viewCart')->with('error', 'Giá trị thanh toán không khớp với giỏ hàng! (Giá trị thanh toán: ' . number_format($finalTotal) . 'đ, Giá trị giỏ hàng: ' . number_format($expectedTotal) . 'đ)');
                 }
+
+                // Gửi email và kích hoạt sự kiện sau khi đã kiểm tra hết lỗi
+                event(new EventsOrderPlaced($order));
+                Mail::to($user->email)->send(new OrderPlacedMail($order));
 
                 DB::commit();
 
                 // Xóa giỏ hàng và mã giảm giá sau khi đặt hàng thành công
                 session(['cart' => $cart]);
                 session()->forget('selected_cart');
-                session()->forget('promotion'); // Xóa mã giảm giá
+                session()->forget('promotion');
                 session(['last_order_id' => $order->id]);
 
-                return redirect()->route('donhang.index')->with('success', 'Đặt hàng thành công! Vui lòng thanh toán khi nhận hàng.');
+                return redirect()->route('donhang.index')
+                    ->with('success', 'Đặt hàng thành công! ' . $order->getStatusText() . '. Vui lòng thanh toán khi nhận hàng.');
             } catch (\Exception $e) {
                 DB::rollBack();
                 return redirect()->route('cart.viewCart')->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());

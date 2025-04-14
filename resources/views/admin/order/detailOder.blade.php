@@ -254,7 +254,7 @@
                                     <div class="mb-2">
                                         <h2 class="card-title mb-2">TT thanh toán:
                                             @if($order->payment_status == 1)
-                                            <span class="badge bg-success">Đã thanh toán (VNPay)</span>
+                                            <span class="badge bg-success">Đã thanh toán</span>
                                         @else
                                             <span class="badge bg-primary"> Thanh toán khi nhận hàng</span>
                                         @endif </h2>

@@ -13,6 +13,32 @@ class Order extends Model
 
     protected $table = 'orders';
 
+    // Order Status Constants
+    const STATUS_PENDING = 0;    // Chờ xử lý
+    const STATUS_PREPARING = 1;  // Chuẩn bị hàng
+    const STATUS_DELIVERING = 2; // Đang giao
+    const STATUS_DELIVERED = 3;  // Đã giao
+    const STATUS_COMPLETED = 4;  // Hoàn tất
+    const STATUS_CANCELED = 5;   // Đã hủy
+    const STATUS_RETURNED = 6;   // Đã trả hàng
+
+    // Payment Status Constants
+    const PAYMENT_PENDING = 0;   // Chưa thanh toán
+    const PAYMENT_COMPLETED = 1; // Đã thanh toán
+    const PAYMENT_FAILED = 2;    // Thanh toán thất bại
+    const PAYMENT_REFUNDED = 3;  // Đã hoàn tiền
+
+    // Payment Method Constants
+    const PAYMENT_METHOD_COD = 0;    // Thanh toán khi nhận hàng (COD)
+    const PAYMENT_METHOD_VNPAY = 1;  // Thanh toán qua VNPAY
+
+    // Return Status Constants
+    const RETURN_NONE = 0;      // Không có yêu cầu trả hàng
+    const RETURN_REQUESTED = 1;  // Đang yêu cầu trả hàng
+    const RETURN_APPROVED = 2;   // Đã duyệt trả hàng
+    const RETURN_DECLINED = 3;   // Từ chối trả hàng
+    const RETURN_COMPLETED = 4;  // Hoàn tất trả hàng
+
     protected $fillable = [
         'name',
         'email',
@@ -31,24 +57,16 @@ class Order extends Model
         'region',
         'shipping_provider',
         'tracking_number',
-        'order_code'
+        'order_code',
+        'payment_method'
     ];
-    const STATUS_PENDING = 0; // Chờ xử lý
-    const STATUS_PREPARING = 1; // Chuẩn bị hàng
-    const STATUS_DELIVERING = 2; // Đang giao
-    const STATUS_DELIVERED = 3; // Đã giao
-    const STATUS_COMPLETED = 4; // Hoàn tất
-    const STATUS_CANCELED = 5; // Đã hủy
-    const STATUS_RETURNED = 6; // Đã trả hàng
 
-
-    //    Trạng thái trả hàng
-    const RETURN_NONE = 0; // Không có yêu cầu trả hàng
-    const RETURN_REQUESTED = 1; // Đang yêu cầu trả hàng
-    const RETURN_APPROVED = 2; // Đã duyệt trả hàng
-    const RETURN_DECLINED = 3; // Từ chối trả hàng
-    const RETURN_COMPLETED = 4; // Hoàn tất trả hàng
-
+    protected $casts = [
+        'total_price' => 'decimal:2',
+        'payment_deadline' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 
     public function canTransitionTo(int $newStatus): bool
     {
@@ -63,15 +81,8 @@ class Order extends Model
         return in_array($newStatus, $transitions[$this->status] ?? []);
     }
 
-
     const STATUS_PAID = 'paid';
 
-    protected $casts = [
-        'total_price' => 'decimal:2', // Chuyển total_price thành số thập phân với 2 chữ số
-        'payment_deadline' => 'datetime', // Chuyển payment_deadline thành đối tượng DateTime
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
     // lk với User
     public function user()
     {
@@ -112,6 +123,94 @@ class Order extends Model
     public function isPaymentExpired()
     {
         return $this->payment_deadline && now()->greaterThan($this->payment_deadline);
+    }
+
+    public function isPaid()
+    {
+        return $this->payment_status === self::PAYMENT_COMPLETED;
+    }
+
+    public function isPending()
+    {
+        return $this->payment_status === self::PAYMENT_PENDING;
+    }
+
+    public function isCodPayment()
+    {
+        return $this->payment_method === self::PAYMENT_METHOD_COD;
+    }
+
+    public function isVnPayPayment()
+    {
+        return $this->payment_method === self::PAYMENT_METHOD_VNPAY;
+    }
+
+    public function getPaymentStatusText()
+    {
+        switch($this->payment_status) {
+            case self::PAYMENT_PENDING:
+                return 'Chưa thanh toán';
+            case self::PAYMENT_COMPLETED:
+                return 'Đã thanh toán';
+            case self::PAYMENT_FAILED:
+                return 'Thanh toán thất bại';
+            case self::PAYMENT_REFUNDED:
+                return 'Đã hoàn tiền';
+            default:
+                return 'Không xác định';
+        }
+    }
+
+    public function getStatusText()
+    {
+        switch($this->status) {
+            case self::STATUS_PENDING:
+                return 'Chờ xử lý';
+            case self::STATUS_PREPARING:
+                return 'Chuẩn bị hàng';
+            case self::STATUS_DELIVERING:
+                return 'Đang giao';
+            case self::STATUS_DELIVERED:
+                return 'Đã giao';
+            case self::STATUS_COMPLETED:
+                return 'Hoàn tất';
+            case self::STATUS_CANCELED:
+                return 'Đã hủy';
+            case self::STATUS_RETURNED:
+                return 'Đã trả hàng';
+            default:
+                return 'Không xác định';
+        }
+    }
+
+    public function getReturnStatusText()
+    {
+        switch($this->return_status) {
+            case self::RETURN_NONE:
+                return 'Không có yêu cầu';
+            case self::RETURN_REQUESTED:
+                return 'Đang yêu cầu';
+            case self::RETURN_APPROVED:
+                return 'Đã duyệt';
+            case self::RETURN_DECLINED:
+                return 'Từ chối';
+            case self::RETURN_COMPLETED:
+                return 'Hoàn tất';
+            default:
+                return 'Không xác định';
+        }
+    }
+
+    public function getPaymentMethodText()
+    {
+        switch($this->payment_method) {
+            case self::PAYMENT_METHOD_COD:
+                return 'Thanh toán khi nhận hàng';
+            case self::PAYMENT_METHOD_VNPAY:
+                return 'Thanh toán qua VNPAY';
+            default:
+                return 'Không xác định';
+        }
     }
 
     public function promotion()
