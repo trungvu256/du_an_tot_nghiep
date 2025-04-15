@@ -2,6 +2,7 @@
 <html lang="en">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- SweetAlert2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.min.css" rel="stylesheet">
     @include('web3.layout.css')
