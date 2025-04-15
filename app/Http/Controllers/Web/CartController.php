@@ -225,7 +225,7 @@ class CartController extends Controller
     // Lưu giỏ vào session
     session()->put('cart', $cart);
 
-    return redirect()->route('cart.viewCart')->with('success', 'Đã thêm vào giỏ hàng');
+    return redirect()->back()->with('success', 'Đã thêm vào giỏ hàng');
 }
 
 
