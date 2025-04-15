@@ -12,7 +12,7 @@
                             <div class="card-header mb-5">
                                 <div class="card-title">Danh sách đánh giá sản phẩm</div>
                             </div>
-            
+
                         </div>
 
                         <div class="card-body">
@@ -230,4 +230,5 @@
             $('#responseForm').attr('action', 'product-reviews/respond/' + reviewId);
         });
     </script>
+    @include('alert')
 @endsection

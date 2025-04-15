@@ -136,7 +136,7 @@ document.querySelectorAll('.delete-btn').forEach(button => {
         e.preventDefault();
         const form = this.closest('.delete-form');
         Swal.fire({
-            title: 'Bạn có chắc muốn xóa?',
+            title: 'Bạn có chắc chắn muốn xóa?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Có',

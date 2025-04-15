@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use OrderPlaced;
+use App\Models\Promotion;
 
 class CheckoutController extends Controller
 {
@@ -241,6 +242,15 @@ class CheckoutController extends Controller
                     'selectedCart' => $selectedCart,
                     'promotion' => $promotion
                 ]);
+
+                // Cập nhật số lượng mã khuyến mãi nếu có
+                if (isset($promotion['id'])) {
+                    $promotionModel = Promotion::find($promotion['id']);
+                    if ($promotionModel && $promotionModel->quantity > 0) {
+                        $promotionModel->quantity -= 1;
+                        $promotionModel->save();
+                    }
+                }
 
                 DB::commit();
 
@@ -568,6 +578,15 @@ public function vnpayCallback(Request $request)
                     'discount' => $discount, // Lưu giá trị giảm giá vào đơn hàng
                     'promotion_id' => $promotion['id'] ?? null, // Lưu promotion_id vào đơn hàng
                 ]);
+
+                // Cập nhật số lượng mã khuyến mãi nếu có
+                if (isset($promotion['id'])) {
+                    $promotionModel = Promotion::find($promotion['id']);
+                    if ($promotionModel && $promotionModel->quantity > 0) {
+                        $promotionModel->quantity -= 1;
+                        $promotionModel->save();
+                    }
+                }
 
                 $orderTotal = 0;
                 $variantErrors = [];

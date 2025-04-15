@@ -88,6 +88,15 @@
                                 </div>
 
                                 <div class="form-group mt-4">
+                                    <label for="quantity">Số Lượng:</label>
+                                    <input type="number" name="quantity" id="quantity" class="form-control"
+                                        value="{{ old('quantity') }}" min="0">
+                                    @if ($errors->has('quantity'))
+                                        <div class="text-danger">{{ $errors->first('quantity') }}</div>
+                                    @endif
+                                </div>
+
+                                <div class="form-group mt-4">
                                     <label for="type">Loại Giảm Giá:</label>
                                     <select id="type" name="type" class="form-control">
                                         <option value="percentage" {{ old('type') == 'percentage' ? 'selected' : '' }}>Giảm
