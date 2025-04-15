@@ -472,4 +472,6 @@ Route::post('/cart/select-items', [CartController::class, 'selectItems'])->name(
 
 Route::get('/gmail', [Controller::class, 'gmail'])->name('web.gmail');
 
+Route::get('/search', [WebController::class, 'search'])->name('product.search');
+
 

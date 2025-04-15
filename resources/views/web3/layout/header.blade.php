@@ -46,35 +46,13 @@
     
                             <div class="col-xl-5 d-none d-xl-block text-center">
                                 <div class="tf-form-search">
-                                    <form class="form-search">
-                                        <input type="text" placeholder="Search product" tabindex="0" aria-required="true"
-                                            required="">
-                                        <button type="submit" class="btn-search"><i class="icon icon-search"></i></button>
+                                    <form class="form-search" action="{{route('product.search')}}" method="GET" action="/search">
+                                        <input type="text" name="searchInput" placeholder="Tìm kiếm sản phẩm..." required>
+                                        <button type="submit" class="btn-search">
+                                            <i class="icon icon-search"></i>
+                                        </button>
                                     </form>
-                                    <div class="search-suggests-results">
-                                        <div class="search-suggests-results-inner">
-                                            <ul>
-                                                <li>
-                                                    <a class="search-result-item" href="product-detail.html">
-                                                        <div class="img-box">
-                                                            <img class="lazyload"
-                                                                data-src="images/products/sport/t-shirt.jpg"
-                                                                src="images/products/sport/t-shirt.jpg" alt="img">
-                                                        </div>
-                                                        <div class="box-content">
-                                                            <p class="title link">Fitness Club Cut Off Tank</p>
-                                                            <div class="price">
-                                                                <span class="new-price">$100.00</span>
-                                                                <span class="old-price">$130.00</span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </li>
-    
-    
-                                            </ul>
-                                        </div>
-                                    </div>
+                                   
                                 </div>
                             </div>
     
