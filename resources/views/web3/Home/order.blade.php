@@ -56,14 +56,12 @@
                             <p class="fw-bold mb-0 text-danger">{{ number_format($order->total_price, 0, ',', '.') }}₫</p>
                         </div>
                         <div class="col-md-2 text-center">
-                            @if ($order->payment_status == 0)
-                                <span class="badge bg-warning text-dark rounded-pill px-3 py-2">🟡 Chưa thanh toán</span>
-                            @elseif ($order->payment_status == 1)
+                            @if ($order->payment_status == 1)
                                 <span class="badge bg-success rounded-pill px-3 py-2">🟢 Đã thanh toán</span>
                             @elseif ($order->payment_status == 2)
-                                <span class="badge bg-info rounded-pill px-3 py-2">🔵 Thanh toán khi nhận hàng</span>
-                            @else
-                                <span class="badge bg-danger rounded-pill px-3 py-2">🔴 Thất bại</span>
+                                <span class="badge bg-secondary rounded-pill px-3 py-2">🔵 Thanh toán khi nhận hàng</span>
+                            @elseif ($order->payment_status == 3)
+                                <span class="badge bg-dark rounded-pill px-3 py-2">⚪ Hoàn tiền</span>
                             @endif
                         </div>
                         <div class="col-md-3 text-end">
@@ -103,10 +101,10 @@
                     @endif
                 </p>
                 <div class="d-flex align-items-center">
-                    @if ($order->payment_status == 0 && $order->status != 5)
+                    {{-- @if ($order->payment_status == 2 && $order->status != 5)
                     <a href="{{ route('order.continuePayment', $order->id) }}"
                         class="btn btn-primary rounded-pill px-3 me-2">Thanh toán ngay</a>
-                @endif
+                    @endif --}}
 
                     @if ($order->status == 0 || $order->status == 1)
                         <!-- Nút hủy đơn hàng -->

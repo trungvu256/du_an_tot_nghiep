@@ -87,7 +87,10 @@
                 $filteredCart = $selectedCart; // Sử dụng trực tiếp selected_cart
                 $subtotal = 0;
                 foreach ($filteredCart as $item) {
-                    $subtotal += $item['price'] * $item['quantity'];
+                    $price = (!empty($item['price_sale']) && $item['price_sale'] > 0 && $item['price_sale'] < $item['price'])
+                        ? $item['price_sale']
+                        : $item['price'];
+                    $subtotal += $price * $item['quantity'];
                 }
                 $discount = session('promotion')['discount'] ?? 0;
                 $totalAmount = max(0, $subtotal - $discount);
@@ -103,7 +106,13 @@
                         @foreach ($filteredCart as $cartKey => $item)
                             <div class="d-flex justify-content-between">
                                 <p>{{ $item['name'] }} (x{{ $item['quantity'] }})</p>
-                                <p>{{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }}₫</p>
+                                <p>
+                                    @if(!empty($item['price_sale']) && $item['price_sale'] > 0)
+                                        {{ number_format($item['price_sale'], 0, ',', '.') }}₫
+                                    @else
+                                        {{ number_format($item['price'], 0, ',', '.') }}₫
+                                    @endif
+                                </p>
                             </div>
                         @endforeach
 
@@ -222,7 +231,10 @@
             selectedItems.forEach(cartKey => {
                 const item = cartItems[cartKey];
                 if (item) {
-                    subtotal += item.price * item.quantity;
+                    const price = (item.price_sale && item.price_sale > 0 && item.price_sale < item.price)
+                        ? item.price_sale
+                        : item.price;
+                    subtotal += price * item.quantity;
                 }
             });
 
@@ -231,7 +243,7 @@
             const discount = discountElement ? getCurrencyNumber(discountElement.innerText) : 0;
 
             // Tính tổng tiền (đảm bảo không âm)
-            const totalAmount = Math.max(0, subtotal + discount); // discount là số âm
+            const totalAmount = Math.max(0, subtotal - Math.abs(discount));
 
             // Cập nhật giao diện
             document.getElementById('summary-subtotal').innerText = formatCurrency(subtotal);
@@ -240,8 +252,6 @@
             // Cập nhật giá trị amount trong form
             document.getElementById('vnpay-amount').value = totalAmount;
             document.getElementById('offline-amount').value = totalAmount;
-
-            console.log('updateTotalAmount - Subtotal:', subtotal, 'Discount:', discount, 'Total:', totalAmount);
         }
 
         // Cập nhật selected_cart_items khi người dùng chọn các sản phẩm

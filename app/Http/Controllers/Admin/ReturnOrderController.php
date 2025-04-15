@@ -45,73 +45,109 @@ class ReturnOrderController extends Controller
 
     public function update(Request $request, $id)
     {
+        $order = Order::findOrFail($id);
+
+        // Kiểm tra nếu đơn hàng đã hoàn tất thì không cho phép thay đổi trạng thái
+        if ($order->return_status == Order::RETURN_COMPLETED) {
+            return redirect()->back()->with('error', 'Không thể thay đổi trạng thái của đơn hàng đã hoàn tất.');
+        }
+        // Kiểm tra nếu đơn hàng đã thanh toán qua VNPay thì không cho phép trả hàng
+        if ($order->payment_status == 1 && $order->payment_method == 1) {
+            return redirect()->back()->with('error', 'Đơn hàng đã thanh toán qua VNPay không được phép trả hàng.');
+        }
+
+        // Cập nhật trạng thái trả hàng
+        $order->return_status = $request->return_status;
+        $order->return_note = $request->return_note;
+
+        // Nếu trạng thái là hoàn tất trả hàng
+        if ($request->return_status == Order::RETURN_COMPLETED) {
+            // Cập nhật trạng thái đơn hàng thành "Đã trả hàng"
+            $order->status = Order::STATUS_RETURNED;
+
+            // Chỉ cập nhật trạng thái thanh toán thành "Hoàn tiền" nếu:
+            // 1. Đơn hàng đã được thanh toán (payment_status = PAYMENT_PAID)
+            if ($order->payment_status == Order::PAYMENT_PAID ||
+                ($order->payment_method == Order::PAYMENT_METHOD_COD && $order->payment_status == Order::PAYMENT_PAID)) {
+                $order->payment_status = Order::PAYMENT_REFUNDED;
+            }
+
+            // Cập nhật số lượng tồn kho
+            foreach ($order->orderItems as $item) {
+                if ($item->product_variant_id) {
+                    $variant = $item->productVariant;
+                    if ($variant) {
+                        $variant->increment('stock_quantity', $item->quantity);
+                    }
+                } else {
+                    $product = $item->product;
+                    if ($product) {
+                        $product->increment('stock', $item->quantity);
+                    }
+                }
+            }
+        }
+
+        $order->save();
+
+        return redirect()->back()->with('success', 'Cập nhật trạng thái trả hàng thành công.');
+    }
+
+    public function approveReturn(Request $request, $id)
+    {
         try {
             $order = Order::findOrFail($id);
 
-            // Kiểm tra nếu đơn hàng đã hoàn tất thì không cho phép thay đổi trạng thái
-            if ($order->return_status == Order::RETURN_COMPLETED) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Không thể thay đổi trạng thái của đơn hàng đã hoàn tất.'
-                ], 400);
-            }
-
-            // Kiểm tra nếu đơn hàng chưa có yêu cầu trả hàng
-            if ($order->return_status == Order::RETURN_NONE) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Đơn hàng chưa có yêu cầu trả hàng.'
-                ], 400);
+            // Kiểm tra nếu đơn hàng không có yêu cầu trả hàng
+            if ($order->return_status != Order::RETURN_REQUESTED) {
+                return redirect()->back()->with('error', 'Đơn hàng không có yêu cầu trả hàng.');
             }
 
             DB::beginTransaction();
 
-            // Cập nhật trạng thái trả hàng
-            $order->return_status = $request->return_status;
+            // Cập nhật trạng thái trả hàng thành "Đã duyệt"
+            $order->return_status = Order::RETURN_APPROVED;
 
-            // Nếu từ chối trả hàng, lưu lý do
-            if ($request->return_status == Order::RETURN_DECLINED) {
-                if (empty($request->return_reason)) {
-                    DB::rollBack();
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Vui lòng nhập lý do từ chối trả hàng.'
-                    ], 400);
-                }
-                $order->return_reason = $request->return_reason;
-            }
-
-            // Nếu admin xác nhận hoàn tất trả hàng
-            if ($request->return_status == Order::RETURN_COMPLETED) {
-                // Cập nhật trạng thái đơn hàng thành "Đã trả hàng"
-                $order->status = Order::STATUS_RETURNED;
-                
-                // Cập nhật số lượng tồn kho cho từng sản phẩm trong đơn hàng
-                foreach ($order->orderItems as $item) {
-                    if ($item->product_variant_id) {
-                        // Nếu là biến thể sản phẩm
-                        $variant = $item->productVariant;
-                        if ($variant) {
-                            $variant->increment('stock_quantity', $item->quantity);
-                        }
-                    } else {
-                        // Nếu là sản phẩm thường
-                        $product = $item->product;
-                        if ($product) {
-                            $product->increment('stock', $item->quantity);
-                        }
-                    }
-                }
-            }
+            // Cập nhật trạng thái thanh toán thành "Hoàn tiền"
+            // $order->payment_status = Order::PAYMENT_REFUNDED;
 
             $order->save();
 
             DB::commit();
-            return redirect()->back()->with('success', 'Cập nhật trạng thái trả hàng thành công.');
+            return redirect()->back()->with('success', 'Đã duyệt yêu cầu trả hàng thành công.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
+        }
+    }
+
+    public function declineReturn(Request $request, $id)
+    {
+        try {
+            $order = Order::findOrFail($id);
+
+            // Kiểm tra nếu đơn hàng không có yêu cầu trả hàng
+            if ($order->return_status != Order::RETURN_REQUESTED) {
+                return redirect()->back()->with('error', 'Đơn hàng không có yêu cầu trả hàng.');
+            }
+
+            // Kiểm tra lý do từ chối
+            if (empty($request->return_reason)) {
+                return redirect()->back()->with('error', 'Vui lòng nhập lý do từ chối trả hàng.');
+            }
+
+            DB::beginTransaction();
+
+            // Cập nhật trạng thái trả hàng thành "Đã từ chối"
+            $order->return_status = Order::RETURN_DECLINED;
+            $order->return_reason = $request->return_reason;
+            $order->save();
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Đã từ chối yêu cầu trả hàng thành công.');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
         }
     }
 }
-

@@ -23,9 +23,8 @@ class Order extends Model
     const STATUS_RETURNED = 6;   // Đã trả hàng
 
     // Payment Status Constants
-    const PAYMENT_PENDING = 0;   // Chưa thanh toán
-    const PAYMENT_COMPLETED = 1; // Đã thanh toán
-    const PAYMENT_FAILED = 2;    // Thanh toán thất bại
+    const PAYMENT_PAID = 1;      // Đã thanh toán
+    const PAYMENT_COD = 2;       // Thanh toán khi nhận hàng
     const PAYMENT_REFUNDED = 3;  // Đã hoàn tiền
 
     // Payment Method Constants
@@ -127,17 +126,17 @@ class Order extends Model
 
     public function isPaid()
     {
-        return $this->payment_status === self::PAYMENT_COMPLETED;
+        return $this->payment_status === self::PAYMENT_PAID;
     }
 
     public function isPending()
     {
-        return $this->payment_status === self::PAYMENT_PENDING;
+        return $this->payment_status === self::PAYMENT_COD;
     }
 
     public function isCodPayment()
     {
-        return $this->payment_method === self::PAYMENT_METHOD_COD;
+        return $this->payment_status === self::PAYMENT_COD;
     }
 
     public function isVnPayPayment()
@@ -145,15 +144,18 @@ class Order extends Model
         return $this->payment_method === self::PAYMENT_METHOD_VNPAY;
     }
 
+    public function isRefunded()
+    {
+        return $this->payment_status === self::PAYMENT_REFUNDED;
+    }
+
     public function getPaymentStatusText()
     {
         switch($this->payment_status) {
-            case self::PAYMENT_PENDING:
-                return 'Chưa thanh toán';
-            case self::PAYMENT_COMPLETED:
+            case self::PAYMENT_PAID:
                 return 'Đã thanh toán';
-            case self::PAYMENT_FAILED:
-                return 'Thanh toán thất bại';
+            case self::PAYMENT_COD:
+                return 'Thanh toán khi nhận hàng';
             case self::PAYMENT_REFUNDED:
                 return 'Đã hoàn tiền';
             default:

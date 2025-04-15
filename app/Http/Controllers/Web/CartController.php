@@ -149,7 +149,8 @@ class CartController extends Controller
 
         // Tính tổng tiền
         foreach ($cart as $item) {
-            $totalAmount += $item['price'] * $item['quantity'];
+            $price = (!empty($item['price_sale']) && $item['price_sale'] < $item['price']) ? $item['price_sale'] : $item['price'];
+            $totalAmount += $price * $item['quantity'];
         }
         // dd($cart);
         return view('web3.Home.cart', compact('cart', 'totalAmount', 'categories','productNews'));
@@ -208,11 +209,13 @@ class CartController extends Controller
     } else {
         // Nếu chưa có trong giỏ, thêm mới vào giỏ
         $cart[$cartKey] = [
-            'id' => $product->id, // Không cần variant_id vì form không gửi
+            'id' => $product->id,
             'name' => $product->name,
-            'price' => $finalPrice,
+            'price' => (float)$price,
+            'price_sale' => (float)$priceSale,
             'image' => $product->image,
             'quantity' => $quantity,
+            'stock_quantity' => $stockQuantity,
             'variant' => [
                 'attributes' => $attributes,
             ]
@@ -308,9 +311,13 @@ public function removeFromCart(Request $request, $cartKey)
         session()->put('cart', $cart); // Lưu lại giỏ hàng đã cập nhật
 
         // Tính lại tổng tiền
-        $totalAmount = array_reduce($cart, function ($sum, $item) {
-            return $sum + ($item['price'] * $item['quantity']);
-        }, 0);
+        $subtotal = 0;
+        foreach ($cart as $item) {
+            $price = (!empty($item['price_sale']) && $item['price_sale'] > 0 && $item['price_sale'] < $item['price'])
+                ? $item['price_sale']
+                : $item['price'];
+            $subtotal += $price * $item['quantity'];
+        }
 
         $cartCount = count($cart);
 
@@ -333,7 +340,11 @@ public function removeFromCart(Request $request, $cartKey)
     {
         $promotionCode = $request->input('coupon_code');
         $cart = session()->get('cart', []);
-        $total = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
+        $total = 0;
+        foreach ($cart as $item) {
+            $price = (!empty($item['price_sale']) && $item['price_sale'] < $item['price']) ? $item['price_sale'] : $item['price'];
+            $total += $price * $item['quantity'];
+        }
 
         // Tìm mã giảm giá trong bảng promotions
         $promotion = Promotion::where('code', $promotionCode)
@@ -365,6 +376,7 @@ public function removeFromCart(Request $request, $cartKey)
 
         // Lưu mã giảm giá vào session
         session()->put('promotion', [
+            'id' => $promotion->id,
             'code' => $promotion->code,
             'discount' => $discountAmount,
             'final_total' => $finalTotal,
@@ -380,48 +392,50 @@ public function removeFromCart(Request $request, $cartKey)
     {
         // Lấy danh mục sản phẩm
         $categories = Catalogue::all();
-        
+
         // Lấy giỏ hàng từ session
         $cart = session('cart', []);
-        
+
         // Lấy các sản phẩm đã được chọn (dựa vào selected_cart_items trong request)
         $selectedKeys = json_decode($request->input('selected_cart_items'), true);
-        
+
         // Lọc ra các sản phẩm đã chọn
         $filteredCart = collect($cart)->only($selectedKeys)->toArray();
-        
+
         // Tính tổng tiền tạm tính cho các sản phẩm đã chọn
-        $subtotal = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $filteredCart));
-        
+        $subtotal = array_sum(array_map(function($item) {
+            return $item['price'] * $item['quantity'];
+        }, $filteredCart));
+
         // Lấy thông tin khuyến mãi từ session (nếu có)
         $promotion = session('promotion');
-        
+
         // Phí giao hàng cố định (có thể thay đổi tùy theo yêu cầu)
         // $shippingFee = 10000;
-        
+
         // Tính toán giá trị giảm giá (nếu có)
         $discount = $promotion['discount'] ?? 0;
-        
+
         // Tính tổng tiền (đảm bảo không âm)
         $total = max(0, $subtotal - $discount);
-        
+
         // Trả về view checkout với các thông tin đã tính toán
-        return view('web2.Home.checkout', compact('categories', 'filteredCart', 'subtotal', 'promotion',  'discount', 'total'));
+        return view('web3.Home.checkout', compact('categories', 'filteredCart', 'subtotal', 'promotion',  'discount', 'total'));
     }
-    
+
 
     public function remove($key)
     {
         $cart = session('cart', []);
-    
+
         if (isset($cart[$key])) {
             unset($cart[$key]);
             session(['cart' => $cart]);
         }
-    
+
         return response()->noContent(); // không cần trả JSON nếu chỉ reload lại
     }
-    
+
 // chọn số lượng
 
 // CartController.php
@@ -448,8 +462,14 @@ public function selectItems(Request $request)
 public function showHeaderCart()
 {
     $cart = session('cart', []);
-    $total = collect($cart)->sum(fn($item) => (int) $item['quantity'] * (float) $item['price']);
-    $totalQuantity = collect($cart)->sum(fn($item) => (int) $item['quantity']);
+    $total = 0;
+    $totalQuantity = 0;
+
+    foreach ($cart as $item) {
+        $price = (!empty($item['price_sale']) && $item['price_sale'] < $item['price']) ? $item['price_sale'] : $item['price'];
+        $total += $price * $item['quantity'];
+        $totalQuantity += $item['quantity'];
+    }
 
     return response()->json([
         'cart' => array_values($cart), // Chuyển mảng thành chỉ số liên tục

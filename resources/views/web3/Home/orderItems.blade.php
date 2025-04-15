@@ -57,6 +57,7 @@
                     @switch($order->payment_status)
                         @case(1) <span class="badge bg-success">Đã thanh toán</span> @break
                         @case(2) <span class="badge bg-info">Thanh toán khi nhận hàng</span> @break
+                        @case(3) <span class="badge bg-dark">Hoàn tiền</span> @break
                     @endswitch
                 </td>
             </tr>
@@ -70,7 +71,7 @@
                                 {{-- Chỉ hiển thị nút trả hàng nếu không phải thanh toán VNPay --}}
                                 @if(!($order->payment_status == 1 && $order->payment_method == 1))
                                     <div class="mt-2">
-                                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#returnModal">
+                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#returnModal">
                                             Yêu cầu trả hàng
                                         </button>
                                     </div>
@@ -90,22 +91,6 @@
                                 <br>
                                 <small class="text-muted">Lý do: {{ $order->return_reason }}</small>
                             @endif
-                            {{-- <div class="mt-2">
-                                <form action="{{ route('order.requestReturn', $order->id) }}" method="POST" id="returnForm">
-                                    @csrf
-                                    <div class="form-group">
-                                        <label for="return_reason">Lý do trả hàng</label>
-                                        <select class="form-control" id="return_reason" name="return_reason" required>
-                                            <option value="">Chọn lý do trả hàng</option>
-                                            <option value="Sản phẩm không đúng mô tả">Sản phẩm không đúng mô tả</option>
-                                            <option value="Sản phẩm bị hỏng">Sản phẩm bị hỏng</option>
-                                            <option value="Sản phẩm không phù hợp">Sản phẩm không phù hợp</option>
-                                            <option value="Lý do khác">Lý do khác</option>
-                                        </select>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
-                                </form>
-                            </div> --}}
                         @break
                         @case(3)
                             <span class="badge bg-danger">Đã từ chối trả hàng</span>
@@ -225,12 +210,17 @@
         </table> --}}
     </div>
 
+    @section('scripts')
     <script>
-    $(document).ready(function() {
-        $('#returnForm').on('submit', function(e) {
+    document.addEventListener('DOMContentLoaded', function() {
+        const returnForm = document.getElementById('returnForm');
+        const returnModal = document.getElementById('returnModal');
+        const bsModal = new bootstrap.Modal(returnModal);
+
+        returnForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
-            if (!$('#return_reason').val()) {
+            if (!document.getElementById('return_reason').value) {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Thông báo',
@@ -241,42 +231,68 @@
                 return;
             }
 
-            $.ajax({
-                url: $(this).attr('action'),
-                method: 'POST',
-                data: $(this).serialize(),
-                success: function(response) {
-                    if (response.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Thành công!',
-                            text: 'Yêu cầu trả hàng đã được gửi thành công',
-                            showConfirmButton: true,
-                            confirmButtonText: 'Đóng',
-                            confirmButtonColor: '#28a745'
-                        }).then((result) => {
-                            $('#returnModal').modal('hide');
-                            location.reload();
-                        });
-                    }
-                },
-                error: function(xhr) {
-                    let errorMessage = 'Có lỗi xảy ra. Vui lòng thử lại sau.';
-                    if (xhr.responseJSON && xhr.responseJSON.error) {
-                        errorMessage = xhr.responseJSON.error;
-                    }
+            // Hiển thị loading khi đang gửi request
+            Swal.fire({
+                title: 'Đang xử lý...',
+                text: 'Vui lòng chờ trong giây lát',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
 
+            fetch(returnForm.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: new URLSearchParams(new FormData(returnForm))
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Đóng modal trước khi hiển thị thông báo
+                bsModal.hide();
+
+                if (data.success) {
                     Swal.fire({
-                        icon: 'error',
-                        title: 'Lỗi!',
-                        text: errorMessage,
+                        icon: 'success',
+                        title: 'Thành công!',
+                        text: 'Yêu cầu trả hàng đã được gửi thành công',
                         showConfirmButton: true,
                         confirmButtonText: 'Đóng',
-                        confirmButtonColor: '#dc3545'
+                        confirmButtonColor: '#28a745'
+                    }).then((result) => {
+                        // Reload trang sau khi đóng thông báo
+                        location.reload();
+                    });
+                } else {
+                    throw new Error(data.message || 'Có lỗi xảy ra');
+                }
+            })
+            .catch(error => {
+                let errorMessage = 'Có lỗi xảy ra. Vui lòng thử lại sau.';
+                if (error.response && error.response.json) {
+                    error.response.json().then(data => {
+                        if (data.error) {
+                            errorMessage = data.error;
+                        }
                     });
                 }
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: errorMessage,
+                    showConfirmButton: true,
+                    confirmButtonText: 'Đóng',
+                    confirmButtonColor: '#dc3545'
+                });
             });
         });
     });
     </script>
+    @endsection
 @endsection

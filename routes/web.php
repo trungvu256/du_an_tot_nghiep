@@ -206,6 +206,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('returns', [ReturnOrderController::class, 'index'])->name('admin.returns.index');
         Route::post('returns/{id}/update', [ReturnOrderController::class, 'update'])->name('admin.returns.update');
         Route::get('returns/export', [ReturnOrderController::class, 'export'])->name('admin.returns.export');
+        Route::prefix('admin/returns')->group(function () {
+            Route::get('/', [ReturnOrderController::class, 'index'])->name('admin.returns.index');
+            Route::post('/{order}/approve', [ReturnOrderController::class, 'approveReturn'])->name('admin.returns.approve');
+            Route::post('/{order}/decline', [ReturnOrderController::class, 'declineReturn'])->name('admin.returns.decline');
+            Route::post('/{order}/update', [ReturnOrderController::class, 'update'])->name('admin.returns.update');
+        });
 
         // Route Brand
         Route::resource('brands', BrandController::class);
