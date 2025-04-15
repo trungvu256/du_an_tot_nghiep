@@ -26,10 +26,10 @@
             <!-- Form lọc sản phẩm -->
             <form action="{{ route('admin.product') }}" method="GET" class="mb-4">
                 <div class="row g-3">
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <label for="category" class="form-label">Danh mục</label>
                         <select name="category" id="category" class="form-select">
-                            <option value="">Tất cả danh mục</option>
+                            <option value="">Tất cả</option>
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
                                     {{ $category->name }}
@@ -37,16 +37,27 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
+                        <label for="brand" class="form-label">Thương hiệu</label>
+                        <select name="brand" id="brand" class="form-select">
+                            <option value="">Tất cả</option>
+                            @foreach($brands as $brand)
+                                <option value="{{ $brand->id }}" {{ request('brand') == $brand->id ? 'selected' : '' }}>
+                                    {{ $brand->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-2">
                         <label for="date" class="form-label">Ngày tạo</label>
                         <input type="date" class="form-control" id="date" name="date" value="{{ request('date') }}">
                     </div>
-                    <div class="col-md-4">
-                        <label for="search" class="form-label">Tìm kiếm sản phẩm</label>
+                    <div class="col-md-3">
+                        <label for="search" class="form-label">Tìm kiếm tên sản phẩm</label>
                         <input type="text" class="form-control" id="search" name="search" placeholder="Nhập tên sản phẩm..." value="{{ request('search') }}">
                     </div>
-                    <div class="col-12 text-end">
-                        <button type="submit" class="btn btn-primary">Lọc</button>
+                    <div class="col-md-3 d-flex align-items-end justify-content-center">
+                        <button type="submit" class="btn btn-primary me-3"><i class="bi bi-funnel"></i> Lọc</button>
                         <a href="{{ route('admin.product') }}" class="btn btn-secondary">Xóa bộ lọc</a>
                     </div>
                 </div>
@@ -67,7 +78,8 @@
                     @foreach ($products as $product)
                         <!-- Hàng hiển thị sản phẩm chính -->
                         <tr class="product-row text-center" data-id="{{ $product->id }}">
-                            <td>{{ $product->id }}</td>
+                            <td>{{ ($products->currentPage() - 1) * $products->perPage() + $loop->iteration }}</td>
+
 
                             <td class="fw-bold"><a href="{{ route('admin.show.product', $product->id) }}"
                                     class="text-decoration-none text-dark">{{ $product->name }}</a></td>
@@ -111,7 +123,7 @@
                     @endforeach
                 </tbody>
             </table>
-            {{-- {!! $products->links() !!} --}}
+            <span class="d-flex justify-content-end">{{ $products->links()}}</span>
         </div>
     </div>
 @endsection
