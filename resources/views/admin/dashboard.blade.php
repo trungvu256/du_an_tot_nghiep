@@ -409,9 +409,9 @@
                                                                             1 => 'bg-info-subtle text-info',          // Chuẩn bị hàng
                                                                             2 => 'bg-primary-subtle text-primary',    // Đang giao
                                                                             3 => 'bg-success-subtle text-success',    // Đã giao
-                                                                            4 => 'bg-success-subtle text-success',    // Hoàn tất
+                                                                            4 => 'bg-success-subtle text-dark',    // Hoàn tất
                                                                             5 => 'bg-danger-subtle text-danger',      // Đã hủy
-                                                                            6 => 'bg-secondary-subtle text-secondary' // Trạng thái khác
+                                                                            6 => 'bg-secondary-subtle text-dark' // Trạng thái khác
                                                                         ];
                                                                         $statusText = [
                                                                             0 => 'Chờ xử lý',
@@ -434,11 +434,13 @@
                                                                     @php
                                                                         $paymentClass = [
                                                                             1 => 'bg-success-subtle text-success',     // Đã thanh toán
-                                                                            2 => 'bg-info-subtle text-info'           // Thanh toán khi nhận hàng
+                                                                            2 => 'bg-info-subtle text-info',           // Thanh toán khi nhận hàng
+                                                                            3 => 'bg-dark-subtle text-blue'            // Hoàn tiền
                                                                         ];
                                                                         $paymentText = [
                                                                             1 => 'Đã thanh toán',
-                                                                            2 => 'Thanh toán khi nhận hàng'
+                                                                            2 => 'Thanh toán khi nhận hàng',
+                                                                            3 => 'Hoàn tiền'
                                                                         ];
                                                                         $paymentStatus = $order['payment_status'] ?? 2;
                                                                         $paymentClassValue = isset($paymentClass[$paymentStatus]) ? $paymentClass[$paymentStatus] : $paymentClass[2];

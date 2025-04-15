@@ -29,9 +29,13 @@
                                             alt="" style="width: 50px;">
                                         {{ $item['name'] }}
                                     </td>
-                                    <td class="align-middle text-center price" data-price="{{ $item['price'] }}"
+                                    <td class="align-middle text-center price" data-price="{{ isset($item['price_sale']) && $item['price_sale'] > 0 ? $item['price_sale'] : $item['price'] }}"
                                         id="price-{{ $cartKey }}">
-                                        {{ number_format($item['price'], 0, ',', '.') }}₫
+                                        @if(isset($item['price_sale']) && $item['price_sale'] > 0)
+                                            {{ number_format($item['price_sale'], 0, ',', '.') }}₫
+                                        @else
+                                            {{ number_format($item['price'], 0, ',', '.') }}₫
+                                        @endif
                                     </td>
                                     <td class="align-middle">
                                         <div
@@ -54,7 +58,11 @@
                                         </div>
                                     </td>
                                     <td class="align-middle item-total" id="item-total-{{ $cartKey }}">
-                                        {{ number_format((float) $item['price'] * (int) $item['quantity'], 0, ',', '.') }}₫
+                                        @php
+                                            $finalPrice = isset($item['price_sale']) && $item['price_sale'] > 0 ? $item['price_sale'] : $item['price'];
+                                            $total = $finalPrice * (int)$item['quantity'];
+                                        @endphp
+                                        {{ number_format($total, 0, ',', '.') }}₫
                                     </td>
                                     <td class="align-middle">
                                         @if (isset($item['variant']) && isset($item['variant']['attributes']) && count($item['variant']['attributes']) > 0)
@@ -98,7 +106,11 @@
 
                 <?php
                 $cart = session('cart', []);
-                $subtotal = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
+                $subtotal = 0;
+                foreach ($cart as $item) {
+                    $itemPrice = isset($item['price_sale']) && $item['price_sale'] > 0 ? $item['price_sale'] : $item['price'];
+                    $subtotal += $itemPrice * $item['quantity'];
+                }
                 $promotion = session('promotion');
                 $discount = $promotion['discount'] ?? 0;
                 $total = max(0, $subtotal - $discount);
@@ -111,7 +123,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Tạm tính</h6>
-                            <h6 class="font-weight-medium" id="summary-subtotal">0₫</h6>
+                            <h6 class="font-weight-medium" id="summary-subtotal">{{ number_format($subtotal, 0, ',', '.') }}₫</h6>
                         </div>
                         @if ($promotion)
                             <div class="d-flex justify-content-between mb-3 pt-1">
@@ -123,7 +135,7 @@
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Tổng cộng</h5>
-                            <h5 class="font-weight-bold" id="summary-total">0₫</h5>
+                            <h5 class="font-weight-bold" id="summary-total">{{ number_format($total, 0, ',', '.') }}₫</h5>
                         </div>
                         <form id="checkout-form" action="{{ route('checkout.view') }}" method="POST">
                             @csrf
@@ -146,19 +158,33 @@
     <script>
         // Hàm định dạng tiền tệ
         function formatCurrency(value) {
-            return value.toLocaleString('vi-VN') + '₫';
+            if (typeof value !== 'number' || isNaN(value)) {
+                value = 0;
+            }
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(value).replace(/\s+/g, '');
         }
 
         // Hàm lấy số từ chuỗi tiền tệ
         function getCurrencyNumber(value) {
-            return parseInt(value.replace(/\D/g, '')) || 0;
+            if (!value) return 0;
+            // Kiểm tra có dấu trừ không
+            const isNegative = value.includes('-');
+            // Lấy số (bỏ qua tất cả ký tự không phải số)
+            const number = parseInt(value.replace(/[^\d]/g, '')) || 0;
+            // Trả về số âm nếu có dấu trừ, ngược lại trả về số dương
+            return isNegative ? -number : number;
         }
 
         // Hàm cập nhật số lượng qua AJAX
         function updateCartQuantity(cartKey, quantity) {
             const quantityInput = $('#quantity-' + cartKey);
             const quantityDisplay = $('#quantity-display-' + cartKey);
-            const stockQuantity = parseInt(quantityInput.data('stock-quantity'));
+            const stockQuantity = parseInt(quantityInput.data('stock-quantity')) || 0;
 
             // Giới hạn số lượng: tối thiểu 1, tối đa là stock
             quantity = Math.max(1, Math.min(stockQuantity, parseInt(quantity) || 1));
@@ -167,8 +193,10 @@
             quantityInput.val(quantity);
             quantityDisplay.val(quantity);
 
-            const price = parseInt($('#price-' + cartKey).data('price'));
+            const priceElement = $('#price-' + cartKey);
+            const price = parseFloat(priceElement.data('price')) || 0;
             const itemTotal = price * quantity;
+
             $('#item-total-' + cartKey).text(formatCurrency(itemTotal));
 
             // Gọi AJAX để cập nhật server
@@ -181,13 +209,11 @@
                 },
                 success: function(response) {
                     if (response.success) {
-                        console.log('Updated quantity for cartKey:', cartKey, 'to:', quantity);
                         updateSummary();
                     }
                 },
                 error: function(xhr) {
                     alert('Có lỗi xảy ra khi cập nhật giỏ hàng: ' + xhr.responseText);
-                    // Hoàn nguyên nếu lỗi
                     quantityDisplay.val(quantityInput.val());
                     updateSummary();
                 }
@@ -199,16 +225,30 @@
             let subtotal = 0;
             $('.product-checkbox:checked').each(function() {
                 const row = $(this).closest('tr');
-                const price = parseInt(row.find('.price').data('price'));
-                const quantity = parseInt(row.find('.quantity-display').val());
-                subtotal += price * quantity;
+                const priceElement = row.find('.price');
+                const price = parseFloat(priceElement.data('price')) || 0;
+                const quantity = parseInt(row.find('.quantity-display').val()) || 0;
+
+                if (price > 0 && quantity > 0) {
+                    subtotal += price * quantity;
+                }
             });
 
             // Lấy giá trị giảm giá từ giao diện
-            const discount = getCurrencyNumber(document.getElementById('summary-discount')?.innerText || '0');
+            const discountElement = document.getElementById('summary-discount');
+            const discountText = discountElement ? discountElement.innerText : '0';
 
-            // Tính tổng cộng
-            const total = Math.max(0, subtotal - discount);
+            // Xử lý đặc biệt cho giá trị giảm giá có dấu trừ ở đầu
+            let discount = 0;
+            if (discountText.includes('-')) {
+                // Nếu có dấu trừ, cần chuyển thành số âm
+                discount = -Math.abs(getCurrencyNumber(discountText));
+            } else {
+                discount = getCurrencyNumber(discountText);
+            }
+
+            // Tính tổng cộng (trừ số tiền giảm giá)
+            const total = Math.max(0, subtotal - Math.abs(discount));
 
             // Cập nhật giao diện
             $('#summary-subtotal').text(formatCurrency(subtotal));
@@ -216,10 +256,14 @@
 
             // Cập nhật các input ẩn cho form checkout
             $('#subtotal').val(subtotal);
-            $('#discount').val(discount);
+            $('#discount').val(Math.abs(discount));
             $('#total').val(total);
 
-            console.log('updateSummary - Subtotal:', subtotal, 'Discount:', discount, 'Total:', total);
+            console.log('Updated Summary:', {
+                subtotal: subtotal,
+                discount: discount,
+                total: total
+            });
         }
 
         // Xử lý xóa sản phẩm

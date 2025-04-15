@@ -131,8 +131,8 @@
                             <option value="2" {{ $status == 2 ? 'selected' : '' }}>-- Đang giao --</option>
                             <option value="3" {{ $status == 3 ? 'selected' : '' }}>-- Đã giao --</option>
                             <option value="4" {{ $status == 4 ? 'selected' : '' }}>-- Hoàn tất --</option>
-                            <option value="5" {{ $status == 5 ? 'selected' : '' }}>-- Trả hàng --</option>
-                            <option value="6" {{ $status == 6 ? 'selected' : '' }}>-- Đã hủy --</option>
+                            <option value="5" {{ $status == 5 ? 'selected' : '' }}>-- Đã hủy --</option>
+                            <option value="6" {{ $status == 6 ? 'selected' : '' }}>-- Trả hàng --</option>
                         </select>
                         <input type="hidden" name="order_ids" id="selected-orders">
                         <button type="submit" class="btn btn-primary btn-sm px-4 rounded-pill">Cập nhật</button>
@@ -172,6 +172,8 @@
                                         <span class="badge bg-success">🟢 Đã thanh toán</span>
                                     @elseif ($order->payment_status == 2)
                                         <span class="badge bg-info">🔵 Thanh toán khi nhận hàng</span>
+                                    @elseif ($order->payment_status == 3)
+                                        <span class="badge bg-dark">⚪ Hoàn tiền</span>
                                     @endif
                                 </td>
                                 <td>
@@ -252,12 +254,12 @@
 
                 // Cập nhật các tùy chọn trạng thái trong dropdown
                 const validTransitions = {
-                    0: [1, 6], // Chờ xử lý => Chờ lấy hàng, Đã hủy
-                    1: [2, 6], // Chờ lấy hàng => Đang giao, Đã hủy
-                    2: [3, 5], // Đang giao => Đã giao, Trả hàng
-                    3: [4, 5], // Đã giao => Hoàn tất, Trả hàng
+                    0: [1, 5], // Chờ xử lý => Chờ lấy hàng, Đã hủy
+                    1: [2, 5], // Chờ lấy hàng => Đang giao, Đã hủy
+                    2: [3], // Đang giao => Đã giao
+                    3: [], // Đã giao => Không chuyển tiếp
                     4: [], // Hoàn tất => Không chuyển tiếp
-                    5: [6], // Trả hàng => Đã hủy
+                    5: [], // Trả hàng => Không chuyển tiếp
                     6: [] // Đã hủy => Không chuyển tiếp
                 };
 

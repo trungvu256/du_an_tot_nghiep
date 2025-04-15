@@ -79,11 +79,11 @@ class OrderController extends Controller
 
 
 
-    public function updatePaymenStatus(Request $request,  $id)
+    public function updatePaymenStatus(Request $request, $id)
     {
         $order = Order::findOrFail($id);
 
-        if (!isset($request->payment_status)) {
+        if (!in_array($request->payment_status, [Order::PAYMENT_PAID, Order::PAYMENT_COD, Order::PAYMENT_REFUNDED])) {
             return back()->with('error', 'Trạng thái thanh toán không hợp lệ.');
         }
 
@@ -133,13 +133,13 @@ class OrderController extends Controller
 
         // Quy định luồng chuyển trạng thái hợp lệ
         $validTransitions = [
-            0 => [1, 6],      // Chờ xử lý → Chờ lấy hàng, Đã hủy
-            1 => [2, 6],      // Chờ lấy hàng → Đang giao, Đã hủy
-            2 => [3, 5],      // Đang giao → Đã giao, Trả hàng
-            3 => [4, 5],      // Đã giao → Hoàn tất, Trả hàng
-            4 => [5],         // Hoàn tất → Trả hàng
-            5 => [6],         // Trả hàng → Đã hủy
-            6 => [],          // Đã hủy → không chuyển tiếp
+            0 => [1, 5], // Chờ xử lý => Chờ lấy hàng, Đã hủy
+            1 => [2, 5], // Chờ lấy hàng => Đang giao, Đã hủy
+            2 => [3], // Đang giao => Đã giao
+            3 => [], // Đã giao => Không chuyển tiếp
+            4 => [], // Hoàn tất => Không chuyển tiếp
+            5 => [], // Đã hủy => Không chuyển tiếp
+            6 => [] // Trả hàng => Không chuyển tiếp
         ];
 
         DB::beginTransaction();
