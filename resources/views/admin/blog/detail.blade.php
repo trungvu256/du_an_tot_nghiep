@@ -1,5 +1,5 @@
 @extends('admin.layouts.main')
-
+<p class="text-center text-muted">✍️ <strong>{{ $blog->author }}</strong> | 🕒 {{ $blog->created_at->format('d/m/Y') }} | 👁️ {{ $blog->views }} lượt đọc</p>
 @section('content')
 <div class="container">
     <!-- Ảnh banner -->
@@ -10,7 +10,7 @@
 
     <!-- Tiêu đề và thông tin -->
     <h1 class="text-center font-weight-bold text-uppercase mb-3">{{ $blog->title }}</h1>
-    <p class="text-center text-muted">✍️ <strong>{{ $blog->author }}</strong> | 🕒 {{ $blog->created_at->format('d/m/Y') }} | 👁️ {{ rand(100, 999) }} lượt đọc</p>
+    <p class="text-center text-muted">✍️ <strong>{{ $blog->author }}</strong> | 🕒 {{ $blog->created_at->format('d/m/Y') }} | 👁️ {{ $blog->views }} lượt đọc</p>
 
     <!-- Mô tả ngắn -->
     <div class="bg-light p-3 rounded">

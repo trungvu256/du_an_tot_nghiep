@@ -25,3 +25,6 @@
         </div>
     </div>
 @endsection
+@section('scripts')
+    @include('alert')
+@endsection

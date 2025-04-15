@@ -385,14 +385,36 @@
                                                         try {
                                                             // Lấy thông tin khuyến mãi với DB Query Builder
                                                             $promotion = DB::table('promotions')->where('id', $order->promotion_id)->first();
+
+                                                            // Tính toán số tiền giảm giá dựa trên loại mã khuyến mãi
+                                                            $discountAmount = 0;
+                                                            if ($promotion) {
+                                                                // Tính tổng tiền hàng
+                                                                $subtotal = 0;
+                                                                foreach($order->orderItems as $item) {
+                                                                    $subtotal += $item->price * $item->quantity;
+                                                                }
+
+                                                                if ($promotion->type === 'percentage') {
+                                                                    $discountAmount = ($subtotal * $promotion->discount_value) / 100;
+                                                                    if ($promotion->max_value && $discountAmount > $promotion->max_value) {
+                                                                        $discountAmount = $promotion->max_value;
+                                                                    }
+                                                                } elseif ($promotion->type === 'fixed_amount') {
+                                                                    $discountAmount = $promotion->discount_value;
+                                                                    if ($promotion->max_value && $discountAmount > $promotion->max_value) {
+                                                                        $discountAmount = $promotion->max_value;
+                                                                    }
+                                                                }
+                                                            }
                                                         } catch(\Exception $e) {
                                                             $promotion = null;
+                                                            $discountAmount = 0;
                                                         }
                                                     @endphp
 
                                                     @if($promotion)
-                                                        <span class="text-danger fw-bold">-{{ number_format($promotion->max_value, 0, ',', '.') }} VNĐ</span>
-
+                                                        <span class="text-danger fw-bold">-{{ number_format($discountAmount, 0, ',', '.') }} VNĐ</span>
                                                     @else
                                                         <span class="text-danger">0 VNĐ</span>
                                                     @endif
