@@ -132,7 +132,7 @@
                                 </a>
                             </li>
                             <li class="nav-account">
-                                <a href="#login" data-bs-toggle="offcanvas" aria-controls="login" class="nav-icon-item">
+                                <a href="#login" data-bs-toggle="offcanvas" aria-controls="Đăng nhập" class="nav-icon-item">
                                     <i class="icon icon-user"></i>
                                 </a>
                             </li>
@@ -200,7 +200,4 @@
             </div>
         </header>
     </div>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
