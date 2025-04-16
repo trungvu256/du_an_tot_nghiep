@@ -19,7 +19,7 @@ class ProfileController extends Controller
 
     public function confirmPassword()
     {
-        return view('web3.confirm_password'); // Thay đổi đường dẫn view
+        return view('web3.profile.confirm_password'); // Thay đổi đường dẫn view
     }
 
     public function checkPassword(Request $request)
