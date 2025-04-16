@@ -274,3 +274,6 @@
     </script>
     <!-- Kết thúc Thanh Toán -->
 @endsection
+@section('scripts')
+@include('alert')
+@endsection

@@ -651,7 +651,7 @@ class WebProductController extends Controller
                   ->latest();
         }])->findOrFail($productId);
 
-        return view('web2.Home.shop-detail', compact('product'));
+        return view('web3.Home.shop-detail', compact('product'));
     }
 
     // Phương thức lưu phản hồi đánh giá

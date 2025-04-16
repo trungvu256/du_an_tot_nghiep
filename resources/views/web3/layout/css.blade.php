@@ -9,7 +9,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('website_3/css/styles.css') }}">
 
 <link rel="stylesheet" href="{{ asset('website_3/css/drift-basic.min.css') }}">
-<link rel="stylesheet" href="{{ asset('website_3/image-compare-viewer.min.css') }}">
+{{-- <link rel="stylesheet" href="{{ asset('website_3/image-compare-viewer.min.css') }}"> --}}
 
 
 <!-- Favicon and Touch Icons  -->

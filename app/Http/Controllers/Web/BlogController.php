@@ -15,10 +15,10 @@ class BlogController extends Controller
         $mostViewedBlogs = Blog::orderBy('views', 'desc')->take(5)->get();
         $categories = Catalogue::all();
         if ($request->ajax()) {
-            return view('web2.Blogs.load_more', compact('blogs'))->render();
+            return view('web3.Blogs.load_more', compact('blogs'))->render();
         }
 
-        return view('web2.Blogs.ListBlog', compact('blogs', 'mostViewedBlogs','categories'));
+        return view('web3.Blogs.ListBlog', compact('blogs', 'mostViewedBlogs','categories'));
     }
     public function detaiWebBlog($id, Request $request)
     {
@@ -30,9 +30,9 @@ class BlogController extends Controller
 
         // Kiểm tra nếu là AJAX request thì chỉ trả về danh sách bài viết
         if ($request->ajax()) {
-            return view('web2.Blogs.load_more', compact('blogs'))->render();
+            return view('web3.Blogs.load_more', compact('blogs'))->render();
         }
 
-        return view('web2.Blogs.dettailBlog', compact('blog', 'blogs','categories'));
+        return view('web3.Blogs.dettailBlog', compact('blog', 'blogs','categories'));
     }
 }

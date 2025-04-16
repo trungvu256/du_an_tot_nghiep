@@ -14,12 +14,16 @@ class ProfileController extends Controller
     public function showProfile()
     {
         $categories = Catalogue::all();
+
         return view('web3.profile.show', compact('categories')); // Thay đổi 'user.profile' thành 'web2.profile'
+
     }
 
     public function confirmPassword()
     {
+
         return view('web3.profile.confirm_password'); // Thay đổi đường dẫn view
+
     }
 
     public function checkPassword(Request $request)
@@ -42,7 +46,9 @@ class ProfileController extends Controller
             return redirect()->route('profile.confirm_password')->with('error', 'Bạn cần xác nhận mật khẩu trước.');
         }
 
+
         return view('web3.profile.edit', ['user' => Auth::user()]); // Cập nhật đường dẫn view
+
     }
 
     public function updateProfile(Request $request)
