@@ -102,10 +102,7 @@
 <!-- login -->
 <div class="offcanvas offcanvas-end popup-style-1 popup-login" id="login">
     <div class="canvas-wrapper">
-        <div class="canvas-header popup-header">
-            <span class="title">Đăng nhập</span>
-            <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
+
         @if (session('error'))
             <div class="alert alert-danger fw-bold text-center">
                 {{ session('error') }}
@@ -124,59 +121,28 @@
         <div class="canvas-body popup-inner">
             @if (Auth::check())
                 {{-- Người dùng đã đăng nhập --}}
-                <div class="user-info">
-                    <h4>👋 Chào, {{ Auth::user()->name }}</h4>
-
-                    <div class="user-details mb-4 p-3 bg-light rounded shadow-sm">
-                        <div class="d-flex flex-column gap-2">
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-envelope text-primary me-2"></i>
-                                <p class="mb-0"><span class="fw-bold">Email:</span> {{ Auth::user()->email }}</p>
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-phone text-primary me-2"></i>
-                                <p class="mb-0"><span class="fw-bold">Số điện thoại:</span> {{ Auth::user()->phone ?? 'Chưa cập nhật' }}</p>
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-map-marker-alt text-primary me-2"></i>
-                                <p class="mb-0"><span class="fw-bold">Địa chỉ:</span> {{ Auth::user()->address ?? 'Chưa cập nhật' }}</p>
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-venus-mars text-primary me-2"></i>
-                                <p class="mb-0"><span class="fw-bold">Giới tính:</span> {{ Auth::user()->gender == "male" ? 'Nam' : (Auth::user()->gender == "female" ? 'Nữ' : 'Giới tính khác') }}</p>
-                            </div>
-                        </div>
-                    </div>
-
+                <div class="canvas-header popup-header">
+                    <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('images/anhlogin.jpg') }}"
+                        width="50" height="50" class="rounded-circle border" style="object-fit: cover;">
+                    <span class="title">{{ Auth::user()->name }}</span>
+                    <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="user-info fs-5">
                     <hr>
-
-                    <div class="d-grid gap-2">
-                        <a href="{{ route('profile.edit') }}" class="btn btn-info mb-2">
-                            <svg class="icon me-2" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15.5 2h-11C3.12 2 2 3.12 2 4.5v11C2 16.88 3.12 18 4.5 18h11c1.38 0 2.5-1.12 2.5-2.5v-11C18 3.12 16.88 2 15.5 2zM14 14H6v-2h8v2zm0-4H6v-2h8v2zm0-4H6V6h8v2z" fill="currentColor"/>
-                            </svg>
-                            Chỉnh sửa thông tin cá nhân
-                        </a>
-
-                        <a href="{{ route('donhang.index') }}" class="btn btn-primary mb-2">
-                            <svg class="icon me-2" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zm0 18C5.58 18 2 14.42 2 10S5.58 2 10 2s8 3.58 8 8-3.58 8-8 8z" fill="currentColor"/>
-                                <path d="M10 4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 3c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z" fill="currentColor"/>
-                                <path d="M10 12c-2.67 0-8 1.34-8 4v1h16v-1c0-2.66-5.33-4-8-4z" fill="currentColor"/>
-                            </svg>
-                            Lịch sử đơn hàng
-                        </a>
-
-                        <a href="{{ route('web.logout') }}" class="btn btn-danger">
-                            <svg class="icon me-2" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" fill="currentColor"/>
-                            </svg>
-                            Đăng xuất
-                        </a>
-                    </div>
+                    <li><a onmouseover="this.style.color='#ff6f61'" onmouseout="this.style.color='black'" href="{{ route('profile') }}"><i class="icon icon-user"></i> Thông tin cá nhân</a>
+                    </li>
+                    <hr>
+                    <li><a onmouseover="this.style.color='#ff6f61'" onmouseout="this.style.color='black'" href="{{ route('donhang.index') }}"><i class="icon icon-cart"></i> Đơn hàng của bạn</a></li>
+                    <hr>
+                    <li><a href="{{ route('web.logout') }}" class="btn btn-danger"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a></li>
                 </div>
             @else
                 {{-- Form đăng nhập --}}
+                <div class="canvas-header popup-header">
+                    <span class="title">Đăng nhập</span>
+                    <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
                 <form action="{{ route('login.store.web') }}" method="POST" accept-charset="utf-8"
                     class="form-login">
                     @csrf
