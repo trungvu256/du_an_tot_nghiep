@@ -37,7 +37,7 @@
                             </a>
                         </div>
                         <div class="col-xl-3 col-md-4 col-6">
-                            <a href="home-sportwear.html" class="logo-header">
+                            <a href="{{ route('web.home') }}" class="logo-header">
                                 <img src="{{ asset('/images/Banner/logo7.jpg') }}" alt="logo"
                                     class="logo logo-dark">
                                 <img src="{{ asset('/images/Banner/logo7.jpg') }}" alt="logo"

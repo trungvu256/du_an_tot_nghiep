@@ -36,7 +36,7 @@
                         </a>
                     </div>
                     <div class="col-xl-2 col-md-4 col-6">
-                        <a href="index-2.html" class="logo-header">
+                        <a href="{{ route('web.home') }}" class="logo-header">
                             <img src="{{ asset('/images/Banner/logo7.jpg') }}" alt="logo" class="logo">
                         </a>
                     </div>
