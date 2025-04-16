@@ -154,73 +154,81 @@
                             </li>
                             <li class="menu-item" style="position: relative;">
                                 <a href="#" class="item-link">Thương hiệu <i class="icon icon-arr-down"></i></a>
-
-                                <div class="sub-menu mega-menu mega-shop"
-                                    style="position: absolute;
-                                                top: 100%;
-                                                left: 0;
-                                                background: #fff;
-                                                padding: 20px;
-                                                border-radius: 15px;
-                                                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-                                                display: inline-block;
-                                                min-width: 200px;
-                                                max-width: 100%;
-                                                z-index: 1000;">
-
+                            
+                                <div class="sub-menu mega-menu mega-shop" 
+                                     style="position: absolute;
+                                            top: 100%;
+                                            left: 0;
+                                            background: #fff;
+                                            padding: 20px;
+                                            border-radius: 15px;
+                                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                                            display: inline-block;
+                                            min-width: 200px;
+                                            max-width: 100%;
+                                            z-index: 1000;">
+                                    
                                     <ul class="menu-list"
                                         style="display: grid;
-                                                   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-                                                   gap: 10px;
-                                                   list-style: none;
-                                                   padding: 0;
-                                                   margin: 0;">
+                                               grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                                               gap: 10px;
+                                               list-style: none;
+                                               padding: 0;
+                                               margin: 0;">
                                         @foreach ($brands as $brand)
-                                            <li>
+                                            <li style="margin-bottom: 5px;">
                                                 <a href="{{ route('web.shop', ['brand_id' => $brand->id]) }}"
                                                     class="menu-link-text link"
                                                     style="font-size: 16px; color: #000; text-decoration: none; display: block;">
-                                                    {{ $brand->name }}
-                                                </a>
+                                                     {{ $brand->name }}
+                                                 </a>
                                             </li>
                                         @endforeach
-
-
                                     </ul>
                                 </div>
                             </li>
-
-
                             <li class="menu-item" style="position: relative;">
-                                <a href="#" class="item-link">Nước hoa <i class="icon icon-arr-down"></i></a>
-                                <div class="sub-menu mega-menu"
-                                    style="min-width: 220px; padding: 10px; background: white; box-shadow: 0 2px 6px rgba(0,0,0,0.1); position: absolute; top: 100%; left: 0; z-index: 1000;">
-                                    <!-- DANH MỤC SẢN PHẨM -->
-                                    <div class="mega-menu-item" style="margin-bottom: 10px;">
-                                        <div style="font-weight: bold; font-size: 16px; padding-bottom: 5px;">Danh mục
-                                        </div>
-                                        <ul class="menu-list">
-                                            @foreach ($categories as $category)
-                                                <li style="margin-bottom: 5px;">
-                                                    <a href="{{ route('web.shop', ['cate_id' => $category->id]) }}"
-                                                        class="menu-link-text link"
-                                                        style="font-size: 16px; color: #000; text-decoration: none;">
-                                                        <h7>{{ $category->name }}</h7>
-                                                    </a>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
+                                <a href="#" class="item-link">Danh mục <i class="icon icon-arr-down"></i></a>
+                            
+                                <div class="sub-menu mega-menu mega-shop" 
+                                     style="position: absolute;
+                                            top: 100%;
+                                            left: 0;
+                                            background: #fff;
+                                            padding: 20px;
+                                            border-radius: 15px;
+                                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                                            display: inline-block;
+                                            min-width: 200px;
+                                            max-width: 100%;
+                                            z-index: 1000;">
+                                    
+                                    <ul class="menu-list"
+                                        style="display: grid;
+                                               grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                                               gap: 10px;
+                                               list-style: none;
+                                               padding: 0;
+                                               margin: 0;">
+                                        @foreach ($categories as $category)
+                                        <li style="margin-bottom: 5px;">
+                                            <a href="{{ route('web.shop', ['cate_id' => $category->id]) }}" class="menu-link-text link" style="font-size: 16px; color: #000; text-decoration: none;">
+                                                <h7>{{ $category->name }}</h7>
+                                            </a>
+                                        </li>
+                                    @endforeach
                                     @php
-                                        $latestProduct = $productNews->first();
-                                    @endphp
-
-                                    @if ($latestProduct)
+                                    $latestProduct = $productNews->first();
+                                @endphp
+                                
+                                @if ($latestProduct)
+                                    <li style="margin-bottom: 5px;">
                                         <a href="{{ route('web.shop', ['type' => 'new']) }}" style="font-size: 16px">
                                             Sản phẩm mới
                                         </a>
-                                    @endif
-
+                                    </li>
+                                @endif
+                                    </ul>
                                 </div>
                             </li>
 
