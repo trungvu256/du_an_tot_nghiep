@@ -212,9 +212,9 @@
                             <li class="nav-item">
                                 <a href="{{ route('promotions.index') }}" class="nav-link">Mã Giảm Giá</a>
                             </li>
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a href="{{ route('discounts.index') }}" class="nav-link">Danh Mục & Sản Phẩm</a>
-                            </li>
+                            </li> --}}
                         </ul>
                     </div>
                 </li>

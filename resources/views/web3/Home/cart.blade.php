@@ -32,9 +32,9 @@
                                     <td class="align-middle text-center price" data-price="{{ isset($item['price_sale']) && $item['price_sale'] > 0 ? $item['price_sale'] : $item['price'] }}"
                                         id="price-{{ $cartKey }}">
                                         @if(isset($item['price_sale']) && $item['price_sale'] > 0)
-                                            {{ number_format($item['price_sale'], 0, ',', '.') }}₫
+                                            {{ number_format($item['price_sale'], 0, ',', '.') }}VNĐ
                                         @else
-                                            {{ number_format($item['price'], 0, ',', '.') }}₫
+                                            {{ number_format($item['price'], 0, ',', '.') }}VNĐ
                                         @endif
                                     </td>
                                     <td class="align-middle">
@@ -62,7 +62,7 @@
                                             $finalPrice = isset($item['price_sale']) && $item['price_sale'] > 0 ? $item['price_sale'] : $item['price'];
                                             $total = $finalPrice * (int)$item['quantity'];
                                         @endphp
-                                        {{ number_format($total, 0, ',', '.') }}₫
+                                        {{ number_format($total, 0, ',', '.') }}VNĐ
                                     </td>
                                     <td class="align-middle">
                                         @if (isset($item['variant']) && isset($item['variant']['attributes']) && count($item['variant']['attributes']) > 0)
@@ -88,7 +88,7 @@
             </div>
 
             <div class="col-lg-4">
-                <form action="{{ route('cart.applyPromotion') }}" method="POST">
+                {{-- <form action="{{ route('cart.applyPromotion') }}" method="POST">
                     @csrf
                     <div class="input-group">
                         <input type="text" name="coupon_code" class="form-control p-4" placeholder="Nhập mã giảm giá">
@@ -96,7 +96,12 @@
                             <button type="submit" class="btn btn-primary">Áp dụng mã</button>
                         </div>
                     </div>
-                </form>
+                </form> --}}
+                <div class="mt-2">
+                    <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#promotionsModal">
+                        <i class="fa fa-tag"></i> Xem mã khuyến mãi có thể áp dụng
+                    </button>
+                </div>
                 @if (session('success'))
                     <p class="text-success">{{ session('success') }}</p>
                 @endif
@@ -123,19 +128,19 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Tạm tính</h6>
-                            <h6 class="font-weight-medium" id="summary-subtotal">{{ number_format($subtotal, 0, ',', '.') }}₫</h6>
+                            <h6 class="font-weight-medium" id="summary-subtotal">{{ number_format($subtotal, 0, ',', '.') }}VNĐ</h6>
                         </div>
                         @if ($promotion)
                             <div class="d-flex justify-content-between mb-3 pt-1">
                                 <h6 class="font-weight-medium text-success">Giảm giá ({{ $promotion['code'] }})</h6>
-                                <h6 class="font-weight-medium text-success" id="summary-discount">-{{ number_format($discount, 0, ',', '.') }}₫</h6>
+                                <h6 class="font-weight-medium text-success" id="summary-discount">-{{ number_format($discount, 0, ',', '.') }}VNĐ</h6>
                             </div>
                         @endif
                     </div>
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Tổng cộng</h5>
-                            <h5 class="font-weight-bold" id="summary-total">{{ number_format($total, 0, ',', '.') }}₫</h5>
+                            <h5 class="font-weight-bold" id="summary-total">{{ number_format($total, 0, ',', '.') }}VNĐ</h5>
                         </div>
                         <form id="checkout-form" action="{{ route('checkout.view') }}" method="POST">
                             @csrf
@@ -150,6 +155,45 @@
                         </form>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Mã Khuyến Mãi -->
+    <div class="modal fade" id="promotionsModal" tabindex="-1" role="dialog" aria-labelledby="promotionsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="promotionsModalLabel">Mã Khuyến Mãi Có Thể Áp Dụng</h5>
+                    {{-- <button type="button" class="close" id="closeModalBtn" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button> --}}
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="bg-secondary text-dark text-center">
+                                <tr>
+                                    <th>Mã</th>
+                                    <th>Loại</th>
+                                    <th>Giá trị</th>
+                                    <th>Điều kiện</th>
+                                    <th>Hạn sử dụng</th>
+                                    <th>Số lượng</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="promotions-list" class="text-center">
+                                <tr>
+                                    <td colspan="7" class="text-center">Đang tải dữ liệu...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {{-- <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="closeModalBtn2">Đóng</button>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -326,7 +370,109 @@
 
             // Cập nhật tóm tắt ban đầu
             updateSummary();
+
+            // Xử lý sự kiện mở modal mã khuyến mãi
+            $('.btn-outline-primary').on('click', function() {
+                $('#promotionsModal').modal('show');
+                loadValidPromotions();
+            });
+
+            // Xử lý sự kiện đóng modal
+            $('#closeModalBtn, #closeModalBtn2').on('click', function() {
+                $('#promotionsModal').modal('hide');
+            });
         });
+
+        // Hàm tải danh sách mã khuyến mãi hợp lệ
+        function loadValidPromotions() {
+            $.ajax({
+                url: '{{ route('cart.validPromotions') }}',
+                method: 'GET',
+                success: function(response) {
+                    if (response.success) {
+                        displayPromotions(response.promotions);
+                    } else {
+                        $('#promotions-list').html('<tr><td colspan="7" class="text-center">Không có mã khuyến mãi nào có thể áp dụng</td></tr>');
+                    }
+                },
+                error: function() {
+                    $('#promotions-list').html('<tr><td colspan="7" class="text-center">Có lỗi xảy ra khi tải danh sách mã khuyến mãi</td></tr>');
+                }
+            });
+        }
+
+        // Hàm hiển thị danh sách mã khuyến mãi
+        function displayPromotions(promotions) {
+            if (!promotions || promotions.length === 0) {
+                $('#promotions-list').html('<tr><td colspan="7" class="text-center">Không có mã khuyến mãi nào có thể áp dụng</td></tr>');
+                return;
+            }
+
+            let html = '';
+            promotions.forEach(function(promotion) {
+                // Định dạng loại khuyến mãi
+                let typeText = '';
+                let valueText = '';
+
+                if (promotion.type === 'percentage') {
+                    typeText = 'Phần trăm';
+                    valueText = promotion.discount_value + '%';
+                } else if (promotion.type === 'fixed_amount') {
+                    typeText = 'Số tiền cố định';
+                    valueText = formatCurrency(promotion.discount_value);
+                } else if (promotion.type === 'free_shipping') {
+                    typeText = 'Miễn phí vận chuyển';
+                    valueText = 'Miễn phí';
+                }
+
+                // Định dạng điều kiện
+                let conditionText = 'Không có điều kiện';
+                if (promotion.min_order_value) {
+                    // Đảm bảo giá trị min_order_value là số
+                    const minOrderValue = parseFloat(promotion.min_order_value);
+                    if (!isNaN(minOrderValue)) {
+                        conditionText = 'Đơn hàng tối thiểu ' + formatCurrency(minOrderValue);
+                    } else {
+                        conditionText = 'Đơn hàng tối thiểu ' + promotion.min_order_value;
+                    }
+                }
+
+                // Định dạng thời gian
+                const startDate = new Date(promotion.start_date);
+                const endDate = new Date(promotion.end_date);
+                const dateRange = startDate.toLocaleDateString('vi-VN') + ' - ' + endDate.toLocaleDateString('vi-VN');
+
+                // Hiển thị số lượng còn lại
+                const quantityText = promotion.quantity > 0 ? promotion.quantity : '<i class="text-danger">Đã hết</i>';
+
+                html += `
+                    <tr>
+                        <td><strong>${promotion.code}</strong></td>
+                        <td>${typeText}</td>
+                        <td>${valueText}</td>
+                        <td>${conditionText}</td>
+                        <td>${dateRange}</td>
+                        <td>${quantityText}</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-primary apply-promotion" data-code="${promotion.code}" ${promotion.quantity <= 0 ? 'disabled' : ''}>
+                                Áp dụng
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            $('#promotions-list').html(html);
+
+            // Gắn sự kiện cho nút áp dụng
+            $('.apply-promotion').on('click', function() {
+                const code = $(this).data('code');
+                $('input[name="coupon_code"]').val(code);
+                $('#promotionsModal').modal('hide');
+                // Tự động submit form áp dụng mã
+                $('form[action="{{ route('cart.applyPromotion') }}"]').submit();
+            });
+        }
 
         // Xử lý submit form checkout
         document.getElementById("checkout-form").addEventListener("submit", function(e) {

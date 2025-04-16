@@ -56,7 +56,7 @@
                                 </div>
                             </form>
 
-                        <div class="table-responsive">
+                        <div class="table-responsive text-center">
                             <table class="table v-middle m-0">
                                 <thead>
                                     <tr>
@@ -68,6 +68,7 @@
                                         <th>Ngày bắt đầu</th>
                                         <th>Ngày kết thúc</th>
                                         <th>Đơn hàng tối đa</th>
+                                        <th>Số lượng</th>
                                         <th colspan="2">Hành động</th>
                                     </tr>
                                 </thead>
@@ -102,6 +103,7 @@
                                         <td>{{ $promotion->start_date }}</td>
                                         <td>{{ $promotion->end_date }}</td>
                                         <td>{{ $promotion->max_value ? number_format($promotion->max_value, 0, ',', '.') . ' VNĐ' : 'Trống' }}</td>
+                                        <td>{{ $promotion->quantity }}</td>
                                         <td>
                                             <a href="{{ route('promotions.edit', $promotion->id) }}" class="editRow"
                                                 title="Sửa" style="margin-right: 15px;">

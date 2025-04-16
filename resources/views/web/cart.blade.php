@@ -28,7 +28,7 @@
                         $total = 0;
                         $stt=0;
                     @endphp
-                   
+
                         @if (isset($carts))
                         @foreach ($carts as $id => $cart)
                         @php

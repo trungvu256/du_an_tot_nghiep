@@ -336,6 +336,19 @@ public function removeFromCart(Request $request, $cartKey)
 
 
     // Áp mã thanh toán
+    public function getValidPromotions()
+    {
+        $promotions = Promotion::where('status', 1)
+            ->where('start_date', '<=', now())
+            ->where('end_date', '>=', now())
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'promotions' => $promotions
+        ]);
+    }
+
     public function applyPromotion(Request $request)
     {
         $promotionCode = $request->input('coupon_code');

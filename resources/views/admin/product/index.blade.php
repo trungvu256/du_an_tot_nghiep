@@ -13,14 +13,14 @@
                 </a>
             </div>
         </div>
-        
 
-        @if (session('success'))
+
+        {{-- @if (session('success'))
             <div id="successAlert" class="alert alert-success alert-dismissible fade show mt-2 text-center" role="alert">
                 {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        @endif
+        @endif --}}
 
         <div class="card-body">
             <!-- Form lọc sản phẩm -->
@@ -106,12 +106,12 @@
                                         class="btn btn-outline-warning btn-sm mx-2" title="Chỉnh sửa">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
-                                    <form action="{{ route('admin.delete.product', $product->id) }}" method="POST"
-                                        onsubmit="return confirm('Bạn có chắc chắn muốn đưa sản phẩm này vào thùng rác?')">
+                                    <form action="{{ route('admin.delete.product', $product->id) }}" method="POST" class="delete-form"
+                                        onsubmit="return confirm('Bạn có chắc chắn muốn đưa sản phẩm này vào thùng rác?')" >
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-outline-danger btn-sm" title="Xóa">
-                                            <i class="bi bi-trash-fill"></i>
+                                        <button type="submit" class="btn btn-danger btn-sm delete-btn">
+                                            <i class="bi bi-trash"></i>
                                         </button>
                                     </form>
                                 </div>
@@ -126,4 +126,26 @@
             <span class="d-flex justify-content-end">{{ $products->links()}}</span>
         </div>
     </div>
+@endsection
+@section('scripts')
+<script>
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const form = this.closest('.delete-form');
+            Swal.fire({
+                title: 'Bạn có chắc chắn muốn xóa?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+    </script>
+    @include('alert')
 @endsection

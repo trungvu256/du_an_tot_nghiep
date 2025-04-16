@@ -15,7 +15,11 @@ class Promotion extends Model
         'discount_value',
         'status',
         'start_date',
-        'end_date'
+        'end_date',
+        'type',
+        'min_order_value',
+        'max_value',
+        'quantity'
     ];
 
     public function orders()
