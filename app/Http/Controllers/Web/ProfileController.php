@@ -14,12 +14,16 @@ class ProfileController extends Controller
     public function showProfile()
     {
         $categories = Catalogue::all();
-        return view('web3.profile', compact('categories')); // Thay đổi 'user.profile' thành 'web3.profile'
+
+        return view('web3.profile.show', compact('categories')); // Thay đổi 'user.profile' thành 'web2.profile'
+
     }
 
     public function confirmPassword()
     {
-        return view('web3.confirm_password'); // Thay đổi đường dẫn view
+
+        return view('web3.profile.confirm_password'); // Thay đổi đường dẫn view
+
     }
 
     public function checkPassword(Request $request)
@@ -42,7 +46,9 @@ class ProfileController extends Controller
             return redirect()->route('profile.confirm_password')->with('error', 'Bạn cần xác nhận mật khẩu trước.');
         }
 
-        return view('web3.profile_edit', ['user' => Auth::user()]); // Cập nhật đường dẫn view
+
+        return view('web3.profile.edit', ['user' => Auth::user()]); // Cập nhật đường dẫn view
+
     }
 
     public function updateProfile(Request $request)
@@ -63,6 +69,7 @@ class ProfileController extends Controller
     // Cập nhật thông tin người dùng
     $user->name = $request->name;
     $user->email = $request->email;
+    $user->address = $request->address;
 
     // Xử lý ảnh đại diện
     if ($request->hasFile('avatar')) {
@@ -72,12 +79,13 @@ class ProfileController extends Controller
         }
 
         // Lưu ảnh mới
-        $file = $request->file('avatar');
-        $filename = time() . '.' . $file->getClientOriginalExtension();
-        $file->storeAs('public/avatars', $filename); // Lưu vào storage/app/public/avatars
+        $avatarPath = null;
+        if ($request->hasFile('avatar')) {
+            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+        } // Lưu vào storage/app/public/avatars
 
         // Cập nhật tên file vào database
-        $user->avatar = $filename;
+        $user->avatar = $avatarPath;
     }
 
     // Lưu thông tin người dùng
