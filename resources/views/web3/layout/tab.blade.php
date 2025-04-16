@@ -122,7 +122,9 @@
             @if (Auth::check())
                 {{-- Người dùng đã đăng nhập --}}
                 <div class="canvas-header popup-header">
-                    <span class="title">Hồ sơ</span>
+                    <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('images/anhlogin.jpg') }}"
+                        width="50" height="50" class="rounded-circle border" style="object-fit: cover;">
+                    <span class="title">{{ Auth::user()->name }}</span>
                     <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="user-info fs-5">

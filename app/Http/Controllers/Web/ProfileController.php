@@ -63,6 +63,7 @@ class ProfileController extends Controller
     // Cập nhật thông tin người dùng
     $user->name = $request->name;
     $user->email = $request->email;
+    $user->address = $request->address;
 
     // Xử lý ảnh đại diện
     if ($request->hasFile('avatar')) {
@@ -72,12 +73,13 @@ class ProfileController extends Controller
         }
 
         // Lưu ảnh mới
-        $file = $request->file('avatar');
-        $filename = time() . '.' . $file->getClientOriginalExtension();
-        $file->storeAs('public/avatars', $filename); // Lưu vào storage/app/public/avatars
+        $avatarPath = null;
+        if ($request->hasFile('avatar')) {
+            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+        } // Lưu vào storage/app/public/avatars
 
         // Cập nhật tên file vào database
-        $user->avatar = $filename;
+        $user->avatar = $avatarPath;
     }
 
     // Lưu thông tin người dùng
