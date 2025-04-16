@@ -491,3 +491,6 @@
         });
     </script>
 @endsection
+@section('scripts')
+@include('alert')
+@endsection

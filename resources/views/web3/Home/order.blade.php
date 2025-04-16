@@ -327,3 +327,6 @@ data-bs-toggle="modal" data-bs-target="#cancelModal{{ $order->id }}">Hủy đơn
         });
     </script>
 @endsection
+@section('scripts')
+@include('alert')
+@endsection

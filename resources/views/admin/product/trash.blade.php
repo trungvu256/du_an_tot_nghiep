@@ -77,8 +77,8 @@
                                         <tr>
                                             <th>Dung tích</th>
                                             <th>Nồng độ</th>
-                                            <th>Phiên bản đặc biệt</th>
-                                            <th>Giá</th>
+                                            <th>Giá gốc</th>
+                                            <th>Giá giảm</th>
                                             <th>Tồn kho</th>
                                         </tr>
                                     </thead>
@@ -87,8 +87,8 @@
                                             <tr>
                                                 <td>{{ $product_variant->size }}</td>
                                                 <td>{{ $product_variant->concentration }}</td>
-                                                <td>{{ $product_variant->special_edition }}</td>
                                                 <td>{{ number_format($product_variant->price, 2) }} VND</td>
+                                                <td>{{ number_format($product_variant->price_sale, 2) }} VND</td>
                                                 <td>{{ $product_variant->stock_quantity }}</td>
                                             </tr>
                                         @endforeach

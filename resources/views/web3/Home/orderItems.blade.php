@@ -1,8 +1,8 @@
 @extends('web3.layout.master2')
 @section('content')
     <!-- Thêm SweetAlert2 CSS và JS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4/bootstrap-4.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4/bootstrap-4.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 
     <div class="container">
         <div class="d-flex align-items-center justify-content-between">
@@ -210,8 +210,10 @@
         </table> --}}
     </div>
 
-    @section('scripts')
-    <script>
+
+@endsection
+@section('scripts')
+<script>
     document.addEventListener('DOMContentLoaded', function() {
         const returnForm = document.getElementById('returnForm');
         const returnModal = document.getElementById('returnModal');
@@ -293,6 +295,7 @@
             });
         });
     });
-    </script>
-    @endsection
+</script>
+@include('alert')
 @endsection
+

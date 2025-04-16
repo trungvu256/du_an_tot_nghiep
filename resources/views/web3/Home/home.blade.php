@@ -99,14 +99,14 @@
                 "slidesPerGroup": 1,
                 "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
                 "breakpoints": {
-                    "575": { "slidesPerView":2, "spaceBetween": 12}, 
+                    "575": { "slidesPerView":2, "spaceBetween": 12},
                     "991": { "slidesPerView": 3, "spaceBetween": 24}
                 }
             }'>
                 <div class="swiper-wrapper">
-                    
-                  
-                   
+
+
+
                 </div>
                 <div class="d-flex d-lg-none sw-dot-default sw-pagination-iconbox justify-content-center">
                 </div>
@@ -123,7 +123,7 @@
         <div class="container-2" style="margin-top: 40px;">
             <div class="flat-animate-tab overflow-visible">
                 <div class="flat-title-tab-categories text-center wow fadeInUp">
-                   
+
                     <div class="tab-slide">
                         <ul class="menu-tab-fill style-primary justify-content-center" role="tablist">
                             <li class="item-slide-effect"></li>
@@ -183,38 +183,39 @@
                                                         alt="image-product" />
                                                 </a>
                                                 <ul class="list-product-btn">
-                                                    <li>
-                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-cart2"></span>
-                                                            <span class="tooltip">Add to Cart</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="wishlist">
-                                                        <a href="javascript:void(0);"
-                                                            class="hover-tooltip tooltip-left box-icon">
-                                                            <span class="icon icon-heart2"></span>
-                                                            <span class="tooltip">Add to Wishlist</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
+                                                    {{-- <li>
+                                                        <form action="{{ route('cart.create', $product->id) }}" method="POST" class="d-inline">
+                                                            @csrf
+                                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                            <input type="hidden" name="name" value="{{ $product->name }}">
+                                                            <input type="hidden" name="image" value="{{ $product->image }}">
+                                                            <input type="hidden" name="price" value="{{ $minPrice }}">
+                                                            <input type="hidden" name="quantity" value="1">
+                                                            <button type="submit" class="hover-tooltip tooltip-left box-icon border-0 bg-transparent p-0">
+                                                                <span class="icon icon-cart2"></span>
+                                                                <span class="tooltip">Thêm vào giỏ hàng</span>
+                                                            </button>
+                                                        </form>
+                                                    </li> --}}
+
+                                                    {{-- <li>
                                                         <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
                                                             class="hover-tooltip tooltip-left box-icon quickview">
                                                             <span class="icon icon-view"></span>
                                                             <span class="tooltip">Chi tiết</span>
                                                         </a>
-                                                    </li>
-                                                    <li class="compare">
+                                                    </li> --}}
+                                                    {{-- <li class="compare">
                                                         <a href="#compare" data-bs-toggle="modal"
                                                             aria-controls="compare"
                                                             class="hover-tooltip tooltip-left box-icon">
                                                             <span class="icon icon-compare"></span>
                                                             <span class="tooltip">Add to Compare</span>
                                                         </a>
-                                                    </li>
+                                                    </li> --}}
                                                 </ul>
 
-                                                <div class="on-sale-wrap"><span class="on-sale-item">20% Off</span>
+                                                <div class="on-sale-wrap"><span class="on-sale-item fw-bold">Ưu đãi đặc biệt!</span>
                                                 </div>
                                             </div>
                                             <div class="card-product-info">
@@ -237,28 +238,28 @@
 
 
                                 </div>
-                             
+
                                 <div class="d-flex d-xl-none sw-dot-default sw-pagination-women justify-content-center">
-                                    
+
                                 </div>
-                            </div> 
+                            </div>
 
                             <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-women"></div>
                             <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-women"></div>
                         </div>
                     </div>
-                    <a 
-                    href="{{ route('web.shop', ['cate_id' => $category->id]) }}" 
+                    <a
+                    href="{{ route('web.shop', ['cate_id' => $category->id]) }}"
                     class="btn btn-primary mt-3"
                 >
                     Xem tất cả
                 </a>
-                   
+
                 </div>
             </div>
-        
+
         </div>
-        
+
     </section>
     @endforeach
     <!-- /Trending -->
@@ -333,7 +334,7 @@
                                 @endphp
                                     <div class="swiper-slide">
                                         <div class="card-product style-1 card-product-size">
-                                            
+
                                             <div class="card-product-wrapper">
                                                 <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}" class="product-img">
                                                     <img class="img-product lazyload"
@@ -566,4 +567,7 @@
     <!-- /Shop Gram -->
 </div>
 
+@endsection
+@section('scripts')
+@include('alert')
 @endsection

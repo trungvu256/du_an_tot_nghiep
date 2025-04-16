@@ -84,9 +84,9 @@ class WebController extends Controller
                     foreach ($priceRanges as $range) {
                         [$min, $max] = array_map('intval', explode('-', $range));
                         $query->orWhereRaw("
-                            (CASE 
-                                WHEN price_sale IS NOT NULL AND price_sale > 0 THEN price_sale 
-                                ELSE price 
+                            (CASE
+                                WHEN price_sale IS NOT NULL AND price_sale > 0 THEN price_sale
+                                ELSE price
                             END) BETWEEN ? AND ?
                         ", [$min, $max]);
                     }
@@ -111,14 +111,14 @@ class WebController extends Controller
                 $query->select('products.*')
                     ->addSelect([
                         'effective_price' => ProductVariant::selectRaw('
-                              CASE 
+                              CASE
                                   WHEN price_sale IS NOT NULL AND price_sale > 0 THEN price_sale
                                   ELSE price
                               END
                           ')
                             ->whereColumn('product_variants.product_id', 'products.id')
                             ->orderByRaw('
-                              CASE 
+                              CASE
                                   WHEN price_sale IS NOT NULL AND price_sale > 0 THEN price_sale
                                   ELSE price
                               END
@@ -132,14 +132,14 @@ class WebController extends Controller
                 $query->select('products.*')
                     ->addSelect([
                         'effective_price' => ProductVariant::selectRaw('
-                              CASE 
+                              CASE
                                   WHEN price_sale IS NOT NULL AND price_sale > 0 THEN price_sale
                                   ELSE price
                               END
                           ')
                             ->whereColumn('product_variants.product_id', 'products.id')
                             ->orderByRaw('
-                              CASE 
+                              CASE
                                   WHEN price_sale IS NOT NULL AND price_sale > 0 THEN price_sale
                                   ELSE price
                               END DESC
@@ -198,21 +198,21 @@ class WebController extends Controller
 
     public function cart()
     {
-        return view('web2.Home.cart');
+        return view('web3.Home.cart');
     }
 
     public function checkout()
     {
-        return view('web2.Home.checkout');
+        return view('web3.Home.checkout');
     }
 
     public function contact()
     {
         $categories = Catalogue::all();
-        return view('web2.Home.contact', compact('categories'));
+        return view('web3.Home.contact', compact('categories'));
     }
 
-    //    Tìm kiếm 
+    //    Tìm kiếm
     public function search(Request $request)
     {
         $keyword = $request->input('searchInput');
