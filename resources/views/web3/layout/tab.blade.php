@@ -102,10 +102,7 @@
 <!-- login -->
 <div class="offcanvas offcanvas-end popup-style-1 popup-login" id="login">
     <div class="canvas-wrapper">
-        <div class="canvas-header popup-header">
-            <span class="title">Đăng nhập</span>
-            <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
+
         @if (session('error'))
             <div class="alert alert-danger fw-bold text-center">
                 {{ session('error') }}
@@ -124,18 +121,26 @@
         <div class="canvas-body popup-inner">
             @if (Auth::check())
                 {{-- Người dùng đã đăng nhập --}}
-                <div class="user-info">
-                    <h4>👋 Chào, {{ Auth::user()->name }}</h4>
-                    <p>Email: {{ Auth::user()->email }}</p>
-
+                <div class="canvas-header popup-header">
+                    <span class="title">Hồ sơ</span>
+                    <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="user-info fs-5">
                     <hr>
-                    <li><a href="{{ route('donhang.index') }}">Đơn hàng của bạn</a></li>
-
-
-                    <a href="{{ route('web.logout') }}" class="btn btn-danger">Đăng xuất</a>
+                    <li><a onmouseover="this.style.color='#ff6f61'" onmouseout="this.style.color='black'" href="{{ route('profile') }}"><i class="icon icon-user"></i> Thông tin của bạn</a>
+                    </li>
+                    <hr>
+                    <li><a onmouseover="this.style.color='#ff6f61'" onmouseout="this.style.color='black'" href="{{ route('donhang.index') }}"><i class="icon icon-cart"></i> Đơn hàng của bạn</a></li>
+                    <hr>
+                    <li><a href="{{ route('web.logout') }}" class="btn btn-danger"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a></li>
                 </div>
             @else
                 {{-- Form đăng nhập --}}
+                <div class="canvas-header popup-header">
+                    <span class="title">Đăng nhập</span>
+                    <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
                 <form action="{{ route('login.store.web') }}" method="POST" accept-charset="utf-8"
                     class="form-login">
                     @csrf
