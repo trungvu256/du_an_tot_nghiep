@@ -129,7 +129,7 @@
                 </div>
                 <div class="user-info fs-5">
                     <hr>
-                    <li><a onmouseover="this.style.color='#ff6f61'" onmouseout="this.style.color='black'" href="{{ route('profile') }}"><i class="icon icon-user"></i> Thông tin của bạn</a>
+                    <li><a onmouseover="this.style.color='#ff6f61'" onmouseout="this.style.color='black'" href="{{ route('profile') }}"><i class="icon icon-user"></i> Thông tin cá nhân</a>
                     </li>
                     <hr>
                     <li><a onmouseover="this.style.color='#ff6f61'" onmouseout="this.style.color='black'" href="{{ route('donhang.index') }}"><i class="icon icon-cart"></i> Đơn hàng của bạn</a></li>
