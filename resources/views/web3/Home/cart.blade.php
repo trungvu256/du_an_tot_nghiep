@@ -7,15 +7,13 @@
                 <form id="cart-items-form">
                     <table class="table table-bordered text-center mb-0">
                         <thead class="bg-secondary text-dark">
-                            <tr>
-                                <th>Chọn</th>
+                            <th>Chọn</th>
                                 <th>Sản phẩm</th>
                                 <th>Giá</th>
                                 <th>Số lượng</th>
                                 <th>Tổng cộng</th>
                                 <th>Biến thể</th>
                                 <th>Xóa</th>
-                            </tr>
                         </thead>
                         <tbody class="align-middle">
                             @foreach (session('cart', []) as $cartKey => $item)
@@ -83,7 +81,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <a href="{{ route('web.shop') }}" class="btn btn-success">Thêm sản phẩm</a>
+                    <a href="{{ route('web.shop') }}" class="btn btn-success">Mua thêm</a>
                 </form>
             </div>
 
@@ -97,8 +95,8 @@
                         </div>
                     </div>
                 </form> --}}
-                <div class="mt-2">
-                    <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#promotionsModal">
+                <div class="mt-2 text-center">
+                    <button type="button" class="btn btn-outline-success mb-2" data-toggle="modal" data-target="#promotionsModal">
                         <i class="fa fa-tag"></i> Xem mã khuyến mãi có thể áp dụng
                     </button>
                 </div>
@@ -121,27 +119,32 @@
                 $total = max(0, $subtotal - $discount);
                 ?>
 
-                <div class="card border-secondary mb-5">
-                    <div class="card-header bg-secondary border-0">
-                        <h4 class="font-weight-semi-bold m-0">Tóm tắt giỏ hàng</h4>
+                <div class="card mb-3">
+                    <div class="card-header bg-info">
+                        <h6 class="m-0 text-center">Tóm tắt giỏ hàng</h6>
                     </div>
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between mb-3 pt-1">
-                            <h6 class="font-weight-medium">Tạm tính</h6>
-                            <h6 class="font-weight-medium" id="summary-subtotal">{{ number_format($subtotal, 0, ',', '.') }}VNĐ</h6>
+                    <div class="card-footer bg-transparent">
+                        <div class="d-flex justify-content-between">
+                            <h6>Tạm tính :</h6>
+                            <h6 class="font-weight-medium" id="summary-subtotal">
+                                {{ number_format($subtotal, 0, ',', '.') }}VNĐ</h6>
                         </div>
                         @if ($promotion)
-                            <div class="d-flex justify-content-between mb-3 pt-1">
-                                <h6 class="font-weight-medium text-success">Giảm giá ({{ $promotion['code'] }})</h6>
-                                <h6 class="font-weight-medium text-success" id="summary-discount">-{{ number_format($discount, 0, ',', '.') }}VNĐ</h6>
+                            <div class="d-flex justify-content-between">
+                                <h6 class="text-success">Giảm giá ({{ $promotion['code'] }})</h6>
+                                <h6 class="font-weight-medium text-success" id="summary-discount">
+                                    -{{ number_format($discount, 0, ',', '.') }}VNĐ</h6>
                             </div>
                         @endif
                     </div>
-                    <div class="card-footer border-secondary bg-transparent">
-                        <div class="d-flex justify-content-between mt-2">
-                            <h5 class="font-weight-bold">Tổng cộng</h5>
-                            <h5 class="font-weight-bold" id="summary-total">{{ number_format($total, 0, ',', '.') }}VNĐ</h5>
+                    <div class="card-footer bg-transparent">
+                        <div class="d-flex justify-content-between">
+                            <h6>Tổng cộng :</h6>
+                            <h6 class="font-weight-bold" id="summary-total">{{ number_format($total, 0, ',', '.') }}VNĐ
+                            </h6>
                         </div>
+                    </div>
+                    <div class="card-footer bg-transparent text-center">
                         <form id="checkout-form" action="{{ route('checkout.view') }}" method="POST">
                             @csrf
                             <input type="hidden" name="selected_cart_items" id="selected_cart_items">
@@ -149,7 +152,7 @@
                             <input type="hidden" name="discount" id="discount">
                             <input type="hidden" name="total" id="total">
 
-                            <button type="submit" class="btn btn-block btn-primary my-3 py-3">
+                            <button type="submit" class="btn btn-block btn-info my-1 py-2">
                                 Tiến hành thanh toán
                             </button>
                         </form>

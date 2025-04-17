@@ -12,7 +12,7 @@
     }
 </style>
 
-<body>
+<div>
     <!-- Scroll Top -->
     <button id="goTop">
         <span class="border-progress"></span>
@@ -249,7 +249,7 @@
 
         </header>
     </div>
-</body>
+</div>
 
 @push('scripts')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
