@@ -22,7 +22,7 @@ class Web2Controller extends Controller
             $query->select(DB::raw("SUM(quantity)"));
         }])
             ->orderByDesc('total_sold')
-            ->take(4)
+            ->take(8)
             ->get();
         $blogs = Blog::latest()->take(3)->get();
         return view('web3.Home.home', compact('list_product', 'categories', 'bestSellers', 'blogs', 'products', 'productNews'));

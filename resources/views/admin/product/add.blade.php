@@ -4,9 +4,9 @@
         <form action="{{ route('admin.store.product') }}" method="POST" enctype="multipart/form-data" class="card shadow p-4">
             @csrf
 
-            @if (session('success'))
+            {{-- @if (session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
+            @endif --}}
             <div class="row d-flex align-items-center justify-content-between">
                 <div class="col-auto">
                     <a href="{{ route('admin.product') }}" class="btn btn-primary"><i class="bi bi-arrow-return-left"></i>
@@ -338,4 +338,7 @@
                 console.error(error);
             });
     </script>
+@endsection
+@section('scripts')
+    @include('alert')
 @endsection

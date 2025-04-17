@@ -44,7 +44,7 @@ class BlogController extends Controller
                 'slug' => Str::slug($request->title)
             ]);
         }
-        return redirect()->route('admin.blog')->with('success', 'Created Blog Successful');
+        return redirect()->route('admin.blog')->with('success', 'Thêm mới bài viết thành công!');
     }
 
     public function edit($id)
@@ -59,7 +59,7 @@ class BlogController extends Controller
         $request->validate([
             'author' => 'required|string|max:255',
             'title' => 'required|string|max:255',
-            'image' => 'nullable', 
+            'image' => 'nullable',
             'preview' => 'required|string',
             'content' => 'required|string',
         ]);
@@ -80,7 +80,7 @@ class BlogController extends Controller
             'slug' => Str::slug($request->title),
         ]);
 
-        return redirect()->route('admin.blog')->with('success', 'Update Blog Successful');
+        return redirect()->route('admin.blog')->with('success', 'Cập nhật bài viết thành công!');
     }
 
 
@@ -88,11 +88,11 @@ class BlogController extends Controller
     public function delete($id)
     {
         $blog = Blog::find($id);
-    
+
         if (!$blog) {
             return redirect()->back()->with('error', 'Không tìm thấy bài viết');
         }
-    
+
         $blog->delete();
         return redirect()->back()->with('success', 'Đã chuyển vào thùng rác');
     }
@@ -105,7 +105,7 @@ class BlogController extends Controller
         $blog->restore();
         return redirect()->back()->with('success', 'Đã phục hồi bài viết');
     }
-    
+
     public function forceDelete ($id) {
         $blog = Blog::withTrashed()->find($id);
         if(!$blog) {
@@ -125,7 +125,7 @@ class BlogController extends Controller
             $file = $request->file('upload');
             $filename = 'Blog-' . time() . '-' . $file->getClientOriginalName();
             $filePath = $file->storeAs('blog_images', $filename, 'public');
-    
+
             return response()->json([
                 'uploaded' => 1,
                 'fileName' => $filename,
@@ -140,5 +140,5 @@ class BlogController extends Controller
     $trashedBlogs = Blog::onlyTrashed()->paginate(10);
     return view('admin.blog.trash', compact('trashedBlogs'));
 }
-    
+
 }

@@ -21,7 +21,7 @@
         </div>
         <!-- /Breadcrumb -->
         <!-- Product Main -->
-        <section class="flat-single-product">
+        <section class="flat-single-product" style="padding-bottom: 60px">
             <div class="tf-main-product section-image-zoom">
                 <div class="container">
                     <div class="row">
@@ -43,7 +43,7 @@
                                             </div>
                                         </div>
                                     </div>
-                            
+
                                     <!-- Main Slider (bên phải) -->
                                     <div class="flat-wrap-media-product flex-grow-1">
                                         <div dir="ltr" class="swiper tf-product-media-main" id="gallery-swiper-started">
@@ -62,9 +62,9 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                          
-                            
+
+
+
                             <script>
                             // Khởi tạo Swiper cho thumbnail và slider chính
                             document.addEventListener('DOMContentLoaded', function () {
@@ -76,7 +76,7 @@
                                     freeMode: true,
                                     watchSlidesProgress: true,
                                 });
-                            
+
                                 // Khởi tạo Swiper cho hình ảnh chính
                                 const mainSwiper = new Swiper('.tf-product-media-main', {
                                     spaceBetween: 10,
@@ -88,7 +88,7 @@
                                         swiper: thumbsSwiper,
                                     },
                                 });
-                            
+
                                 // Hiệu ứng zoom (nếu cần thêm thư viện zoom)
                                 // Ví dụ: Nếu dùng Drift Zoom hoặc một thư viện tương tự
                                 document.querySelectorAll('.tf-image-zoom').forEach(image => {
@@ -125,14 +125,14 @@
                                             <div class="display-sm price-new price-on-sale" id="product-sale-price">
                                                 {{ number_format($minPrice, 0, ',', '.') }} - {{ number_format($maxPrice, 0, ',', '.') }}₫
                                             </div>
-                                            <div class="display-sm price-old" id="product-original-price" style="display: none;"></div>
-                                            <span class="badge-sale" id="discount-badge" style="display: none;">Giảm 20%</span>
+                                            <div class="display-sm price-old" id="product-original-price" style="display: none; font-style: italic;"></div>
+                                            <span class="badge-sale" id="discount-badge" style="display: none; font-size: smaller; font-style: italic;">Đang giảm giá!</span>
                                         </div>
                                         <div class="mb-4">
-                                            <p class="text-dark font-weight-medium mb-0 mr-3">Thương hiệu: {{ $brand->name }}</p>
+                                            <p class="text-dark font-weight-medium mb-0 mr-3">Thương hiệu : <strong>{{ $brand->name }}</strong></p>
                                         </div>
                                         <div class="mb-4">
-                                            <p class="text-dark font-weight-medium mb-0 mr-3">Loại sản phẩm: {{ $category->name }}</p>
+                                            <p class="text-dark font-weight-medium mb-0 mr-3">Loại sản phẩm : <strong>{{ $category->name }}</strong></p>
                                         </div>
                                         <div class="product-info-progress-sale">
                                             <div class="title-hurry-up">
@@ -194,7 +194,7 @@
                                                 <div class="variant-picker-item variant-group mb-3">
                                                     <div class="variant-picker-label">
                                                         {{ $attrName }}
-                                                        
+
                                                     </div>
                                                     <div class="variant-picker-values">
                                                         @foreach ($values as $value)
@@ -216,17 +216,17 @@
                                                     <input type="number" id="quantity" name="quantity" value="1" class="quantity-product">
                                                     <button type="button" class="btn-quantity btn-increase" onclick="increaseQuantity()">+</button>
                                                 </div>
-                                                <button type="submit" class="tf-btn hover-primary btn-add-to-cart">Thêm vào giỏ</button>
+                                                <button type="submit" class="tf-btn hover-primary btn-add-to-cart">Thêm vào giỏ hàng</button>
                                             </div>
-                                           
+
                                         </div>
                                     </form>
 
                                     <!-- Các hành động phụ -->
                                     <div class="tf-product-info-extra-link">
-                                        <a href="javascript:void(0);" class="product-extra-icon link btn-add-wishlist">
+                                        {{-- <a href="javascript:void(0);" class="product-extra-icon link btn-add-wishlist">
                                             <i class="icon add icon-heart"></i><span class="add">Thêm vào yêu thích</span>
-                                        </a>
+                                        </a> --}}
                                         <a href="#compare" data-bs-toggle="modal" class="product-extra-icon link">
                                             <i class="icon icon-compare2"></i>So sánh
                                         </a>
@@ -238,7 +238,7 @@
                                         </a>
                                     </div>
 
-                                   
+
                                 </div>
                             </div>
                         </div>
@@ -248,7 +248,7 @@
         </section>
         <!-- /Product Main -->
         <!-- Product Description -->
-        <section class="flat-spacing pt-0">
+        <section class="flat-spacing-4 pt-0">
             <div class="container">
                 <div class="widget-accordion wd-product-descriptions">
                     <div class="accordion-title collapsed" data-bs-target="#description" data-bs-toggle="collapse" aria-expanded="true" aria-controls="description" role="button">
@@ -264,7 +264,7 @@
             </div>
         </section>
         <!-- /Product Description -->
-        
+
     </div>
 </body>
 

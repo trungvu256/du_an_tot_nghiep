@@ -253,11 +253,21 @@
                                 <div class="text-end">
                                     <div class="mb-2">
                                         <h2 class="card-title mb-2">TT thanh toán:
-                                            @if($order->payment_status == 1)
-                                            <span class="badge bg-success">Đã thanh toán</span>
-                                        @else
-                                            <span class="badge bg-primary"> Thanh toán khi nhận hàng</span>
-                                        @endif </h2>
+                                            @php
+                                                // Chỉ hiển thị "Hoàn tiền" khi:
+                                                // 1. Đơn hàng có trạng thái là "Trả hàng" (status = 6)
+                                                // 2. Trạng thái thanh toán là "Đã thanh toán" (payment_status = 1)
+                                                // 3. Hình thức thanh toán là COD (payment_method = 0)
+                                                $displayPaymentStatus = ($order->status == 6 && $order->payment_status == 1 && $order->payment_method == 0) ? 3 : $order->payment_status;
+                                            @endphp
+
+                                            @if ($displayPaymentStatus == 1)
+                                                <span class="badge bg-success">🟢 Đã thanh toán</span>
+                                            @elseif ($displayPaymentStatus == 2)
+                                                <span class="badge bg-info">🔵 Thanh toán khi nhận hàng</span>
+                                            @elseif ($displayPaymentStatus == 3)
+                                                <span class="badge bg-dark">⚪ Hoàn tiền</span>
+                                            @endif </h2>
 
                                     </div>
                                     <div class="mb-2">
@@ -351,7 +361,15 @@
                                     <tfoot class="table-light" style="margin-top: 20px;">
                                         <tr style="border-top: 16px solid transparent;">
                                             <td colspan="3" class="text-start fw-bold">Tổng tiền hàng:</td>
-                                            <td class="text-end">{{ number_format($order->total_price, 0, ',', '.') }} VNĐ</td>
+                                            <td class="text-end">
+                                                @php
+                                                    $subtotal = 0;
+                                                    foreach($order->orderItems as $item) {
+                                                        $subtotal += $item->price * $item->quantity;
+                                                    }
+                                                @endphp
+                                                {{ number_format($subtotal, 0, ',', '.') }} VNĐ
+                                            </td>
                                         </tr>
 
                                         <tr>
@@ -361,13 +379,55 @@
 
                                         <tr>
                                             <td colspan="3" class="text-start fw-bold">Giảm giá:</td>
-                                            <td class="text-end">-{{ number_format($order->discount ?? 0, 0, ',', '.') }} VNĐ</td>
+                                            <td class="text-end">
+                                                @if($order->promotion_id)
+                                                    @php
+                                                        try {
+                                                            // Lấy thông tin khuyến mãi với DB Query Builder
+                                                            $promotion = DB::table('promotions')->where('id', $order->promotion_id)->first();
+
+                                                            // Tính toán số tiền giảm giá dựa trên loại mã khuyến mãi
+                                                            $discountAmount = 0;
+                                                            if ($promotion) {
+                                                                // Tính tổng tiền hàng
+                                                                $subtotal = 0;
+                                                                foreach($order->orderItems as $item) {
+                                                                    $subtotal += $item->price * $item->quantity;
+                                                                }
+
+                                                                if ($promotion->type === 'percentage') {
+                                                                    $discountAmount = ($subtotal * $promotion->discount_value) / 100;
+                                                                    if ($promotion->max_value && $discountAmount > $promotion->max_value) {
+                                                                        $discountAmount = $promotion->max_value;
+                                                                    }
+                                                                } elseif ($promotion->type === 'fixed_amount') {
+                                                                    $discountAmount = $promotion->discount_value;
+                                                                    if ($promotion->max_value && $discountAmount > $promotion->max_value) {
+                                                                        $discountAmount = $promotion->max_value;
+                                                                    }
+                                                                }
+                                                            }
+                                                        } catch(\Exception $e) {
+                                                            $promotion = null;
+                                                            $discountAmount = 0;
+                                                        }
+                                                    @endphp
+
+                                                    @if($promotion)
+                                                        <span class="text-danger fw-bold">-{{ number_format($discountAmount, 0, ',', '.') }} VNĐ</span>
+                                                    @else
+                                                        <span class="text-danger">0 VNĐ</span>
+                                                    @endif
+                                                @else
+                                                    0 VNĐ
+                                                @endif
+                                            </td>
                                         </tr>
 
                                         <tr>
                                             <td colspan="3" class="text-start fw-bold">Tổng thanh toán:</td>
                                             <td class="text-end fw-bold fs-5 text-primary">
-                                                {{ number_format($order->total_price + ($order->shipping_fee ?? 0) - ($order->discount ?? 0), 0, ',', '.') }} VNĐ
+                                                {{ number_format($order->total_price, 0, ',', '.') }} VNĐ
                                             </td>
                                         </tr>
                                     </tfoot>
@@ -418,12 +478,22 @@
                                         <h6 class="alert-heading">🔄 Đang yêu cầu trả hàng</h6>
                                         <p class="mb-3"><strong>Lý do:</strong> {{ $order->return_reason }}</p>
                                         <div class="d-flex gap-2">
-                                            <button type="button" class="btn btn-success flex-grow-1" onclick="approveReturn({{ $order->id }})">
-                                                <i class="bi bi-check-lg"></i> Duyệt
-                                            </button>
-                                            <button type="button" class="btn btn-danger flex-grow-1" onclick="declineReturn({{ $order->id }})">
-                                                <i class="bi bi-x-lg"></i> Từ chối
-                                            </button>
+                                            <form action="{{ route('admin.returns.approve', $order->id) }}" method="POST" class="flex-grow-1"
+                                                >
+                                                @csrf
+
+                                                <button type="submit" class="btn btn-success w-100">
+                                                    <i class="bi bi-check-lg"></i> Duyệt
+                                                </button>
+                                            </form>
+                                            <form action="{{ route('admin.returns.decline', $order->id) }}" method="POST" class="flex-grow-1"
+                                                >
+                                                @csrf
+
+                                                <button type="submit" class="btn btn-danger w-100">
+                                                    <i class="bi bi-x-lg"></i> Từ chối
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
                                     @break
@@ -507,63 +577,193 @@
     </div>
 </div>
 
+<!-- Modal duyệt trả hàng -->
+<div class="modal fade" id="returnModal" tabindex="-1" aria-labelledby="returnModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="returnModalLabel">Cập nhật trạng thái trả hàng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('admin.returns.update', $order->id) }}" method="POST" id="returnForm">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Trạng thái trả hàng</label>
+                        <select name="return_status" class="form-select" id="returnStatus">
+                            <option value="2" selected>✅ Duyệt</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">Cập nhật</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal từ chối trả hàng -->
+<div class="modal fade" id="declineModal" tabindex="-1" aria-labelledby="declineModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="declineModalLabel">Cập nhật trạng thái trả hàng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('admin.returns.update', $order->id) }}" method="POST" id="declineForm">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Trạng thái trả hàng</label>
+                        <select name="return_status" class="form-select" id="declineStatus">
+                            <option value="3" selected>❌ Từ chối</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Lý do từ chối <span class="text-danger">*</span></label>
+                        <textarea name="return_reason" class="form-control" rows="3" placeholder="Nhập lý do từ chối trả hàng" required>{{ $order->return_reason }}</textarea>
+                        <div class="invalid-feedback">Vui lòng nhập lý do từ chối</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary" id="declineSubmitBtn">Cập nhật</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @push('scripts')
 <script>
-function approveReturn(orderId) {
-    if (confirm('Bạn có chắc chắn muốn duyệt yêu cầu trả hàng này?')) {
-        fetch(`/admin/returns/${orderId}/update`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            },
-            body: JSON.stringify({
-                return_status: 2
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                window.location.reload();
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Có lỗi xảy ra khi xử lý yêu cầu');
-        });
+document.addEventListener('DOMContentLoaded', function() {
+    // Kiểm tra xem SweetAlert2 đã được load chưa
+    if (typeof Swal === 'undefined') {
+        console.error('SweetAlert2 is not loaded');
+        return;
     }
-}
 
-function declineReturn(orderId) {
-    const reason = prompt('Nhập lý do từ chối trả hàng:');
-    if (reason) {
-        fetch(`/admin/returns/${orderId}/update`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            },
-            body: JSON.stringify({
-                return_status: 3,
-                return_reason: reason
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                window.location.reload();
-            } else {
-                alert(data.message);
+    // Hàm xử lý duyệt trả hàng
+    function approveReturn(orderId) {
+        Swal.fire({
+            title: 'Xác nhận duyệt trả hàng?',
+            text: 'Bạn có chắc chắn muốn duyệt yêu cầu trả hàng này?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Duyệt',
+            cancelButtonText: 'Hủy',
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return fetch(`/admin/returns/${orderId}/approve`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                })
+                .then(response => response.json())
+                .catch(error => {
+                    Swal.showValidationMessage(`Request failed: ${error}`)
+                })
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Có lỗi xảy ra khi xử lý yêu cầu');
+        }).then((result) => {
+            if (result.isConfirmed) {
+                if (result.value.success) {
+                    Swal.fire({
+                        title: 'Thành công!',
+                        text: result.value.message,
+                        icon: 'success'
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Lỗi!',
+                        text: result.value.message,
+                        icon: 'error'
+                    });
+                }
+            }
         });
     }
-}
+
+    // Hàm xử lý từ chối trả hàng
+    function declineReturn(orderId) {
+        Swal.fire({
+            title: 'Từ chối trả hàng',
+            input: 'textarea',
+            inputLabel: 'Lý do từ chối',
+            inputPlaceholder: 'Nhập lý do từ chối trả hàng...',
+            showCancelButton: true,
+            confirmButtonText: 'Từ chối',
+            cancelButtonText: 'Hủy',
+            showLoaderOnConfirm: true,
+            inputValidator: (value) => {
+                if (!value) {
+                    return 'Vui lòng nhập lý do từ chối!';
+                }
+            },
+            preConfirm: (reason) => {
+                return fetch(`/admin/returns/${orderId}/decline`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        return_reason: reason
+                    })
+                })
+                .then(response => response.json())
+                .catch(error => {
+                    Swal.showValidationMessage(`Request failed: ${error}`)
+                })
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                if (result.value.success) {
+                    Swal.fire({
+                        title: 'Thành công!',
+                        text: result.value.message,
+                        icon: 'success'
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Lỗi!',
+                        text: result.value.message,
+                        icon: 'error'
+                    });
+                }
+            }
+        });
+    }
+
+    // Thêm event listener cho nút duyệt
+    const approveBtn = document.querySelector('.approve-return-btn');
+    if (approveBtn) {
+        approveBtn.addEventListener('click', function() {
+            const orderId = this.getAttribute('data-order-id');
+            approveReturn(orderId);
+        });
+    } else {
+        console.warn('Approve button not found');
+    }
+
+    // Thêm event listener cho nút từ chối
+    const declineBtn = document.querySelector('.decline-return-btn');
+    if (declineBtn) {
+        declineBtn.addEventListener('click', function() {
+            const orderId = this.getAttribute('data-order-id');
+            declineReturn(orderId);
+        });
+    } else {
+        console.warn('Decline button not found');
+    }
+});
 </script>
 @endpush
 @endsection

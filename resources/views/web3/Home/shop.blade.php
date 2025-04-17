@@ -34,7 +34,7 @@
                                         <i class="icon icon-close"></i> Bỏ hết
                                     </button>
                                 </div>
-                    
+
                                 {{-- Thương hiệu --}}
                                 <div class="mb-4 p-3 border rounded">
                                     <h6 class="fw-semibold text-uppercase mb-3">Thương hiệu</h6>
@@ -56,7 +56,7 @@
                                         @endforeach
                                     </div>
                                 </div>
-                    
+
                                 {{-- Giá sản phẩm --}}
                                 <div class="mb-4 p-3 border rounded filter-scroll">
                                     <h6 class="fw-semibold text-uppercase mb-3">Giá sản phẩm</h6>
@@ -84,9 +84,9 @@
                             </div>
                         </div>
                     </form>
-                    
+
                 </div>
-                
+
 
                 <div class="col-xl-9">
                     <div class="tf-shop-control">
@@ -123,7 +123,7 @@
                                 </div>
                             </div>
                         </div>
-                       
+
                     </div>
                     <div class="wrapper-control-shop">
                         <div class="meta-filter-shop d-flex align-items-center mb-3">
@@ -135,7 +135,7 @@
                         <div class="d-flex flex-wrap gap-2" id="gridLayout">
                             @include('web3.Home.product_list')
                         </div>
-       
+
                     </div>
                 </div>
             </div>
@@ -245,7 +245,7 @@
                 "observeParents": true,
                 "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
                 "breakpoints": {
-                    "575": { "slidesPerView": 2, "spaceBetween": 24}, 
+                    "575": { "slidesPerView": 2, "spaceBetween": 24},
                     "768": { "slidesPerView": 3, "spaceBetween": 24},
                     "1200": { "slidesPerView": 3, "spaceBetween": 100},
                     "1440": { "slidesPerView": 3, "spaceBetween": 205}
@@ -592,4 +592,9 @@ $(document).ready(function () {
     updateAppliedFilters();
 });
 </script>
+@endsection
+@section('scripts')
+@include('alert')
+
+
 @endsection

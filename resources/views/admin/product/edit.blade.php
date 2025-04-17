@@ -3,9 +3,9 @@
     <div class="container mt-4">
         <form action="{{ route('admin.update.product', $product->id) }}" method="POST" enctype="multipart/form-data"class="card shadow p-4">
             @csrf
-            @if (session('success'))
+            {{-- @if (session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
+            @endif --}}
 
             <h4 class="text-center mb-4">Thông tin sản phẩm</h4>
             <div class="row mb-3">
@@ -188,7 +188,7 @@
                         </tr>
                     @endforeach
                 </tbody>
-                
+
 
             </table>
 
@@ -364,4 +364,7 @@
         CKEDITOR.replace('editor', {
         });
     </script>
+@endsection
+@section('scripts')
+    @include('alert')
 @endsection

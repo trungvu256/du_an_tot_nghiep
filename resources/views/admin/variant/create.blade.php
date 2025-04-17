@@ -3,12 +3,12 @@
 @section('content')
     <div class="container">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        @if (session('success'))
+        {{-- @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+        </div> --}}
+    {{-- @endif --}}
         <div class="row">
             <!-- Cột thêm thuộc tính -->
             <div class="col-md-6 mx-auto">
@@ -27,7 +27,7 @@
                 </div>
             </div>
         </div>
-        
+
 
         <div class="container mt-4">
             @foreach ($attributes as $attribute)
@@ -37,15 +37,15 @@
                         <div class="d-flex gap-2">
                             <!-- Nút Sửa -->
                             <a href="{{ route('variant.edit', $attribute->id) }}" class="text-warning text-decoration-none">Sửa</a>|
-                        
+
                             <!-- Nút Xóa -->
-                            <form action="{{ route('variant.destroy', $attribute->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc muốn xóa?')">
+                            <form action="{{ route('variant.destroy', $attribute->id) }}" method="POST" class="delete-form" onsubmit="return confirm('Bạn có chắc muốn xóa?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="border-0 bg-transparent text-danger p-0">Xóa</button>
+                                <button type="submit" class="border-0 bg-transparent text-danger p-0 delete-btn">Xóa</button>
                             </form>
                         </div>
-                        
+
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -67,12 +67,12 @@
                                     @foreach ($attribute->values as $value)
                                         <div class="value-item d-flex align-items-center me-2 mb-2">
                                             <span class="badge bg-secondary px-2 py-1">{{ $value->value }}</span>
-                                            <form action="{{ route('variant.destroyAttributeValue', $value->id) }}" method="POST" class="ms-2">
+                                            <form action="{{ route('variant.destroyAttributeValue', $value->id) }}" method="POST" class="ms-2 delete-form">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="border-0 bg-transparent text-danger p-0" onclick="return confirm('Bạn có chắc muốn xóa?')">
-                                                    ✖
-                                                </button>
+                                                    <button type="submit" class="border-0 bg-transparent text-danger p-0 delete-btn">
+                                                        ✖
+                                                    </button>
                                             </form>
                                         </div>
                                     @endforeach
@@ -185,3 +185,26 @@
         });
     </script>
 @endpush
+@section('scripts')
+<script>
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const form = this.closest('.delete-form');
+            Swal.fire({
+                title: 'Bạn có chắc chắn muốn xóa?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+    </script>
+@include('alert')
+
+@endsection

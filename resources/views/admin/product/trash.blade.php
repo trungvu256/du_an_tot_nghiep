@@ -13,12 +13,12 @@
         </div>
     </div>
 
-    @if (session('success'))
+    {{-- @if (session('success'))
         <div id="successAlert" class="alert alert-success alert-dismissible fade show mt-2 text-center" role="alert">
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-    @endif
+    @endif --}}
     <div class="card-body">
         <table class="table table-bordered align-middle">
             <thead class="table-dark text-center">
@@ -47,19 +47,25 @@
                         </td>
                         <td>{{ $product->catalogue->name ?? 'Không có danh mục' }}</td>
                         <td>
-                            <form action="{{ route('admin.restore.product', $product->id) }}" method="POST" style="display:inline;">
+                            <form action="{{ route('admin.restore.product', $product->id) }}" method="POST" style="display:inline;" class="restore-form">
                                 @csrf
-                                <button type="submit" class="btn btn-success" onclick="return confirm('Bạn có muốn khôi phục sản phẩm này?')" title="Khôi phục"><i class="bi bi-arrow-clockwise"></i>
-                                </button>
+                                <button type="submit" class="restore-btn"
+                                                    style="background: none; border: none; padding: 0; margin-right: 15px;"
+                                                    title="Khôi phục">
+                                                    <i class="bi bi-arrow-repeat text-success" style="font-size: 1.8em;"></i>
+                                                </button>
                             </form>
-            
-                            <form action="{{ route('admin.foreDelete.product', $product->id) }}" method="POST" style="display:inline;">
+
+                            <form action="{{ route('admin.foreDelete.product', $product->id) }}" method="POST" style="display:inline;" class="force-delete-form">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có muốn xóa vĩnh viễn sản phẩm này?')" title="Xóa vĩnh viễn"><i class="bi bi-x-circle-fill"></i></button>
+                                <button type="submit" class="force-delete-btn"
+                                                    style="background: none; border: none; padding: 0;" title="Xóa cứng">
+                                                    <i class="bi bi-trash text-danger" style="font-size: 1.8em;"></i>
+                                                </button>
                             </form>
                         </td>
-                        
+
                     </tr>
 
                     <!-- Hàng hiển thị biến thể con, ẩn mặc định -->
@@ -71,8 +77,8 @@
                                         <tr>
                                             <th>Dung tích</th>
                                             <th>Nồng độ</th>
-                                            <th>Phiên bản đặc biệt</th>
-                                            <th>Giá</th>
+                                            <th>Giá gốc</th>
+                                            <th>Giá giảm</th>
                                             <th>Tồn kho</th>
                                         </tr>
                                     </thead>
@@ -81,8 +87,8 @@
                                             <tr>
                                                 <td>{{ $product_variant->size }}</td>
                                                 <td>{{ $product_variant->concentration }}</td>
-                                                <td>{{ $product_variant->special_edition }}</td>
                                                 <td>{{ number_format($product_variant->price, 2) }} VND</td>
+                                                <td>{{ number_format($product_variant->price_sale, 2) }} VND</td>
                                                 <td>{{ $product_variant->stock_quantity }}</td>
                                             </tr>
                                         @endforeach
@@ -105,7 +111,7 @@
             row.addEventListener("click", function () {
                 let productId = this.getAttribute("data-id");
                 let variantRow = document.querySelector(`.variant-row[data-id="${productId}"]`);
-                
+
                 if (variantRow) {
                     variantRow.style.display = variantRow.style.display === "none" ? "table-row" : "none";
                 }
@@ -114,4 +120,56 @@
     });
 </script>
 
+@endsection
+@section('scripts')
+<script>
+    document.querySelectorAll('.force-delete-btn').forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+            const form = this.closest('.force-delete-form');
+            Swal.fire({
+                position: "top",
+                title: 'Bạn có chắc chắn muốn xóa cứng không?',
+                icon: 'warning',
+                toast: true,
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Có',
+                cancelButtonText: 'Hủy',
+                timerProgressBar: true,
+                timer: 3500
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+
+    document.querySelectorAll('.restore-btn').forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+            const form = this.closest('.restore-form');
+            Swal.fire({
+                position: "top",
+                title: 'Bạn có chắc muốn khôi phục lại sản phẩm này?',
+                icon: 'warning',
+                toast: true,
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Có',
+                cancelButtonText: 'Hủy',
+                timerProgressBar: true,
+                timer: 3500
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
+    @include('alert')
 @endsection

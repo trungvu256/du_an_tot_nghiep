@@ -147,7 +147,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
             route::post('/admin/upload-image', [BlogController::class, 'uploadImage'])->name('admin.upload.image');
             route::get('/trash', [BlogController::class, 'trash'])->name('admin.trash.blog');
             route::get('/soft-delete/{id}', [BlogController::class, 'softDelete'])->name('admin.softdelete.blog');
-            route::get('/restore/{id}', [BlogController::class, 'restore'])->name('admin.restore.blog');
+            route::post('/restore/{id}', [BlogController::class, 'restore'])->name('admin.restore.blog');
             route::delete('/force-delete/{id}', [BlogController::class, 'forceDelete'])->name('admin.forceDelete.blog');
         });
         Route::prefix('customer-groups')->group(function () {
@@ -207,6 +207,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('returns', [ReturnOrderController::class, 'index'])->name('admin.returns.index');
         Route::post('returns/{id}/update', [ReturnOrderController::class, 'update'])->name('admin.returns.update');
         Route::get('returns/export', [ReturnOrderController::class, 'export'])->name('admin.returns.export');
+        Route::prefix('admin/returns')->group(function () {
+            Route::get('/', [ReturnOrderController::class, 'index'])->name('admin.returns.index');
+            Route::post('/{order}/approve', [ReturnOrderController::class, 'approveReturn'])->name('admin.returns.approve');
+            Route::post('/{order}/decline', [ReturnOrderController::class, 'declineReturn'])->name('admin.returns.decline');
+            Route::post('/{order}/update', [ReturnOrderController::class, 'update'])->name('admin.returns.update');
+        });
 
         // Route Brand
         Route::resource('brands', BrandController::class);
@@ -307,7 +313,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
                     route::post('/admin/upload-image', [BlogController::class, 'uploadImage'])->name('admin.upload.image');
                     route::get('/trash', [BlogController::class, 'trash'])->name('admin.trash.blog');
                     route::get('/soft-delete/{id}', [BlogController::class, 'softDelete'])->name('admin.softdelete.blog');
-                    route::get('/restore/{id}', [BlogController::class, 'restore'])->name('admin.restore.blog');
+                    route::post('/restore/{id}', [BlogController::class, 'restore'])->name('admin.restore.blog');
                     route::delete('/force-delete/{id}', [BlogController::class, 'forceDelete'])->name('admin.forceDelete.blog');
                 });
             });
@@ -459,6 +465,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/cart/remove/{cartKey}', [CartController::class, 'removeFromCart'])->name('cart.remove');
         // Áp mã giảm giá
         Route::post('/cart/apply-promotion', [CartController::class, 'applyPromotion'])->name('cart.applyPromotion');
+        Route::get('/cart/valid-promotions', [CartController::class, 'getValidPromotions'])->name('cart.validPromotions');
         Route::get('/viewCart/show', [CartController::class, 'showHeaderCart'])->name('cart.showHeaderCart');
         Route::post('/cart/removesss/{key}', [CartController::class, 'remove'])->name('cart.removess');
         Route::post('/cart/checkout-selected', [CartController::class, 'checkoutSelected'])->name('cart.checkoutSelected');
@@ -466,6 +473,8 @@ Route::middleware(['auth'])->group(function () {
 Route::post('/cart/select-items', [CartController::class, 'selectItems'])->name('cart.selectItems');
 
 Route::get('/gmail', [Controller::class, 'gmail'])->name('web.gmail');
+
+Route::get('/search', [WebController::class, 'search'])->name('product.search');
 
 
 Route::middleware('auth')->group(function () {
