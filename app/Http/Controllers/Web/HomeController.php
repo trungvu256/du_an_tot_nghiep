@@ -26,7 +26,7 @@ class HomeController extends Controller
         $categories = Category::where('parent_id', 0)->get();
         $categories_2 = Category::all();
         $categories_3 = Category::all();
-        $products = Product::orderBy('id', 'DESC')->take(3)->get();
+        $products = Product::orderBy('id', 'DESC')->take(4)->get();
         $products_all = Product::orderBy('id', 'DESC')->get();
         // if(Request::get('sort') == 'price_asc') {
         //     $products_all = Product::orderBy('price', 'ASC')->get();
