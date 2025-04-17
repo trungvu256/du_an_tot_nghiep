@@ -125,14 +125,14 @@
                                             <div class="display-sm price-new price-on-sale" id="product-sale-price">
                                                 {{ number_format($minPrice, 0, ',', '.') }} - {{ number_format($maxPrice, 0, ',', '.') }}₫
                                             </div>
-                                            <div class="display-sm price-old" id="product-original-price" style="display: none;"></div>
-                                            <span class="badge-sale" id="discount-badge" style="display: none; font-size: smaller; font-style: italic;">Đang giảm giá</span>
+                                            <div class="display-sm price-old" id="product-original-price" style="display: none; font-style: italic;"></div>
+                                            <span class="badge-sale" id="discount-badge" style="display: none; font-size: smaller; font-style: italic;">Đang giảm giá!</span>
                                         </div>
                                         <div class="mb-4">
-                                            <p class="text-dark font-weight-medium mb-0 mr-3">Thương hiệu: {{ $brand->name }}</p>
+                                            <p class="text-dark font-weight-medium mb-0 mr-3">Thương hiệu : <strong>{{ $brand->name }}</strong></p>
                                         </div>
                                         <div class="mb-4">
-                                            <p class="text-dark font-weight-medium mb-0 mr-3">Loại sản phẩm: {{ $category->name }}</p>
+                                            <p class="text-dark font-weight-medium mb-0 mr-3">Loại sản phẩm : <strong>{{ $category->name }}</strong></p>
                                         </div>
                                         <div class="product-info-progress-sale">
                                             <div class="title-hurry-up">
