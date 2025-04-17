@@ -7,7 +7,7 @@
                 <form id="cart-items-form">
                     <table class="table table-bordered text-center mb-0">
                         <thead class="bg-secondary text-dark">
-                            <th>Chọn</th>
+                                <th>Chọn</th>
                                 <th>Sản phẩm</th>
                                 <th>Giá</th>
                                 <th>Số lượng</th>
@@ -96,16 +96,16 @@
                     </div>
                 </form> --}}
                 <div class="mt-2 text-center">
-                    <button type="button" class="btn btn-outline-success mb-2" data-toggle="modal" data-target="#promotionsModal">
+                    <button type="button" class="btn btn-outline-success mb-2" id="viewPromotionsBtn">
                         <i class="fa fa-tag"></i> Xem mã khuyến mãi có thể áp dụng
                     </button>
                 </div>
-                @if (session('success'))
+                {{-- @if (session('success'))
                     <p class="text-success">{{ session('success') }}</p>
                 @endif
                 @if (session('error'))
                     <p class="text-danger">{{ session('error') }}</p>
-                @endif
+                @endif --}}
 
                 <?php
                 $cart = session('cart', []);
@@ -126,31 +126,35 @@
                     <div class="card-footer bg-transparent">
                         <div class="d-flex justify-content-between">
                             <h6>Tạm tính :</h6>
-                            <h6 class="font-weight-medium" id="summary-subtotal">
-                                {{ number_format($subtotal, 0, ',', '.') }}VNĐ</h6>
+                            <h6 class="font-weight-medium" id="summary-subtotal">{{ number_format($subtotal, 0, ',', '.') }}₫</h6>
                         </div>
-                        @if ($promotion)
-                            <div class="d-flex justify-content-between">
-                                <h6 class="text-success">Giảm giá ({{ $promotion['code'] }})</h6>
-                                <h6 class="font-weight-medium text-success" id="summary-discount">
-                                    -{{ number_format($discount, 0, ',', '.') }}VNĐ</h6>
-                            </div>
-                        @endif
+                        <div id="discount-container">
+                            @php
+                                $promotion = session('promotion');
+                                if ($promotion && isset($promotion['code']) && isset($promotion['discount'])) {
+                                    echo '<div class="d-flex justify-content-between">';
+                                    echo '<h6 class="text-success">Giảm giá (' . $promotion['code'] . ')</h6>';
+                                    echo '<h6 class="font-weight-medium text-success" id="summary-discount">';
+                                    echo '-' . number_format($promotion['discount'], 0, ',', '.') . '₫';
+                                    echo '</h6>';
+                                    echo '</div>';
+                                }
+                            @endphp
+                        </div>
                     </div>
                     <div class="card-footer bg-transparent">
                         <div class="d-flex justify-content-between">
                             <h6>Tổng cộng :</h6>
-                            <h6 class="font-weight-bold" id="summary-total">{{ number_format($total, 0, ',', '.') }}VNĐ
-                            </h6>
+                            <h6 class="font-weight-bold" id="summary-total">0₫</h6>
                         </div>
                     </div>
                     <div class="card-footer bg-transparent text-center">
                         <form id="checkout-form" action="{{ route('checkout.view') }}" method="POST">
                             @csrf
                             <input type="hidden" name="selected_cart_items" id="selected_cart_items">
-                            <input type="hidden" name="subtotal" id="subtotal">
-                            <input type="hidden" name="discount" id="discount">
-                            <input type="hidden" name="total" id="total">
+                            <input type="hidden" name="subtotal" id="subtotal" value="0">
+                            <input type="hidden" name="discount" id="discount" value="0">
+                            <input type="hidden" name="total" id="total" value="0">
 
                             <button type="submit" class="btn btn-block btn-info my-1 py-2">
                                 Tiến hành thanh toán
@@ -163,14 +167,12 @@
     </div>
 
     <!-- Modal Mã Khuyến Mãi -->
-    <div class="modal fade" id="promotionsModal" tabindex="-1" role="dialog" aria-labelledby="promotionsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+    <div class="modal fade" id="promotionsModal" tabindex="-1" aria-labelledby="promotionsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="promotionsModalLabel">Mã Khuyến Mãi Có Thể Áp Dụng</h5>
-                    {{-- <button type="button" class="close" id="closeModalBtn" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button> --}}
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="table-responsive">
@@ -194,14 +196,15 @@
                         </table>
                     </div>
                 </div>
-                {{-- <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="closeModalBtn2">Đóng</button>
-                </div> --}}
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
             </div>
         </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Hàm định dạng tiền tệ
         function formatCurrency(value) {
@@ -270,7 +273,19 @@
         // Hàm cập nhật tóm tắt giỏ hàng
         function updateSummary() {
             let subtotal = 0;
+            let hasSelectedProducts = false;
+
+            // Reset promotion session khi thay đổi checkbox
+            if (!window.keepPromotion) {
+                // Xóa phần hiển thị giảm giá nếu có
+                const discountContainer = $('#summary-discount').parent();
+                if (discountContainer.length) {
+                    discountContainer.remove();
+                }
+            }
+
             $('.product-checkbox:checked').each(function() {
+                hasSelectedProducts = true;
                 const row = $(this).closest('tr');
                 const priceElement = row.find('.price');
                 const price = parseFloat(priceElement.data('price')) || 0;
@@ -281,36 +296,29 @@
                 }
             });
 
-            // Lấy giá trị giảm giá từ giao diện
-            const discountElement = document.getElementById('summary-discount');
-            const discountText = discountElement ? discountElement.innerText : '0';
+            // Cập nhật tạm tính
+            $('#summary-subtotal').text(formatCurrency(subtotal));
 
-            // Xử lý đặc biệt cho giá trị giảm giá có dấu trừ ở đầu
-            let discount = 0;
-            if (discountText.includes('-')) {
-                // Nếu có dấu trừ, cần chuyển thành số âm
-                discount = -Math.abs(getCurrencyNumber(discountText));
+            if (!hasSelectedProducts) {
+                // Nếu không có sản phẩm nào được chọn
+                $('#summary-total').text('0₫');
+
+                // Reset các input ẩn
+                $('#subtotal').val(0);
+                $('#discount').val(0);
+                $('#total').val(0);
             } else {
-                discount = getCurrencyNumber(discountText);
+                // Nếu có sản phẩm được chọn, chỉ hiển thị tổng tiền bằng với tạm tính
+                $('#summary-total').text(formatCurrency(subtotal));
+
+                // Cập nhật các input ẩn
+                $('#subtotal').val(subtotal);
+                $('#discount').val(0);
+                $('#total').val(subtotal);
             }
 
-            // Tính tổng cộng (trừ số tiền giảm giá)
-            const total = Math.max(0, subtotal - Math.abs(discount));
-
-            // Cập nhật giao diện
-            $('#summary-subtotal').text(formatCurrency(subtotal));
-            $('#summary-total').text(formatCurrency(total));
-
-            // Cập nhật các input ẩn cho form checkout
-            $('#subtotal').val(subtotal);
-            $('#discount').val(Math.abs(discount));
-            $('#total').val(total);
-
-            console.log('Updated Summary:', {
-                subtotal: subtotal,
-                discount: discount,
-                total: total
-            });
+            // Reset biến keepPromotion
+            window.keepPromotion = false;
         }
 
         // Xử lý xóa sản phẩm
@@ -338,6 +346,38 @@
         });
 
         $(document).ready(function() {
+            // Khởi tạo modal
+            const promotionsModal = new bootstrap.Modal(document.getElementById('promotionsModal'));
+
+            // Xử lý sự kiện mở modal mã khuyến mãi
+            $('#viewPromotionsBtn').on('click', function() {
+                const selectedProducts = $('.product-checkbox:checked').map(function() {
+                    return $(this).val();
+                }).get();
+
+                if (selectedProducts.length === 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Chưa chọn sản phẩm!',
+                        text: 'Vui lòng chọn sản phẩm muốn áp dụng mã giảm giá.',
+                        confirmButtonText: 'Đã hiểu'
+                    });
+                    return;
+                }
+
+                // Lưu danh sách sản phẩm đã chọn vào data của modal
+                $('#promotionsModal').data('selected-products', selectedProducts);
+
+                // Mở modal và tải danh sách mã giảm giá
+                promotionsModal.show();
+                loadValidPromotions();
+            });
+
+            // Xử lý sự kiện đóng modal
+            $('.btn-close, .btn-secondary').on('click', function() {
+                promotionsModal.hide();
+            });
+
             // Xử lý nút tăng/giảm
             $(document).on('click', '.btn-minus, .btn-plus', function(e) {
                 e.preventDefault();
@@ -347,9 +387,9 @@
                 let quantity = parseInt(quantityDisplay.val()) || 1;
 
                 if (action === 'increase') {
-                    quantity += 1; // Tăng 1 đơn vị
+                    quantity += 1;
                 } else if (action === 'decrease') {
-                    quantity -= 1; // Giảm 1 đơn vị
+                    quantity -= 1;
                 }
 
                 updateCartQuantity(cartKey, quantity);
@@ -360,30 +400,41 @@
                 const cartKey = $(this).attr('id').replace('quantity-display-', '');
                 let newQuantity = $(this).val();
 
-                // Chỉ cho phép nhập số
                 newQuantity = newQuantity.replace(/\D/g, '');
-                if (newQuantity === '') newQuantity = 1; // Mặc định là 1 nếu rỗng
+                if (newQuantity === '') newQuantity = 1;
                 $(this).val(newQuantity);
 
                 updateCartQuantity(cartKey, newQuantity);
             });
 
             // Gắn sự kiện checkbox
-            $('.product-checkbox').on('change', updateSummary);
+            $('.product-checkbox').on('change', function() {
+                updateSummary();
 
-            // Cập nhật tóm tắt ban đầu
+                // Nếu không còn sản phẩm nào được chọn và đang có mã giảm giá
+                if ($('.product-checkbox:checked').length === 0 && $('#summary-discount').length > 0) {
+                    // Xóa thông tin giảm giá
+                    $('#summary-discount').parent().remove();
+                    updateSummary();
+                }
+            });
+
+            // Khởi tạo biến global để kiểm soát việc giữ lại promotion
+            window.keepPromotion = false;
+
+            // Kiểm tra ban đầu xem có sản phẩm nào được chọn không
+            const hasSelectedProducts = $('.product-checkbox:checked').length > 0;
+            if (!hasSelectedProducts) {
+                // Reset tất cả các giá trị về 0
+                $('#summary-subtotal').text('0₫');
+                // Nếu không có sản phẩm nào được chọn, ẩn phần giảm giá
+                const discountContainer = $('#summary-discount').parent();
+                discountContainer.hide();
+                $('#summary-total').text('0₫');
+            }
+
+            // Gọi updateSummary để cập nhật hiển thị ban đầu
             updateSummary();
-
-            // Xử lý sự kiện mở modal mã khuyến mãi
-            $('.btn-outline-primary').on('click', function() {
-                $('#promotionsModal').modal('show');
-                loadValidPromotions();
-            });
-
-            // Xử lý sự kiện đóng modal
-            $('#closeModalBtn, #closeModalBtn2').on('click', function() {
-                $('#promotionsModal').modal('hide');
-            });
         });
 
         // Hàm tải danh sách mã khuyến mãi hợp lệ
@@ -431,7 +482,6 @@
                 // Định dạng điều kiện
                 let conditionText = 'Không có điều kiện';
                 if (promotion.min_order_value) {
-                    // Đảm bảo giá trị min_order_value là số
                     const minOrderValue = parseFloat(promotion.min_order_value);
                     if (!isNaN(minOrderValue)) {
                         conditionText = 'Đơn hàng tối thiểu ' + formatCurrency(minOrderValue);
@@ -470,10 +520,105 @@
             // Gắn sự kiện cho nút áp dụng
             $('.apply-promotion').on('click', function() {
                 const code = $(this).data('code');
-                $('input[name="coupon_code"]').val(code);
-                $('#promotionsModal').modal('hide');
-                // Tự động submit form áp dụng mã
-                $('form[action="{{ route('cart.applyPromotion') }}"]').submit();
+                const button = $(this);
+                const selectedProducts = $('#promotionsModal').data('selected-products');
+
+                // Disable nút trong khi xử lý
+                button.prop('disabled', true);
+                button.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Đang xử lý...');
+
+                // Gọi AJAX để áp dụng mã khuyến mãi
+                $.ajax({
+                    url: '{{ route('cart.applyPromotion') }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        coupon_code: code,
+                        selected_products: selectedProducts
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Cập nhật giao diện
+                            updateDisplay(response);
+
+                            // Đóng modal
+                            $('#promotionsModal').modal('hide');
+
+                            // Hiển thị thông báo thành công
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thành công!',
+                                text: response.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+
+                            // Đánh dấu các sản phẩm đã chọn
+                            $('.product-checkbox').each(function() {
+                                const checkbox = $(this);
+                                if (response.selected_products.includes(checkbox.val())) {
+                                    checkbox.prop('checked', true);
+                                }
+                            });
+                        } else {
+                            // Hiển thị thông báo lỗi
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Không thể áp dụng!',
+                                text: response.message
+                            });
+                        }
+                    },
+                    error: function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi!',
+                            text: 'Có lỗi xảy ra khi áp dụng mã giảm giá. Vui lòng thử lại.'
+                        });
+                    },
+                    complete: function() {
+                        // Restore nút về trạng thái ban đầu
+                        button.prop('disabled', false);
+                        button.html('Áp dụng');
+                    }
+                });
+            });
+        }
+
+        // Hàm cập nhật hiển thị tổng tiền và giảm giá
+        function updateDisplay(data) {
+            // Cập nhật tạm tính
+            $('#summary-subtotal').text(formatCurrency(data.subtotal));
+
+            // Cập nhật phần giảm giá
+            const discountContainer = $('#discount-container');
+            if (data.discount && parseFloat(data.discount) > 0) {
+                const discountHtml = `
+                    <div class="d-flex justify-content-between">
+                        <h6 class="text-success">Giảm giá (${data.code})</h6>
+                        <h6 class="font-weight-medium text-success" id="summary-discount">
+                            -${formatCurrency(parseFloat(data.discount))}
+                        </h6>
+                    </div>`;
+                discountContainer.html(discountHtml);
+            } else {
+                discountContainer.empty();
+            }
+
+            // Cập nhật tổng cộng
+            $('#summary-total').text(formatCurrency(data.final_total));
+
+            // Cập nhật các input ẩn
+            $('#subtotal').val(data.subtotal || 0);
+            $('#discount').val(data.discount || 0);
+            $('#total').val(data.final_total || 0);
+
+            // Log để debug
+            console.log('Discount data:', {
+                discount: data.discount,
+                code: data.code,
+                finalTotal: data.final_total,
+                subtotal: data.subtotal
             });
         }
 

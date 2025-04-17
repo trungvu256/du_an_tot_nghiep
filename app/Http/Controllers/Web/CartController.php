@@ -352,50 +352,127 @@ public function removeFromCart(Request $request, $cartKey)
     public function applyPromotion(Request $request)
     {
         $promotionCode = $request->input('coupon_code');
+        $selectedProducts = $request->input('selected_products', []);
         $cart = session()->get('cart', []);
-        $total = 0;
-        foreach ($cart as $item) {
-            $price = (!empty($item['price_sale']) && $item['price_sale'] < $item['price']) ? $item['price_sale'] : $item['price'];
-            $total += $price * $item['quantity'];
+
+        // Kiểm tra xem có sản phẩm nào được chọn không
+        if (empty($selectedProducts)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Vui lòng chọn sản phẩm muốn áp dụng mã giảm giá!'
+            ]);
         }
 
-        // Tìm mã giảm giá trong bảng promotions
+        // Kiểm tra giỏ hàng có sản phẩm không
+        if (empty($cart)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Giỏ hàng của bạn đang trống!'
+            ]);
+        }
+
+        // Tính tổng giá trị đơn hàng cho các sản phẩm được chọn
+        $total = 0;
+        $selectedCart = [];
+        foreach ($selectedProducts as $cartKey) {
+            if (isset($cart[$cartKey])) {
+                $item = $cart[$cartKey];
+                $price = (!empty($item['price_sale']) && $item['price_sale'] < $item['price']) ? $item['price_sale'] : $item['price'];
+                $total += $price * $item['quantity'];
+                $selectedCart[$cartKey] = $item;
+            }
+        }
+
+        // Tìm mã giảm giá
         $promotion = Promotion::where('code', $promotionCode)
             ->where('status', 'active')
-            ->whereDate('start_date', '<=', now())
-            ->whereDate('end_date', '>=', now())
             ->first();
 
-        if (!$promotion || !$promotion->isValid($total)) {
-            return redirect()->back()->with('error', 'Mã giảm giá không hợp lệ hoặc không đủ điều kiện.');
+        // Kiểm tra mã có tồn tại không
+        if (!$promotion) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Mã giảm giá không tồn tại hoặc đã hết hạn!'
+            ]);
+        }
+
+        // Kiểm tra số lượng còn lại
+        if ($promotion->quantity <= 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Mã giảm giá đã hết lượt sử dụng!'
+            ]);
+        }
+
+        // Kiểm tra thời gian hiệu lực
+        $now = now();
+        if ($now < $promotion->start_date) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Mã giảm giá chưa đến thời gian sử dụng!'
+            ]);
+        }
+        if ($now > $promotion->end_date) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Mã giảm giá đã hết hạn sử dụng!'
+            ]);
+        }
+
+        // Kiểm tra giá trị đơn hàng tối thiểu
+        if ($promotion->min_order_value && $total < $promotion->min_order_value) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Giá trị đơn hàng chưa đạt tối thiểu! Cần đạt ' . number_format($promotion->min_order_value, 0, ',', '.') . '₫'
+            ]);
         }
 
         // Tính số tiền giảm
+        $discountAmount = 0;
         if ($promotion->type === 'percentage') {
             $discountAmount = ($total * $promotion->discount_value) / 100;
             if ($promotion->max_value && $discountAmount > $promotion->max_value) {
                 $discountAmount = $promotion->max_value;
             }
-        } elseif ($promotion->type === 'fixed_amount') {
+        } else if ($promotion->type === 'fixed_amount') {
             $discountAmount = $promotion->discount_value;
             if ($promotion->max_value && $discountAmount > $promotion->max_value) {
                 $discountAmount = $promotion->max_value;
             }
-        } elseif ($promotion->type === 'free_shipping') {
-            $discountAmount = 0;
         }
 
         $finalTotal = max(0, $total - $discountAmount);
 
-        // Lưu mã giảm giá vào session
+        // Lưu thông tin khuyến mãi và sản phẩm được chọn vào session
         session()->put('promotion', [
             'id' => $promotion->id,
             'code' => $promotion->code,
             'discount' => $discountAmount,
             'final_total' => $finalTotal,
+            'type' => $promotion->type,
+            'discount_value' => $promotion->discount_value,
+            'selected_products' => $selectedProducts
         ]);
 
-        return redirect()->back()->with('success', "Áp dụng mã thành công! Giảm " . number_format($discountAmount, 0, ',', '.') . "₫.");
+        // // Giảm số lượng mã giảm giá
+        // $promotion->decrement('quantity');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Áp dụng mã giảm giá thành công! Giảm ' . number_format($discountAmount, 0, ',', '.') . '₫',
+            'discount' => $discountAmount,
+            'final_total' => $finalTotal,
+            'code' => $promotion->code,
+            'selected_products' => $selectedProducts,
+            'subtotal' => $total,
+            'promotion' => [
+                'id' => $promotion->id,
+                'code' => $promotion->code,
+                'discount' => $discountAmount,
+                'type' => $promotion->type,
+                'discount_value' => $promotion->discount_value
+            ]
+        ]);
     }
 
 
