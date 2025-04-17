@@ -166,13 +166,13 @@
 
                 <div class="other-login mt-3">
                     <p class="text-sm text-center text-main-2">Hoặc đăng nhập bằng:</p>
-                    <a href="account-page.html" class="w-100 text-md mb_8">
+                    <a href="#" class="w-100 text-md mb_8">
                         {{-- Facebook Icon --}}
                         <svg class="icon" width="32" height="32"
                             viewBox="0 0 32 32"><!-- icon content --></svg>
                         FACEBOOK
                     </a>
-                    <a href="account-page.html" class="w-100 text-md bg-dark">
+                    <a href="#" class="w-100 text-md bg-dark">
                         {{-- Google Icon --}}
                         <svg class="icon" width="32" height="32"
                             viewBox="0 0 32 32"><!-- icon content --></svg>
@@ -192,6 +192,15 @@
             <span class="title">Đăng ký tài khoản</span>
             <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
+        <div id="error-message" class="alert alert-danger" style="display: none;"></div>
+                
+                @if (session('error'))
+                <div class="alert alert-danger" id="server-error">
+                    <ul>
+                        <li>{{ session('error') }}</li>
+                    </ul>
+                </div>
+                @endif
         <div class="canvas-body popup-inner">
             <form id="form_register" action="{{ route('web.register.store') }}" enctype="multipart/form-data"
                 class="form-login" method="POST">
@@ -267,7 +276,7 @@
 <!-- /register -->
 
 <!-- Reset pass -->
-<div class="offcanvas offcanvas-end popup-style-1 popup-reset-pass" id="resetPass">
+<!-- <div class="offcanvas offcanvas-end popup-style-1 popup-reset-pass" id="resetPass">
     <div class="canvas-wrapper">
         <div class="canvas-header popup-header">
             <span class="title">Reset Your Password</span>
@@ -293,7 +302,7 @@
             </form>
         </div>
     </div>
-</div>
+</div> -->
 <!-- /Reset pass -->
 
 <!-- search -->
