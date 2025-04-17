@@ -80,11 +80,11 @@ class LoginController extends Controller
         ]);
     
         if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Vui lòng kiểm tra lại thông tin!',
-                'errors' => $validator->errors()
-            ], 400);
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
+        
     
         // Xử lý ảnh đại diện nếu có
         $avatarPath = null;
