@@ -29,7 +29,7 @@
             </div>
         </div>
         <div id="wrapper">
-            <header id="header" class="header-default">
+            <header id="header" class="header-default" style="border-bottom:1px solid #ebebeb">
                 <div class="container">
                     <div class="row wrapper-header align-items-center">
                         <div class="col-md-4 col-3 d-xl-none">

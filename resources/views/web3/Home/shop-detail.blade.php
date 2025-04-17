@@ -21,7 +21,7 @@
         </div>
         <!-- /Breadcrumb -->
         <!-- Product Main -->
-        <section class="flat-single-product">
+        <section class="flat-single-product" style="padding-bottom: 60px">
             <div class="tf-main-product section-image-zoom">
                 <div class="container">
                     <div class="row">
@@ -248,7 +248,7 @@
         </section>
         <!-- /Product Main -->
         <!-- Product Description -->
-        <section class="flat-spacing pt-0">
+        <section class="flat-spacing-4 pt-0">
             <div class="container">
                 <div class="widget-accordion wd-product-descriptions">
                     <div class="accordion-title collapsed" data-bs-target="#description" data-bs-toggle="collapse" aria-expanded="true" aria-controls="description" role="button">
