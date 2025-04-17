@@ -20,7 +20,7 @@ class LoginController extends Controller
     
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
             // Kiểm tra xem người dùng có phải là admin không
-            if (Auth::user()->role == '1') {
+            if (Auth::user()->role !== 1) {
                 Auth::logout();
                 return back()->with('error', 'Tài khoản của bạn không có quyền truy cập admin.');
             }
