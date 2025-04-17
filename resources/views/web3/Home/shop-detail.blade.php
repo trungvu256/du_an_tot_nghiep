@@ -21,7 +21,7 @@
         </div>
         <!-- /Breadcrumb -->
         <!-- Product Main -->
-        <section class="flat-single-product" style="padding-bottom: 60px">
+        <section class="flat-single-product" style="padding-bottom: 0">
             <div class="tf-main-product section-image-zoom">
                 <div class="container">
                     <div class="row">
@@ -248,9 +248,9 @@
         </section>
         <!-- /Product Main -->
         <!-- Product Description -->
-        <section class="flat-spacing-4 pt-0">
+        <section class="flat-spacing-4 py-0">
             <div class="container">
-                <div class="widget-accordion wd-product-descriptions">
+                <div class="widget-accordion wd-product-descriptions" style="border-bottom:none;">
                     <div class="accordion-title collapsed" data-bs-target="#description" data-bs-toggle="collapse" aria-expanded="true" aria-controls="description" role="button">
                         <span>Mô tả chi tiết</span>
                         <span class="icon icon-arrow-down"></span>
