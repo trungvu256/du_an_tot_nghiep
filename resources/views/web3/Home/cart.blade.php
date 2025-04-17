@@ -73,7 +73,7 @@
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-sm btn-danger btn-remove-item"
-                                            data-cart-key="{{ $cartKey }}" onclick="return confirm('Xóa khỏi giỏ hàng')">
+                                            data-cart-key="{{ $cartKey }}">
                                             x
                                         </button>
                                     </td>
@@ -205,18 +205,25 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        // Thiết lập CSRF token cho tất cả các request AJAX
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        });
+
         // Hàm định dạng tiền tệ
         function formatCurrency(value) {
             if (typeof value !== 'number' || isNaN(value)) {
                 value = 0;
             }
             return new Intl.NumberFormat('vi-VN', {
-                style: 'currency',
-                currency: 'VND',
+                style: 'decimal',
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0
-            }).format(value).replace(/\s+/g, '');
+            }).format(value);
         }
 
         // Hàm lấy số từ chuỗi tiền tệ
@@ -324,23 +331,88 @@
         // Xử lý xóa sản phẩm
         $(document).on('click', '.btn-remove-item', function(e) {
             e.preventDefault();
-            let cartKey = $(this).data('cart-key');
+            e.stopPropagation();
+            const cartKey = $(this).data('cart-key');
+            const $row = $(this).closest('tr');
+            
+            Swal.fire({
+                title: 'Xác nhận xóa?',
+                text: "Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Có, xóa ngay!',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{{ route('cart.remove', ':cartKey') }}'.replace(':cartKey', cartKey),
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        beforeSend: function() {
+                            // Disable nút xóa để tránh double-click
+                            $('.btn-remove-item[data-cart-key="' + cartKey + '"]').prop('disabled', true);
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                $row.fadeOut(300, function() {
+                                    $(this).remove();
+                                    updateSummary();
+                                    
+                                    // Cập nhật số lượng trong badge
+                                    if (response.cartCount !== undefined) {
+                                        $('.cart-badge').text(response.cartCount);
+                                    }
 
-            $.ajax({
-                url: '{{ route('cart.remove', ':cartKey') }}'.replace(':cartKey', cartKey),
-                type: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                },
-                success: function(res) {
-                    if (res.success) {
-                        $('#cart-item-' + cartKey).remove();
-                        $('.cart-badge').text(res.cartCount);
-                        updateSummary();
-                    }
-                },
-                error: function(err) {
-                    alert("Xóa thất bại! Vui lòng thử lại.");
+                                    // Hiển thị thông báo thành công
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Đã xóa!',
+                                        text: 'Sản phẩm đã được xóa khỏi giỏ hàng.',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+
+                                    // Kiểm tra nếu giỏ hàng trống
+                                    if ($('.product-checkbox').length < 1) {
+                                        setTimeout(function() {
+                                            Swal.fire({
+                                                icon: 'info',
+                                                title: 'Giỏ hàng trống',
+                                                text: 'Giỏ hàng của bạn hiện đang trống. Hãy tiếp tục mua sắm!',
+                                                confirmButtonText: 'Tiếp tục mua sắm'
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    window.location.href = '{{ route('web.shop') }}';
+                                                }
+                                            });
+                                        }, 1500);
+                                    }
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Lỗi!',
+                                    text: response.message || 'Có lỗi xảy ra khi xóa sản phẩm'
+                                });
+                            }
+                        },
+                        error: function(xhr) {
+                            console.error('Error:', xhr);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi!',
+                                text: 'Không thể xóa sản phẩm. Vui lòng thử lại sau.'
+                            });
+                        },
+                        complete: function() {
+                            // Enable lại nút xóa
+                            $('.btn-remove-item[data-cart-key="' + cartKey + '"]').prop('disabled', false);
+                        }
+                    });
                 }
             });
         });
@@ -464,6 +536,14 @@
 
             let html = '';
             promotions.forEach(function(promotion) {
+                // Debug log
+                console.log('Promotion data:', {
+                    code: promotion.code,
+                    type: promotion.type,
+                    discount_value: promotion.discount_value,
+                    parsed_value: Number(promotion.discount_value)
+                });
+
                 // Định dạng loại khuyến mãi
                 let typeText = '';
                 let valueText = '';
@@ -473,10 +553,9 @@
                     valueText = promotion.discount_value + '%';
                 } else if (promotion.type === 'fixed_amount') {
                     typeText = 'Số tiền cố định';
-                    valueText = formatCurrency(promotion.discount_value);
-                } else if (promotion.type === 'free_shipping') {
-                    typeText = 'Miễn phí vận chuyển';
-                    valueText = 'Miễn phí';
+                    const discountValue = parseFloat(promotion.discount_value);
+                    console.log('Parsed discount value:', discountValue);
+                    valueText = discountValue ? formatCurrency(discountValue) + ' VNĐ' : '0 VNĐ';
                 }
 
                 // Định dạng điều kiện

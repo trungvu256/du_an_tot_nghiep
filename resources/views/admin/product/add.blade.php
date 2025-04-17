@@ -85,6 +85,7 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+                
             </div>
 
             <div class="row mb-3">
@@ -119,6 +120,19 @@
                 </div>
 
                 <div class="col-md-6">
+                    <label class="form-label">Trạng thái sản phẩm</label>
+                    <select name="status" class="form-select">
+                        <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Đang kinh doanh</option>
+                        <option value="2" {{ old('status') == '2' ? 'selected' : '' }}>Ngừng kinh doanh</option>
+                    </select>
+                    @error('status')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-12">
                     <label class="form-label">Mô tả</label>
                     <textarea id="description" name="description" class="form-control">{{ old('description') }}</textarea>
                     @error('description')

@@ -87,7 +87,7 @@ class PromotionController extends Controller
                 'date',
                 'after_or_equal:start_date',
             ],
-            'type' => 'required|in:percentage,fixed_amount,free_shipping',
+            'type' => 'required|in:percentage,fixed_amount',
             'min_order_value' => [
                 'nullable',
                 'numeric',
@@ -112,7 +112,7 @@ class PromotionController extends Controller
                 'required',
                 'integer',
                 'min:0',
-                "max: 50"
+                "max:50"
             ],
 
         ], [
@@ -180,10 +180,10 @@ class PromotionController extends Controller
 
         $validated = $request->validate([
             'code' => [
-                // 'required',
-                'unique:promotions,code,' . ($promotion->id ?? 'NULL') . '|max:255',
+                'nullable',
+                'unique:promotions,code,' . $id . ',id|max:255',
                 function ($attribute, $value, $fail) {
-                    if (!preg_match('/^[A-Za-z0-9-_]+$/', $value)) {
+                    if ($value && !preg_match('/^[A-Za-z0-9-_]+$/', $value)) {
                         $fail('Mã giảm giá chỉ được chứa chữ cái, số, dấu gạch ngang hoặc gạch dưới.');
                     }
                 }
@@ -213,7 +213,7 @@ class PromotionController extends Controller
                 'date',
                 'after_or_equal:start_date',
             ],
-            'type' => 'required|in:percentage,fixed_amount,free_shipping',
+            'type' => 'required|in:percentage,fixed_amount',
             'min_order_value' => [
                 'nullable',
                 'numeric',
@@ -235,15 +235,14 @@ class PromotionController extends Controller
                 }
             ],
             'quantity' => [
-                'required',
+                'nullable',
                 'integer',
                 'min:0',
-                "max: 50"
+                "max:50"
             ],
         ], [
-            // 'code.required' => 'Mã giảm giá là bắt buộc.',
-            // 'code.unique' => 'Mã giảm giá này đã tồn tại.',
-            // 'code.max' => 'Mã giảm giá không được vượt quá :max ký tự.',
+            'code.unique' => 'Mã giảm giá này đã tồn tại.',
+            'code.max' => 'Mã giảm giá không được vượt quá :max ký tự.',
             'discount_value.required' => 'Giá trị giảm giá là bắt buộc.',
             'discount_value.numeric' => 'Giá trị giảm giá phải là một số.',
             'discount_value.min' => 'Giá trị giảm giá không được nhỏ hơn :min.',
@@ -259,7 +258,6 @@ class PromotionController extends Controller
             'min_order_value.min' => 'Giá trị đơn hàng tối thiểu không được nhỏ hơn :min.',
             'max_value.numeric' => 'Giá trị đơn hàng tối đa phải là một số.',
             'max_value.min' => 'Giá trị đơn hàng tối đa không được nhỏ hơn :min.',
-            'quantity.required' => 'Số lượng là bắt buộc.',
             'quantity.integer' => 'Số lượng phải là số nguyên.',
             'quantity.min' => 'Số lượng không được nhỏ hơn :min.',
             'quantity.max' => 'Số lượng không được lớn hơn :max.',

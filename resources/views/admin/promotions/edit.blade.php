@@ -104,9 +104,7 @@
                                                 <option value="fixed_amount" {{ old('type', $promotion->type) == 'fixed_amount' ? 'selected' : '' }}>
                                                     Số Tiền Cố Định
                                                 </option>
-                                                <option value="free_shipping" {{ old('type', $promotion->type) == 'free_shipping' ? 'selected' : '' }}>
-                                                    Miễn Phí Vận Chuyển
-                                                </option>
+                                        
                                             </select>
                                             @error('type')
                                                 <div class="invalid-feedback">{{ $message }}</div>

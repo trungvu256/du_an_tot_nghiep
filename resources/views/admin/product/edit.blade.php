@@ -98,8 +98,19 @@
                 <div class="col-md-4">
                     <label class="form-label">Xuất xứ</label>
                     <input type="text" name="origin" class="form-control" value="{{ old('origin', $product->origin) }}"
-                        placeholder="Ví dụ: Pháp, Ý, Mỹ...">
+                        placeholder="Nhập nơi xuất xứ">
                     @error('origin')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Trạng thái sản phẩm</label>
+                    <select name="status" class="form-select">
+                        <option value="1" {{ old('status', $product->status) == 1 ? 'selected' : '' }}>Đang kinh doanh</option>
+                        <option value="2" {{ old('status', $product->status) == 2 ? 'selected' : '' }}>Ngừng kinh doanh</option>
+                    </select>
+                    @error('status')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>

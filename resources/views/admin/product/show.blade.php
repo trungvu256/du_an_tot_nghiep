@@ -103,6 +103,12 @@
                                     <div class="text-muted">Ngày đăng : <span
                                             class="text-body fw-medium">{{ $product->created_at->format('d-m-Y') }}</span>
                                     </div>
+                                    <div class="vr"></div>
+                                    <div class="text-muted">Trạng thái : <span
+                                            class="text-body fw-medium {{ $product->status == 1 ? 'text-success' : 'text-danger' }}">
+                                            {{ $product->status == 1 ? 'Đang kinh doanh' : 'Ngừng kinh doanh' }}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="flex-shrink-0">

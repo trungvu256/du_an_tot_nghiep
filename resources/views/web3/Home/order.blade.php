@@ -197,9 +197,12 @@ data-bs-toggle="modal" data-bs-target="#cancelModal{{ $order->id }}">Hủy đơn
 </script>
 
                     @elseif ($order->status == 3)
-                        <a href="{{ route('order.received', $order->id) }}"
-                            class="btn btn-success rounded-pill px-3 me-2"
-                            onclick="return confirm('Bạn đã nhận được hàng?')">Đã nhận</a>
+                        @if($order->payment_status == 2 && $order->return_status == 0)
+                            {{-- Chỉ hiển thị nút "Đã nhận" nếu là thanh toán khi nhận hàng và chưa yêu cầu trả hàng --}}
+                            <a href="{{ route('order.received', $order->id) }}"
+                                class="btn btn-success rounded-pill px-3 me-2"
+                                onclick="return confirm('Bạn đã nhận được hàng?')">Đã nhận</a>
+                        @endif
                         <a href="{{ route('order.returned', $order->id) }}"
                             class="btn btn-warning rounded-pill px-3 me-2"
                             onclick="return confirm('Bạn chắc chắn muốn xác nhận đã trả hàng?')">Trả hàng</a>

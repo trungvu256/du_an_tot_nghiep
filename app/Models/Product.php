@@ -27,9 +27,29 @@ class Product extends Model
         'fragrance_group',
         'views',
         'is_active',
+        'status',
         'created_at',
         'updated_at',
     ];
+    // Định nghĩa các hằng số cho trạng thái sản phẩm
+    const STATUS_ACTIVE = 1;    // Đang kinh doanh
+    const STATUS_INACTIVE = 2;  // Ngừng kinh doanh
+
+    /**
+     * Scope để lấy sản phẩm đang kinh doanh
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('status', self::STATUS_ACTIVE);
+    }
+
+    /**
+     * Scope để lấy sản phẩm ngừng kinh doanh
+     */
+    public function scopeInactive($query)
+    {
+        return $query->where('status', self::STATUS_INACTIVE);
+    }
     /**
      * Get all of the comments for the Product
      *

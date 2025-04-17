@@ -78,7 +78,7 @@
                                             <span
                                                 class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
                                                 style="font-size: 10px">
-                                                {{ session('cart') ? collect(session('cart'))->sum(fn($item) => (int) $item['quantity']) : 0 }}
+                                                {{ session('cart') ? collect(session('cart'))->sum(function($item) { return (int) $item['quantity']; }) : 0 }}
                                             </span>
                                         </span>
                                         <span class="text d-none d-xl-block">Giỏ hàng</span>
@@ -116,7 +116,7 @@
                                             <div class="text-center mt-2">
                                                 <strong>
                                                     Tổng:
-                                                    {{ number_format(collect($cart)->sum(fn($i) => (int) $i['quantity'] * ((float) $i['price_sale'] ?? (float) $i['price'])), 0, ',', '.') }}
+                                                    {{ number_format(collect($cart)->sum(function($i) { return (int) $i['quantity'] * ((float) $i['price_sale'] ?? (float) $i['price']); }), 0, ',', '.') }}
                                                     VNĐ
                                                 </strong>
                                             </div>
@@ -254,42 +254,55 @@
 </div>
 
 @push('scripts')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    $(document).ready(function() {
-        // Khởi tạo dropdown
-        var dropdownElementList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'))
-        var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
-            return new bootstrap.Dropdown(dropdownToggleEl)
-        });
+$(document).ready(function() {
+    // Initialize Bootstrap dropdowns
+    var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
+    var dropdownList = dropdownElementList.map(function(dropdownToggleEl) {
+        return new bootstrap.Dropdown(dropdownToggleEl);
+    });
 
-        // Xử lý sự kiện submit form xóa sản phẩm
-        $(document).on('submit', '.form-remove-item', function(e) {
-            e.preventDefault();
-            const form = $(this);
-            const url = form.attr('action');
-            const token = form.find('input[name="_token"]').val();
+    // Handle removing products from cart
+    $('.remove-from-cart').click(function(e) {
+        e.preventDefault();
+        var cartKey = $(this).data('cart-key');
+        var button = $(this);
 
-            $.ajax({
-                url: url,
-                method: 'POST',
-                data: {
-                    _token: token
-                },
-                success: function(response) {
-                    if (response.success) {
-                        location.reload(); // Reload trang để cập nhật giỏ hàng
-                    } else {
-                        alert('Xóa sản phẩm không thành công');
+        $.ajax({
+            url: '/cart/remove/' + cartKey,
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                if (response.success) {
+                    // Remove product from UI
+                    button.closest('.cart-item').remove();
+                    
+                    // Update cart count
+                    $('.cart-count').text(response.cartCount);
+                    
+                    // Update totals
+                    if (response.subtotal) {
+                        $('#summary-subtotal').text(new Intl.NumberFormat('vi-VN').format(response.subtotal) + '₫');
+                        $('#summary-total').text(new Intl.NumberFormat('vi-VN').format(response.subtotal) + '₫');
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.log('Lỗi AJAX:', error);
-                    alert('Xóa sản phẩm thất bại');
+
+                    // Show empty cart message if needed
+                    if (response.cartCount === 0) {
+                        $('.cart-items').html('<div class="text-center p-3">Giỏ hàng trống</div>');
+                    }
+
+                    toastr.success(response.message);
+                } else {
+                    toastr.error(response.message);
                 }
-            });
+            },
+            error: function(xhr) {
+                toastr.error('Có lỗi xảy ra khi xóa sản phẩm');
+            }
         });
     });
+});
 </script>
 @endpush

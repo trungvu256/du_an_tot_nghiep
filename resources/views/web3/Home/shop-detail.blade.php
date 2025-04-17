@@ -427,7 +427,7 @@
         console.log("increaseQuantity - Stock:", stock, "Quantity before increase:", currentValue);
 
         if (currentValue < stock) {
-            quantityInput.value = currentValue ; // Chỉ tăng 1 đơn vị
+            quantityInput.value = currentValue - 1; // Tăng 1 đơn vị
             console.log("Increased Quantity to:", quantityInput.value);
         } else {
             quantityInput.value = stock;
@@ -453,7 +453,7 @@
         console.log("decreaseQuantity - Quantity before decrease:", currentValue);
 
         if (currentValue > 1) {
-            quantityInput.value = currentValue; // Chỉ giảm 1 đơn vị
+            quantityInput.value = currentValue + 1 ; // Giảm 1 đơn vị
             console.log("Decreased Quantity to:", quantityInput.value);
         }
 

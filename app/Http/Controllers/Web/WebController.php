@@ -19,10 +19,10 @@ class WebController extends Controller
     public function index()
     {
         $categories = Catalogue::all();
-        $products = Product::all();
-        $productNews = Product::orderBy('id', 'DESC')->take(4)->get();
-        $list_product = Product::with('category')->paginate(8);
-        $bestSellers = Product::withCount(['orderItems as total_sold' => function ($query) {
+        $products = Product::where('status', 1)->get();
+        $productNews = Product::where('status', 1)->orderBy('id', 'DESC')->take(4)->get();
+        $list_product = Product::where('status', 1)->with('category')->paginate(8);
+        $bestSellers = Product::where('status', 1)->withCount(['orderItems as total_sold' => function ($query) {
             $query->select(DB::raw("SUM(quantity)"));
         }])
             ->orderByDesc('total_sold')
@@ -36,8 +36,8 @@ class WebController extends Controller
 
     public function shop(Request $request)
     {
-        $query = Product::query()->with(['variants', 'brand']);
-        $productNews = Product::orderBy('id', 'DESC')->take(4)->get();
+        $query = Product::query()->where('status', 1)->with(['variants', 'brand']);
+        $productNews = Product::where('status', 1)->orderBy('id', 'DESC')->take(4)->get();
         // Lấy danh mục & hãng
         $categories = Catalogue::all();
         $brands = Brand::all();
@@ -182,8 +182,9 @@ class WebController extends Controller
     public function shopdetail($id)
     {
         $categories = Catalogue::all();
-        $detailproduct = Product::find($id);
-        $relatedProducts = Product::where('id', $detailproduct->category_id)
+        $detailproduct = Product::where('status', 1)->find($id);
+        $relatedProducts = Product::where('status', 1)
+            ->where('id', $detailproduct->category_id)
             ->where('id', '!=', $detailproduct->id)
             ->orderBy('id', 'DESC')
             ->take(4)
@@ -218,8 +219,11 @@ class WebController extends Controller
         $keyword = $request->input('searchInput');
 
         $products = Product::with('variants') // để lấy giá từng phiên bản
-            ->where('name', 'like', '%' . $keyword . '%')
-            ->orWhere('description', 'like', '%' . $keyword . '%')
+            ->where('status', 1)
+            ->where(function($query) use ($keyword) {
+                $query->where('name', 'like', '%' . $keyword . '%')
+                    ->orWhere('description', 'like', '%' . $keyword . '%');
+            })
             ->paginate(25); // mỗi trang 25 sản phẩm
 
         return view('web3.Home.search', compact('products', 'keyword'));
