@@ -1052,7 +1052,7 @@
 
             let firstName = $('#first_name').val().trim();
             let lastName = $('#last_name').val().trim();
-            let username = $('#name').val().trim();
+            let name = $('#name').val().trim();
             let email = $('#email').val().trim();
             let password = $('#password').val();
             let confirmPassword = $('#password_confirm').val();
@@ -1066,8 +1066,8 @@
                 return;
             }
 
-            if (username === '') {
-                Swal.fire("Lỗi", "Tên đăng nhập không được để trống!", "error");
+            if (name === '') {
+                Swal.fire("Lỗi", "Tên không được để trống!", "error");
                 return;
             }
 
