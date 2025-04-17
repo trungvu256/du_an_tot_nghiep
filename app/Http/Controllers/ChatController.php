@@ -4,64 +4,136 @@ namespace App\Http\Controllers;
 
 use App\Events\MessageSent;
 use App\Models\Message;
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 class ChatController extends Controller
 {
-    public function index()
+    public function getLatestUser()
     {
-        // Lấy tất cả tin nhắn của người dùng
-        $messages = Message::where('receiver_id', auth()->id())
-                           ->orWhere('sender_id', auth()->id())
-                           ->get();
-
-        // Kiểm tra người dùng có phải admin không
-        $isAdmin = auth()->user()->is_admin;
-
-        // Gửi view khác nhau tùy theo vai trò
-        if ($isAdmin) {
-            return view('admin.chat.index', compact('messages'));
+        $user = Auth::user();
+        
+        if ($user->is_admin) {
+            // Admin gets the latest user who sent a message
+            $latestUser = Message::where('receiver_id', $user->id)
+                ->orderBy('created_at', 'desc')
+                ->first();
+            
+            if (!$latestUser) {
+                // If no messages, get any non-admin user
+                $latestUser = User::where('is_admin', false)->first();
+                return response()->json([
+                    'user_id' => $latestUser ? $latestUser->id : null,
+                    'messages' => []
+                ]);
+            }
+            
+            $userId = $latestUser->sender_id;
         } else {
-            return view('web2.chat.index', compact('messages'));
+            // Regular user gets admin
+            $admin = User::where('is_admin', true)->first();
+            $userId = $admin ? $admin->id : null;
         }
+        
+        if (!$userId) {
+            return response()->json([
+                'user_id' => null,
+                'messages' => []
+            ]);
+        }
+        
+        $messages = $this->fetchMessages($userId);
+        
+        return response()->json([
+            'user_id' => $userId,
+            'messages' => $messages
+        ]);
+    }
+
+    public function getAdminMessages()
+    {
+        $user = Auth::user();
+        if ($user->is_admin) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+        
+        $admin = User::where('is_admin', true)->first();
+        if (!$admin) {
+            return response()->json([
+                'user_id' => null,
+                'messages' => []
+            ]);
+        }
+        
+        $messages = $this->fetchMessages($admin->id);
+        
+        return response()->json([
+            'user_id' => $admin->id,
+            'messages' => $messages
+        ]);
+    }
+
+    public function getUnreadCount()
+    {
+        $count = Message::where('receiver_id', Auth::id())
+            ->where('is_read', false)
+            ->count();
+            
+        return response()->json(['count' => $count]);
+    }
+
+    public function fetchMessages($userId)
+    {
+        $messages = Message::where(function ($q) use ($userId) {
+            $q->where('sender_id', Auth::id())->where('receiver_id', $userId);
+        })->orWhere(function ($q) use ($userId) {
+            $q->where('sender_id', $userId)->where('receiver_id', Auth::id());
+        })
+        ->orderBy('created_at')
+        ->get();
+
+        // Mark messages as read
+        Message::where('sender_id', $userId)
+            ->where('receiver_id', Auth::id())
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
+
+        return $messages;
     }
 
     public function sendMessage(Request $request)
     {
-        // Kiểm tra rằng receiver_id không phải là null
-        if (!$request->has('receiver_id') || !$request->receiver_id) {
-            return response()->json(['error' => 'Receiver ID is required.'], 400);
-        }
-    
-        // Kiểm tra rằng message không phải là null hoặc rỗng
-        if (!$request->has('message') || !$request->message) {
-            return response()->json(['error' => 'Message content is required.'], 400);
-        }
-    
-        // Kiểm tra xem receiver_id có hợp lệ không
-        $receiver = User::find($request->receiver_id); // Nếu là User thì thay thế
-        if (!$receiver) {
-            return response()->json(['error' => 'Receiver not found.'], 404);
-        }
-    
-        // Kiểm tra tin nhắn có phải là string và không quá dài
-        if (strlen($request->message) > 1000) {
-            return response()->json(['error' => 'Message is too long.'], 400);
-        }
-    
-        // Lưu tin nhắn vào database
-        $message = Message::create([
-            'sender_id' => auth()->id(),
-            'receiver_id' => $request->receiver_id,
-            'message' => $request->message
+        $request->validate([
+            'message' => 'required|string',
+            'receiver_id' => 'required|exists:users,id'
         ]);
-    
-        // Gửi sự kiện qua Pusher
-        broadcast(new MessageSent($message));
-    
-        // Trả về phản hồi thành công
-        return redirect()->back()->with(['success' => true, 'message' => $message]);
+        
 
+        $message = Message::create([
+            'sender_id' => Auth::id(),
+            'receiver_id' => $request->receiver_id,
+            'message' => $request->message,
+            'is_read' => false
+        ]);
+
+        broadcast(new MessageSent($message))->toOthers();
+
+        return response()->json($message);
     }
+
+    public function index()
+    {
+        $user = Auth::user();
     
+        if ($user->is_admin) {
+            // Admin thấy danh sách tất cả khách hàng
+            $users = User::where('id', '!=', $user->id)->where('is_admin', false)->get();
+        } else {
+            // Người dùng chỉ thấy admin
+            $users = User::where('is_admin', true)->get();
+        }
+    
+        return view('chat', compact('users'));
+    }
 }

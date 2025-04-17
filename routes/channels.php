@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return response()->json($request->user());
-});
+Broadcast::routes(['middleware' => ['auth:web']]);
 
+// Cho phép người dùng truy cập kênh chat nếu họ là người gửi hoặc người nhận
+Broadcast::channel('chat.{id}', function ($user, $id) {
+    return true; // Cho phép tất cả người dùng đã xác thực truy cập kênh
+});

@@ -47,6 +47,7 @@ use App\Http\Controllers\Web\WebProductController;
 use App\Mail\OrderPlacedMail;
 use App\Services\GHTKService;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Broadcast;
 
 /*
 |--------------------------------------------------------------------------
@@ -476,3 +477,19 @@ Route::get('/gmail', [Controller::class, 'gmail'])->name('web.gmail');
 Route::get('/search', [WebController::class, 'search'])->name('product.search');
 
 
+Route::middleware('auth')->group(function () {
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('/chat/{user}', [ChatController::class, 'fetchMessages'])->name('chat.fetch');
+    Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
+});
+
+// Thêm route cho broadcasting authentication
+Broadcast::routes(['middleware' => ['web', 'auth']]);
+
+// Chat routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/chat/latest-user', [ChatController::class, 'getLatestUser']);
+    Route::get('/chat/admin', [ChatController::class, 'getAdminMessages']);
+    Route::get('/chat/unread/count', [ChatController::class, 'getUnreadCount']);
+    Route::post('/chat/send', [ChatController::class, 'sendMessage']);
+});

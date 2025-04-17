@@ -58,14 +58,16 @@
                                 </form>
 
                             </div>
+
                         </div>
 
                         <div class="col-xl-4 col-md-4 col-3">
                             <ul class="nav-icon d-flex justify-content-end align-items-center">
                                 {{-- <li class="nav-wishlist">
                                         <a href="wish-list.html" class="nav-icon-item">
+
                                             <i class="icon icon-heart"></i>
-                                            <span class="text d-none d-xl-block">Wishlist</span>
+                                            <span class="text d-none d-xl-block">chat</span>
                                         </a>
                                     </li> --}}
                                 <li class="nav-cart dropdown position-relative" id="header-cart">
