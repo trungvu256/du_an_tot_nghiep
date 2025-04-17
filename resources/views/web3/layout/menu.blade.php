@@ -7,8 +7,10 @@
 
     .logo {
         width: 270px !important;
-
-
+    }
+    .header-default .box-nav-menu .item-link{
+        font-size: larger !important;
+        text-transform: uppercase;
     }
     </style>
 
@@ -31,12 +33,12 @@
                 <div class="container">
                     <div class="row wrapper-header align-items-center">
                         <div class="col-md-4 col-3 d-xl-none">
-                            <a href="#mobileMenu" class="mobile-menu" data-bs-toggle="offcanvas" aria-controls="mobileMenu">
+                            <a href="{{route('web.home')}}" class="mobile-menu" data-bs-toggle="offcanvas" aria-controls="mobileMenu">
                                 <i class="icon icon-categories1"></i>
                             </a>
                         </div>
                         <div class="col-xl-2 col-md-4 col-6">
-                            <a href="index-2.html" class="logo-header">
+                            <a href="{{route('web.home')}}" class="logo-header">
                                 <img src="{{ asset('/images/Banner/logo7.jpg') }}" alt="logo" class="logo">
                             </a>
                         </div>
@@ -45,12 +47,11 @@
                                 <ul class="box-nav-menu">
                                     <li class="menu-item">
                                         <a href="{{route('web.home')}}" class="item-link">Trang chủ</a>
-
                                     </li>
                                     <li class="menu-item" style="position: relative;">
                                         <a href="#" class="item-link">Thương hiệu <i class="icon icon-arr-down"></i></a>
-
-                                        <div class="sub-menu mega-menu mega-shop"
+                                    
+                                        <div class="sub-menu mega-menu mega-shop" 
                                              style="position: absolute;
                                                     top: 100%;
                                                     left: 0;
@@ -62,7 +63,7 @@
                                                     min-width: 200px;
                                                     max-width: 100%;
                                                     z-index: 1000;">
-
+                                            
                                             <ul class="menu-list"
                                                 style="display: grid;
                                                        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -71,7 +72,7 @@
                                                        padding: 0;
                                                        margin: 0;">
                                                 @foreach ($brands as $brand)
-                                                    <li>
+                                                    <li style="margin-bottom: 5px;">
                                                         <a href="{{ route('web.shop', ['brand_id' => $brand->id]) }}"
                                                             class="menu-link-text link"
                                                             style="font-size: 16px; color: #000; text-decoration: none; display: block;">
@@ -83,31 +84,47 @@
                                         </div>
                                     </li>
                                     <li class="menu-item" style="position: relative;">
-                                        <a href="#" class="item-link">Sản phẩm <i class="icon icon-arr-down"></i></a>
-                                        <div class="sub-menu mega-menu" style="min-width: 220px; padding: 10px; background: white; box-shadow: 0 2px 6px rgba(0,0,0,0.1); position: absolute; top: 100%; left: 0; z-index: 1000;">
-                                            <!-- DANH MỤC SẢN PHẨM -->
-                                            <div class="mega-menu-item" style="margin-bottom: 10px;">
-
-                                                <ul class="menu-list">
-                                                    @foreach ($categories as $category)
-                                                        <li style="margin-bottom: 5px;">
-                                                            <a href="{{ route('web.shop', ['cate_id' => $category->id]) }}" class="menu-link-text link" style="font-size: 16px; color: #000; text-decoration: none;">
-                                                                <h7>{{ $category->name }}</h7>
-                                                            </a>
-                                                        </li>
-                                                    @endforeach
-                                                </ul>
-                                            </div>
+                                        <a href="#" class="item-link">Danh mục <i class="icon icon-arr-down"></i></a>
+                                    
+                                        <div class="sub-menu mega-menu mega-shop" 
+                                             style="position: absolute;
+                                                    top: 100%;
+                                                    left: 0;
+                                                    background: #fff;
+                                                    padding: 20px;
+                                                    border-radius: 15px;
+                                                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                                                    display: inline-block;
+                                                    min-width: 200px;
+                                                    max-width: 100%;
+                                                    z-index: 1000;">
+                                            
+                                            <ul class="menu-list"
+                                                style="display: grid;
+                                                       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                                                       gap: 10px;
+                                                       list-style: none;
+                                                       padding: 0;
+                                                       margin: 0;">
+                                                @foreach ($categories as $category)
+                                                <li style="margin-bottom: 5px;">
+                                                    <a href="{{ route('web.shop', ['cate_id' => $category->id]) }}" class="menu-link-text link" style="font-size: 16px; color: #000; text-decoration: none;">
+                                                        <h7>{{ $category->name }}</h7>
+                                                    </a>
+                                                </li>
+                                            @endforeach
                                             @php
                                             $latestProduct = $productNews->first();
                                         @endphp
-
+                                        
                                         @if ($latestProduct)
-                                            <a href="{{ route('web.shop', ['type' => 'new']) }}" style="font-size: 16px">
-                                                Sản phẩm mới
-                                            </a>
+                                            <li style="margin-bottom: 5px;">
+                                                <a href="{{ route('web.shop', ['type' => 'new']) }}" style="font-size: 16px">
+                                                    Sản phẩm mới
+                                                </a>
+                                            </li>
                                         @endif
-
+                                            </ul>
                                         </div>
                                     </li>
 
