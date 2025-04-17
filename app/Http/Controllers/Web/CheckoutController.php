@@ -356,6 +356,15 @@ public function vnpayCallback(Request $request)
                     'payment_deadline' => null,
                 ]);
 
+                // Cập nhật số lượng mã khuyến mãi nếu có
+                if ($order->promotion_id) {
+                    $promotionModel = Promotion::find($order->promotion_id);
+                    if ($promotionModel && $promotionModel->quantity > 0) {
+                        $promotionModel->quantity -= 1;
+                        $promotionModel->save();
+                    }
+                }
+
                 if (!empty($order->email)) {
                     try {
                         Mail::to($order->email)->send(new PaymentSuccessMail($order));

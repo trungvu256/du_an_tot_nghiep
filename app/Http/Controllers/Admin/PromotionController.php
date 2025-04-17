@@ -109,7 +109,7 @@ class PromotionController extends Controller
                 }
             ],
             'quantity' => [
-                'nullable',
+                'required',
                 'integer',
                 'min:0',
                 "max: 50"
@@ -235,7 +235,7 @@ class PromotionController extends Controller
                 }
             ],
             'quantity' => [
-                'nullable',
+                'required',
                 'integer',
                 'min:0',
                 "max: 50"
