@@ -132,6 +132,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
             route::get('/admin/product/trash', [ProductController::class, 'trash'])->name('admin.trash.product');
             route::post('/admin/product/restore/{id}', [ProductController::class, 'restore'])->name('admin.restore.product');
             route::delete('/admin/product/fore-delete/{id}', [ProductController::class, 'foreDelete'])->name('admin.foreDelete.product');
+            route::post('/toggle-status/{id}', [ProductController::class, 'toggleStatus'])->name('admin.product.toggle-status');
         });
 
         // Blog

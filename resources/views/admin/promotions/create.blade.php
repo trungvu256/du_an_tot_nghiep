@@ -103,9 +103,7 @@
                                             Theo %</option>
                                         <option value="fixed_amount" {{ old('type') == 'fixed_amount' ? 'selected' : '' }}>
                                             Giảm Theo Tiền</option>
-                                        <option value="free_shipping"
-                                            {{ old('type') == 'free_shipping' ? 'selected' : '' }}>Miễn Phí Vận Chuyển
-                                        </option>
+                                    
                                     </select>
                                     @if ($errors->has('type'))
                                         <div class="text-danger">{{ $errors->first('type') }}</div>

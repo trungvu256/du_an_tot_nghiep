@@ -45,6 +45,10 @@ class ProductController extends Controller
         if ($request->has('search') && $request->search != '') {
             $query->where('name', 'like', '%' . $request->search . '%');
         }
+        // Lọc theo trạng thái
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
 
         $products = $query->with(['brand', 'catalogue'])->latest('created_at')->paginate(5);
         $categories = Catalogue::all();
@@ -76,6 +80,7 @@ class ProductController extends Controller
             'image' => 'nullable|image|max:2048',
             'images.*' => 'nullable|image|max:2048',
             'variants' => 'nullable|string',
+            'status' => 'required|in:1,2',
         ]);
 
         $product_code = 'SP' . Carbon::now()->format('YmdHis') . rand(100, 999);
@@ -97,7 +102,8 @@ class ProductController extends Controller
                 'fragrance_group' => $request->fragrance_group, // Không để NULL
                 'description' => $request->description,
                 'image' => $imagePath,
-                'gender' => $request->gender ?? 'Unisex', // Đảm bảo có giá trị hợp lệ
+                'gender' => $request->gender ?? 'Unisex',
+                'status' => $request->status,
             ]);
 
             if (!$product) {
@@ -267,15 +273,17 @@ class ProductController extends Controller
             'image' => 'nullable|image|max:2048',
             'images.*' => 'nullable|image|max:2048',
             'variants' => 'nullable|string',
+            'status' => 'required|in:1,2',
         ]);
 
         DB::beginTransaction();
         try {
+            $product = Product::findOrFail($id);
+            
             // 📸 Xử lý ảnh chính
             $imagePath = $request->hasFile('image') ? $request->file('image')->store('products', 'public') : null;
 
-            // 🔥 Cập nhật sản phẩm
-            $product = Product::findOrFail($id);
+            // 🔄 Cập nhật thông tin sản phẩm
             $product->update([
                 'product_code' => $request->product_code,
                 'name' => $request->name,
@@ -288,6 +296,7 @@ class ProductController extends Controller
                 'description' => $request->description,
                 'image' => $imagePath ?? $product->image, // Giữ lại ảnh cũ nếu không có ảnh mới
                 'gender' => $request->gender ?? 'Unisex',
+                'status' => $request->status,
             ]);
 
             // 🖼️ Cập nhật ảnh phụ
@@ -388,14 +397,27 @@ class ProductController extends Controller
     public function foreDelete($id)
     {
         $product = Product::withTrashed()->findOrFail($id);
-
-        if ($product->img && file_exists(public_path('cover/' . $product->img))) {
-            unlink(public_path('cover/' . $product->img));
-        }
-
         $product->forceDelete();
+        return redirect()->route('admin.product.trash')->with('success', 'Xóa sản phẩm thành công');
+    }
 
-        return redirect()->route('admin.trash.product')->with('success', 'Sản phẩm đã được xóa');
+    /**
+     * Thay đổi trạng thái sản phẩm
+     */
+    public function toggleStatus($id)
+    {
+        $product = Product::findOrFail($id);
+        
+        // Chuyển đổi trạng thái
+        $newStatus = $product->status == Product::STATUS_ACTIVE 
+            ? Product::STATUS_INACTIVE 
+            : Product::STATUS_ACTIVE;
+            
+        $product->status = $newStatus;
+        $product->save();
+
+        $statusText = $newStatus == Product::STATUS_ACTIVE ? 'đang kinh doanh' : 'ngừng kinh doanh';
+        return redirect()->back()->with('success', "Đã chuyển trạng thái sản phẩm sang {$statusText}");
     }
 
     public function delete_img($id)

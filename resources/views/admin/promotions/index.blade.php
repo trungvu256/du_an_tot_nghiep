@@ -82,8 +82,7 @@
                                             {{ number_format(round($promotion->discount_value, -1), 0) }}%
                                             @elseif ($promotion->type == 'fixed_amount')
                                             {{ number_format($promotion->discount_value, 0, ',', '.') }} VNĐ
-                                            @else
-                                            Free Shipping
+                            
                                             @endif
                                         </td>
                                         <td>

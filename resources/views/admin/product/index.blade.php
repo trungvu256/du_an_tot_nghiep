@@ -8,9 +8,9 @@
                 <a href="{{ route('admin.add.product') }}" class="btn btn-primary">
                     <i class="bi bi-plus"></i> Thêm sản phẩm
                 </a>
-                <a href="{{ route('admin.trash.product') }}" class="btn btn-warning">
+                {{-- <a href="{{ route('admin.trash.product') }}" class="btn btn-warning">
                     <i class="bi bi-trash-fill me-1"></i> Thùng rác
-                </a>
+                </a> --}}
             </div>
         </div>
 
@@ -23,42 +23,77 @@
         @endif --}}
 
         <div class="card-body">
-            <!-- Form lọc sản phẩm -->
+            <!-- Form lọc sản phẩm với giao diện mới -->
             <form action="{{ route('admin.product') }}" method="GET" class="mb-4">
-                <div class="row g-3">
+                <div class="row g-3 align-items-end">
                     <div class="col-md-2">
-                        <label for="category" class="form-label">Danh mục</label>
-                        <select name="category" id="category" class="form-select">
-                            <option value="">Tất cả</option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
-                                    {{ $category->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <label for="brand" class="form-label">Thương hiệu</label>
-                        <select name="brand" id="brand" class="form-select">
-                            <option value="">Tất cả</option>
-                            @foreach($brands as $brand)
-                                <option value="{{ $brand->id }}" {{ request('brand') == $brand->id ? 'selected' : '' }}>
-                                    {{ $brand->name }}
-                                </option>
-                            @endforeach
-                        </select>
+                        <div class="form-group">
+                            <label class="form-label text-muted small mb-2">
+                                <i class="bi bi-grid me-1"></i>Danh mục
+                            </label>
+                            <select name="category" class="form-select form-select-sm border-0 shadow-sm">
+                                <option value="">Tất cả</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                     <div class="col-md-2">
-                        <label for="date" class="form-label">Ngày tạo</label>
-                        <input type="date" class="form-control" id="date" name="date" value="{{ request('date') }}">
+                        <div class="form-group">
+                            <label class="form-label text-muted small mb-2">
+                                <i class="bi bi-tag me-1"></i>Thương hiệu
+                            </label>
+                            <select name="brand" class="form-select form-select-sm border-0 shadow-sm">
+                                <option value="">Tất cả</option>
+                                @foreach($brands as $brand)
+                                    <option value="{{ $brand->id }}" {{ request('brand') == $brand->id ? 'selected' : '' }}>
+                                        {{ $brand->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <label for="search" class="form-label">Tìm kiếm tên sản phẩm</label>
-                        <input type="text" class="form-control" id="search" name="search" placeholder="Nhập tên sản phẩm..." value="{{ request('search') }}">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="form-label text-muted small mb-2">
+                                <i class="bi bi-calendar-event me-1"></i>Ngày tạo
+                            </label>
+                            <input type="date" class="form-control form-control-sm border-0 shadow-sm" name="date" value="{{ request('date') }}">
+                        </div>
                     </div>
-                    <div class="col-md-3 d-flex align-items-end justify-content-center">
-                        <button type="submit" class="btn btn-primary me-3"><i class="bi bi-funnel"></i> Lọc</button>
-                        <a href="{{ route('admin.product') }}" class="btn btn-secondary">Xóa bộ lọc</a>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="form-label text-muted small mb-2">
+                                <i class="bi bi-search me-1"></i>Tìm kiếm
+                            </label>
+                            <input type="text" class="form-control form-control-sm border-0 shadow-sm" name="search" 
+                                placeholder="Nhập tên sản phẩm..." value="{{ request('search') }}">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="form-label text-muted small mb-2">
+                                <i class="bi bi-circle-half me-1"></i>Trạng thái
+                            </label>
+                            <select name="status" class="form-select form-select-sm border-0 shadow-sm">
+                                <option value="">Tất cả</option>
+                                <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>Đang kinh doanh</option>
+                                <option value="2" {{ request('status') == '2' ? 'selected' : '' }}>Ngừng kinh doanh</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group d-flex gap-2">
+                            <button type="submit" class="btn btn-primary btn-sm w-50 shadow-sm d-inline-flex align-items-center justify-content-center">
+                                <i class="bi bi-funnel me-1"></i>Lọc
+                            </button>
+                            <a href="{{ route('admin.product') }}" class="btn btn-light btn-sm w-50 shadow-sm d-inline-flex align-items-center justify-content-center">
+                                <i class="bi bi-x-circle me-1"></i>Xóa
+                            </a>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -71,6 +106,7 @@
                         <th>Thương hiệu</th>
                         <th>Hình ảnh</th>
                         <th>Danh mục</th>
+                        <th>Trạng thái</th>
                         <th>Thao tác</th>
                     </tr>
                 </thead>
@@ -79,8 +115,6 @@
                         <!-- Hàng hiển thị sản phẩm chính -->
                         <tr class="product-row text-center" data-id="{{ $product->id }}">
                             <td>{{ ($products->currentPage() - 1) * $products->perPage() + $loop->iteration }}</td>
-
-
                             <td class="fw-bold"><a href="{{ route('admin.show.product', $product->id) }}"
                                     class="text-decoration-none text-dark">{{ $product->name }}</a></td>
                             <td>{{ $product->brand->name ?? 'Không có thương hiệu' }}</td>
@@ -96,6 +130,14 @@
                                 @endif
                             </td>
                             <td>{{ $product->catalogue->name ?? 'Không có danh mục' }}</td>
+                            <td>
+                                <form action="{{ route('admin.product.toggle-status', $product->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm {{ $product->status == 1 ? 'btn-success' : 'btn-danger' }}">
+                                        {{ $product->status == 1 ? 'Đang kinh doanh' : 'Ngừng kinh doanh' }}
+                                    </button>
+                                </form>
+                            </td>
                             <td class="text-center">
                                 <div class="btn-group" role="group">
                                     <a href="{{ route('admin.show.product', $product->id) }}"
@@ -106,17 +148,16 @@
                                         class="btn btn-outline-warning btn-sm mx-2" title="Chỉnh sửa">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
-                                    <form action="{{ route('admin.delete.product', $product->id) }}" method="POST" class="delete-form"
+                                    {{-- <form action="{{ route('admin.delete.product', $product->id) }}" method="POST" class="delete-form"
                                         onsubmit="return confirm('Bạn có chắc chắn muốn đưa sản phẩm này vào thùng rác?')" >
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm delete-btn">
                                             <i class="bi bi-trash"></i>
                                         </button>
-                                    </form>
+                                    </form> --}}
                                 </div>
                             </td>
-
                         </tr>
 
                         <!-- Hàng hiển thị biến thể con, ẩn mặc định -->
