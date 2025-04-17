@@ -98,6 +98,16 @@
     </div>
 </div>
 <!-- /toolbar  -->
+@if (session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '{{ session('error') }}',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
 
 <!-- login -->
 <div class="offcanvas offcanvas-end popup-style-1 popup-login" id="login">
@@ -184,6 +194,8 @@
     </div>
 </div>
 <!-- /login -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 <!-- register -->
 <div class="offcanvas offcanvas-end popup-style-1 popup-register" id="register">
@@ -194,13 +206,9 @@
         </div>
         <div id="error-message" class="alert alert-danger" style="display: none;"></div>
                 
-                @if (session('error'))
-                <div class="alert alert-danger" id="server-error">
-                    <ul>
-                        <li>{{ session('error') }}</li>
-                    </ul>
-                </div>
-                @endif
+       
+
+
         <div class="canvas-body popup-inner">
             <form id="form_register" action="{{ route('web.register.store') }}" enctype="multipart/form-data"
                 class="form-login" method="POST">
