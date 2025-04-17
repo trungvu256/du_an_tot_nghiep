@@ -166,8 +166,7 @@
                                         @endphp
                                         <div class="swiper-slide">
                                             <div class="card-product style-1 card-product-size">
-
-                                                <div class="card-product-wrapper">
+                                                <div class="card-product-wrapper" style="border: 1px solid #ff6f61;">
                                                     <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
                                                         class="product-img">
                                                         <img class="img-product lazyload"
@@ -246,7 +245,7 @@
         </div>
         <!-- /Best seller Product -->
         <!-- Banner Collection-->
-        <section class="s-banner-colection banner-cls-sportwear style-abs-2 flat-spacing-3">
+        <section class="s-banner-colection banner-cls-sportwear style-abs-2 flat-spacing-4">
             <div class="container">
                 <div class="banner-content">
                     <a href="{{ route('web.shop') }}" class="image d-block">
@@ -317,8 +316,7 @@
                                         @endphp
                                         <div class="swiper-slide">
                                             <div class="card-product style-1 card-product-size">
-
-                                                <div class="card-product-wrapper">
+                                                <div class="card-product-wrapper" style="border: 1px solid #ff6f61;">
                                                     <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
                                                         class="product-img">
                                                         <img class="img-product lazyload"
@@ -397,7 +395,7 @@
         </div>
         <!-- /New Product -->
         <!-- Offer -->
-        <section class="flat-spacing-3">
+        <section class="flat-spacing-4">
             <div class="container">
                 <div class="tf-grid-layout md-col-2">
                     <div class="wg-offer hover-img">
@@ -450,7 +448,7 @@
 
         <!-- /Brand -->
         <!-- Testimonial -->
-        <div class="flat-spacing-3">
+        <div class="flat-spacing-4">
             <div class="container">
                 <div class="wrapper-thumbs-tes-4 flat-thumbs-tes">
                     <div class="box-left">
