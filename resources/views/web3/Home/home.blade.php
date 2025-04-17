@@ -366,7 +366,7 @@
                                                             Off</span>
                                                     </div>
                                                 </div>
-                                                <div class="card-product-info">
+                                                <div class="card-product-info text-center">
                                                     <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
                                                         class="name-product link fw-medium text-md">{{ $product->name }}</a>
                                                     <p class="price-wrap fw-medium">
