@@ -87,9 +87,9 @@
                                         </a>
                                     </li>
                                     <li class="nav-wishlist">
-                                        <a href="wish-list.html" class="nav-icon-item">
+                                        <a href="{{route('chat.index')}}" class="nav-icon-item">
                                             <i class="icon icon-heart"></i>
-                                            <span class="text d-none d-xl-block">Wishlist</span>
+                                            <span class="text d-none d-xl-block">chat</span>
                                         </a>
                                     </li>
                                     <li class="nav-cart dropdown position-relative" id="header-cart">
