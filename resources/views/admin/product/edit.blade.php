@@ -1,12 +1,9 @@
 @extends('admin.layouts.main')
+
 @section('content')
     <div class="container mt-4">
-        <form action="{{ route('admin.update.product', $product->id) }}" method="POST" enctype="multipart/form-data"class="card shadow p-4">
+        <form action="{{ route('admin.update.product', $product->id) }}" method="POST" enctype="multipart/form-data" class="card shadow p-4">
             @csrf
-            {{-- @if (session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @endif --}}
-
             <h4 class="text-center mb-4">Thông tin sản phẩm</h4>
             <div class="row mb-3">
                 <div class="col-md-4">
@@ -103,7 +100,9 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+            </div>
 
+            <div class="row mb-3">
                 <div class="col-md-4">
                     <label class="form-label">Trạng thái sản phẩm</label>
                     <select name="status" class="form-select">
@@ -114,9 +113,7 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-            </div>
 
-            <div class="row mb-3">
                 <div class="col-md-4">
                     <label class="form-label">Phong cách</label>
                     <input type="text" name="style" class="form-control" value="{{ old('style', $product->style) }}"
@@ -129,18 +126,18 @@
                 <div class="col-md-4">
                     <label class="form-label">Giới tính</label>
                     <select name="gender" class="form-select">
-                        <option value="Nam" {{ old('gender', $product->gender) == 'Nam' ? 'selected' : '' }}>Nam
-                        </option>
+                        <option value="Nam" {{ old('gender', $product->gender) == 'Nam' ? 'selected' : '' }}>Nam</option>
                         <option value="Nữ" {{ old('gender', $product->gender) == 'Nữ' ? 'selected' : '' }}>Nữ</option>
-                        <option value="Unisex" {{ old('gender', $product->gender) == 'Unisex' ? 'selected' : '' }}>Unisex
-                        </option>
+                        <option value="Unisex" {{ old('gender', $product->gender) == 'Unisex' ? 'selected' : '' }}>Unisex</option>
                     </select>
                     @error('gender')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+            </div>
 
-                <div class="col-md-4">
+            <div class="row mb-3">
+                <div class="col-md-12">
                     <label class="form-label">Mô tả</label>
                     <textarea id="editor" name="description" class="form-control">{{ old('description', $product->description) }}</textarea>
                     @error('description')
@@ -182,7 +179,7 @@
                                 return $attr->attribute->name . ': ' . $attr->attributeValue->value;
                             })->toArray();
                         @endphp
-                        <tr>
+                        <tr data-variant-id="{{ $variant->id }}">
                             <td>{{ implode(', ', $attributeNames) }}</td>
                             <td>
                                 <input type="number" class="form-control price-input" data-id="{{ $variant->id }}" value="{{ $variant->price }}">
@@ -199,8 +196,6 @@
                         </tr>
                     @endforeach
                 </tbody>
-
-
             </table>
 
             <input type="hidden" id="variants_data" name="variants">
@@ -209,173 +204,187 @@
     </div>
 
     <script>
-
         document.addEventListener("DOMContentLoaded", function() {
-    let selectedAttributes = {}; // Lưu trữ các giá trị được chọn theo từng thuộc tính
-    let variants = []; // Danh sách biến thể
+            let selectedAttributes = {}; // Lưu trữ các giá trị được chọn theo từng thuộc tính
+            let variants = []; // Danh sách biến thể
 
-    const attributeSelect = document.getElementById("attribute-select");
-    const attributeContainer = document.getElementById("attribute-values-container");
-    const variantList = document.querySelector("#variant-list tbody");
-    const variantsDataInput = document.getElementById("variants_data");
-    document.querySelector("form").addEventListener("submit", function(event) {
-    console.log("Dữ liệu gửi lên:", document.getElementById("variants_data").value);
-});
-
-    const addVariantBtn = document.getElementById("add-variant-btn");
-
-    // Khi chọn thuộc tính, hiển thị danh sách giá trị
-    attributeSelect.addEventListener("change", function() {
-        const selectedOption = attributeSelect.options[attributeSelect.selectedIndex];
-        const attributeId = selectedOption.value;
-        const attributeName = selectedOption.text;
-        const values = JSON.parse(selectedOption.getAttribute("data-values"));
-
-        if (!attributeId || selectedAttributes[attributeId]) return;
-
-        selectedAttributes[attributeId] = []; // Khởi tạo mảng cho thuộc tính mới
-
-        let html = `<div class='mb-3'><label class='form-label'>${attributeName}</label><div class='row'>`;
-        values.forEach(value => {
-            html += `
-                <div class='col-md-3'>
-                    <input type='checkbox' class='attribute-value' data-attribute-id='${attributeId}' data-attribute='${attributeName}' data-value='${value.value}'>
-                    <label> ${value.value} </label>
-                </div>`;
-        });
-        html += `</div></div>`;
-
-        attributeContainer.innerHTML += html;
-    });
-
-    // Xử lý thêm biến thể vào danh sách khi nhấn nút
-    addVariantBtn.addEventListener("click", function() {
-        let checkedValues = document.querySelectorAll(".attribute-value:checked");
-
-        if (checkedValues.length === 0) {
-            alert("Vui lòng chọn ít nhất một giá trị thuộc tính!");
-            return;
-        }
-
-        // Reset danh sách thuộc tính đã chọn
-        selectedAttributes = {};
-
-        checkedValues.forEach(checkbox => {
-            let attributeId = checkbox.getAttribute("data-attribute-id");
-            let attributeName = checkbox.getAttribute("data-attribute");
-            let value = checkbox.getAttribute("data-value");
-
-            if (!selectedAttributes[attributeId]) {
-                selectedAttributes[attributeId] = {
-                    name: attributeName,
-                    values: []
-                };
-            }
-            selectedAttributes[attributeId].values.push(value);
-        });
-
-        // Tạo danh sách tất cả tổ hợp có thể
-        let attributeArrays = Object.values(selectedAttributes).map(attr => attr.values);
-        if (attributeArrays.length === 0) return;
-
-        let allVariants = generateCombinations(attributeArrays);
-
-        // Kiểm tra nếu biến thể đã tồn tại thì không thêm nữa
-        allVariants.forEach(combination => {
-            let exists = variants.some(variant => JSON.stringify(variant.attributes) === JSON.stringify(combination));
-            if (!exists) {
+            // Khởi tạo variants từ dữ liệu hiện có
+            @foreach ($product->variants as $variant)
+                @php
+                    $attributeNames = $variant->product_variant_attributes->map(function ($attr) {
+                        return $attr->attributeValue->value;
+                    })->toArray();
+                @endphp
                 variants.push({
-                    attributes: combination,
-                    price: 0,
-                    price_sale: 0,
-                    stock: 0
+                    id: {{ $variant->id }},
+                    attributes: @json($attributeNames),
+                    price: {{ $variant->price }},
+                    price_sale: {{ $variant->price_sale ?? 0 }},
+                    stock: {{ $variant->stock_quantity }}
                 });
+            @endforeach
+
+            const attributeSelect = document.getElementById("attribute-select");
+            const attributeContainer = document.getElementById("attribute-values-container");
+            const variantList = document.querySelector("#variant-list tbody");
+            const variantsDataInput = document.getElementById("variants_data");
+            const addVariantBtn = document.getElementById("add-variant-btn");
+
+            // Khi chọn thuộc tính, hiển thị danh sách giá trị
+            attributeSelect.addEventListener("change", function() {
+                const selectedOption = attributeSelect.options[attributeSelect.selectedIndex];
+                const attributeId = selectedOption.value;
+                const attributeName = selectedOption.text;
+                const values = JSON.parse(selectedOption.getAttribute("data-values"));
+
+                if (!attributeId || selectedAttributes[attributeId]) return;
+
+                selectedAttributes[attributeId] = []; // Khởi tạo mảng cho thuộc tính mới
+
+                let html = `<div class='mb-3'><label class='form-label'>${attributeName}</label><div class='row'>`;
+                values.forEach(value => {
+                    html += `
+                        <div class='col-md-3'>
+                            <input type='checkbox' class='attribute-value' data-attribute-id='${attributeId}' data-attribute='${attributeName}' data-value='${value.value}'>
+                            <label> ${value.value} </label>
+                        </div>`;
+                });
+                html += `</div></div>`;
+
+                attributeContainer.innerHTML += html;
+            });
+
+            // Xử lý thêm biến thể vào danh sách khi nhấn nút
+            addVariantBtn.addEventListener("click", function() {
+                let checkedValues = document.querySelectorAll(".attribute-value:checked");
+
+                if (checkedValues.length === 0) {
+                    alert("Vui lòng chọn ít nhất một giá trị thuộc tính!");
+                    return;
+                }
+
+                // Reset danh sách thuộc tính đã chọn
+                selectedAttributes = {};
+
+                checkedValues.forEach(checkbox => {
+                    let attributeId = checkbox.getAttribute("data-attribute-id");
+                    let attributeName = checkbox.getAttribute("data-attribute");
+                    let value = checkbox.getAttribute("data-value");
+
+                    if (!selectedAttributes[attributeId]) {
+                        selectedAttributes[attributeId] = {
+                            name: attributeName,
+                            values: []
+                        };
+                    }
+                    selectedAttributes[attributeId].values.push(value);
+                });
+
+                // Tạo danh sách tất cả tổ hợp có thể
+                let attributeArrays = Object.values(selectedAttributes).map(attr => attr.values);
+                if (attributeArrays.length === 0) return;
+
+                let allVariants = generateCombinations(attributeArrays);
+
+                // Kiểm tra nếu biến thể đã tồn tại thì không thêm nữa
+                allVariants.forEach(combination => {
+                    let exists = variants.some(variant => JSON.stringify(variant.attributes) === JSON.stringify(combination));
+                    if (!exists) {
+                        variants.push({
+                            id: null, // Không có ID vì đây là biến thể mới
+                            attributes: combination,
+                            price: 0,
+                            price_sale: 0,
+                            stock: 0
+                        });
+                    }
+                });
+
+                updateVariantTable();
+            });
+
+            // Hàm tạo tổ hợp biến thể
+            function generateCombinations(arrays) {
+                if (arrays.length === 0) return [];
+
+                let result = [[]];
+                arrays.forEach(array => {
+                    let temp = [];
+                    result.forEach(existingCombination => {
+                        array.forEach(value => {
+                            temp.push([...existingCombination, value]);
+                        });
+                    });
+                    result = temp;
+                });
+
+                return result;
             }
-        });
 
-        updateVariantTable();
-    });
-
-    // Hàm tạo tổ hợp biến thể
-    function generateCombinations(arrays) {
-        if (arrays.length === 0) return [];
-
-        let result = [[]];
-        arrays.forEach(array => {
-            let temp = [];
-            result.forEach(existingCombination => {
-                array.forEach(value => {
-                    temp.push([...existingCombination, value]);
+            // Cập nhật bảng danh sách biến thể
+            function updateVariantTable() {
+                variantList.innerHTML = "";
+                variants.forEach((variant, index) => {
+                    let attributesStr = variant.attributes.join(", ");
+                    let row = `<tr data-variant-id="${variant.id || ''}">
+                        <td>${attributesStr}</td>
+                        <td><input type="number" class="form-control price-input" data-index="${index}" placeholder="Giá" value="${variant.price}"></td>
+                        <td><input type="number" class="form-control price-sale-input" data-index="${index}" placeholder="Giá giảm" value="${variant.price_sale}"></td>
+                        <td><input type="number" class="form-control stock-input" data-index="${index}" placeholder="Tồn kho" value="${variant.stock}"></td>
+                        <td><button class="btn btn-danger btn-sm" onclick="removeVariant(${index})">Xóa</button></td>
+                    </tr>`;
+                    variantList.innerHTML += row;
                 });
-            });
-            result = temp;
-        });
 
-        return result;
-    }
+                document.querySelectorAll(".price-input").forEach(input => {
+                    input.addEventListener("change", function() {
+                        let index = this.getAttribute("data-index");
+                        variants[index].price = parseFloat(this.value) || 0;
+                        saveVariants();
+                    });
+                });
 
-    // Cập nhật bảng danh sách biến thể
-    function updateVariantTable() {
-        variantList.innerHTML = "";
-        variants.forEach((variant, index) => {
-            let attributesStr = variant.attributes.join(", ");
-            let row = `<tr>
-                <td>${attributesStr}</td>
-                <td><input type="number" class="form-control price-input" data-index="${index}" placeholder="Giá" value="${variant.price}"></td>
-                <td><input type="number" class="form-control price-sale-input" data-index="${index}" placeholder="Giá giảm" value="${variant.price_sale}"></td>
-                <td><input type="number" class="form-control stock-input" data-index="${index}" placeholder="Tồn kho" value="${variant.stock}"></td>
-                <td><button class="btn btn-danger btn-sm" onclick="removeVariant(${index})">Xóa</button></td>
-            </tr>`;
-            variantList.innerHTML += row;
-        });
+                document.querySelectorAll(".price-sale-input").forEach(input => {
+                    input.addEventListener("change", function() {
+                        let index = this.getAttribute("data-index");
+                        variants[index].price_sale = parseFloat(this.value) || 0;
+                        saveVariants();
+                    });
+                });
 
-        document.querySelectorAll(".price-input").forEach(input => {
-            input.addEventListener("change", function() {
-                let index = this.getAttribute("data-index");
-                variants[index].price = parseFloat(this.value) || 0;
+                document.querySelectorAll(".stock-input").forEach(input => {
+                    input.addEventListener("change", function() {
+                        let index = this.getAttribute("data-index");
+                        variants[index].stock = parseInt(this.value) || 0;
+                        saveVariants();
+                    });
+                });
+
                 saveVariants();
-            });
+            }
+
+            // Lưu biến thể vào input ẩn
+            function saveVariants() {
+                variantsDataInput.value = JSON.stringify(variants);
+            }
+
+            // Xóa biến thể
+            window.removeVariant = function(index) {
+                variants.splice(index, 1);
+                updateVariantTable();
+            };
+
+            // Cập nhật bảng khi trang được tải
+            updateVariantTable();
         });
-
-        document.querySelectorAll(".price-sale-input").forEach(input => {
-            input.addEventListener("change", function() {
-                let index = this.getAttribute("data-index");
-                variants[index].price_sale = parseFloat(this.value) || 0;
-                saveVariants();
-            });
-        });
-
-        document.querySelectorAll(".stock-input").forEach(input => {
-            input.addEventListener("change", function() {
-                let index = this.getAttribute("data-index");
-                variants[index].stock = parseInt(this.value) || 0;
-                saveVariants();
-            });
-        });
-
-        saveVariants();
-    }
-
-    // Lưu biến thể vào input ẩn
-    function saveVariants() {
-        variantsDataInput.value = JSON.stringify(variants);
-    }
-
-    // Xóa biến thể
-    window.removeVariant = function(index) {
-        variants.splice(index, 1);
-        updateVariantTable();
-    };
-});
-
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.js"></script>
     <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
     <script>
-        CKEDITOR.replace('editor', {
-        });
+        CKEDITOR.replace('editor', {});
     </script>
 @endsection
+
 @section('scripts')
     @include('alert')
 @endsection
