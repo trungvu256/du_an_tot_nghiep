@@ -52,7 +52,12 @@
             font-size: 12px;
             color: #888;
         }
-
+        .nav-tabs .nav-link.active {
+            color: #ff6f61 !important;
+        }
+        .nav-tabs .nav-link.active::after {
+            background-color: #ff6f61 !important;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>

@@ -21,7 +21,7 @@
         </div>
         <!-- /Breadcrumb -->
         <!-- Product Main -->
-        <section class="flat-single-product" style="padding-bottom: 60px">
+        <section class="flat-single-product pb-0">
             <div class="tf-main-product section-image-zoom">
                 <div class="container">
                     <div class="row">
@@ -248,6 +248,120 @@
             </div>
         </section>
         <!-- /Product Main -->
+        {{-- Product relation --}}
+        <section>
+            <div class="tab-content">
+                <div class="tab-pane active show" id="hot" role="tabpanel">
+                    <div class="hover-sw-nav ">
+                        <div dir="ltr" class="swiper tf-swiper wrap-sw-over"
+                            data-swiper='{
+                            "slidesPerView": 2,
+                            "spaceBetween": 12,
+                            "speed": 1000,
+                            "observer": true,
+                            "observeParents": true,
+                            "slidesPerGroup": 2,
+                            "navigation": {
+                                "clickable": true,
+                                "nextEl": ".nav-next-hot",
+                                "prevEl": ".nav-prev-hot"
+                            },
+                            "pagination": { "el": ".sw-pagination-hot", "clickable": true },
+                            "breakpoints": {
+                            "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
+                            "1200": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 4}
+                            }
+                        }'>
+                            <div class="swiper-wrapper row">
+                                <!-- item 1 -->
+                                @foreach ($relatedProducts as $product)
+                                    @php
+                                        $minPrice = $product->variants->isNotEmpty()
+                                            ? $product->variants->min('price')
+                                            : $product->price;
+                                        $maxPrice = $product->variants->isNotEmpty()
+                                            ? $product->variants->max('price')
+                                            : $product->price;
+                                    @endphp
+                                    <div class="col-2">
+                                        <div class="card-product style-1 card-product-size">
+                                            <div class="card-product-wrapper" style="border: 1px solid #ff6f61;">
+                                                <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
+                                                    class="product-img">
+                                                    <img class="img-product lazyload"
+                                                        data-src="{{ asset('storage/' . $product->image) }}"
+                                                        src="{{ asset('storage/' . $product->image) }}"
+                                                        alt="image-product" />
+                                                    <img class="img-hover lazyload"
+                                                        data-src="{{ asset('storage/' . $product->image) }}"
+                                                        src="{{ asset('storage/' . $product->image) }}"
+                                                        alt="image-product" />
+                                                </a>
+                                                <ul class="list-product-btn">
+                                                    <li>
+                                                        <a href="#shoppingCart" data-bs-toggle="offcanvas"
+                                                            class="hover-tooltip tooltip-left box-icon">
+                                                            <span class="icon icon-cart2"></span>
+                                                            <span class="tooltip">Add to Cart</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="wishlist">
+                                                        <a href="javascript:void(0);"
+                                                            class="hover-tooltip tooltip-left box-icon">
+                                                            <span class="icon icon-heart2"></span>
+                                                            <span class="tooltip">Add to Wishlist</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#quickView" data-bs-toggle="modal"
+                                                            class="hover-tooltip tooltip-left box-icon quickview">
+                                                            <span class="icon icon-view"></span>
+                                                            <span class="tooltip">Quick View</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="compare">
+                                                        <a href="#compare" data-bs-toggle="modal"
+                                                            aria-controls="compare"
+                                                            class="hover-tooltip tooltip-left box-icon">
+                                                            <span class="icon icon-compare"></span>
+                                                            <span class="tooltip">Add to Compare</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+
+                                                <div class="on-sale-wrap"><span class="on-sale-item">20%
+                                                        Off</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-product-info text-center">
+                                                <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
+                                                    class="name-product link fw-medium text-md">{{ $product->name }}</a>
+                                                <p class="price-wrap fw-medium">
+                                                    <span
+                                                        class="price-new text-primary">{{ number_format($minPrice) }}₫
+                                                        @if ($minPrice !== $maxPrice)
+                                                            - {{ number_format($maxPrice) }}₫
+                                                        @endif
+                                                    </span>
+                                                    {{-- <span class="price-old text-dark ">$100.00</span> --}}
+                                                </p>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <div class="d-flex d-xl-none sw-dot-default sw-pagination-hot justify-content-center">
+                            </div>
+                        </div>
+                        <div class="d-none d-xl-flex swiper-button-next nav-swiper nav-next-hot"></div>
+                        <div class="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-hot"></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        {{-- /Product relation --}}
         <!-- Product Tabs Section -->
         <section class="product-tabs-section flat-spacing-4 pt-0">
             <div class="container">
