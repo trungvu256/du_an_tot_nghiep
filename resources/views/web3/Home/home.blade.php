@@ -210,8 +210,8 @@
                                                         </li>
                                                     </ul>
 
-                                                    <div class="on-sale-wrap"><span class="on-sale-item">20%
-                                                            Off</span>
+                                                    <div class="on-sale-wrap"><span class="on-sale-item">Ưu đãi
+                                                            </span>
                                                     </div>
                                                 </div>
                                                 <div class="card-product-info text-center">
@@ -360,9 +360,9 @@
                                                         </li>
                                                     </ul>
 
-                                                    <div class="on-sale-wrap"><span class="on-sale-item">20%
-                                                            Off</span>
-                                                    </div>
+                                                    {{-- <div class="on-sale-wrap"><span class="on-sale-item">
+                                                            </span> --}}
+                                                    {{-- </div> --}}
                                                 </div>
                                                 <div class="card-product-info text-center">
                                                     <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
