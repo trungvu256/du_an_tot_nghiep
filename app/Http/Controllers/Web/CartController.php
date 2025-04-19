@@ -17,128 +17,142 @@ use Illuminate\Support\Facades\Log;
 class CartController extends Controller
 {
     public function shopdetail($id)
-{
-    $brands = Brand::all();
-    // Lấy sản phẩm chi tiết
-    $categories = Catalogue::all();
-    $detailproduct = Product::findOrFail($id);
-    $product = Product::with(['comments', 'reviews'])->find($id);
-    $description_images = Images::where('product_id', $id)->get();
-    $productNews = Product::orderBy('id', 'DESC')->take(4)->get();
+    {
+        $brands = Brand::all();
+        // Lấy sản phẩm chi tiết
+        $categories = Catalogue::all();
+        $detailproduct = Product::findOrFail($id);
+        $product = Product::with(['comments', 'reviews', 'variants'])->find($id);
+        $description_images = Images::where('product_id', $id)->get();
+        $productNews = Product::orderBy('id', 'DESC')->take(4)->get();
 
+        // Lấy danh sách các danh mục liên quan
+        $categoryIds = Catalogue::where('id', $detailproduct->catalogue_id)
+            ->orWhere('parent_id', $detailproduct->catalogue_id)
+            ->pluck('id')
+            ->toArray();
 
-    // Lấy danh sách các danh mục liên quan
-    $categoryIds = Catalogue::where('id', $detailproduct->catalogue_id)
-        ->orWhere('parent_id', $detailproduct->catalogue_id)
-        ->pluck('id')
-        ->toArray();
+        // Lấy các sản phẩm liên quan cùng danh mục
+        $relatedProducts = Product::whereIn('catalogue_id', $categoryIds)
+            ->where('id', '!=', $id)
+            ->limit(4)
+            ->get();
 
-    // Lấy các sản phẩm liên quan cùng danh mục
-    $relatedProducts = Product::whereIn('catalogue_id', $categoryIds)
-        ->where('id', '!=', $id)
-        ->limit(4)
-        ->get();
+        // Lấy biến thể của sản phẩm với giá thấp nhất (giữa price và price_sale)
+        $variant = ProductVariant::where('product_id', $id)
+            ->select('id', 'price', 'price_sale', 'stock_quantity')
+            ->orderByRaw("LEAST(price, IFNULL(price_sale, price)) ASC")
+            ->first();
 
-    // Lấy biến thể của sản phẩm với giá thấp nhất (giữa price và price_sale)
-    $variant = ProductVariant::where('product_id', $id)
-        ->select('id', 'price', 'price_sale', 'stock_quantity')
-        ->orderByRaw("LEAST(price, IFNULL(price_sale, price)) ASC") // Lấy giá thấp nhất giữa price và price_sale
-        ->first();
+        $price = $variant ? $variant->price : null;
 
-    $price = $variant ? $variant->price : null;
+        // Lấy các sản phẩm tương tự cùng giá
+        $similarProducts = Product::whereHas('variants', function ($query) use ($price) {
+            $query->where('price', $price);
+        })->where('id', '!=', $id)
+            ->take(5)
+            ->get();
 
-    // Lấy các sản phẩm tương tự cùng giá
-    $similarProducts = Product::whereHas('variants', function ($query) use ($price) {
-        $query->where('price', $price);
-    })->where('id', '!=', $id)
-        ->take(5)
-        ->get();
+        // Lưu lại các sản phẩm đã xem
+        $viewedProductIds = session()->get('viewed_products', []);
+        if (!in_array($id, $viewedProductIds)) {
+            $viewedProductIds[] = $id;
+            session()->put('viewed_products', $viewedProductIds);
+        }
 
-    // Lưu lại các sản phẩm đã xem
-    $viewedProductIds = session()->get('viewed_products', []);
-    if (!in_array($id, $viewedProductIds)) {
-        $viewedProductIds[] = $id;
-        session()->put('viewed_products', $viewedProductIds);
-    }
+        // Lấy các sản phẩm đã xem
+        $viewedProducts = Product::whereIn('id', $viewedProductIds)->get();
 
-    // Lấy các sản phẩm đã xem
-    $viewedProducts = Product::whereIn('id', $viewedProductIds)->get();
+        // Lấy thông tin danh mục và thương hiệu
+        $category = Catalogue::find($detailproduct->catalogue_id);
+        $brand = Brand::find($detailproduct->brand_id);
 
-    // Lấy thông tin danh mục và thương hiệu
-    $category = Catalogue::find($detailproduct->catalogue_id);
-    $brand = Brand::find($detailproduct->brand_id);
+        // Truy vấn tất cả thuộc tính của sản phẩm
+        $attributes = [];
+        foreach ($detailproduct->variants as $variant) {
+            foreach ($variant->product_variant_attributes as $pivot) {
+                $attrName = $pivot->attribute->name;
+                $attrValue = $pivot->attributeValue->value;
 
-    // Truy vấn tất cả thuộc tính của sản phẩm
-    $attributes = [];
-    foreach ($detailproduct->variants as $variant) {
-        foreach ($variant->product_variant_attributes as $pivot) {
-            $attrName = $pivot->attribute->name;
-            $attrValue = $pivot->attributeValue->value;
+                if (!isset($attributes[$attrName])) {
+                    $attributes[$attrName] = [];
+                }
 
-            if (!isset($attributes[$attrName])) {
-                $attributes[$attrName] = [];
-            }
-
-            if (!in_array($attrValue, $attributes[$attrName])) {
-                $attributes[$attrName][] = $attrValue;
+                if (!in_array($attrValue, $attributes[$attrName])) {
+                    $attributes[$attrName][] = $attrValue;
+                }
             }
         }
-    }
 
-    // Kiểm tra mảng attributes và loại bỏ các giá trị trùng lặp trong các thuộc tính
-    foreach ($attributes as $key => $values) {
-        $attributes[$key] = array_unique($values);
-    }
-
-    // Truy vấn biến thể dựa trên các thuộc tính đã chọn (giả sử đã có biến $attributes)
-    $selectedVariant = $product->variants()->whereHas('product_variant_attributes', function ($query) use ($attributes) {
-        foreach ($attributes as $attrName => $attrValues) {
-            $query->whereHas('attributeValues', function ($query) use ($attrName, $attrValues) {
-                $query->whereHas('attribute', function ($query) use ($attrName) {
-                    $query->where('name', $attrName);
-                })
-                ->whereIn('value', $attrValues); // Tìm kiếm theo giá trị thuộc tính trong bảng attribute_values
-            });
+        // Kiểm tra mảng attributes và loại bỏ các giá trị trùng lặp
+        foreach ($attributes as $key => $values) {
+            $attributes[$key] = array_unique($values);
         }
-    })->first();
 
-    if ($selectedVariant) {
-        return response()->json([
-            'success' => true,
-            'variant' => [
-                'price' => $selectedVariant->price,
-                'price_sale' => $selectedVariant->price_sale,
-                'stock_quantity' => $selectedVariant->stock_quantity,
-            ]
-        ]);
+        // Kiểm tra nếu chỉ có một biến thể
+        if (count($detailproduct->variants) === 1) {
+            $singleVariant = $detailproduct->variants->first();
+            $variant = [
+                'price' => $singleVariant->price,
+                'price_sale' => $singleVariant->price_sale,
+                'stock_quantity' => $singleVariant->stock_quantity
+            ];
+        }
+
+        // Kiểm tra nếu là AJAX request để cập nhật giá
+        if (request()->ajax()) {
+            if (request()->has('update_price')) {
+                return $this->updateVariantPrice(request());
+            }
+
+            // Lấy thông tin từ request
+            $selectedAttributes = json_decode(request()->input('attributes'), true);
+            
+            // Tìm biến thể dựa trên các thuộc tính đã chọn
+            $selectedVariant = $product->variants()
+                ->where(function($query) use ($selectedAttributes) {
+                    if (isset($selectedAttributes[0])) {
+                        $query->where('size', $selectedAttributes[0]);
+                    }
+                    if (isset($selectedAttributes[1])) {
+                        $query->where('concentration', $selectedAttributes[1]);
+                    }
+                    if (isset($selectedAttributes[2])) {
+                        $query->where('special_edition', $selectedAttributes[2]);
+                    }
+                })->first();
+
+            if ($selectedVariant) {
+                return response()->json([
+                    'success' => true,
+                    'variant' => [
+                        'id' => $selectedVariant->id,
+                        'price' => $selectedVariant->price,
+                        'price_sale' => $selectedVariant->price_sale,
+                        'stock_quantity' => $selectedVariant->stock_quantity,
+                    ]
+                ]);
+            }
+        }
+
+        // Trả về view với tất cả các dữ liệu
+        return view('web3.Home.shop-detail', compact(
+            'detailproduct',
+            'product',
+            'description_images',
+            'relatedProducts',
+            'similarProducts',
+            'viewedProducts',
+            'category',
+            'brands',
+            'attributes',
+            'variant',
+            'categories',
+            'productNews',
+            'brand'
+        ));
     }
 
-    // Trả về view với tất cả các dữ liệu đã truy vấn, bao gồm các thuộc tính của sản phẩm
-    return view('web3.Home.shop-detail', compact(
-        'detailproduct',
-        'product',
-        'description_images',
-        'relatedProducts',
-        'similarProducts',
-        'viewedProducts',
-        'category',
-        'brands',
-        'attributes',
-        'variant',
-        'categories',
-        'productNews',
-        'brand'
-    ));
-}
-
-
-
-
-    // public function index()
-    // {
-    //     $products = Product::all(); // Lấy tất cả sản phẩm
-    //     return view('web2.Home.home', compact('products'));
-    // }
 
     public function viewCart()
     {
@@ -397,7 +411,7 @@ public function removeFromCart(Request $request, $cartKey)
         ]);
         // Log chi tiết từng promotion
         foreach ($validPromotions as $promotion) {
-            \Log::info('Promotion details:', [
+            Log::info('Promotion details:', [
                 'id' => $promotion->id,
                 'code' => $promotion->code,
                 'type' => $promotion->type,
