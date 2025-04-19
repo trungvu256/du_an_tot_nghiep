@@ -207,6 +207,27 @@ data-bs-toggle="modal" data-bs-target="#cancelModal{{ $order->id }}">Hủy đơn
                             class="btn btn-warning rounded-pill px-3 me-2"
                             onclick="return confirm('Bạn chắc chắn muốn xác nhận đã trả hàng?')">Trả hàng</a>
                     @elseif ($order->status == 4)
+                        @php
+                            $hasReview = \App\Models\ProductReview::where('order_id', $order->id)
+                                ->where('user_id', auth()->id())
+                                ->exists();
+                        @endphp
+                        
+                        @if(!$hasReview)
+                            <button type="button"
+                                class="btn btn-primary rounded-pill px-3 me-2"
+                                data-bs-toggle="modal"
+                                data-bs-target="#reviewOrderModal{{ $order->id }}">
+                                Đánh giá
+                            </button>
+                        @else
+                            <button type="button"
+                                class="btn btn-success rounded-pill px-3 me-2"
+                                data-bs-toggle="modal"
+                                data-bs-target="#viewOrderReviewModal{{ $order->id }}">
+                                Xem đánh giá
+                            </button>
+                        @endif
                         <a href="{{ route('order.returned', $order->id) }}"
                             class="btn btn-warning rounded-pill px-3 me-2"
                             onclick="return confirm('Bạn chắc chắn muốn xác nhận đã trả hàng?')">Trả hàng</a>
@@ -273,6 +294,135 @@ data-bs-toggle="modal" data-bs-target="#cancelModal{{ $order->id }}">Hủy đơn
                         </div>
                     </div>
                     @endif
+
+                    <!-- Modal đánh giá đơn hàng -->
+                    @if($order->status == 4)
+                    <div class="modal fade" id="reviewOrderModal{{ $order->id }}" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content border-0 shadow">
+                                <div class="modal-header border-0 text-center bg-light">
+                                    <h5 class="modal-title w-100 fw-bold">Đánh giá đơn hàng #{{ $order->order_code }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <form id="orderReviewForm{{ $order->id }}" class="order-review-form">
+                                    @csrf
+                                    <div class="modal-body px-4 py-4">
+                                        <div class="order-info mb-4">
+                                            <div class="products-list">
+                                                @foreach($order->orderItems as $item)
+                                                    <div class="product-item d-flex align-items-center p-3 mb-2 bg-light rounded">
+                                                        @if($item->product && $item->product->image)
+                                                            <img src="{{ Storage::url($item->product->image) }}"
+                                                                 alt="{{ $item->product->name }}"
+                                                                 class="rounded-3 me-3"
+                                                                 style="width: 70px; height: 70px; object-fit: cover;">
+                                                        @endif
+                                                        <div class="flex-grow-1">
+                                                            <h6 class="mb-1 fw-bold">{{ $item->product->name }}</h6>
+                                                            <span class="text-muted">
+                                                                Phân loại: Dung tích - {{ $item->productVariant->concentration }},
+                                                                 Nồng độ - {{ $item->productVariant->size }}
+                                                            </span>
+                                                            <input type="hidden" name="product_id" value="{{ $item->product->id }}">
+                                                            <input type="hidden" name="variant_id" value="{{ $item->productVariant ? $item->productVariant->id : '' }}">
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        <div class="rating-section text-center mb-4">
+                                            <h6 class="text-center mb-3 fw-bold">Bạn cảm thấy sản phẩm thế nào?</h6>
+                                            <div class="rating">
+                                                <input type="radio" name="rating" value="5" id="star5{{ $order->id }}">
+                                                <label for="star5{{ $order->id }}">★</label>
+                                                <input type="radio" name="rating" value="4" id="star4{{ $order->id }}">
+                                                <label for="star4{{ $order->id }}">★</label>
+                                                <input type="radio" name="rating" value="3" id="star3{{ $order->id }}">
+                                                <label for="star3{{ $order->id }}">★</label>
+                                                <input type="radio" name="rating" value="2" id="star2{{ $order->id }}">
+                                                <label for="star2{{ $order->id }}">★</label>
+                                                <input type="radio" name="rating" value="1" id="star1{{ $order->id }}">
+                                                <label for="star1{{ $order->id }}">★</label>
+                                            </div>
+                                        </div>
+                                        <div class="comment-section mb-4">
+                                            <h6 class="fw-bold text-dark mb-3">Nội dung đánh giá</h6>
+                                            <textarea class="form-control border-0 bg-light p-3"
+                                                    name="review"
+                                                    rows="4"
+                                                    required
+                                                    placeholder="Hãy chia sẻ những điều bạn thích về sản phẩm này..."></textarea>
+                                        </div>
+                                        <div class="media-upload-section">
+                                            <div class="d-flex gap-2 mb-3">
+                                                <button type="button" class="btn btn-outline-primary rounded-pill" onclick="document.getElementById('imageUpload{{ $order->id }}').click()">
+                                                    <i class="fas fa-camera"></i> Thêm Hình ảnh
+                                                </button>
+                                                <button type="button" class="btn btn-outline-primary rounded-pill" onclick="document.getElementById('videoUpload{{ $order->id }}').click()">
+                                                    <i class="fas fa-video"></i> Thêm Video
+                                                </button>
+                                            </div>
+                                            <input type="file" id="imageUpload{{ $order->id }}" name="images[]" multiple accept="image/*" class="d-none" onchange="previewImages(this, {{ $order->id }})">
+                                            <input type="file" id="videoUpload{{ $order->id }}" name="video" accept="video/*" class="d-none" onchange="previewVideo(this, {{ $order->id }})">
+
+                                            <div class="preview-section">
+                                                <div id="imagePreview{{ $order->id }}" class="d-flex flex-wrap gap-2 mb-2"></div>
+                                                <div id="videoPreview{{ $order->id }}"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer border-0 justify-content-center">
+                                        <button type="button" class="btn btn-light px-4 rounded-pill" data-bs-dismiss="modal">Đóng</button>
+                                        <button type="submit" class="btn btn-primary px-4 rounded-pill">Gửi đánh giá</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal xem đánh giá -->
+                    <div class="modal fade" id="viewOrderReviewModal{{ $order->id }}" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content border-0 shadow">
+                                <div class="modal-header border-0 text-center bg-light">
+                                    <h5 class="modal-title w-100 fw-bold">Đánh giá của bạn</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body px-4 py-4">
+                                    <div class="order-info mb-4">
+                                        <div class="products-list">
+                                            @foreach($order->orderItems as $item)
+                                                <div class="product-item d-flex align-items-center p-3 mb-2 bg-light rounded">
+                                                    @if($item->product && $item->product->image)
+                                                        <img src="{{ Storage::url($item->product->image) }}"
+                                                             alt="{{ $item->product->name }}"
+                                                             class="rounded-3 me-3"
+                                                             style="width: 70px; height: 70px; object-fit: cover;">
+                                                    @endif
+                                                    <div>
+                                                        <h6 class="mb-1 fw-bold">{{ $item->product->name }}</h6>
+                                                        <span class="text-muted">
+                                                                Phân loại: Dung tích - {{ $item->productVariant->concentration }},
+                                                                 Nồng độ - {{ $item->productVariant->size }}
+                                                            </span>
+                                                        <input type="hidden" name="product_id" value="{{ $item->product->id }}">
+                                                        <input type="hidden" name="variant_id" value="{{ $item->productVariant ? $item->productVariant->id : '' }}">
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    <div class="review-content">
+                                        <!-- Nội dung đánh giá sẽ được load bằng AJAX -->
+                                    </div>
+                                </div>
+                                <div class="modal-footer border-0 justify-content-center">
+                                    <button type="button" class="btn btn-light px-4 rounded-pill" data-bs-dismiss="modal">Đóng</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </div>
         @endforeach
@@ -332,4 +482,127 @@ data-bs-toggle="modal" data-bs-target="#cancelModal{{ $order->id }}">Hủy đơn
 @endsection
 @section('scripts')
 @include('alert')
+
+<!-- JavaScript cho xử lý đánh giá -->
+<script src="{{ asset('js/review-handler.js') }}"></script>
+
+<style>
+/* Modal styles */
+.modal-lg .modal-content {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.modal-lg .modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.modal-lg .modal-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+/* Review details styles */
+.review-details {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.comment-display {
+    background-color: #fff;
+    border-radius: 10px;
+    border-left: 4px solid #0d6efd;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Rating styles */
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    gap: 8px;
+}
+.rating input {
+    display: none;
+}
+.rating label {
+    cursor: pointer;
+    font-size: 35px;
+    color: #ddd;
+    transition: color 0.2s ease;
+}
+.rating label:hover,
+.rating label:hover ~ label,
+.rating input:checked ~ label {
+    color: #ffd700;
+}
+.rating input:checked + label:hover,
+.rating input:checked ~ label:hover,
+.rating label:hover ~ input:checked ~ label,
+.rating input:checked ~ label:hover ~ label {
+    color: #ffc800;
+}
+.star.filled {
+    color: #ffd700;
+}
+
+/* Preview styles */
+.preview-item {
+    transition: transform 0.2s;
+}
+.preview-item:hover {
+    transform: scale(1.05);
+}
+.remove-preview {
+    transition: all 0.2s;
+    opacity: 0.8;
+}
+.remove-preview:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+.preview-item video {
+    max-height: 200px;
+    background: #f8f9fa;
+}
+
+/* Media display */
+.images-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.review-image-container {
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.review-image-container:hover {
+    transform: scale(1.05);
+}
+
+.video-container {
+    max-width: 100%;
+    margin: 10px auto;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+    .modal-lg {
+        width: 95%;
+        margin: 10px auto;
+    }
+}
+</style>
 @endsection

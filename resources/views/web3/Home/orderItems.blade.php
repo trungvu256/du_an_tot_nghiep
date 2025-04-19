@@ -173,7 +173,14 @@
                                     <span class="text-danger">Không có ảnh</span>
                                 @endif
                             </td>
-                            <td>{{ $detail->product->name }}</td>
+                            <td>{{ $detail->product->name }}
+                                @if($detail->productVariant)
+                                                            <span class="text-muted">
+                                                                (Dung tích: {{ $detail->productVariant->concentration }},
+                                                                 Nồng độ: {{ $detail->productVariant->size }})
+                                                            </span>
+                                                        @endif
+                            </td>
                             <td>{{ $detail->quantity }}</td>
                             <td>
                                 {{-- Hiển thị giá giống giỏ hàng --}}
