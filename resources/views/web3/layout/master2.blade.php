@@ -76,6 +76,29 @@
     @include('web3.layout.js')
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <!-- Notification Auto Close -->
+    <script>
+        $(document).ready(function() {
+            var alertTimeout = setTimeout(function() {
+                $("#successAlert").fadeOut(500, function() {
+                    $(this).remove();
+                });
+            }, 5000);
+
+            $("#successAlert").hover(
+                function() {
+                    clearTimeout(alertTimeout);
+                },
+                function() {
+                    alertTimeout = setTimeout(function() {
+                        $("#successAlert").fadeOut(500, function() {
+                            $(this).remove();
+                        });
+                    }, 2000);
+                }
+            );
+        });
+    </script>
     @yield('scripts')
 </body>
 

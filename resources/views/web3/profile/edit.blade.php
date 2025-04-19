@@ -7,23 +7,57 @@
         @endif
 
         <div class="container d-flex justify-content-center align-items-center min-vh-100">
-            <div class="card shadow-lg p-4" style="max-width: 500px; width: 100%;">
-                <div class="card-body">
-                    <h2 class="text-center mb-4">Cập nhật hồ sơ</h2>
-
+            <div class="card shadow my-3" style="max-width: 500px; width: 100%;">
+                <div class="card-header">
+                    <h4 class="text-center my-2">Cập nhật hồ sơ</h4>
+                </div>
+                <div class="card-body mx-2">
                     <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
                         <div class="mb-3">
-                            <label for="name" class="form-label fw-bold"> Tên</label>
+                            <label for="name" class="form-label fw-bold"> Họ & tên</label>
                             <input type="text" class="form-control form-control-lg" name="name"
-                                value="{{ $user->name }}" required>
+                                value="{{ old('name', $user->name) }}" required>
+                            @error('name')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="mb-3">
                             <label for="email" class="form-label fw-bold">Email</label>
                             <input type="email" class="form-control form-control-lg" name="email"
-                                value="{{ $user->email }}" required>
+                                value="{{ old('email', $user->email) }}" required>
+                            @error('email')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="phone" class="form-label fw-bold"> Số điện thoại</label>
+                            <input type="text" class="form-control form-control-lg" name="phone"
+                                value="{{ old('phone', $user->phone) }}" required>
+                            @error('phone')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="gender" class="form-label fw-bold"> Giới tính</label>
+                            <select name="gender" class="form-select">
+                                <option value="Male" {{ old('gender', $user->gender) == 'Male' ? 'selected' : '' }}>
+                                    Nam
+                                </option>
+                                <option value="Female" {{ old('gender', $user->gender) == 'Female' ? 'selected' : '' }}>
+                                    Nữ
+                                </option>
+                                <option value="Unisex" {{ old('gender', $user->gender) == 'Unisex' ? 'selected' : '' }}>
+                                    Khác
+                                </option>
+                            </select>
+                            @error('gender')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="mb-4">
@@ -47,10 +81,14 @@
                         </div>
                         <div class="mb-3">
                             <label for="address" class="form-label fw-bold"> Địa chỉ</label>
-                            <textarea name="address" id="" cols="30" rows="10">{{ $user->address }}</textarea>
+                            <textarea name="address" id="" cols="30" rows="10">{{ old('address',$user->address) }}</textarea>
                         </div>
-
-                        <button type="submit" class="btn btn-success w-100 py-2 fs-5">Lưu thay đổi</button>
+                        <div class="row">
+                            <div class="d-flex justify-content-center gap-3">
+                                <a href="{{ route('profile') }}" class="btn btn-primary"><i class="bi bi-caret-left"></i> Quay lại</a>
+                                <button type="submit" class="btn btn-success"><i class="bi bi-check-lg"></i> Xác nhận</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
