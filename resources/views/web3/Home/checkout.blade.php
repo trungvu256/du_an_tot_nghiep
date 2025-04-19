@@ -363,7 +363,7 @@
 
     // Cập nhật tổng tiền ban đầu
     updateTotalAmount();
-
+    // api địa chỉ
     // Xử lý dropdown Tỉnh/Thành phố, Quận/Huyện, Phường/Xã bằng API
     document.addEventListener('DOMContentLoaded', function() {
         const shippingProvinceSelect = document.getElementById('shipping_province');
