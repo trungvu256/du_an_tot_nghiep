@@ -43,7 +43,7 @@ class ProfileController extends Controller
     public function editProfile()
     {
         if (!session('password_confirmed')) {
-            return redirect()->route('profile.confirm_password')->with('error', 'Bạn cần xác nhận mật khẩu trước.');
+            return redirect()->route('profile.confirm_password');
         }
 
 
@@ -62,13 +62,40 @@ class ProfileController extends Controller
     // Xác thực dữ liệu đầu vào
     $request->validate([
         'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:users,email,' . $user->id,
-        'avatar' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
+        'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+        'phone' => 'nullable|string|max:255',
+        'address' => 'nullable|string|max:255',
+        'gender' => 'required|in:Male,Female,Unisex',
+        'avatar' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+    ], [
+        'name.required' => 'Vui lòng nhập họ tên.',
+        'name.string' => 'Họ tên phải là chuỗi ký tự.',
+        'name.max' => 'Họ tên không được vượt quá 255 ký tự.',
+    
+        'email.required' => 'Vui lòng nhập email.',
+        'email.email' => 'Email không đúng định dạng.',
+        'email.max' => 'Email không được vượt quá 255 ký tự.',
+        'email.unique' => 'Email này đã được sử dụng.',
+    
+        'phone.string' => 'Số điện thoại phải là chuỗi ký tự.',
+        'phone.max' => 'Số điện thoại không được vượt quá 255 ký tự.',
+    
+        'address.string' => 'Địa chỉ phải là chuỗi ký tự.',
+        'address.max' => 'Địa chỉ không được vượt quá 255 ký tự.',
+    
+        'gender.required' => 'Vui lòng chọn giới tính.',
+        'gender.in' => 'Giới tính không hợp lệ.',
+    
+        'avatar.image' => 'Tệp tải lên phải là hình ảnh.',
+        'avatar.mimes' => 'Ảnh đại diện phải có định dạng: jpg, png, jpeg.',
+        'avatar.max' => 'Ảnh đại diện không được vượt quá 2MB.',
     ]);
 
     // Cập nhật thông tin người dùng
     $user->name = $request->name;
     $user->email = $request->email;
+    $user->phone = $request->phone;
+    $user->gender = $request->gender;
     $user->address = $request->address;
 
     // Xử lý ảnh đại diện
