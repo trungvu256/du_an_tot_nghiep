@@ -494,3 +494,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/chat/unread/count', [ChatController::class, 'getUnreadCount']);
     Route::post('/chat/send', [ChatController::class, 'sendMessage']);
 });
+
+Route::get('/products/{product}/check-review', [WebProductController::class, 'checkReview'])->name('products.checkReview');
+Route::get('/products/{product}/get-review', [WebProductController::class, 'getReview'])->name('products.getReview');
