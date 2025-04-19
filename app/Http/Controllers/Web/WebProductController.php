@@ -15,7 +15,9 @@ use App\Models\ProductVariant;
 use App\Models\ReviewResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class WebProductController extends Controller
 {
@@ -593,52 +595,106 @@ class WebProductController extends Controller
     }
     public function storeReview(Request $request, $productId)
     {
-        // Xác thực dữ liệu đầu vào
-        $request->validate([
-            'rating' => 'required|integer|between:1,5',
-            'review' => 'nullable|string|max:1000',
-            'variant_id' => 'nullable|exists:product_variants,id', // Thêm validation cho variant_id
-        ]);
+        try {
+            // Xác thực dữ liệu đầu vào
+            $request->validate([
+                'rating' => 'required|integer|between:1,5',
+                'review' => 'required|string|max:1000',
+                'variant_id' => 'required|exists:product_variants,id',
+                'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'video' => 'nullable|mimes:mp4,mov,avi|max:20480', // 20MB max
+                'order_id' => 'required|exists:orders,id'
+            ]);
 
-        // Kiểm tra xem người dùng đã có đơn hàng với sản phẩm này hay chưa
-        $hasOrder = Order::where('user_id', Auth::id())
-            ->whereHas('orderItems', function ($query) use ($productId) {
-                $query->where('product_id', $productId);
-            })
-            ->whereIn('status', [Order::STATUS_DELIVERED, Order::STATUS_COMPLETED])
-            ->exists();
+            // Kiểm tra xem người dùng đã có đơn hàng với sản phẩm này hay chưa
+            $hasOrder = Order::where('user_id', Auth::id())
+                ->whereHas('orderItems', function ($query) use ($productId) {
+                    $query->where('product_id', $productId);
+                })
+                ->whereIn('status', [Order::STATUS_DELIVERED, Order::STATUS_COMPLETED])
+                ->exists();
 
-        if (!$hasOrder) {
-            return redirect()->back()->with('error', 'Bạn cần có ít nhất một đơn hàng để đánh giá sản phẩm.');
-        }
-
-        // Lấy thông tin sản phẩm và biến thể
-        $product = Product::findOrFail($productId);
-        $variantId = $request->input('variant_id');
-        $variantInfo = null;
-
-        if ($variantId) {
-            $variant = ProductVariant::with('product_variant_attributes.attribute', 'product_variant_attributes.attributeValue')
-                ->find($variantId);
-
-            if ($variant) {
-                $variantInfo = $variant->product_variant_attributes->map(function ($attr) {
-                    return $attr->attribute->name . ': ' . $attr->attributeValue->value;
-                })->join(', ');
+            if (!$hasOrder) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Bạn cần có ít nhất một đơn hàng để đánh giá sản phẩm.'
+                ], 403);
             }
+
+            // Xử lý upload ảnh
+            $imageUrls = [];
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    $path = $image->store('public/review_images');
+                    $imageUrls[] = Storage::url($path);
+                }
+            }
+
+            // Xử lý upload video
+            $videoUrl = null;
+            if ($request->hasFile('video')) {
+                $path = $request->file('video')->store('public/review_videos');
+                $videoUrl = Storage::url($path);
+            }
+
+            try {
+                // Tạo đánh giá mới
+                $review = ProductReview::create([
+                    'product_id' => $productId,
+                    'user_id' => Auth::id(),
+                    'rating' => $request->input('rating'),
+                    'review' => $request->input('review'),
+                    'variant_id' => $request->input('variant_id'),
+                    'images' => json_encode($imageUrls),
+                    'video' => $videoUrl,
+                    'order_id' => $request->input('order_id')
+                ]);
+
+                // Decode images array khi trả về response
+                $review->images = json_decode($review->images);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Đánh giá của bạn đã được thêm!',
+                    'data' => $review
+                ], 200);
+
+            } catch (\Exception $e) {
+                // Xóa các file đã upload nếu tạo review thất bại
+                foreach ($imageUrls as $imageUrl) {
+                    $path = str_replace('/storage/', 'public/', $imageUrl);
+                    Storage::delete($path);
+                }
+                if ($videoUrl) {
+                    $path = str_replace('/storage/', 'public/', $videoUrl);
+                    Storage::delete($path);
+                }
+
+                // Kiểm tra nếu là lỗi trùng lặp từ Model
+                if (strpos($e->getMessage(), 'đã đánh giá') !== false) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => $e->getMessage()
+                    ], 400);
+                }
+
+                throw $e;
+            }
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Dữ liệu không hợp lệ',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            \Log::error('Review creation error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Có lỗi xảy ra khi thêm đánh giá',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        // Lưu đánh giá
-        ProductReview::create([
-            'product_id' => $productId,
-            'user_id' => Auth::id(),
-            'rating' => $request->input('rating'),
-            'review' => $request->input('review'),
-            'variant_id' => $variantId,
-            'variant_info' => $variantInfo,
-        ]);
-
-        return redirect()->back()->with('success', 'Đánh giá của bạn đã được thêm!');
     }
 
     public function showReviews($productId)
@@ -748,4 +804,74 @@ class WebProductController extends Controller
     //         'success' => 'Sản phẩm đã được xóa khỏi danh sách yêu thích.'
     //     ], 200); // Trả về mã lỗi 200 khi thành công
     // }
+
+    public function checkReview(Request $request, $productId)
+    {
+        $review = ProductReview::where('product_id', $productId)
+            ->where('variant_id', $request->variant_id)
+            ->where('user_id', auth()->id())
+            ->where('order_id', $request->order_id)
+            ->first();
+
+        return response()->json([
+            'exists' => $review ? true : false,
+            'review' => $review
+        ]);
+    }
+
+    public function getReview(Request $request, $productId)
+    {
+        $review = ProductReview::where('product_id', $productId)
+            ->where('variant_id', $request->variant_id)
+            ->where('user_id', auth()->id())
+            ->where('order_id', $request->order_id)
+            ->with('user')
+            ->first();
+
+        return response()->json(['review' => $review]);
+    }
+
+    /**
+     * Lấy danh sách đánh giá theo biến thể sản phẩm
+     *
+     * @param int $productId
+     * @param int $variantId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getVariantReviews($productId, $variantId)
+    {
+        try {
+            $reviews = ProductReview::where('product_id', $productId)
+                ->where('variant_id', $variantId)
+                ->with(['user', 'product', 'variant'])
+                ->orderBy('created_at', 'desc')
+                ->get()
+                ->map(function ($review) {
+                    return [
+                        'id' => $review->id,
+                        'rating' => $review->rating,
+                        'content' => $review->content,
+                        'images' => is_string($review->images) ? json_decode($review->images, true) : $review->images,
+                        'video' => $review->video,
+                        'user_name' => $review->user->name,
+                        'product_name' => $review->product->name,
+                        'variant_name' => $review->variant->name ?? 'Mặc định',
+                        'created_at' => $review->created_at->format('d/m/Y H:i:s'),
+                    ];
+                });
+
+            return response()->json([
+                'success' => true,
+                'reviews' => $reviews,
+                'total' => $reviews->count(),
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error getting variant reviews: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Có lỗi xảy ra khi tải đánh giá',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

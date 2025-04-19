@@ -14,8 +14,32 @@ class ProductReview extends Model
         'user_id',
         'variant_id',
         'rating',
-        'review'
+        'review',
+        'images',
+        'video',
+        'order_id'
     ];
+
+    protected $casts = [
+        'images' => 'array'
+    ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($review) {
+            $exists = static::where('product_id', $review->product_id)
+                ->where('variant_id', $review->variant_id)
+                ->where('user_id', $review->user_id)
+                ->where('order_id', $review->order_id)
+                ->exists();
+
+            if ($exists) {
+                throw new \Exception('Bạn đã đánh giá sản phẩm này cho đơn hàng này rồi');
+            }
+        });
+    }
 
     public function product()
     {
@@ -35,5 +59,10 @@ class ProductReview extends Model
     public function responses()
     {
         return $this->hasMany(ReviewResponse::class, 'review_id');
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
     }
 }
