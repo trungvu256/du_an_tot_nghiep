@@ -187,7 +187,7 @@ class WebController extends Controller
             ->where('id', $detailproduct->category_id)
             ->where('id', '!=', $detailproduct->id)
             ->orderBy('id', 'DESC')
-            ->take(4)
+            ->take(6)
             ->get();
 
         if (!$detailproduct) {
