@@ -346,12 +346,13 @@ class HomeController extends Controller
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email',
+            'phone' => 'required|string|regex:/^[0-9\s+]{10,15}$/',
             'message' => 'required|string',
         ]);
     
         Mail::to('trongvnph47351@fpt.edu.vn')->send(new ContactEmail($data));
     
-        return back()->with('success', 'Cảm ơn bạn đã liên hệ!');
+        return back()->with('success', 'Bạn đã gửi tin nhắn thành công');
     }
     
     public function contactPage()
