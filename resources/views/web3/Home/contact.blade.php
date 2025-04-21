@@ -98,12 +98,13 @@
                                 muốn sớm nhận được phản hồi từ bạn.
                             </p>
                             <div class="form-contact-wrap">
-                                <form action="#" class="form-default">
+                                <form action="{{ route('web.contact') }}" method="POST" class="form-default">
+                                    @csrf
                                     <div class="wrap">
                                         <div class="cols">
                                             <fieldset>
                                                 <label for="username">Tên bạn*</label>
-                                                <input id="username" type="text" name="username" required>
+                                                <input id="username" type="text" name="name" required>
                                             </fieldset>
                                             <fieldset>
                                                 <label for="email">Email của bạn*</label>
@@ -113,7 +114,7 @@
                                         <div class="cols">
                                             <fieldset class="textarea">
                                                 <label for="mess">Nhập nội dung</label>
-                                                <textarea id="mess" required></textarea>
+                                                <textarea id="mess" name="message" required></textarea>
                                             </fieldset>
                                         </div>
                                         <div class="button-submit">
@@ -123,7 +124,14 @@
                                         </div>
                                     </div>
                                 </form>
+
+                                @if(session('success'))
+                                <div style="color: green; margin-top: 10px;">
+                                    {{ session('success') }}
+                                </div>
+                                @endif
                             </div>
+
                         </div>
                     </div>
                 </div>

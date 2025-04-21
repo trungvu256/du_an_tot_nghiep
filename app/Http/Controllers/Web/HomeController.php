@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Web;
-
+use App\Mail\ContactEmail;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Blog;
 use App\Models\User;
 use App\Models\order;
@@ -338,5 +339,24 @@ class HomeController extends Controller
         }
         Auth::login($user);
     }
-
+  
+    
+    public function contact(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'message' => 'required|string',
+        ]);
+    
+        Mail::to('trongvnph47351@fpt.edu.vn')->send(new ContactEmail($data));
+    
+        return back()->with('success', 'Cảm ơn bạn đã liên hệ!');
+    }
+    
+    public function contactPage()
+    {
+        return view('web3.Home.contact');
+    }
+    
 }
