@@ -173,7 +173,9 @@
                         </div>
                     </div>
                 </form>
-
+                <p style="margin-top: 10px;">
+    <a href="{{ url('/forgot-password') }}">Bạn đã quên mật khẩu?</a>
+</p>
                 <!-- <div class="other-login mt-3">
                     <p class="text-sm text-center text-main-2">Hoặc đăng nhập bằng:</p>
                     <a href="#" class="w-100 text-md mb_8">
@@ -182,6 +184,7 @@
                             viewBox="0 0 32 32"><!-- icon content</svg>
                         FACEBOOK
                     </a>
+                    
                     <a href="#" class="w-100 text-md bg-dark">
                         {{-- Google Icon --}}
                         <svg class="icon" width="32" height="32"
