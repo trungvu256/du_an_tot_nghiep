@@ -33,6 +33,7 @@ use App\Http\Controllers\Admin\PerfumeVariantController;
 use App\Http\Controllers\Admin\PromotionController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\Web\BlogController as WebBlogController;
 use App\Http\Controllers\Web\CartController;
@@ -440,6 +441,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('comment/{comment}/reply', [WebProductController::class, 'storeReply'])->name('client.storeReply');
 });
 });
+    //reset pass user
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'showForm']);
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendOtp']);
+    Route::get('/verify-otp', [ForgotPasswordController::class, 'showOtpForm']);
+    Route::post('/verify-otp', [ForgotPasswordController::class, 'verifyOtp']);
+    Route::get('/reset-password', [ForgotPasswordController::class, 'showResetForm']);
+    Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword']);
+
+
+
 
 
     // Bình luận và phản hồi
