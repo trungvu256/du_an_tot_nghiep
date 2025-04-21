@@ -368,6 +368,10 @@ Route::post('/forget', [WebLoginController::class, 'postForget'])->name('web.pos
 Route::get('/getPass', [WebLoginController::class, 'getPass'])->name('web.getPass');
 Route::post('/getPass/{id}', [WebLoginController::class, 'savePass'])->name('web.getPass.post');
 
+// liên hệ
+Route::get('/contact', [HomeController::class, 'contactPage'])->name('web.contact.page');
+
+Route::post('/contact', [HomeController::class, 'contact'])->name('web.contact');
 //Checkout
 Route::get('/checkout', [HomeController::class, 'checkout'])->name('web.checkout');
 Route::post('/checkout', [HomeController::class, 'checkoutPost'])->name('web.checkout.post');
