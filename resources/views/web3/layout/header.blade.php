@@ -240,7 +240,7 @@
                                 <a href="#" class="item-link">Liên hệ</a>
                             </li>
                             <li class="menu-item position-relative">
-                                <a href="" class="item-link">Bài viết</a>
+                                <a href="{{route('web.listBlog.blog')}}" class="item-link">Bài viết</a>
 
                             </li>
 
