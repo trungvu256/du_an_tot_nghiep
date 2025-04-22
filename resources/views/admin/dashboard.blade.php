@@ -250,7 +250,7 @@
                                     <div class="card">
                                         <div class="card-header border-0 align-items-center d-flex">
                                             <h4 class="card-title mb-0 flex-grow-1">Biểu đồ doanh thu</h4>
-                                            <div>
+                                            {{-- <div>
                                                 <button type="button" class="btn btn-soft-secondary btn-sm" onclick="updateChart('today')">
                                                     Hôm nay
                                                 </button>
@@ -260,7 +260,7 @@
                                                 <button type="button" class="btn btn-soft-primary btn-sm" onclick="updateChart('30days')">
                                                     30 ngày
                                                 </button>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                         <div class="card-body p-0 pb-2">
                                             <div style="min-height: 365px;">
@@ -277,7 +277,7 @@
                                         <div class="card-header align-items-center d-flex">
                                             <h4 class="card-title mb-0 flex-grow-1">Top 5 sản phẩm bán chạy nhất</h4>
                                             <div class="flex-shrink-0">
-                                                <div class="dropdown">
+                                                {{-- <div class="dropdown">
                                                     <button class="btn btn-soft-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                         <span class="text-uppercase">Khoảng thời gian</span>
                                                     </button>
@@ -288,7 +288,7 @@
                                                         <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}?selectedOrderPeriod=3weeks">21 ngày</a></li>
                                                         <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}?selectedOrderPeriod=4weeks">28 ngày</a></li>
                                                     </ul>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                         </div>
                                         <div class="card-body">

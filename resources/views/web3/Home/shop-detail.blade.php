@@ -292,7 +292,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="row mb-4">
                                     <div class="col-md-4">
                                         <div class="card">
@@ -328,9 +328,9 @@
 
                                 <!-- Danh sách đánh giá -->
                                 <div id="reviews-container">
-                                    <div class="alert alert-info text-center py-4">
+                                    <div class="alert text-center py-4">
                                         <i class="fas fa-tag fa-2x mb-3 d-block"></i>
-                                        <h5 class="mb-2">Vui lòng chọn biến thể sản phẩm</h5>
+                                        {{-- <h5 class="mb-2">Vui lòng chọn biến thể sản phẩm</h5> --}}
                                         <p class="mb-0">Hãy chọn biến thể sản phẩm bên trên để xem đánh giá từ khách hàng</p>
                                     </div>
                                 </div>
@@ -666,7 +666,7 @@
 
                         // Cập nhật đánh giá cho biến thể đã chọn
                         loadReviews(matchedVariant.id);
-                        
+
                         // Hiển thị thông tin biến thể đã chọn trong tab đánh giá
                         updateSelectedVariantInfo(matchedVariant.id);
                     } else {
@@ -810,14 +810,14 @@
             function updateSelectedVariantInfo(variantId) {
                 // Tìm tên biến thể từ các thuộc tính đã chọn
                 const variantInfoElement = document.getElementById('selected-variant-info');
-                
+
                 if (Object.keys(selectedAttributes).length > 0) {
                     let attributeText = '';
                     Object.keys(selectedAttributes).forEach((attrName, index) => {
                         if (index > 0) attributeText += ', ';
                         attributeText += `${attrName}: ${selectedAttributes[attrName]}`;
                     });
-                    
+
                     variantInfoElement.innerHTML = `
                         <span class="badge bg-primary text-white p-2">
                             <i class="fas fa-check-circle me-1"></i>
@@ -891,7 +891,7 @@
                                     <p class="text-muted mb-0">Chưa có đánh giá nào cho biến thể này. Hãy đặt hàng và là người đầu tiên đánh giá!</p>
                                 </div>
                             `;
-                            
+
                             // Ẩn phân trang
                             document.getElementById('reviews-pagination').innerHTML = '';
                         }
@@ -914,7 +914,7 @@
             function resetReviewSummary() {
                 document.getElementById('average-rating').textContent = '0.0';
                 document.getElementById('total-reviews').textContent = '0';
-                
+
                 // Đặt lại các thanh tiến trình
                 for (let i = 5; i >= 1; i--) {
                     const progressBar = document.querySelector(`.progress-bar[data-rating="${i}"]`);
@@ -947,7 +947,7 @@
 
                 ratingStars.forEach((star, index) => {
                     // Reset classes first
-                    star.className = ''; 
+                    star.className = '';
 
                     if (index < fullStars) {
                         // Full star
@@ -968,7 +968,7 @@
 
                 // Cập nhật thanh tiến trình cho từng mức đánh giá
                 const ratingCounts = summary.rating_counts || {};
-                
+
                 for (let i = 5; i >= 1; i--) {
                     const count = parseInt(ratingCounts[i]) || 0;
                     const percentage = totalReviews > 0 ? (count / totalReviews) * 100 : 0;
@@ -980,7 +980,7 @@
                         progressBar.style.width = `${percentage}%`;
                         progressBar.setAttribute('aria-valuenow', percentage);
                     }
-                    
+
                     if (ratingCount) {
                         ratingCount.textContent = count;
                     }
@@ -1004,7 +1004,7 @@
 
                 reviews.forEach(review => {
                     if (!review) return; // Skip if review is null or undefined
-                    
+
                     let starsHtml = '';
                     for (let i = 1; i <= 5; i++) {
                         if (i <= review.rating) {
@@ -1077,13 +1077,13 @@
                                         <span class="badge bg-success">Đã mua hàng</span>
                                 </div>
                             </div>
-                                
+
                                 <div class="review-content mt-3">
                                     <p class="mb-2">${reviewContent}</p>
                                     ${imagesHtml}
                                     ${videoHtml}
                             </div>
-                                
+
                             ${review.responses && review.responses.length > 0 ? `
                                     <div class="review-responses mt-3 pt-3 border-top">
                                         <h6 class="mb-2 text-secondary"><i class="fas fa-reply me-2"></i>Phản hồi</h6>
@@ -1188,7 +1188,7 @@
             document.addEventListener('DOMContentLoaded', function() {
                 // Automatically load reviews if a variant is pre-selected
                 // This will be triggered by the selectAttribute function when a user selects a variant
-                
+
                 // Add tab switch handling for reviews tab to ensure correct display
                 const reviewsTab = document.getElementById('reviews-tab');
                 if (reviewsTab) {
