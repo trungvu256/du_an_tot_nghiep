@@ -446,17 +446,11 @@ Route::middleware(['auth'])->group(function () {
 });
 });
     //reset pass user
-    Route::get('/forgot-password', [ForgotPasswordController::class, 'showForm']);
-    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendOtp']);
-    Route::get('/verify-otp', [ForgotPasswordController::class, 'showOtpForm']);
-    Route::post('/verify-otp', [ForgotPasswordController::class, 'verifyOtp']);
-    Route::get('/reset-password', [ForgotPasswordController::class, 'showResetForm']);
-    Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword']);
-
-
     Route::post('/forgot-password', [ForgotPasswordController::class, 'sendOtp'])->name('password.email');
     Route::post('/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])->name('password.verify');
     Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('password.reset');
+
+
 
 
 
