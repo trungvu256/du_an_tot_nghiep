@@ -929,7 +929,11 @@
                                 </div>
                             `;
 
+
+
                             // Ẩn phân trang
+
+
                             document.getElementById('reviews-pagination').innerHTML = '';
                         }
                     })
@@ -950,7 +954,11 @@
                 document.getElementById('average-rating').textContent = '0.0';
                 document.getElementById('total-reviews').textContent = '0';
 
+
                 // Đặt lại các thanh tiến trình
+
+
+
                 for (let i = 5; i >= 1; i--) {
                     const progressBar = document.querySelector(`.progress-bar[data-rating="${i}"]`);
                     const ratingCount = document.querySelector(`.rating-count[data-rating="${i}"]`);
@@ -977,6 +985,7 @@
                 const hasHalfStar = averageRating % 1 >= 0.5;
 
                 ratingStars.forEach((star, index) => {
+
                     // Reset classes first
                     star.className = '';
 
@@ -1028,7 +1037,11 @@
                 let reviewsHtml = '<div class="reviews-list">';
 
                 reviews.forEach(review => {
+
+
                     if (!review) return; // Skip if review is null or undefined
+
+
 
                     let starsHtml = '';
                     for (let i = 1; i <= 5; i++) {
@@ -1095,15 +1108,23 @@
                                     <div class="review-badge">
                                         <span class="badge bg-success">Đã mua hàng</span>
                                 </div>
+
                             </div>
+
+
+
 
                                 <div class="review-content mt-3">
                                     <p class="mb-2">${reviewContent}</p>
                                     ${imagesHtml}
                                     ${videoHtml}
+
+
                             </div>
 
                             ${review.responses && review.responses.length > 0 ? `
+
+
                                     <div class="review-responses mt-3 pt-3 border-top">
                                         <h6 class="mb-2 text-secondary"><i class="fas fa-reply me-2"></i>Phản hồi</h6>
                                         ${review.responses.map(response => {
@@ -1199,10 +1220,18 @@
             }
 
             document.addEventListener('DOMContentLoaded', function() {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 565ba00448792d20a3393f2aa188aef01c643d7e
                 // Automatically load reviews if a variant is pre-selected
                 // This will be triggered by the selectAttribute function when a user selects a variant
 
                 // Add tab switch handling for reviews tab to ensure correct display
+<<<<<<< HEAD
+=======
+
+>>>>>>> 565ba00448792d20a3393f2aa188aef01c643d7e
                 const reviewsTab = document.getElementById('reviews-tab');
                 if (reviewsTab) {
                     reviewsTab.addEventListener('click', function() {
