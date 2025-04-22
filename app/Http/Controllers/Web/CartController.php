@@ -694,5 +694,76 @@ public function showHeaderCart()
         'totalQuantity' => $totalQuantity
     ]);
 }
+public function create(Request $request, $id)
+{
+    // Lấy thông tin sản phẩm
+    $product = Product::findOrFail($id);
+
+    // Lấy giỏ hàng từ session
+    $cart = session()->get('cart', []);
+
+    // Lấy thông tin từ request
+    $attributes = json_decode($request->input('attributes'), true);
+    $price = $request->input('price');
+    $priceSale = $request->input('price_sale');
+    $stockQuantity = $request->input('stock_quantity');
+    $quantity = $request->input('quantity', 1);
+
+    // Kiểm tra nếu không chọn đủ thuộc tính
+    if (empty($attributes)) {
+        return redirect()->back()->with('error', 'Vui lòng chọn đầy đủ các thuộc tính.');
+    }
+
+    // Kiểm tra giá và giá khuyến mãi
+    if (empty($price) || $price <= 0) {
+        return redirect()->back()->with('error', 'Giá sản phẩm không hợp lệ.');
+    }
+
+    // Kiểm tra tồn kho
+    if ($stockQuantity <= 0) {
+        return redirect()->back()->with('error', 'Sản phẩm đã hết hàng.');
+    }
+
+    // Kiểm tra số lượng yêu cầu so với tồn kho
+    if ($quantity > $stockQuantity) {
+        return redirect()->back()->with('error', "Số lượng yêu cầu vượt quá tồn kho. Chỉ còn $stockQuantity sản phẩm.");
+    }
+
+    // Lấy giá cuối cùng (ưu tiên giá khuyến mãi nếu có)
+    $finalPrice = $priceSale > 0 && $priceSale < $price ? $priceSale : $price;
+
+    // Tạo key duy nhất cho sản phẩm trong giỏ hàng (dựa trên product_id và attributes)
+    $attributesString = implode('-', array_values($attributes)); // Chuyển các thuộc tính thành chuỗi
+    $cartKey = $product->id . '-' . md5($attributesString);
+
+    // Kiểm tra nếu sản phẩm đã có trong giỏ hàng
+    if (isset($cart[$cartKey])) {
+        // Nếu có rồi, tăng số lượng
+        $newQuantity = $cart[$cartKey]['quantity'] + $quantity;
+        if ($newQuantity > $stockQuantity) {
+            return redirect()->back()->with('error', "Số lượng trong giỏ vượt quá tồn kho. Chỉ còn $stockQuantity sản phẩm.");
+        }
+        $cart[$cartKey]['quantity'] = $newQuantity;
+    } else {
+        // Nếu chưa có trong giỏ, thêm mới vào giỏ
+        $cart[$cartKey] = [
+            'id' => $product->id,
+            'name' => $product->name,
+            'price' => (float)$price,
+            'price_sale' => (float)$priceSale,
+            'image' => $product->image,
+            'quantity' => $quantity,
+            'stock_quantity' => $stockQuantity,
+            'variant' => [
+                'attributes' => $attributes,
+            ]
+        ];
+    }
+
+    // Lưu giỏ vào session
+    session()->put('cart', $cart);
+
+    return redirect()->route('cart.viewCart')->with('success', 'Đã thêm vào giỏ hàng');
+}
 
 }
