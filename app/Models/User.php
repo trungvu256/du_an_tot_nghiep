@@ -92,4 +92,9 @@ class User extends Authenticatable
                 ->withPivot('is_used')
                 ->withTimestamps();
 }
+public function addresses()
+{
+    return $this->hasMany(UserAddress::class);
+}
+
 }

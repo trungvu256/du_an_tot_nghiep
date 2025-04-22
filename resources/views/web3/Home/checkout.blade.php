@@ -30,10 +30,53 @@
                 @csrf
                 <input type="hidden" name="selected_cart_items" id="selected_cart_items" value='@json(array_keys($filteredCart))'>
                 <input type="hidden" name="amount" id="offline-amount" value="{{ $totalAmount }}">
-
+            
                 <!-- Thông tin mua hàng -->
                 <div class="mb-4">
                     <h4 class="font-weight-semi-bold mb-4">Thông tin mua hàng</h4>
+                    <div class="mb-4">
+                        <select name="selected_address" id="selected_address" class="form-control">
+                            <option value="">Chọn địa chỉ khác</option>
+                            @foreach ($user->addresses as $address)
+                                <option 
+                                    value="{{ $address->id }}"
+                                    data-name="{{ $address->full_name }}"
+                                    data-phone="{{ $address->phone }}"
+                                    data-address="{{ $address->full_address }}"
+                                >
+                                    {{ $address->full_name }}, {{ $address->full_address }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <input type="hidden" name="user_address_id" id="user_address_id">
+                        @error('user_address_id')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+            
+                        <script>
+                            document.getElementById('selected_address').addEventListener('change', function () {
+                                const selectedOption = this.options[this.selectedIndex];
+                        
+                                const name = selectedOption.getAttribute('data-name') || '';
+                                const phone = selectedOption.getAttribute('data-phone') || '';
+                                const address = selectedOption.getAttribute('data-address') || '';
+                        
+                                // Gán vào các ô input
+                                document.querySelector('input[name="billing_name"]').value = name;
+                                document.querySelector('input[name="billing_phone"]').value = phone;
+                                document.querySelector('input[name="billing_address"]').value = address;
+                                document.getElementById('user_address_id').value = this.value; // Sửa lỗi addressId
+                            });
+            
+                            // Gọi hàm khi trang tải để đồng bộ giá trị ban đầu
+                            document.addEventListener('DOMContentLoaded', function() {
+                                const selectedAddress = document.getElementById('selected_address');
+                                if (selectedAddress.value) {
+                                    selectedAddress.dispatchEvent(new Event('change'));
+                                }
+                            });
+                        </script>
+                    </div>
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label>Email (tùy chọn)</label>
@@ -69,16 +112,16 @@
                         </div>
                     </div>
                 </div>
-
+            
                 <!-- Checkbox để chọn giao hàng đến địa chỉ khác -->
                 <div class="form-group">
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" id="ship-to-different-address"
-                            name="ship_to_different_address">
+                            name="ship_to_different_address" data-toggle="collapse" data-target="#shipping-address">
                         <label class="custom-control-label" for="ship-to-different-address">Giao hàng đến địa chỉ khác</label>
                     </div>
                 </div>
-
+            
                 <!-- Thông tin giao hàng (ẩn ban đầu) -->
                 <div class="collapse mb-4" id="shipping-address">
                     <h4 class="font-weight-semi-bold mb-4">Thông tin nhận hàng</h4>
@@ -131,6 +174,9 @@
                         </div>
                     </div>
                 </div>
+            
+                <!-- Nút gửi form -->
+                {{-- <button type="submit" class="btn btn-success">Thanh toán</button> --}}
             </form>
         </div>
 
@@ -157,16 +203,33 @@
                 <div class="card-body">
                     <h5 class="font-weight-medium mb-3">Sản Phẩm</h5>
                     @foreach ($filteredCart as $cartKey => $item)
-                    <div class="d-flex justify-content-between">
-                        <p>{{ $item['name'] }} (x{{ $item['quantity'] }})</p>
-                        <p>
-                            @if(!empty($item['price_sale']) && $item['price_sale'] > 0)
-                            {{ number_format($item['price_sale'], 0, ',', '.') }}₫
-                            @else
-                            {{ number_format($item['price'], 0, ',', '.') }}₫
-                            @endif
-                        </p>
+                    <div class="cart-item d-flex align-items-center justify-content-between py-2 border-bottom">
+                        <div class="d-flex align-items-center">
+                            <img src="{{ asset('storage/' . ($item['image'] ?? 'default.jpg')) }}" alt="" class="item-image me-3">
+                            <div>
+                                <p class="mb-1 fw-semibold">{{ $item['name'] }}</p>
+                                <small class="text-muted">x{{ $item['quantity'] }}</small>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <p class="mb-0 text-danger fw-bold">
+                                @if(!empty($item['price_sale']) && $item['price_sale'] > 0)
+                                    {{ number_format($item['price_sale'], 0, ',', '.') }}₫
+                                @else
+                                    {{ number_format($item['price'], 0, ',', '.') }}₫
+                                @endif
+                            </p>
+                        </div>
                     </div>
+                    <style>
+                        .cart-item .item-image {
+                            width: 50px;
+                            height: 50px;
+                            object-fit: cover;
+                            border-radius: 5px;
+                        }
+                    </style>
+                                        
                     @endforeach
 
                     <hr class="mt-0">
@@ -194,13 +257,31 @@
 
             <div class="card-footer border-secondary bg-transparent">
                 <!-- Form thanh toán VNPay -->
-                <form action="{{ route('checkout.depositVNPay') }}" method="POST" class="payment-form">
-                    @csrf
-                    <input type="hidden" name="amount" id="vnpay-amount" value="{{ $totalAmount }}">
-                    <button type="submit" class="btn btn-primary btn-payment w-100 mt-3">
-                        💰 Thanh toán bằng VNPay
-                    </button>
-                </form>
+                <div class="card-footer border-secondary bg-transparent">
+                    <!-- Form thanh toán VNPay -->
+                    <form action="{{ route('checkout.depositVNPay') }}" method="POST" class="payment-form" id="vnpayForm">
+                        @csrf
+                        <input type="hidden" name="amount" id="vnpay-amount" value="{{ $totalAmount }}">
+                        <!-- Thêm các trường ẩn để gửi thông tin địa chỉ -->
+                        <input type="hidden" name="selected_cart_items" id="vnpay-selected_cart_items" value='@json(array_keys($filteredCart))'>
+                        <input type="hidden" name="user_address_id" id="vnpay-user_address_id">
+                        <input type="hidden" name="billing_name" id="vnpay-billing_name">
+                        <input type="hidden" name="billing_phone" id="vnpay-billing_phone">
+                        <input type="hidden" name="billing_address" id="vnpay-billing_address">
+                        <input type="hidden" name="email" id="vnpay-email">
+                        <input type="hidden" name="ship_to_different_address" id="vnpay-ship_to_different_address" value="0">
+                        <input type="hidden" name="shipping_name" id="vnpay-shipping_name">
+                        <input type="hidden" name="shipping_phone" id="vnpay-shipping_phone">
+                        <input type="hidden" name="shipping_address" id="vnpay-shipping_address">
+                        <input type="hidden" name="shipping_province" id="vnpay-shipping_province">
+                        <input type="hidden" name="shipping_district" id="vnpay-shipping_district">
+                        <input type="hidden" name="shipping_ward" id="vnpay-shipping_ward">
+                        <input type="hidden" name="shipping_note" id="vnpay-shipping_note">
+                        <button type="submit" class="btn btn-primary btn-payment w-100 mt-3">
+                            💰 Thanh toán bằng VNPay
+                        </button>
+                    </form>
+                </div>
             </div>
 
             <div class="card-footer border-secondary bg-transparent">
@@ -488,6 +569,74 @@
                 if (!province || !district || !ward) {
                     event.preventDefault();
                     alert('Vui lòng chọn đầy đủ Tỉnh/Thành phố, Quận/Huyện và Phường/Xã!');
+                    return false;
+                }
+            }
+        });
+    });
+
+    // Thêm script để cập nhật thông tin địa chỉ cho form VNPay
+    document.addEventListener('DOMContentLoaded', function() {
+        // Hàm cập nhật thông tin địa chỉ cho form VNPay
+        function updateVNPayForm() {
+            const shipToDifferentAddress = document.getElementById('ship-to-different-address').checked;
+            
+            // Cập nhật thông tin billing
+            document.getElementById('vnpay-billing_name').value = document.querySelector('input[name="billing_name"]').value;
+            document.getElementById('vnpay-billing_phone').value = document.querySelector('input[name="billing_phone"]').value;
+            document.getElementById('vnpay-billing_address').value = document.querySelector('input[name="billing_address"]').value;
+            document.getElementById('vnpay-email').value = document.querySelector('input[name="email"]').value;
+            document.getElementById('vnpay-user_address_id').value = document.getElementById('user_address_id').value;
+
+            // Cập nhật thông tin shipping nếu có
+            if (shipToDifferentAddress) {
+                document.getElementById('vnpay-ship_to_different_address').value = '1';
+                document.getElementById('vnpay-shipping_name').value = document.querySelector('input[name="shipping_name"]').value;
+                document.getElementById('vnpay-shipping_phone').value = document.querySelector('input[name="shipping_phone"]').value;
+                document.getElementById('vnpay-shipping_address').value = document.querySelector('input[name="shipping_address"]').value;
+                document.getElementById('vnpay-shipping_province').value = document.querySelector('select[name="shipping_province"]').value;
+                document.getElementById('vnpay-shipping_district').value = document.querySelector('select[name="shipping_district"]').value;
+                document.getElementById('vnpay-shipping_ward').value = document.querySelector('select[name="shipping_ward"]').value;
+                document.getElementById('vnpay-shipping_note').value = document.querySelector('textarea[name="shipping_note"]').value;
+            } else {
+                document.getElementById('vnpay-ship_to_different_address').value = '0';
+            }
+        }
+
+        // Cập nhật thông tin khi form thay đổi
+        document.querySelectorAll('input, select, textarea').forEach(element => {
+            element.addEventListener('change', updateVNPayForm);
+        });
+
+        // Cập nhật thông tin khi checkbox thay đổi
+        document.getElementById('ship-to-different-address').addEventListener('change', updateVNPayForm);
+
+        // Cập nhật thông tin ban đầu
+        updateVNPayForm();
+
+        // Thêm validation khi submit form VNPay
+        document.getElementById('vnpayForm').addEventListener('submit', function(event) {
+            const billingName = document.getElementById('vnpay-billing_name').value;
+            const billingPhone = document.getElementById('vnpay-billing_phone').value;
+            const billingAddress = document.getElementById('vnpay-billing_address').value;
+
+            if (!billingName || !billingPhone || !billingAddress) {
+                event.preventDefault();
+                alert('Vui lòng nhập đầy đủ thông tin người nhận hàng!');
+                return false;
+            }
+
+            if (document.getElementById('ship-to-different-address').checked) {
+                const shippingName = document.getElementById('vnpay-shipping_name').value;
+                const shippingPhone = document.getElementById('vnpay-shipping_phone').value;
+                const shippingAddress = document.getElementById('vnpay-shipping_address').value;
+                const shippingProvince = document.getElementById('vnpay-shipping_province').value;
+                const shippingDistrict = document.getElementById('vnpay-shipping_district').value;
+                const shippingWard = document.getElementById('vnpay-shipping_ward').value;
+
+                if (!shippingName || !shippingPhone || !shippingAddress || !shippingProvince || !shippingDistrict || !shippingWard) {
+                    event.preventDefault();
+                    alert('Vui lòng nhập đầy đủ thông tin địa chỉ giao hàng!');
                     return false;
                 }
             }
