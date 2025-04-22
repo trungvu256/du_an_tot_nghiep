@@ -109,10 +109,10 @@
                             <div class="tf-collapse-content">
                                 <ul class="footer-menu-list">
                                     <li>
-                                        <a href="about-us.html">Nước hoa nam</a>
+                                        <a href="#">Nước hoa nam</a>
                                     </li>
                                     <li>
-                                        <a href="contact-us.html">Nước hoa nữ</a>
+                                        <a href="#">Nước hoa nữ</a>
                                     </li>
 
                                 </ul>
@@ -124,16 +124,16 @@
                             <div class="tf-collapse-content">
                                 <ul class="footer-menu-list">
                                     <li>
-                                        <a href="privacy-policy.html">Trang chủ</a>
+                                        <a href="{{ route('web.home') }}">Trang chủ</a>
                                     </li>
                                     <li>
-                                        <a href="term-and-condition.html">Sản phẩm</a>
+                                        <a href="{{ route('web.shop') }}">Sản phẩm</a>
                                     </li>
                                     <li>
-                                        <a href="return-and-refund.html">Bài viết</a>
+                                        <a href="{{route('web.listBlog.blog')}}">Bài viết</a>
                                     </li>
                                     <li>
-                                        <a href="faq.html">Liên hệ</a>
+                                        <a href="{{ route('web.contact.page')}}">Liên hệ</a>
                                     </li>
 
                                 </ul>
