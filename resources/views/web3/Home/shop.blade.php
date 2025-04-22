@@ -38,12 +38,15 @@
                                 {{-- Thương hiệu --}}
                                 <div class="mb-4 p-3 border rounded">
                                     <h6 class="fw-semibold text-uppercase mb-3">Thương hiệu</h6>
+                                
+                                    <!-- Ô tìm kiếm -->
                                     <div class="input-group mb-3">
                                         <input type="text" id="brand-search" class="form-control" placeholder="Tìm Thương hiệu">
                                         <span class="input-group-text"><i class="fas fa-search"></i></span>
-
                                     </div>
-                                    <div class="filter-scroll" id="brand-list">
+                                
+                                    <!-- Danh sách cuộn riêng biệt -->
+                                    <div id="brand-list" style="max-height: 150px; overflow-y: auto;">
                                         @foreach($brands as $brand)
                                             <div class="form-check mb-2">
                                                 <input class="form-check-input" type="checkbox" name="brand[]" id="brand_{{ $brand->id }}"
@@ -56,35 +59,159 @@
                                         @endforeach
                                     </div>
                                 </div>
+                                
 
                                 {{-- Giá sản phẩm --}}
-                                <div class="mb-4 p-3 border rounded filter-scroll">
+                                <div class="mb-4 p-3 border rounded">
                                     <h6 class="fw-semibold text-uppercase mb-3">Giá sản phẩm</h6>
-                                    @php
-                                        $priceOptions = [
-                                            '0-100000' => 'Giá dưới 100.000đ',
-                                            '100000-200000' => '100.000đ - 200.000đ',
-                                            '200000-300000' => '200.000đ - 300.000đ',
-                                            '300000-500000' => '300.000đ - 500.000đ',
-                                            '500000-1000000' => '500.000đ - 1.000.000đ',
-                                            '1000000-99999999' => 'Giá trên 1.000.000đ'
-                                        ];
-                                    @endphp
-                                    @foreach($priceOptions as $range => $label)
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="checkbox" name="price_range[]" id="price_{{ $range }}"
-                                                value="{{ $range }}"
-                                                {{ in_array($range, (array) request()->input('price_range', [])) ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="price_{{ $range }}">
-                                                {{ $label }}
-                                            </label>
-                                        </div>
-                                    @endforeach
+                                
+                                    <!-- Vùng cuộn bắt đầu từ đây -->
+                                    <div style="max-height: 150px; overflow-y: auto;">
+                                        @php
+                                            $priceOptions = [
+                                                '0-100000' => 'Giá dưới 100.000đ',
+                                                '100000-200000' => '100.000đ - 200.000đ',
+                                                '200000-300000' => '200.000đ - 300.000đ',
+                                                '300000-500000' => '300.000đ - 500.000đ',
+                                                '500000-1000000' => '500.000đ - 1.000.000đ',
+                                                '1000000-99999999' => 'Giá trên 1.000.000đ'
+                                            ];
+                                        @endphp
+                                
+                                        @foreach($priceOptions as $range => $label)
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" name="price_range[]" id="price_{{ $range }}"
+                                                    value="{{ $range }}"
+                                                    {{ in_array($range, (array) request()->input('price_range', [])) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="price_{{ $range }}">
+                                                    {{ $label }}
+                                                </label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    <!-- Kết thúc vùng cuộn -->
                                 </div>
+                                
                             </div>
                         </div>
                     </form>
 
+                    <br>
+                    {{-- Danh mục --}}
+                    <div class="mb-4 p-3 border rounded card">
+                        <div class="card-body">
+                        <h6 class="fw-semibold text-uppercase mb-3">Danh mục</h6>
+                        <ul class="box-nav-menu list-unstyled mb-0">
+                    
+                            <li class="menu-item">
+                                <a href="{{ route('web.home') }}" class="item-link">Trang chủ</a>
+                            </li>
+                    
+                            <li class="menu-item has-sub">
+                                <a href="#" class="item-link toggle-sub">Thương hiệu <i class="icon icon-arr-down float-end" style="font-size: 10px;"></i></a>
+                                <ul class="submenu list-unstyled ps-3" style="display: none;">
+                                    @foreach ($brands as $brand)
+                                        <li>
+                                            <a href="{{ route('web.shop', ['brand_id' => $brand->id]) }}" class="item-link">
+                                                {{ $brand->name }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                    
+                            <li class="menu-item has-sub">
+                                <a href="#" class="item-link toggle-sub">Danh mục <i class="icon icon-arr-down float-end" style="font-size: 10px;"></i></a>
+                                <ul class="submenu list-unstyled ps-3" style="display: none;">
+                                    @foreach ($categories as $category)
+                                        <li>
+                                            <a href="{{ route('web.shop', ['cate_id' => $category->id]) }}" class="item-link">
+                                                {{ $category->name }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                    @php $latestProduct = $productNews->first(); @endphp
+                                    @if ($latestProduct)
+                                        <li>
+                                            <a href="{{ route('web.shop', ['type' => 'new']) }}" class="item-link">Sản phẩm mới</a>
+                                        </li>
+                                    @endif
+                                </ul>
+                            </li>
+                    
+                            <li class="menu-item">
+                                <a href="#" class="item-link">Liên hệ</a>
+                            </li>
+                    
+                            <li class="menu-item">
+                                <a href="#" class="item-link">Bài viết</a>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </div>
+                    
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            document.querySelectorAll('.box-nav-menu .has-sub .toggle-sub').forEach(function (toggle) {
+                                toggle.addEventListener('click', function (e) {
+                                    e.preventDefault();
+                                    const parent = this.closest('.has-sub');
+                                    parent.classList.toggle('open');
+                                    const submenu = parent.querySelector('.submenu');
+                                    if (submenu.style.display === "none" || submenu.style.display === "") {
+                                        submenu.style.display = "block";
+                                    } else {
+                                        submenu.style.display = "none";
+                                    }
+                                });
+                            });
+                        });
+                    </script>
+                    <style>
+                        .box-nav-menu .item-link {
+                            display: block;
+                            padding: 8px 12px;
+                            color: #000;
+                            text-decoration: none;
+                            font-weight: 500;
+                        }
+                    
+                        .box-nav-menu .item-link:hover {
+                            color: #007bff;
+                        }
+                    
+                        .box-nav-menu .has-sub > .item-link {
+                            cursor: pointer;
+                            position: relative;
+                        }
+                    
+                        .box-nav-menu .submenu {
+                            margin-top: 5px;
+                            margin-left: 10px;
+                        }
+                    
+                        .box-nav-menu .submenu a {
+                            padding: 6px 12px;
+                            font-size: 14px;
+                            display: block;
+                            color: #333;
+                        }
+                    
+                        .box-nav-menu .submenu a:hover {
+                            color: #007bff;
+                        }
+                    
+                        .icon-arr-down {
+                            float: right;
+                            transition: transform 0.3s ease;
+                        }
+                    
+                        .has-sub.open .icon-arr-down {
+                            transform: rotate(180deg);
+                        }
+                    </style>
+                    
                 </div>
 
 

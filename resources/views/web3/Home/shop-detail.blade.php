@@ -8,7 +8,7 @@
             <div class="container">
                 <ul class="breadcrumb-list">
                     <li class="item-breadcrumb">
-                        <a href="{{route('web.home')}}" class="text">Trang chủ</a>
+                        <a href="{{ route('web.home') }}" class="text">Trang chủ</a>
                     </li>
                     <li class="item-breadcrumb dot">
                         <span></span>
@@ -21,7 +21,7 @@
         </div>
         <!-- /Breadcrumb -->
         <!-- Product Main -->
-        <section class="flat-single-product" style="padding-bottom: 60px">
+        <section class="flat-single-product pb-0">
             <div class="tf-main-product section-image-zoom">
                 <div class="container">
                     <div class="row">
@@ -63,12 +63,9 @@
                                 </div>
                             </div>
 
-
-
                             <script>
                             // Khởi tạo Swiper cho thumbnail và slider chính
                             document.addEventListener('DOMContentLoaded', function () {
-                                // Khởi tạo Swiper cho thumbnail
                                 const thumbsSwiper = new Swiper('.tf-product-media-thumbs', {
                                     direction: 'vertical',
                                     spaceBetween: 10,
@@ -77,7 +74,6 @@
                                     watchSlidesProgress: true,
                                 });
 
-                                // Khởi tạo Swiper cho hình ảnh chính
                                 const mainSwiper = new Swiper('.tf-product-media-main', {
                                     spaceBetween: 10,
                                     navigation: {
@@ -87,12 +83,6 @@
                                     thumbs: {
                                         swiper: thumbsSwiper,
                                     },
-                                });
-
-                                // Hiệu ứng zoom (nếu cần thêm thư viện zoom)
-                                // Ví dụ: Nếu dùng Drift Zoom hoặc một thư viện tương tự
-                                document.querySelectorAll('.tf-image-zoom').forEach(image => {
-                                    // Thêm logic zoom nếu cần (có thể dùng Drift Zoom hoặc CSS)
                                 });
                             });
                             </script>
@@ -186,6 +176,17 @@
                                                     'id' => $variant->id,
                                                 ];
                                             }
+
+                                            // Chọn biến thể mặc định (biến thể đầu tiên hoặc có giá thấp nhất)
+                                            $defaultVariant = null;
+                                            $defaultVariantKey = null;
+                                            foreach ($variantData as $key => $data) {
+                                                if (!$defaultVariant || ($data['price_sale'] > 0 ? $data['price_sale'] : $data['price']) < ($defaultVariant['price_sale'] > 0 ? $defaultVariant['price_sale'] : $defaultVariant['price'])) {
+                                                    $defaultVariant = $data;
+                                                    $defaultVariantKey = $key;
+                                                }
+                                            }
+                                            $defaultAttributes = $defaultVariantKey ? json_decode($defaultVariantKey, true) : [];
                                         @endphp
 
                                         @if (empty($attributes))
@@ -195,14 +196,14 @@
                                                 <div class="variant-picker-item variant-group mb-3">
                                                     <div class="variant-picker-label">
                                                         {{ $attrName }}
-
                                                     </div>
                                                     <div class="variant-picker-values">
                                                         @foreach ($values as $value)
-                                                        <button type="button" class="btn btn-outline-dark m-1 variant-option"
-                                                        data-attribute="{{ $attrName }}" data-value="{{ $value }}" onclick="selectAttribute(this)">
-                                                        <strong>{{ $value }}</strong>
-                                                    </button>
+                                                            <button type="button" class="btn btn-outline-dark m-1 variant-option"
+                                                                    data-attribute="{{ $attrName }}" data-value="{{ $value }}"
+                                                                    onclick="selectAttribute(this)">
+                                                                <strong>{{ $value }}</strong>
+                                                            </button>
                                                         @endforeach
                                                     </div>
                                                 </div>
@@ -218,16 +219,13 @@
                                                     <button type="button" class="btn-quantity btn-increase" onclick="increaseQuantity()">+</button>
                                                 </div>
                                                 <button type="submit" class="tf-btn hover-primary btn-add-to-cart">Thêm vào giỏ hàng</button>
+                                                <button type="submit" formaction="{{ route('checkout.create', $detailproduct->id) }}" class="tf-btn hover-primary btn-add-to-cart">Mua ngay</button>
                                             </div>
-
                                         </div>
                                     </form>
 
                                     <!-- Các hành động phụ -->
                                     <div class="tf-product-info-extra-link">
-                                        {{-- <a href="javascript:void(0);" class="product-extra-icon link btn-add-wishlist">
-                                            <i class="icon add icon-heart"></i><span class="add">Thêm vào yêu thích</span>
-                                        </a> --}}
                                         <a href="#compare" data-bs-toggle="modal" class="product-extra-icon link">
                                             <i class="icon icon-compare2"></i>So sánh
                                         </a>
@@ -238,8 +236,6 @@
                                             <i class="icon icon-share"></i>Chia sẻ
                                         </a>
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
@@ -532,6 +528,30 @@
                 box-shadow: none;
             }
 
+            /* Buy Now Button Styling */
+            .btn-buy-now {
+                background-color: #ff4500;
+                color: white;
+                border: none;
+                margin-left: 10px;
+                padding: 10px 20px;
+                border-radius: 5px;
+                font-weight: 500;
+                transition: all 0.3s ease;
+            }
+
+            .btn-buy-now:hover {
+                background-color: #e03e00;
+                transform: translateY(-1px);
+            }
+
+            /* Active Variant Button */
+            .variant-option.active {
+                background-color: #007bff;
+                color: white;
+                border-color: #007bff;
+            }
+
             /* Responsive */
             @media (max-width: 768px) {
                 .nav-tabs {
@@ -545,6 +565,17 @@
 
                 .tab-content {
                     padding: 20px;
+                }
+
+                .group-btn {
+                    flex-direction: column;
+                    align-items: stretch;
+                }
+
+                .btn-add-to-cart, .btn-buy-now {
+                    margin-left: 0;
+                    margin-top: 10px;
+                    width: 100%;
                 }
             }
 
@@ -592,6 +623,8 @@
             const variantButtons = document.querySelectorAll('.variant-option');
             const totalGroups = document.querySelectorAll('.variant-group').length;
             const variantData = @json($variantData);
+            const defaultAttributes = @json($defaultAttributes);
+            const defaultVariant = @json($defaultVariant);
 
             // Biến để kiểm soát trạng thái nhấn nút (tránh lặp sự kiện)
             let isProcessing = false;
@@ -710,16 +743,33 @@
                 }
             }
 
-            setDefaultPrice();
+            // Chọn biến thể mặc định khi tải trang
+            function selectDefaultVariant() {
+                if (defaultVariant && defaultAttributes) {
+                    selectedAttributes = { ...defaultAttributes };
+                    document.getElementById('selectedAttributes').value = JSON.stringify(selectedAttributes);
 
-            // Khởi tạo: Đảm bảo quantity không vượt quá stock ban đầu
-            const initialStock = parseInt(document.getElementById('selectedStock').value) || 0;
-            const quantityInput = document.getElementById('quantity');
-            console.log("Initial - Stock:", initialStock, "Quantity:", quantityInput.value);
-            if (parseInt(quantityInput.value) > initialStock) {
-                quantityInput.value = initialStock;
-                console.log("Adjusted Initial Quantity to Stock:", initialStock);
+                    // Đánh dấu các nút thuộc tính mặc định là active
+                    Object.keys(defaultAttributes).forEach(attrName => {
+                        const button = document.querySelector(`.variant-option[data-attribute="${attrName}"][data-value="${defaultAttributes[attrName]}"]`);
+                        if (button) {
+                            button.classList.add('active');
+                        }
+                    });
+
+                    // Cập nhật thông tin sản phẩm
+                    updateProductInfo(defaultVariant.price, defaultVariant.price_sale, defaultVariant.stock);
+
+                    // Cập nhật đánh giá và thông tin biến thể
+                    loadReviews(defaultVariant.id);
+                    updateSelectedVariantInfo(defaultVariant.id);
+                } else {
+                    setDefaultPrice();
+                }
             }
+
+            // Gọi hàm chọn biến thể mặc định khi tải trang
+            selectDefaultVariant();
 
             window.selectAttribute = function (button) {
                 let attrName = button.getAttribute('data-attribute');
@@ -736,34 +786,32 @@
             };
 
             window.increaseQuantity = function () {
-                // Ngăn gọi hàm nếu đang xử lý
-                if (isProcessing) return;
-                isProcessing = true;
+    if (isProcessing) return;
+    isProcessing = true;
 
-                const quantityInput = document.getElementById('quantity');
-                const stock = parseInt(document.getElementById('selectedStock').value) || 0;
-                let currentValue = parseInt(quantityInput.value) || 1;
+    const quantityInput = document.getElementById('quantity');
+    const stock = parseInt(document.getElementById('selectedStock').value) || 0;
+    let currentValue = parseInt(quantityInput.value) || 1;
 
-                console.log("increaseQuantity - Stock:", stock, "Quantity before increase:", currentValue);
+    console.log("increaseQuantity - Stock:", stock, "Current Quantity:", currentValue);
 
-                if (currentValue < stock) {
-                    quantityInput.value = currentValue - 1; // Tăng 1 đơn vị
-                    console.log("Increased Quantity to:", quantityInput.value);
-                } else {
-                    quantityInput.value = stock;
-                    console.log("Quantity set to Stock (max):", stock);
-                }
+    if (currentValue < stock) {
+        quantityInput.value = currentValue + 1;
+        console.log("Increased Quantity to:", quantityInput.value);
+    } else {
+        quantityInput.value = stock;
+        console.log("Reached max stock:", stock);
+    }
 
-                validateQuantity();
+    validateQuantity();
 
-                // Đặt lại trạng thái sau khi xử lý
-                setTimeout(() => {
-                    isProcessing = false;
-                }, 100);
-            };
+    setTimeout(() => {
+        isProcessing = false;
+    }, 100);
+};
+
 
             window.decreaseQuantity = function () {
-                // Ngăn gọi hàm nếu đang xử lý
                 if (isProcessing) return;
                 isProcessing = true;
 
@@ -773,42 +821,39 @@
                 console.log("decreaseQuantity - Quantity before decrease:", currentValue);
 
                 if (currentValue > 1) {
-                    quantityInput.value = currentValue + 1 ; // Giảm 1 đơn vị
+                    quantityInput.value = currentValue - 1;
                     console.log("Decreased Quantity to:", quantityInput.value);
                 }
 
                 validateQuantity();
 
-                // Đặt lại trạng thái sau khi xử lý
                 setTimeout(() => {
                     isProcessing = false;
                 }, 100);
             };
 
             document.getElementById('quantity').addEventListener('input', function (e) {
-                const quantityInput = this;
-                const stock = parseInt(document.getElementById('selectedStock').value) || 0;
-                let value = parseInt(quantityInput.value);
+    if (isProcessing) return;
 
-                console.log("input event - Stock:", stock, "Input Quantity:", value);
+    const quantityInput = this;
+    const stock = parseInt(document.getElementById('selectedStock').value) || 0;
+    let value = parseInt(quantityInput.value);
 
-                if (isNaN(value) || value < 1) {
-                    quantityInput.value = 1;
-                    console.log("Adjusted Quantity to 1 (min)");
-                } else if (value > stock) {
-                    quantityInput.value = stock;
-                    console.log("Adjusted Quantity to Stock (max):", stock);
-                }
-                validateQuantity();
-            });
+    if (isNaN(value) || value < 1) {
+        quantityInput.value = 1;
+    } else if (value > stock) {
+        quantityInput.value = stock;
+    }
+
+    validateQuantity();
+});
+
 
             // Xử lý đánh giá sản phẩm
             let currentPage = 1;
             const reviewsPerPage = 5;
 
-            // Hàm cập nhật thông tin biến thể đã chọn trong tab đánh giá
             function updateSelectedVariantInfo(variantId) {
-                // Tìm tên biến thể từ các thuộc tính đã chọn
                 const variantInfoElement = document.getElementById('selected-variant-info');
 
                 if (Object.keys(selectedAttributes).length > 0) {
@@ -834,7 +879,6 @@
                 }
             }
 
-            // Hàm tải đánh giá cho biến thể sản phẩm
             function loadReviews(variantId, page = 1) {
                 if (!variantId) {
                     document.getElementById('reviews-container').innerHTML = `
@@ -847,7 +891,6 @@
                     return;
                 }
 
-                // Hiển thị loading
                 document.getElementById('reviews-container').innerHTML = `
                     <div class="text-center py-4">
                         <div class="spinner-border text-primary" role="status">
@@ -856,7 +899,6 @@
                     </div>
                 `;
 
-                // Gọi API để lấy đánh giá
                 fetch(`/api/products/{{ $detailproduct->id }}/variants/${variantId}/reviews?page=${page}`)
                     .then(response => {
                         if (!response.ok) {
@@ -865,25 +907,20 @@
                         return response.json();
                     })
                     .then(data => {
-                        console.log("Review data:", data); // Debug: Log response data
+                        console.log("Review data:", data);
 
-                        // Cập nhật thông tin tổng quan bất kể có review hay không
                         if (data.summary) {
                             updateReviewSummary(data.summary);
                         } else {
                             resetReviewSummary();
                         }
 
-                        // Hiển thị danh sách đánh giá nếu có
                         if (data.success && data.reviews && data.reviews.length > 0) {
                             displayReviews(data.reviews);
-
-                            // Cập nhật phân trang
                             if (data.pagination) {
-                            updatePagination(data.pagination);
+                                updatePagination(data.pagination);
                             }
                         } else {
-                            // Hiển thị thông báo không có đánh giá
                             document.getElementById('reviews-container').innerHTML = `
                                 <div class="alert alert-light border text-center py-4">
                                     <i class="fas fa-star-half-alt text-warning fa-2x mb-3"></i>
@@ -892,7 +929,9 @@
                                 </div>
                             `;
 
+
                             // Ẩn phân trang
+
                             document.getElementById('reviews-pagination').innerHTML = '';
                         }
                     })
@@ -905,17 +944,17 @@
                                 <small class="d-block mt-2 text-muted">${error.message}</small>
                             </div>
                         `;
-                        // Ẩn phân trang khi có lỗi
                         document.getElementById('reviews-pagination').innerHTML = '';
                     });
             }
 
-            // Hàm đặt lại thông tin tổng quan đánh giá khi không có dữ liệu
             function resetReviewSummary() {
                 document.getElementById('average-rating').textContent = '0.0';
                 document.getElementById('total-reviews').textContent = '0';
 
+
                 // Đặt lại các thanh tiến trình
+
                 for (let i = 5; i >= 1; i--) {
                     const progressBar = document.querySelector(`.progress-bar[data-rating="${i}"]`);
                     const ratingCount = document.querySelector(`.rating-count[data-rating="${i}"]`);
@@ -925,48 +964,40 @@
                 }
             }
 
-            // Hàm cập nhật thông tin tổng quan đánh giá
             function updateReviewSummary(summary) {
                 if (!summary) {
                     resetReviewSummary();
                     return;
                 }
 
-                // Cập nhật điểm trung bình
                 const averageRating = parseFloat(summary.average_rating) || 0;
                 document.getElementById('average-rating').textContent = averageRating.toFixed(1);
 
-                // Cập nhật số lượng đánh giá
                 const totalReviews = parseInt(summary.total_reviews) || 0;
                 document.getElementById('total-reviews').textContent = totalReviews.toString();
 
-                // Cập nhật hiển thị sao
                 const ratingStars = document.querySelectorAll('.rating-stars i');
                 const fullStars = Math.floor(averageRating);
                 const hasHalfStar = averageRating % 1 >= 0.5;
 
                 ratingStars.forEach((star, index) => {
+
                     // Reset classes first
                     star.className = '';
 
                     if (index < fullStars) {
-                        // Full star
                         star.className = 'fas fa-star';
                     } else if (index === fullStars && hasHalfStar) {
-                        // Half star
                         star.className = 'fas fa-star-half-alt';
                     } else {
-                        // Empty star
                         star.className = 'far fa-star';
                     }
                 });
 
-                // Đảm bảo tất cả các sao đều có màu vàng
                 ratingStars.forEach(star => {
                     star.style.color = '#ffc107';
                 });
 
-                // Cập nhật thanh tiến trình cho từng mức đánh giá
                 const ratingCounts = summary.rating_counts || {};
 
                 for (let i = 5; i >= 1; i--) {
@@ -987,7 +1018,6 @@
                 }
             }
 
-            // Hàm hiển thị danh sách đánh giá
             function displayReviews(reviews) {
                 if (!reviews || !Array.isArray(reviews) || reviews.length === 0) {
                     document.getElementById('reviews-container').innerHTML = `
@@ -1003,7 +1033,9 @@
                 let reviewsHtml = '<div class="reviews-list">';
 
                 reviews.forEach(review => {
+
                     if (!review) return; // Skip if review is null or undefined
+
 
                     let starsHtml = '';
                     for (let i = 1; i <= 5; i++) {
@@ -1014,7 +1046,6 @@
                         }
                     }
 
-                    // Format the date
                     const reviewDate = review.created_at ? new Date(review.created_at) : new Date();
                     const formattedDate = reviewDate.toLocaleDateString('vi-VN', {
                         year: 'numeric',
@@ -1022,14 +1053,11 @@
                         day: 'numeric'
                     });
 
-                    // User info
                     const userName = review.user && review.user.name ? review.user.name : 'Người dùng ẩn danh';
                     const userAvatar = review.user && review.user.avatar ? review.user.avatar : '/images/default-avatar.png';
 
-                    // Review content
                     const reviewContent = review.review || 'Không có nội dung đánh giá';
 
-                    // Add images if available
                     let imagesHtml = '';
                     if (review.images && Array.isArray(review.images) && review.images.length > 0) {
                         imagesHtml += '<div class="review-images d-flex flex-wrap gap-2 mt-3 mb-2">';
@@ -1045,7 +1073,6 @@
                         imagesHtml += '</div>';
                     }
 
-                    // Add video if available
                     let videoHtml = '';
                     if (review.video) {
                         videoHtml = `
@@ -1058,33 +1085,37 @@
                         `;
                     }
 
-                    // Build the review item HTML
                     reviewsHtml += `
                         <div class="review-item card mb-4">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-start mb-3">
-                                <div class="d-flex align-items-center">
+                                    <div class="d-flex align-items-center">
                                         <div class="review-avatar me-3">
                                             <img src="${userAvatar}" alt="${userName}" class="rounded-circle" width="50" height="50" style="object-fit: cover;">
-                                    </div>
-                                    <div>
+                                        </div>
+                                        <div>
                                             <h6 class="mb-1 fw-bold">${userName}</h6>
                                             <div class="review-rating">${starsHtml}</div>
                                             <div class="review-date text-muted small">${formattedDate}</div>
+                                        </div>
                                     </div>
-                                </div>
                                     <div class="review-badge">
                                         <span class="badge bg-success">Đã mua hàng</span>
+                                    </div>
                                 </div>
+
                             </div>
+
 
                                 <div class="review-content mt-3">
                                     <p class="mb-2">${reviewContent}</p>
                                     ${imagesHtml}
                                     ${videoHtml}
+
                             </div>
 
                             ${review.responses && review.responses.length > 0 ? `
+
                                     <div class="review-responses mt-3 pt-3 border-top">
                                         <h6 class="mb-2 text-secondary"><i class="fas fa-reply me-2"></i>Phản hồi</h6>
                                         ${review.responses.map(response => {
@@ -1097,15 +1128,15 @@
                                                         <div class="d-flex align-items-center">
                                                             <strong class="me-2">${responseName}</strong>
                                                             ${response.user && response.user.is_admin ? '<span class="badge bg-primary">Quản trị viên</span>' : ''}
-                                            </div>
+                                                        </div>
                                                         <small class="text-muted">${responseDate}</small>
-                                        </div>
+                                                    </div>
                                                     <div>${response.response || ''}</div>
                                                 </div>
                                             `;
                                         }).join('')}
-                                </div>
-                            ` : ''}
+                                    </div>
+                                ` : ''}
                             </div>
                         </div>
                     `;
@@ -1115,7 +1146,6 @@
                 document.getElementById('reviews-container').innerHTML = reviewsHtml;
             }
 
-            // Hàm cập nhật phân trang
             function updatePagination(pagination) {
                 const paginationElement = document.getElementById('reviews-pagination');
 
@@ -1126,16 +1156,14 @@
 
                 let paginationHtml = '';
 
-                // Nút Previous
                 paginationHtml += `
                     <li class="page-item ${pagination.current_page === 1 ? 'disabled' : ''}">
                         <a class="page-link" href="#" data-page="${pagination.current_page - 1}" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
+                            <span aria-hidden="true">«</span>
                         </a>
                     </li>
                 `;
 
-                // Các nút số trang
                 for (let i = 1; i <= pagination.total_pages; i++) {
                     if (
                         i === 1 ||
@@ -1159,43 +1187,40 @@
                     }
                 }
 
-                // Nút Next
                 paginationHtml += `
                     <li class="page-item ${pagination.current_page === pagination.total_pages ? 'disabled' : ''}">
                         <a class="page-link" href="#" data-page="${pagination.current_page + 1}" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
+                            <span aria-hidden="true">»</span>
                         </a>
                     </li>
                 `;
 
                 paginationElement.innerHTML = paginationHtml;
 
-                // Thêm sự kiện click cho các nút phân trang
                 document.querySelectorAll('#reviews-pagination .page-link').forEach(link => {
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
                         const page = parseInt(this.getAttribute('data-page'));
                         if (page && page !== currentPage) {
                             currentPage = page;
-                            const variantId = document.getElementById('variant-filter').value;
+                            const variantId = document.getElementById('variant-filter')?.value || defaultVariant?.id;
                             loadReviews(variantId, page);
                         }
                     });
                 });
             }
 
-            // Initialize reviews when the page loads
             document.addEventListener('DOMContentLoaded', function() {
+
                 // Automatically load reviews if a variant is pre-selected
                 // This will be triggered by the selectAttribute function when a user selects a variant
 
                 // Add tab switch handling for reviews tab to ensure correct display
+
                 const reviewsTab = document.getElementById('reviews-tab');
                 if (reviewsTab) {
                     reviewsTab.addEventListener('click', function() {
-                        // If a variant is already selected, make sure the reviews are loaded
                         if (Object.keys(selectedAttributes).length === totalGroups) {
-                            // Find the currently selected variant
                             for (let key in variantData) {
                                 let variantAttributes = JSON.parse(key);
                                 let allMatched = Object.keys(selectedAttributes).every(attrName => {
@@ -1203,7 +1228,7 @@
                                 });
                                 if (allMatched) {
                                     const variantId = variantData[key].id;
-                loadReviews(variantId, currentPage);
+                                    loadReviews(variantId, currentPage);
                                     updateSelectedVariantInfo(variantId);
                                     break;
                                 }
@@ -1218,3 +1243,4 @@
 </body>
 
 @endsection
+```
