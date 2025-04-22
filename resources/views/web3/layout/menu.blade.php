@@ -134,7 +134,7 @@
 
                                     </li>
                                     <li class="menu-item position-relative">
-                                        <a href="#" class="item-link">Bài viết</a>
+                                        <a href="{{route('web.listBlog.blog')}}" class="item-link">Bài viết</a>
 
                                     </li>
 
@@ -153,12 +153,12 @@
                                         <i class="icon icon-user"></i>
                                     </a>
                                 </li>
-                                <li class="nav-wishlist">
+                                <!-- <li class="nav-wishlist">
                                     <a href="wish-list.html" class="nav-icon-item">
                                         <i class="icon icon-heart"></i>
                                         <span class="count-box">0</span>
                                     </a>
-                                </li>
+                                </li> -->
                                 <li class="nav-cart dropdown position-relative" id="header-cart">
                                     <a href="#" class="nav-icon-item position-relative" id="cartDropdown"
                                        data-bs-toggle="dropdown" aria-expanded="false">
