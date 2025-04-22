@@ -20,6 +20,9 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use OrderPlaced;
 use App\Models\Promotion;
+use App\Models\UserAddress;
+use Exception;
+use Illuminate\Support\Facades\Http;
 
 class CheckoutController extends Controller
 {
@@ -56,6 +59,8 @@ class CheckoutController extends Controller
 
     public function checkout(Request $request)
     {
+        $user = auth()->user();
+        $address = $user->addresses;
         $productNews = Product::orderBy('id', 'DESC')->take(4)->get();
         $categories = Catalogue::all();
 
@@ -106,7 +111,9 @@ class CheckoutController extends Controller
             'discount',
             'productNews',
             'totalAmount',
-            'categories'
+            'categories',
+            'address',
+            'user'
         ));
     }
 
@@ -150,24 +157,175 @@ class CheckoutController extends Controller
             DB::beginTransaction();
 
             try {
+                // Xử lý giao hàng đến địa chỉ khác
+                $shipToDifferentAddress = $request->has('ship_to_different_address') && $request->input('ship_to_different_address') == '1';
+                $selectedAddress = null;
+
+                // Xử lý địa chỉ giao hàng
+                if ($shipToDifferentAddress) {
+                    // Lấy thông tin từ form giao hàng khác
+                    $billingName = $request->billing_name ?? $user->name;
+                    $billingPhone = $request->billing_phone ?? $user->phone;
+                    $billingAddress = $request->billing_address ?? $user->address;
+
+                    $name = $request->shipping_name;
+                    $phone = $request->shipping_phone;
+                    $address = $request->shipping_address;
+                    $provinceCode = $request->input('shipping_province');
+                    $districtCode = $request->input('shipping_district');
+                    $wardCode = $request->input('shipping_ward');
+                    $note = $request->shipping_note;
+
+                    // Lấy tên địa điểm từ mã code
+                    $provinceData = Http::timeout(5)->get("https://provinces.open-api.vn/api/p/{$provinceCode}")->json();
+                    $districtData = Http::timeout(5)->get("https://provinces.open-api.vn/api/d/{$districtCode}?depth=2")->json();
+
+                    $provinceName = $provinceData['name'] ?? '';
+                    $districtName = $districtData['name'] ?? '';
+                    $wardName = '';
+
+                    // Tìm tên phường/xã theo wardCode
+                    if (!empty($districtData['wards'])) {
+                        foreach ($districtData['wards'] as $ward) {
+                            if ($ward['code'] == $wardCode) {
+                                $wardName = $ward['name'] ?? '';
+                                break;
+                            }
+                        }
+                    }
+
+                    // Loại bỏ tiền tố
+                    $provinceName = preg_replace('/^(Thành phố|Tỉnh)\s+/i', '', $provinceName);
+                    $districtName = preg_replace('/^(Quận|Huyện)\s+/i', '', $districtName);
+                    $wardName = preg_replace('/^(Phường|Xã)\s+/i', '', $wardName);
+                } else {
+                    if ($request->filled('user_address_id')) {
+                        $selectedAddress = UserAddress::where('user_id', $user->id)
+                            ->findOrFail($request->input('user_address_id'));
+
+                        $billingName = $selectedAddress->full_name ?? $request->billing_name ?? $user->name;
+                        $billingPhone = $selectedAddress->phone ?? $request->billing_phone ?? $user->phone;
+                        $billingAddress = $selectedAddress->full_address ?? $request->billing_address ?? $user->address;
+
+                        $name = $selectedAddress->full_name ?? $billingName;
+                        $phone = $selectedAddress->phone ?? $billingPhone;
+                        $address = $selectedAddress->full_address ?? $billingAddress;
+                        $provinceCode = $selectedAddress->province_code ?? null;
+                        $districtCode = $selectedAddress->district_code ?? null;
+                        $wardCode = $selectedAddress->ward_code ?? null;
+                        $provinceName = $selectedAddress->province_name ?? '';
+                        $districtName = $selectedAddress->district_name ?? '';
+                        $wardName = $selectedAddress->ward_name ?? '';
+                        $note = null;
+
+                        // Chỉ gọi API nếu thiếu tên và có mã code hợp lệ
+                        if ((empty($provinceName) || empty($districtName) || empty($wardName)) && $provinceCode && $districtCode && $wardCode) {
+                            try {
+                                $provinceData = Http::timeout(5)->get("https://provinces.open-api.vn/api/p/{$provinceCode}")->json();
+                                $districtData = Http::timeout(5)->get("https://provinces.open-api.vn/api/d/{$districtCode}?depth=2")->json();
+
+                                $provinceName = $provinceData['name'] ?? '';
+                                $districtName = $districtData['name'] ?? '';
+                                $wardName = '';
+
+                                if (!empty($districtData['wards'])) {
+                                    foreach ($districtData['wards'] as $ward) {
+                                        if ($ward['code'] == $wardCode) {
+                                            $wardName = $ward['name'] ?? '';
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                // Loại bỏ tiền tố
+                                $provinceName = preg_replace('/^(Thành phố|Tỉnh)\s+/i', '', $provinceName);
+                                $districtName = preg_replace('/^(Quận|Huyện)\s+/i', '', $districtName);
+                                $wardName = preg_replace('/^(Phường|Xã)\s+/i', '', $wardName);
+                            } catch (\Exception $e) {
+                                Log::error('API call failed for selected address', [
+                                    'provinceCode' => $provinceCode,
+                                    'districtCode' => $districtCode,
+                                    'wardCode' => $wardCode,
+                                    'error' => $e->getMessage(),
+                                ]);
+                            }
+                        }
+                    } else {
+                        // Lấy từ thông tin tự nhập (billing)
+                        $billingName = $request->billing_name;
+                        $billingPhone = $request->billing_phone;
+                        $billingAddress = $request->billing_address;
+
+                        $name = $billingName;
+                        $phone = $billingPhone;
+                        $address = $billingAddress;
+                        $provinceCode = null;
+                        $districtCode = null;
+                        $wardCode = null;
+                        $provinceName = '';
+                        $districtName = '';
+                        $wardName = '';
+                        $note = null;
+                    }
+                }
+
+                // Kiểm tra nếu địa chỉ không đầy đủ (chỉ áp dụng khi có shipToDifferentAddress)
+                if ($shipToDifferentAddress) {
+                    if (empty($provinceName) || empty($districtName) || empty($wardName)) {
+                        DB::rollBack();
+                        return redirect()->route('cart.viewCart')->with('error', 'Thông tin địa chỉ giao hàng không đầy đủ. Vui lòng kiểm tra lại tỉnh, quận, xã.');
+                    }
+                }
+
+                // Ghép địa chỉ đầy đủ
+                $addressParts = [$address];
+                if ($wardName) $addressParts[] = $wardName;
+                if ($districtName) $addressParts[] = $districtName;
+                if ($provinceName) $addressParts[] = $provinceName;
+
+                $fullAddress = implode(', ', array_filter($addressParts));
+
+                // Email luôn lấy từ user nếu không có trong request
+                $email = $request->email ?? $user->email ?? 'no-email@example.com';
+
                 $txnRef = now()->timestamp . rand(1000, 9999);
                 $paymentDeadline = now()->addMinutes(15);
 
                 $order = Order::create([
                     'user_id' => $user->id,
-                    'name' => $user->name ?? 'Không rõ tên',
-                    'email' => $user->email ?? 'no-email@example.com',
-                    'phone' => $user->phone ?? '0000000000',
-                    'address' => $user->address ?? 'Chưa cập nhật',
+                    'billing_name' => $billingName,
+                    'billing_phone' => $billingPhone,
+                    'billing_address' => $billingAddress,
+                    'name' => $name,
+                    'email' => $email,
+                    'phone' => $phone,
+                    'address' => $fullAddress,
+                    'province_code' => $provinceCode,
+                    'district_code' => $districtCode,
+                    'ward_code' => $wardCode,
+                    'province_name' => $provinceName,
+                    'district_name' => $districtName,
+                    'ward_name' => $wardName,
                     'txn_ref' => $txnRef,
                     'total_price' => $finalTotal,
-                    'payment_status' => Order::PAYMENT_PAID,
+                    'payment_status' => 0, // Chưa thanh toán
                     'status' => Order::STATUS_PENDING,
+                    'return_status' => Order::RETURN_NONE,
                     'payment_deadline' => $paymentDeadline,
                     'payment_method' => Order::PAYMENT_METHOD_VNPAY,
-                    'discount' => $discount, // Lưu giá trị giảm giá vào đơn hàng
-                    'promotion_id' => $promotion['id'] ?? null, // Lưu promotion_id vào đơn hàng
+                    'discount' => $discount,
+                    'promotion_id' => $promotion['id'] ?? null,
+                    'note' => $note,
                 ]);
+
+                // Cập nhật số lượng mã khuyến mãi nếu có
+                if (isset($promotion['id'])) {
+                    $promotionModel = Promotion::find($promotion['id']);
+                    if ($promotionModel && $promotionModel->quantity > 0) {
+                        $promotionModel->quantity -= 1;
+                        $promotionModel->save();
+                    }
+                }
 
                 $orderTotal = 0;
                 $variantErrors = [];
@@ -178,9 +336,9 @@ class CheckoutController extends Controller
 
                     foreach ($item['variant']['attributes'] as $attrName => $attrValue) {
                         $variantQuery->whereHas('product_variant_attributes', function ($query) use ($attrName, $attrValue) {
-                            $query->whereHas('attribute', function($q) use ($attrName) {
+                            $query->whereHas('attribute', function ($q) use ($attrName) {
                                 return $q->where('name', $attrName);
-                            })->whereHas('attributeValue', function($q) use ($attrValue) {
+                            })->whereHas('attributeValue', function ($q) use ($attrValue) {
                                 return $q->where('value', $attrValue);
                             });
                         });
@@ -214,46 +372,41 @@ class CheckoutController extends Controller
                         'price' => $price,
                     ]);
 
-                    $variant->decrement('stock_quantity', $quantity);
-                    $selectedKeys[] = $itemKey; // Lưu các key của sản phẩm đã chọn để xóa sau khi thanh toán
-
-                    event(new EventsOrderPlaced($order));
-                    Mail::to($user->email)->send(new OrderPlacedMail($order));
+                    $selectedKeys[] = $itemKey;
                 }
-
-                // Lưu các key của sản phẩm đã chọn vào session
-                session(['selected_cart_keys' => $selectedKeys]);
 
                 if (!empty($variantErrors)) {
                     DB::rollBack();
                     return redirect()->route('cart.viewCart')->with('error', implode('<br>', $variantErrors));
                 }
 
-                // Cập nhật lại total_price của order sử dụng giá cuối cùng
-                $order->update([
-                    'total_price' => $finalTotal
-                ]);
-
                 // Thêm log để debug
-                Log::info('Payment values', [
+                Log::info('VNPay payment values', [
                     'finalTotal' => $finalTotal,
                     'orderTotal' => $orderTotal,
                     'discount' => $discount,
                     'selectedCart' => $selectedCart,
-                    'promotion' => $promotion
+                    'promotion' => $promotion,
+                    'shipping_info' => [
+                        'ship_to_different_address' => $shipToDifferentAddress,
+                        'name' => $name,
+                        'phone' => $phone,
+                        'address' => $fullAddress,
+                        'email' => $email,
+                        'provinceCode' => $provinceCode,
+                        'districtCode' => $districtCode,
+                        'wardCode' => $wardCode,
+                    ],
                 ]);
-
-                // Cập nhật số lượng mã khuyến mãi nếu có
-                if (isset($promotion['id'])) {
-                    $promotionModel = Promotion::find($promotion['id']);
-                    if ($promotionModel && $promotionModel->quantity > 0) {
-                        $promotionModel->quantity -= 1;
-                        $promotionModel->save();
-                    }
-                }
-
+                event(new EventsOrderPlaced($order));
+                Mail::to($user->email)->send(new OrderPlacedMail($order));
                 DB::commit();
-
+                // foreach ($selectedKeys as $key) {
+                //     unset($cart[$key]);
+                // }
+                // Lưu các key của sản phẩm đã chọn vào session
+                session(['selected_cart_keys' => $selectedKeys]);
+          
                 // Cấu hình VNPay
                 $vnp_TmnCode = "RJBK6J49";
                 $vnp_HashSecret = "0FFMB5EJI6AL35QE35TKCP18SYKI6N30";
@@ -289,14 +442,14 @@ class CheckoutController extends Controller
                 return redirect()->away($paymentUrl);
             } catch (\Exception $e) {
                 DB::rollBack();
-                Log::error('Lỗi khi tạo đơn hàng', [
+                Log::error('Lỗi khi tạo đơn hàng VNPay', [
                     'message' => $e->getMessage(),
                     'trace' => $e->getTraceAsString()
                 ]);
                 return redirect()->route('cart.viewCart')->with('error', 'Đã xảy ra lỗi: ' . $e->getMessage());
             }
         } catch (\Exception $e) {
-            Log::error('Lỗi khi xử lý thanh toán', [
+            Log::error('Lỗi khi xử lý thanh toán VNPay', [
                 'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
@@ -533,156 +686,407 @@ public function vnpayCallback(Request $request)
 
     // thanh toán bằng tiền mặt
     public function offline(Request $request)
-    {
+{
+    try {
+        if (!Auth::check()) {
+            return redirect()->route('web.login')->with('error', 'Bạn cần đăng nhập trước khi thanh toán');
+        }
+        $user = Auth::user();
+        $selectedCart = session()->get('selected_cart', []);
+        $cart = session()->get('cart', []);
+
+        if (empty($cart)) {
+            return redirect()->route('cart.viewCart')->with('error', 'Giỏ hàng của bạn đang trống!');
+        }
+
+        if (empty($selectedCart)) {
+            return redirect()->route('cart.viewCart')->with('error', 'Không có sản phẩm nào được chọn!');
+        }
+
+        // Tính lại tổng tiền
+        $orderTotal = 0;
+        foreach ($selectedCart as $item) {
+            $price = (!empty($item['price_sale']) && $item['price_sale'] > 0 && $item['price_sale'] < $item['price'])
+                ? $item['price_sale']
+                : $item['price'];
+            $orderTotal += $price * $item['quantity'];
+        }
+
+        // Áp dụng giảm giá
+        $promotion = session('promotion');
+        $discount = $promotion['discount'] ?? 0;
+        $finalTotal = max(0, $orderTotal - $discount);
+
+        if (!is_numeric($finalTotal) || $finalTotal <= 0) {
+            return redirect()->route('cart.viewCart')->with('error', 'Giá trị thanh toán không hợp lệ!');
+        }
+
+        // So sánh với amount từ form
+        $submittedAmount = $request->input('amount');
+        if ($submittedAmount != $finalTotal) {
+            return redirect()->route('cart.viewCart')->with('error', 'Tổng tiền không khớp. Vui lòng thử lại!');
+        }
+
+        // Xử lý giao hàng đến địa chỉ khác
+        $shipToDifferentAddress = $request->has('ship_to_different_address') && $request->input('ship_to_different_address') == 'on';
+        $selectedAddress = null;
+
+        // Debug: Log dữ liệu gửi từ form
+        Log::debug('Form data received', [
+            'ship_to_different_address' => $request->input('ship_to_different_address'),
+            'shipping_name' => $request->input('shipping_name'),
+            'shipping_phone' => $request->input('shipping_phone'),
+            'shipping_address' => $request->input('shipping_address'),
+            'shipping_province' => $request->input('shipping_province'),
+            'shipping_district' => $request->input('shipping_district'),
+            'shipping_ward' => $request->input('shipping_ward'),
+            'billing_name' => $request->input('billing_name'),
+            'billing_phone' => $request->input('billing_phone'),
+            'billing_address' => $request->input('billing_address'),
+            'user_address_id' => $request->input('user_address_id'),
+        ]);
+
+        if ($shipToDifferentAddress) {
+            $request->validate([
+                'shipping_name' => 'required|string|max:255',
+                'shipping_phone' => 'required|string|max:20',
+                'shipping_address' => 'required|string|max:255',
+                'shipping_province' => 'required|string',
+                'shipping_district' => 'required|string',
+                'shipping_ward' => 'required|string',
+            ], [
+                'shipping_name.required' => 'Vui lòng nhập tên người nhận.',
+                'shipping_phone.required' => 'Vui lòng nhập số điện thoại.',
+                'shipping_address.required' => 'Vui lòng nhập địa chỉ giao hàng.',
+                'shipping_province.required' => 'Vui lòng chọn tỉnh/thành phố.',
+                'shipping_district.required' => 'Vui lòng chọn quận/huyện.',
+                'shipping_ward.required' => 'Vui lòng chọn phường/xã.',
+            ]);
+        } else {
+            // Nếu không chọn giao hàng đến địa chỉ khác, kiểm tra user_address_id
+            if ($request->filled('user_address_id')) {
+                $request->validate([
+                    'user_address_id' => 'required|exists:user_addresses,id,user_id,' . $user->id,
+                ], [
+                    'user_address_id.required' => 'Vui lòng chọn địa chỉ giao hàng.',
+                    'user_address_id.exists' => 'Địa chỉ không hợp lệ.',
+                ]);
+                $selectedAddress = UserAddress::where('user_id', $user->id)
+                    ->findOrFail($request->input('user_address_id'));
+            } else {
+                // Nếu không chọn địa chỉ từ dropdown, yêu cầu nhập thông tin billing
+                $request->validate([
+                    'billing_name' => 'required|string|max:255',
+                    'billing_phone' => 'required|string|max:20',
+                    'billing_address' => 'required|string|max:255',
+                ], [
+                    'billing_name.required' => 'Vui lòng nhập tên người nhận.',
+                    'billing_phone.required' => 'Vui lòng nhập số điện thoại.',
+                    'billing_address.required' => 'Vui lòng nhập địa chỉ.',
+                ]);
+            }
+        }
+
+        DB::beginTransaction();
+
         try {
-            if (!Auth::check()) {
-                return redirect()->route('web.login')->with('error', 'Bạn cần đăng nhập trước khi thanh toán');
-            }
-            $user = Auth::user();
-            $selectedCart = session()->get('selected_cart', []);
-            $cart = session()->get('cart', []);
+            // Xử lý địa chỉ giao hàng
+            if ($shipToDifferentAddress) {
+                // Lấy thông tin từ form giao hàng khác
+                $billingName = $request->billing_name ?? $user->name;
+                $billingPhone = $request->billing_phone ?? $user->phone;
+                $billingAddress = $request->billing_address ?? $user->address;
 
-            if (empty($cart)) {
-                return redirect()->route('cart.viewCart')->with('error', 'Giỏ hàng của bạn đang trống!');
-            }
+                $name = $request->shipping_name;
+                $phone = $request->shipping_phone;
+                $address = $request->shipping_address;
+                $provinceCode = $request->input('shipping_province');
+                $districtCode = $request->input('shipping_district');
+                $wardCode = $request->input('shipping_ward');
+                $note = $request->shipping_note;
 
-            if (empty($selectedCart)) {
-                return redirect()->route('cart.viewCart')->with('error', 'Không có sản phẩm nào được chọn!');
-            }
+                // Lấy tên địa điểm từ mã code
+                $provinceData = Http::timeout(5)->get("https://provinces.open-api.vn/api/p/{$provinceCode}")->json();
+                $districtData = Http::timeout(5)->get("https://provinces.open-api.vn/api/d/{$districtCode}?depth=2")->json();
 
-            // Tính lại tổng tiền dựa trên price_sale nếu có
-            $orderTotal = 0;
-            foreach ($selectedCart as $item) {
-                $price = (!empty($item['price_sale']) && $item['price_sale'] > 0 && $item['price_sale'] < $item['price'])
-                    ? $item['price_sale']
-                    : $item['price'];
-                $orderTotal += $price * $item['quantity'];
-            }
+                $provinceName = $provinceData['name'] ?? '';
+                $districtName = $districtData['name'] ?? '';
+                $wardName = '';
 
-            // Áp dụng mã giảm giá nếu có
-            $promotion = session('promotion');
-            $discount = $promotion['discount'] ?? 0;
-            $finalTotal = max(0, $orderTotal - $discount);
-
-            if (!is_numeric($finalTotal) || $finalTotal <= 0) {
-                return redirect()->route('cart.viewCart')->with('error', 'Giá trị thanh toán không hợp lệ!');
-            }
-
-            DB::beginTransaction();
-
-            try {
-                $order = Order::create([
-                    'user_id' => $user->id,
-                    'name' => $user->name ?? 'Không rõ tên',
-                    'email' => $user->email ?? 'no-email@example.com',
-                    'phone' => $user->phone ?? '0000000000',
-                    'address' => $user->address ?? 'Chưa cập nhật',
-                    'txn_ref' => now()->timestamp . rand(1000, 9999),
-                    'total_price' => $finalTotal,
-                    'payment_status' => Order::PAYMENT_COD,
-                    'status' => Order::STATUS_PENDING,
-                    'return_status' => Order::RETURN_NONE,
-                    'payment_deadline' => now()->addDays(3),
-                    'payment_method' => Order::PAYMENT_METHOD_COD,
-                    'discount' => $discount, // Lưu giá trị giảm giá vào đơn hàng
-                    'promotion_id' => $promotion['id'] ?? null, // Lưu promotion_id vào đơn hàng
-                ]);
-
-                // Cập nhật số lượng mã khuyến mãi nếu có
-                if (isset($promotion['id'])) {
-                    $promotionModel = Promotion::find($promotion['id']);
-                    if ($promotionModel && $promotionModel->quantity > 0) {
-                        $promotionModel->quantity -= 1;
-                        $promotionModel->save();
+                // Tìm tên phường/xã theo wardCode
+                if (!empty($districtData['wards'])) {
+                    foreach ($districtData['wards'] as $ward) {
+                        if ($ward['code'] == $wardCode) {
+                            $wardName = $ward['name'] ?? '';
+                            break;
+                        }
                     }
                 }
 
-                $orderTotal = 0;
-                $variantErrors = [];
-                $selectedKeys = [];
+                // Loại bỏ tiền tố
+                $provinceName = preg_replace('/^(Thành phố|Tỉnh)\s+/i', '', $provinceName);
+                $districtName = preg_replace('/^(Quận|Huyện)\s+/i', '', $districtName);
+                $wardName = preg_replace('/^(Phường|Xã)\s+/i', '', $wardName);
 
-                foreach ($selectedCart as $itemKey => $item) {
-                    $variantQuery = ProductVariant::where('product_id', $item['id']);
+                Log::debug('Location names retrieved (ship to different address)', [
+                    'provinceCode' => $provinceCode,
+                    'provinceName' => $provinceName,
+                    'districtCode' => $districtCode,
+                    'districtName' => $districtName,
+                    'wardCode' => $wardCode,
+                    'wardName' => $wardName,
+                ]);
+            } else {
+                if ($selectedAddress) {
+                    // Lấy từ user_address_id nếu có
+                    $billingName = $selectedAddress->full_name ?? $request->billing_name ?? $user->name;
+                    $billingPhone = $selectedAddress->phone ?? $request->billing_phone ?? $user->phone;
+                    $billingAddress = $selectedAddress->full_address ?? $request->billing_address ?? $user->address;
 
-                    foreach ($item['variant']['attributes'] as $attrName => $attrValue) {
-                        $variantQuery->whereHas('product_variant_attributes', function ($query) use ($attrName, $attrValue) {
-                            $query->whereHas('attribute', function($q) use ($attrName) {
-                                return $q->where('name', $attrName);
-                            })->whereHas('attributeValue', function($q) use ($attrValue) {
-                                return $q->where('value', $attrValue);
-                            });
-                        });
+                    $name = $selectedAddress->full_name ?? $billingName;
+                    $phone = $selectedAddress->phone ?? $billingPhone;
+                    $address = $selectedAddress->full_address ?? $billingAddress;
+                    $provinceCode = $selectedAddress->province_code ?? null;
+                    $districtCode = $selectedAddress->district_code ?? null;
+                    $wardCode = $selectedAddress->ward_code ?? null;
+                    $provinceName = $selectedAddress->province_name ?? '';
+                    $districtName = $selectedAddress->district_name ?? '';
+                    $wardName = $selectedAddress->ward_name ?? '';
+                    $note = null;
+
+                    // Chỉ gọi API nếu thiếu tên và có mã code hợp lệ
+                    if ((empty($provinceName) || empty($districtName) || empty($wardName)) && $provinceCode && $districtCode && $wardCode) {
+                        try {
+                            $provinceData = Http::timeout(5)->get("https://provinces.open-api.vn/api/p/{$provinceCode}")->json();
+                            $districtData = Http::timeout(5)->get("https://provinces.open-api.vn/api/d/{$districtCode}?depth=2")->json();
+
+                            $provinceName = $provinceData['name'] ?? '';
+                            $districtName = $districtData['name'] ?? '';
+                            $wardName = '';
+
+                            if (!empty($districtData['wards'])) {
+                                foreach ($districtData['wards'] as $ward) {
+                                    if ($ward['code'] == $wardCode) {
+                                        $wardName = $ward['name'] ?? '';
+                                        break;
+                                    }
+                                }
+                            }
+
+                            // Loại bỏ tiền tố
+                            $provinceName = preg_replace('/^(Thành phố|Tỉnh)\s+/i', '', $provinceName);
+                            $districtName = preg_replace('/^(Quận|Huyện)\s+/i', '', $districtName);
+                            $wardName = preg_replace('/^(Phường|Xã)\s+/i', '', $wardName);
+                        } catch (\Exception $e) {
+                            Log::error('API call failed for selected address', [
+                                'provinceCode' => $provinceCode,
+                                'districtCode' => $districtCode,
+                                'wardCode' => $wardCode,
+                                'error' => $e->getMessage(),
+                            ]);
+                            // Dùng giá trị mặc định nếu API thất bại
+                            $provinceName = $provinceName ?: '';
+                            $districtName = $districtName ?: '';
+                            $wardName = $wardName ?: '';
+                        }
                     }
 
-                    $variant = $variantQuery->first();
-
-                    if (!$variant) {
-                        $variantErrors[] = "Không tìm thấy biến thể sản phẩm: {$item['name']}";
-                        continue;
-                    }
-
-                    $quantity = intval($item['quantity']);
-                    if ($variant->stock_quantity < $quantity) {
-                        $variantErrors[] = "Sản phẩm {$item['name']} không đủ số lượng (Còn {$variant->stock_quantity})";
-                        continue;
-                    }
-
-                    $price = (!empty($variant->price_sale) && $variant->price_sale > 0 && $variant->price_sale < $variant->price)
-                        ? $variant->price_sale
-                        : $variant->price;
-
-                    $itemTotal = $price * $quantity;
-                    $orderTotal += $itemTotal;
-
-                    OrderItem::create([
-                        'order_id' => $order->id,
-                        'product_id' => $item['id'],
-                        'product_variant_id' => $variant->id,
-                        'quantity' => $quantity,
-                        'price' => $price,
+                    Log::debug('Location names retrieved (from selected address)', [
+                        'selectedAddress' => [
+                            'id' => $selectedAddress->id,
+                            'full_name' => $selectedAddress->full_name,
+                            'phone' => $selectedAddress->phone,
+                            'full_address' => $selectedAddress->full_address,
+                            'province_code' => $provinceCode,
+                            'district_code' => $districtCode,
+                            'ward_code' => $wardCode,
+                            'province_name' => $provinceName,
+                            'district_name' => $districtName,
+                            'ward_name' => $wardName,
+                        ],
                     ]);
+                } else {
+                    // Lấy từ thông tin tự nhập (billing)
+                    $billingName = $request->billing_name;
+                    $billingPhone = $request->billing_phone;
+                    $billingAddress = $request->billing_address;
 
-                    $variant->decrement('stock_quantity', $quantity);
-                    $selectedKeys[] = $itemKey;
+                    $name = $billingName;
+                    $phone = $billingPhone;
+                    $address = $billingAddress;
+                    $provinceCode = null;
+                    $districtCode = null;
+                    $wardCode = null;
+                    $provinceName = '';
+                    $districtName = '';
+                    $wardName = '';
+                    $note = null;
+
+                    Log::debug('Location names retrieved (from billing)', [
+                        'billingName' => $billingName,
+                        'billingPhone' => $billingPhone,
+                        'billingAddress' => $billingAddress,
+                    ]);
                 }
+            }
 
-                if (!empty($variantErrors)) {
+            // Kiểm tra nếu địa chỉ không đầy đủ (chỉ áp dụng khi có shipToDifferentAddress)
+            if ($shipToDifferentAddress) {
+                if (empty($provinceName) || empty($districtName) || empty($wardName)) {
                     DB::rollBack();
-                    return redirect()->route('cart.viewCart')->with('error', implode('<br>', $variantErrors));
+                    return redirect()->route('cart.viewCart')->with('error', 'Thông tin địa chỉ giao hàng không đầy đủ. Vui lòng kiểm tra lại tỉnh, quận, xã.');
+                }
+            }
+
+            // Ghép địa chỉ đầy đủ
+            $addressParts = [$address];
+            if ($wardName) $addressParts[] = $wardName;
+            if ($districtName) $addressParts[] = $districtName;
+            if ($provinceName) $addressParts[] = $provinceName;
+
+            $fullAddress = implode(', ', array_filter($addressParts));
+
+            // Email luôn lấy từ user nếu không có trong request
+            $email = $request->email ?? $user->email ?? 'no-email@example.com';
+
+            $orderData = [
+                'user_id' => $user->id,
+                'billing_name' => $billingName,
+                'billing_phone' => $billingPhone,
+                'billing_address' => $billingAddress,
+                'name' => $name,
+                'email' => $email,
+                'phone' => $phone,
+                'address' => $fullAddress,
+                'province_code' => $provinceCode,
+                'district_code' => $districtCode,
+                'ward_code' => $wardCode,
+                'province_name' => $provinceName,
+                'district_name' => $districtName,
+                'ward_name' => $wardName,
+                'txn_ref' => now()->timestamp . rand(1000, 9999),
+                'total_price' => $finalTotal,
+                'payment_status' => Order::PAYMENT_COD,
+                'status' => Order::STATUS_PENDING,
+                'return_status' => Order::RETURN_NONE,
+                'payment_deadline' => now()->addDays(3),
+                'payment_method' => Order::PAYMENT_METHOD_COD,
+                'discount' => $discount,
+                'promotion_id' => $promotion['id'] ?? null,
+                'note' => $note,
+            ];
+
+            $order = Order::create($orderData);
+
+            // Trừ số lượng mã giảm giá nếu có
+            if (isset($promotion['id'])) {
+                $promotionModel = Promotion::find($promotion['id']);
+                if ($promotionModel && $promotionModel->quantity > 0) {
+                    $promotionModel->quantity -= 1;
+                    $promotionModel->save();
+                }
+            }
+
+            $orderTotal = 0;
+            $variantErrors = [];
+            $selectedKeys = [];
+
+            foreach ($selectedCart as $itemKey => $item) {
+                $variantQuery = ProductVariant::where('product_id', $item['id']);
+
+                foreach ($item['variant']['attributes'] as $attrName => $attrValue) {
+                    $variantQuery->whereHas('product_variant_attributes', function ($query) use ($attrName, $attrValue) {
+                        $query->whereHas('attribute', function ($q) use ($attrName) {
+                            return $q->where('name', $attrName);
+                        })->whereHas('attributeValue', function ($q) use ($attrValue) {
+                            return $q->where('value', $attrValue);
+                        });
+                    });
                 }
 
-                // Thêm log để debug
-                Log::info('Offline payment values', [
-                    'finalTotal' => $finalTotal,
-                    'orderTotal' => $orderTotal,
-                    'discount' => $discount,
-                    'selectedCart' => $selectedCart,
-                    'promotion' => $promotion
+                $variant = $variantQuery->first();
+
+                if (!$variant) {
+                    $variantErrors[] = "Không tìm thấy biến thể sản phẩm: {$item['name']}";
+                    continue;
+                }
+
+                $quantity = intval($item['quantity']);
+                if ($variant->stock_quantity < $quantity) {
+                    $variantErrors[] = "Sản phẩm {$item['name']} không đủ số lượng (Còn {$variant->stock_quantity})";
+                    continue;
+                }
+
+                $price = (!empty($variant->price_sale) && $variant->price_sale > 0 && $variant->price_sale < $variant->price)
+                    ? $variant->price_sale
+                    : $variant->price;
+
+                $itemTotal = $price * $quantity;
+                $orderTotal += $itemTotal;
+
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item['id'],
+                    'product_variant_id' => $variant->id,
+                    'quantity' => $quantity,
+                    'price' => $price,
                 ]);
 
-                // Gửi email và kích hoạt sự kiện sau khi đã kiểm tra hết lỗi
-                event(new EventsOrderPlaced($order));
-                Mail::to($user->email)->send(new OrderPlacedMail($order));
-
-                DB::commit();
-
-                // Xóa các sản phẩm đã đặt khỏi giỏ hàng
-                foreach ($selectedKeys as $key) {
-                    unset($cart[$key]);
-                }
-                session(['cart' => $cart]);
-                session()->forget('selected_cart');
-                session()->forget('promotion');
-
-                return redirect()->route('donhang.index')
-                    ->with('success', 'Đặt hàng thành công! ' . $order->getStatusText() . '. Vui lòng thanh toán khi nhận hàng.');
-            } catch (\Exception $e) {
-                DB::rollBack();
-                return redirect()->route('cart.viewCart')->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
+                $variant->decrement('stock_quantity', $quantity);
+                $selectedKeys[] = $itemKey;
             }
+
+            if (!empty($variantErrors)) {
+                DB::rollBack();
+                return redirect()->route('cart.viewCart')->with('error', implode('<br>', $variantErrors));
+            }
+
+            Log::info('Offline payment values', [
+                'finalTotal' => $finalTotal,
+                'orderTotal' => $orderTotal,
+                'discount' => $discount,
+                'selectedCart' => $selectedCart,
+                'promotion' => $promotion,
+                'shipping_info' => [
+                    'ship_to_different_address' => $shipToDifferentAddress,
+                    'name' => $name,
+                    'phone' => $phone,
+                    'address' => $fullAddress,
+                    'email' => $email,
+                    'provinceCode' => $provinceCode,
+                    'districtCode' => $districtCode,
+                    'wardCode' => $wardCode,
+                ],
+            ]);
+
+            event(new EventsOrderPlaced($order));
+            Mail::to($user->email)->send(new OrderPlacedMail($order));
+
+            DB::commit();
+
+            foreach ($selectedKeys as $key) {
+                unset($cart[$key]);
+            }
+            session(['cart' => $cart]);
+            session()->forget('selected_cart');
+            session()->forget('promotion');
+
+            return redirect()->route('donhang.index')
+                ->with('success', 'Đặt hàng thành công! ' . $order->getStatusText() . '. Vui lòng thanh toán khi nhận hàng.');
         } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Order creation failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
             return redirect()->route('cart.viewCart')->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
         }
+    } catch (\Exception $e) {
+        Log::error('General error in offline payment', [
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString(),
+        ]);
+        return redirect()->route('cart.viewCart')->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
     }
-
+}
 }

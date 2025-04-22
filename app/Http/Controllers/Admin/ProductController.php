@@ -79,8 +79,10 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
             'images.*' => 'nullable|image|max:2048',
-            'variants' => 'nullable|string',
+            'variants' => 'nullable|string|required',
             'status' => 'required|in:1,2',
+        ],[
+            'variants.required' => 'Bạn phải thêm ít nhất một biến thể.'
         ]);
 
         // Kiểm tra sản phẩm trùng lặp

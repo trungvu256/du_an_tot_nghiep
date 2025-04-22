@@ -14,7 +14,7 @@
                                 <th>Tổng cộng</th>
                                 <th>Biến thể</th>
                                 <th>Xóa</th>
-                        </thead>
+                                    </thead>
                         <tbody class="align-middle">
                             @foreach (session('cart', []) as $cartKey => $item)
                                 <tr id="cart-item-{{ $cartKey }}">
@@ -53,15 +53,15 @@
                                                 data-cart-key="{{ $cartKey }}" data-action="increase">
                                                 +
                                             </button>
-                                        </div>
-                                    </td>
+                                                </div>
+                                            </td>
                                     <td class="align-middle item-total" id="item-total-{{ $cartKey }}">
                                         @php
                                             $finalPrice = isset($item['price_sale']) && $item['price_sale'] > 0 ? $item['price_sale'] : $item['price'];
                                             $total = $finalPrice * (int)$item['quantity'];
                                         @endphp
                                         {{ number_format($total, 0, ',', '.') }}VNĐ
-                                    </td>
+                                            </td>
                                     <td class="align-middle">
                                         @if (isset($item['variant']) && isset($item['variant']['attributes']) && count($item['variant']['attributes']) > 0)
                                             @foreach ($item['variant']['attributes'] as $attrName => $attrValue)
@@ -70,20 +70,20 @@
                                         @else
                                             <p>Không có biến thể</p>
                                         @endif
-                                    </td>
+                                            </td>
                                     <td>
                                         <button type="button" class="btn btn-sm btn-danger btn-remove-item"
                                             data-cart-key="{{ $cartKey }}">
                                             x
                                         </button>
-                                    </td>
-                                </tr>
+                                            </td>
+                                        </tr>
                             @endforeach
-                        </tbody>
-                    </table>
+                                    </tbody>
+                                </table>
                     <a href="{{ route('web.shop') }}" class="btn btn-success">Mua thêm</a>
-                </form>
-            </div>
+                            </form>
+                                    </div>
 
             <div class="col-lg-4">
                 {{-- <form action="{{ route('cart.applyPromotion') }}" method="POST">
@@ -99,7 +99,7 @@
                     <button type="button" class="btn btn-outline-success mb-2" id="viewPromotionsBtn">
                         <i class="fa fa-tag"></i> Xem mã khuyến mãi có thể áp dụng
                     </button>
-                </div>
+                                    </div>
                 {{-- @if (session('success'))
                     <p class="text-success">{{ session('success') }}</p>
                 @endif
@@ -122,12 +122,12 @@
                 <div class="card mb-3">
                     <div class="card-header bg-info">
                         <h6 class="m-0 text-center">Tóm tắt giỏ hàng</h6>
-                    </div>
+                                                        </div>
                     <div class="card-footer bg-transparent">
                         <div class="d-flex justify-content-between">
                             <h6>Tạm tính :</h6>
                             <h6 class="font-weight-medium" id="summary-subtotal">{{ number_format($subtotal, 0, ',', '.') }}₫</h6>
-                        </div>
+                                                    </div>
                         <div id="discount-container">
                             @php
                                 $promotion = session('promotion');
@@ -140,8 +140,8 @@
                                     echo '</div>';
                                 }
                             @endphp
-                        </div>
-                    </div>
+                                                </div>
+                                            </div>
                     <div class="card-footer bg-transparent">
                         <div class="d-flex justify-content-between">
                             <h6>Tổng cộng :</h6>

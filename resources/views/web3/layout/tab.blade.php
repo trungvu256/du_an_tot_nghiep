@@ -23,8 +23,7 @@
     <div class="toolbar-item">
         <a href="#login" data-bs-toggle="offcanvas">
             <div class="toolbar-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd"
                         d="M12.6849 6.28659C12.6849 7.00267 12.4004 7.68943 11.8941 8.19578C11.3877 8.70212 10.701 8.98659 9.98488 8.98659C9.2688 8.98659 8.58204 8.70212 8.07569 8.19578C7.56934 7.68943 7.28488 7.00267 7.28488 6.28659C7.28488 5.5705 7.56934 4.88375 8.07569 4.3774C8.58204 3.87105 9.2688 3.58659 9.98488 3.58659C10.701 3.58659 11.3877 3.87105 11.8941 4.3774C12.4004 4.88375 12.6849 5.5705 12.6849 6.28659ZM14.3515 6.28659C14.3515 6.86003 14.2386 7.42785 14.0192 7.95764C13.7997 8.48743 13.4781 8.96881 13.0726 9.37429C12.6671 9.77977 12.1857 10.1014 11.6559 10.3209C11.1261 10.5403 10.5583 10.6533 9.98488 10.6533C9.41144 10.6533 8.84362 10.5403 8.31383 10.3209C7.78404 10.1014 7.30266 9.77977 6.89718 9.37429C6.4917 8.96881 6.17005 8.48743 5.95061 7.95764C5.73116 7.42785 5.61821 6.86003 5.61821 6.28659C5.61821 5.12848 6.07827 4.0178 6.89718 3.19889C7.71609 2.37998 8.82677 1.91992 9.98488 1.91992C11.143 1.91992 12.2537 2.37998 13.0726 3.19889C13.8915 4.0178 14.3515 5.12848 14.3515 6.28659ZM3.83488 17.7049C3.83488 16.2183 4.48488 15.0616 5.55571 14.2524C6.64738 13.4283 8.20571 12.9491 9.98738 12.9491C11.7699 12.9491 13.3282 13.4283 14.419 14.2524C15.4907 15.0608 16.1407 16.2191 16.1407 17.7049C16.1407 17.9259 16.2285 18.1379 16.3848 18.2942C16.5411 18.4505 16.753 18.5383 16.974 18.5383C17.1951 18.5383 17.407 18.4505 17.5633 18.2942C17.7196 18.1379 17.8074 17.9259 17.8074 17.7049C17.8074 15.6633 16.8849 14.0258 15.424 12.9224C13.9824 11.8341 12.0474 11.2824 9.98738 11.2824C7.92738 11.2824 5.99238 11.8341 4.55155 12.9224C3.08988 14.0258 2.16821 15.6641 2.16821 17.7049C2.16821 17.9259 2.25601 18.1379 2.41229 18.2942C2.56857 18.4505 2.78053 18.5383 3.00155 18.5383C3.22256 18.5383 3.43452 18.4505 3.5908 18.2942C3.74708 18.1379 3.83488 17.9259 3.83488 17.7049Z"
                         fill="black" />
@@ -36,8 +35,7 @@
     <div class="toolbar-item">
         <a href="shop-default.html">
             <div class="toolbar-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd"
                         d="M1.875 8.479C1.875 8.134 2.155 7.854 2.5 7.854C2.845 7.854 3.125 8.134 3.125 8.479V15.5623C3.125 16.5982 3.96417 17.4373 5 17.4373H15C16.0358 17.4373 16.875 16.5982 16.875 15.5623V8.479C16.875 8.134 17.155 7.854 17.5 7.854C17.845 7.854 18.125 8.134 18.125 8.479V15.5623C18.125 17.2882 16.7258 18.6873 15 18.6873H5C3.27417 18.6873 1.875 17.2882 1.875 15.5623V8.479Z"
                         fill="black" />
@@ -61,8 +59,7 @@
     <div class="toolbar-item">
         <a href="wish-list.html">
             <div class="toolbar-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_4013_1872)">
                         <path
                             d="M18.3932 3.30791C16.218 1.13334 12.6795 1.13334 10.5049 3.30791L9.99983 3.8127L9.49504 3.30791C7.32046 1.13304 3.78163 1.13304 1.60706 3.30791C-0.523361 5.43833 -0.537195 8.81527 1.57498 11.1632C3.50142 13.3039 9.18304 17.9289 9.4241 18.1246C9.58775 18.2576 9.78467 18.3224 9.9804 18.3224C9.98688 18.3224 9.99335 18.3224 9.99953 18.3221C10.202 18.3315 10.406 18.2621 10.575 18.1246C10.816 17.9289 16.4982 13.3039 18.4253 11.1629C20.5371 8.81527 20.5233 5.43833 18.3932 3.30791ZM17.1125 9.98174C15.6105 11.6503 11.4818 15.0917 9.99953 16.313C8.51724 15.092 4.38944 11.6509 2.88773 9.98203C1.41427 8.34433 1.40044 6.01199 2.85564 4.55679C3.59885 3.81388 4.57488 3.44213 5.5509 3.44213C6.52693 3.44213 7.50295 3.81358 8.24616 4.55679L9.3564 5.66703C9.48856 5.79919 9.65516 5.87807 9.82999 5.90574C10.1137 5.96667 10.4216 5.88749 10.6424 5.66732L11.7532 4.55679C13.2399 3.07067 15.6582 3.07097 17.144 4.55679C18.5992 6.01199 18.5854 8.34433 17.1125 9.98174Z"
@@ -82,8 +79,7 @@
     <div class="toolbar-item">
         <a href="#shoppingCart" data-bs-toggle="offcanvas">
             <div class="toolbar-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd"
                         d="M4.70906 7.42985L4.0424 16.699H15.8641L15.1974 7.42985H4.70906ZM16.7491 5.76318H3.15823L2.38073 16.5798C2.36436 16.8082 2.39521 17.0374 2.47134 17.2533C2.54748 17.4692 2.66727 17.6671 2.82325 17.8347C2.97923 18.0022 3.16805 18.1358 3.37795 18.2272C3.58785 18.3186 3.81431 18.3657 4.04323 18.3657H15.8641C16.0931 18.3657 16.3196 18.3185 16.5296 18.2271C16.7395 18.1357 16.9284 18.002 17.0844 17.8344C17.2404 17.6667 17.3601 17.4687 17.4362 17.2527C17.5123 17.0368 17.5431 16.8074 17.5266 16.579L16.7491 5.76318Z"
                         fill="black" />
@@ -98,38 +94,30 @@
     </div>
 </div>
 <!-- /toolbar  -->
-@if (session('error'))
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: '{{ session('error') }}',
-            confirmButtonText: 'OK'
-        });
-    </script>
-@endif
+
 
 <!-- login -->
 <div class="offcanvas offcanvas-end popup-style-1 popup-login" id="login">
     <div class="canvas-wrapper">
 
         @if (session('error'))
-            <div class="alert alert-danger fw-bold text-center">
-                {{ session('error') }}
-            </div>
+        <div class="alert alert-danger fw-bold text-center">
+            {{ session('error') }}
+        </div>
         @endif
 
         @if ($errors->any())
-            <div class="alert alert-danger fw-bold">
-                <ul class="mb-0">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
+        <div class="alert alert-danger fw-bold">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
         @endif
         <div class="canvas-body popup-inner">
             @if (Auth::check())
+
                 {{-- Người dùng đã đăng nhập --}}
                 <div class="canvas-header popup-header">
                     <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('images/anhlogin.jpg') }}"
@@ -144,51 +132,58 @@
                     <hr>
                     <li><a onmouseover="this.style.color='#ff6f61'" onmouseout="this.style.color='black'" href="{{ route('donhang.index') }}"><i class="icon icon-cart"></i> Đơn hàng của bạn</a></li>
                     <hr>
+                    <li><a onmouseover="this.style.color='#ff6f61'" onmouseout="this.style.color='black'" href="{{ route('address.index') }}"><i class="icon icon-user"></i> Sổ địa chỉ</a>
+                    </li>
+                    <hr>
                     <li><a href="{{ route('web.logout') }}" class="btn btn-danger"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a></li>
                 </div>
-            @else
-                {{-- Form đăng nhập --}}
-                <div class="canvas-header popup-header">
-                    <span class="title">Đăng nhập</span>
-                    <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas"
-                        aria-label="Close"></button>
-                </div>
-                <form action="{{ route('login.store.web') }}" method="POST" accept-charset="utf-8"
-                    class="form-login">
-                    @csrf
-                    <div>
-                        <fieldset class="email mb_12">
-                            <input type="email" name="email" placeholder="Nhập email ">
-                        </fieldset>
-                        <fieldset class="password">
-                            <input type="password" name="password" placeholder="Nhập mật khẩu ">
-                        </fieldset>
-                    </div>
-                    <div class="bot">
-                        <div class="button-wrap">
-                            <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100"
-                                type="submit">Đăng nhập</button>
-                            <button type="button" data-bs-target="#register" data-bs-toggle="offcanvas"
-                                class="tf-btn btn-out-line-dark2 w-100">Đăng ký</button>
-                        </div>
-                    </div>
-                </form>
 
-                <div class="other-login mt-3">
+            @else
+            {{-- Form đăng nhập --}}
+            <div class="canvas-header popup-header">
+                <span class="title">Đăng nhập</span>
+                <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('login.store.web') }}" method="POST" accept-charset="utf-8" class="form-login">
+                @csrf
+                <div>
+                    <fieldset class="email mb_12">
+                        <input type="email" name="email" placeholder="Nhập email ">
+                    </fieldset>
+                    <fieldset class="password">
+                        <input type="password" name="password" placeholder="Nhập mật khẩu ">
+                    </fieldset>
+                </div>
+                <div class="bot">
+                    <a href="#resetPass" data-bs-toggle="offcanvas" class="text text-sm text-main-2">Forgot your
+                        password?</a>
+                    <div class="button-wrap">
+                        <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100"
+                            type="submit">Đăng nhập</button>
+                        <button type="button" data-bs-target="#register" data-bs-toggle="offcanvas"
+                            class="tf-btn btn-out-line-dark2 w-100">Đăng ký</button>
+                    </div>
+                </div>
+            </form>
+            <p style="margin-top: 10px;">
+                <a href="{{ url('/forgot-password') }}">Bạn đã quên mật khẩu?</a>
+            </p>
+            <!-- <div class="other-login mt-3">
                     <p class="text-sm text-center text-main-2">Hoặc đăng nhập bằng:</p>
                     <a href="#" class="w-100 text-md mb_8">
                         {{-- Facebook Icon --}}
                         <svg class="icon" width="32" height="32"
-                            viewBox="0 0 32 32"><!-- icon content --></svg>
+                            viewBox="0 0 32 32"><!-- icon content</svg>
                         FACEBOOK
                     </a>
+                    
                     <a href="#" class="w-100 text-md bg-dark">
                         {{-- Google Icon --}}
                         <svg class="icon" width="32" height="32"
-                            viewBox="0 0 32 32"><!-- icon content --></svg>
+                            viewBox="0 0 32 32"><!-- icon content</svg>
                         GOOGLE
                     </a>
-                </div>
+                </div> -->
             @endif
         </div>
     </div>
@@ -205,8 +200,8 @@
             <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div id="error-message" class="alert alert-danger" style="display: none;"></div>
-                
-       
+
+
 
 
         <div class="canvas-body popup-inner">
@@ -258,12 +253,11 @@
                     </fieldset>
 
                     <fieldset class="text mb_12">
-                        <input type="file" class="form-control rounded-3" id="avatar" name="avatar"
-                            accept="image/*">
+                        <input type="file" class="form-control rounded-3" id="avatar" name="avatar" accept="image/*">
                     </fieldset>
                     <fieldset class="text mb_12">
-                        <input type="checkbox" class="form-check-input" id="agree_terms" name="agree_terms"
-                            value="1" required>
+                        <input type="checkbox" class="form-check-input" id="agree_terms" name="agree_terms" value="1"
+                            required>
                         <label class="form-check-label text-muted" for="agree_terms">Tôi đồng ý với tất cả điều
                             khoản</label>
                     </fieldset>
@@ -281,37 +275,308 @@
         </div>
     </div>
 </div>
+
 <!-- /register -->
 
 <!-- Reset pass -->
-<!-- <div class="offcanvas offcanvas-end popup-style-1 popup-reset-pass" id="resetPass">
+<!-- Offcanvas Quên Mật Khẩu -->
+<div class="offcanvas offcanvas-end popup-style-1 popup-reset-pass" id="resetPass">
     <div class="canvas-wrapper">
         <div class="canvas-header popup-header">
-            <span class="title">Reset Your Password</span>
-            <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <span class="title">Đặt Lại Mật Khẩu</span>
+            <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Đóng"></button>
         </div>
         <div class="canvas-body popup-inner">
-            <form action="#" class="form-login">
-                <div class="">
-                    <p class="text text-sm text-main-2">Forgot your password? No worries! Enter your registered
-                        email to receive a link and securely reset it in just a few steps.</p>
+            <div id="forgotError" class="alert alert-danger d-none"></div>
+            <div id="forgotSuccess" class="alert alert-success d-none"></div>
+            <form method="POST" action="{{ url('/forgot-password') }}" class="form-login" id="forgotPasswordForm">
+                @csrf
+                <div>
+                    <p class="text text-sm text-main-2">Quên mật khẩu? Đừng lo! Nhập email đã đăng ký của bạn
+                        để nhận mã OTP và đặt lại mật khẩu một cách an toàn chỉ trong vài bước.</p>
                     <fieldset class="email mb_12">
-                        <input type="email" placeholder="Enter Your Email*">
+                        <input type="email" name="email" class="form-control" placeholder="Nhập Email Của Bạn*"
+                            required>
                     </fieldset>
                 </div>
                 <div class="bot">
                     <div class="button-wrap">
-                        <button class="subscribe-button tf-btn animate-btn bg-dark-2 w-100" type="submit">Reset
-                            Password</button>
+                        <button class="subscribe-button tf-btn animate-btn bg-dark-2 w-100" type="submit"
+                            id="forgotSubmit">
+                            <span>Gửi Mã OTP</span>
+                            <span class="spinner-border spinner-border-sm d-none" role="status"
+                                aria-hidden="true"></span>
+                        </button>
                         <button type="button" data-bs-dismiss="offcanvas"
-                            class="tf-btn btn-out-line-dark2 w-100">Cancel</button>
+                            class="tf-btn btn-out-line-dark2 w-100">Hủy</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-</div> -->
-<!-- /Reset pass -->
+</div>
+
+<!-- Offcanvas Xác Minh OTP -->
+<div class="offcanvas offcanvas-end popup-style-1 popup-verify-otp" id="verifyOtp">
+    <div class="canvas-wrapper">
+        <div class="canvas-header popup-header">
+            <span class="title">Xác Minh Mã OTP</span>
+            <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Đóng"></button>
+        </div>
+        <div class="canvas-body popup-inner">
+            <div id="otpError" class="alert alert-danger d-none"></div>
+            <div id="otpSuccess" class="alert alert-success d-none"></div>
+            <form method="POST" action="{{ url('/verify-otp') }}" class="form-login" id="verifyOtpForm">
+                @csrf
+                <input type="hidden" name="email" id="otpEmail">
+                <div>
+                    <p class="text text-sm text-main-2">Vui lòng nhập mã OTP được gửi đến email của bạn.</p>
+                    <fieldset class="otp mb_12">
+                        <input type="text" name="otp" class="form-control" placeholder="Nhập Mã OTP*" maxlength="6"
+                            required>
+                    </fieldset>
+                </div>
+                <div class="bot">
+                    <div class="button-wrap">
+                        <button class="subscribe-button tf-btn animate-btn bg-dark-2 w-100" type="submit"
+                            id="otpSubmit">
+                            <span>Xác Minh</span>
+                            <span class="spinner-border spinner-border-sm d-none" role="status"
+                                aria-hidden="true"></span>
+                        </button>
+                        <button type="button" data-bs-dismiss="offcanvas"
+                            class="tf-btn btn-out-line-dark2 w-100">Hủy</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Offcanvas Đặt Lại Mật Khẩu -->
+<div class="offcanvas offcanvas-end popup-style-1 popup-reset-password" id="resetPassword">
+    <div class="canvas-wrapper">
+        <div class="canvas-header popup-header">
+            <span class="title">Đặt Lại Mật Khẩu</span>
+            <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Đóng"></button>
+        </div>
+        <div class="canvas-body popup-inner">
+            <div id="resetError" class="alert alert-danger d-none"></div>
+            <div id="resetSuccess" class="alert alert-success d-none"></div>
+            <form method="POST" action="{{ url('/reset-password') }}" class="form-login" id="resetPasswordForm">
+                @csrf
+                <input type="hidden" name="email" id="resetEmail">
+                <div>
+                    <p class="text text-sm text-main-2">Nhập mật khẩu mới để hoàn tất việc đặt lại.</p>
+                    <fieldset class="password mb_12">
+                        <input type="password" name="password" class="form-control" placeholder="Mật Khẩu Mới*"
+                            required>
+                    </fieldset>
+                    <fieldset class="password_confirmation mb_12">
+                        <input type="password" name="password_confirmation" class="form-control"
+                            placeholder="Nhập Lại Mật Khẩu*" required>
+                    </fieldset>
+                </div>
+                <div class="bot">
+                    <div class="button-wrap">
+                        <button class="subscribe-button tf-btn animate-btn bg-dark-2 w-100" type="submit"
+                            id="resetSubmit">
+                            <span>Cập Nhật Mật Khẩu</span>
+                            <span class="spinner-border spinner-border-sm d-none" role="status"
+                                aria-hidden="true"></span>
+                        </button>
+                        <button type="button" data-bs-dismiss="offcanvas"
+                            class="tf-btn btn-out-line-dark2 w-100">Hủy</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript cho xử lý AJAX -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Thiết lập token CSRF cho các yêu cầu AJAX
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    // Hàm reset form và thông báo
+    function resetFormAndAlerts(formId, errorId, successId) {
+        $(formId)[0].reset(); // Reset các trường input
+        $(errorId).addClass('d-none').text(''); // Ẩn và xóa thông báo lỗi
+        $(successId).addClass('d-none').text(''); // Ẩn và xóa thông báo thành công
+    }
+
+    // Reset trạng thái khi offcanvas được hiển thị
+    $('#resetPass').on('shown.bs.offcanvas', function() {
+        resetFormAndAlerts('#forgotPasswordForm', '#forgotError', '#forgotSuccess');
+        $('#forgotSubmit').prop('disabled', false).find('.spinner-border').addClass('d-none').siblings(
+            'span').text('Gửi Mã OTP');
+    });
+
+    $('#verifyOtp').on('shown.bs.offcanvas', function() {
+        resetFormAndAlerts('#verifyOtpForm', '#otpError', '#otpSuccess');
+        $('#otpSubmit').prop('disabled', false).find('.spinner-border').addClass('d-none').siblings(
+            'span').text('Xác Minh');
+    });
+
+    $('#resetPassword').on('shown.bs.offcanvas', function() {
+        resetFormAndAlerts('#resetPasswordForm', '#resetError', '#resetSuccess');
+        $('#resetSubmit').prop('disabled', false).find('.spinner-border').addClass('d-none').siblings(
+            'span').text('Cập Nhật Mật Khẩu');
+    });
+
+    // Reset thông báo đăng nhập khi mở offcanvas đăng nhập
+    $('#login').on('shown.bs.offcanvas', function() {
+        $('#loginSuccess').addClass('d-none').text('');
+    });
+
+    // Xử lý gửi form Quên Mật Khẩu
+    $('#forgotPasswordForm').on('submit', function(e) {
+        e.preventDefault();
+        let form = $(this);
+        let button = $('#forgotSubmit');
+        let spinner = button.find('.spinner-border');
+        let buttonText = button.find('span').first();
+
+        // Hiển thị trạng thái đang tải
+        button.prop('disabled', true);
+        spinner.removeClass('d-none');
+        buttonText.text('Đang gửi...');
+        $('#forgotError, #forgotSuccess').addClass('d-none');
+
+        $.ajax({
+            url: form.attr('action'),
+            method: 'POST',
+            data: form.serialize(),
+            success: function(response) {
+                if (response.success) {
+                    $('#forgotSuccess').text(response.message).removeClass('d-none');
+                    setTimeout(() => {
+                        $('#resetPass').offcanvas('hide');
+                        $('#otpEmail').val(form.find('input[name="email"]').val());
+                        $('#verifyOtp').offcanvas('show');
+                    }, 1000);
+                }
+            },
+            error: function(xhr) {
+                let errorMsg = xhr.responseJSON && xhr.responseJSON.message ?
+                    xhr.responseJSON.message :
+                    'Đã có lỗi xảy ra. Vui lòng thử lại.';
+                $('#forgotError').text(errorMsg).removeClass('d-none');
+            },
+            complete: function() {
+                // Đặt lại trạng thái nút
+                button.prop('disabled', false);
+                spinner.addClass('d-none');
+                buttonText.text('Gửi Mã OTP');
+            }
+        });
+    });
+
+    // Xử lý gửi form Xác Minh OTP
+    $('#verifyOtpForm').on('submit', function(e) {
+        e.preventDefault();
+        let form = $(this);
+        let button = $('#otpSubmit');
+        let spinner = button.find('.spinner-border');
+        let buttonText = button.find('span').first();
+
+        // Hiển thị trạng thái đang tải
+        button.prop('disabled', true);
+        spinner.removeClass('d-none');
+        buttonText.text('Đang xác minh...');
+        $('#otpError, #otpSuccess').addClass('d-none');
+
+        $.ajax({
+            url: form.attr('action'),
+            method: 'POST',
+            data: form.serialize(),
+            success: function(response) {
+                if (response.success) {
+                    $('#otpSuccess').text(response.message).removeClass('d-none');
+                    setTimeout(() => {
+                        $('#verifyOtp').offcanvas('hide');
+                        $('#resetEmail').val(form.find('input[name="email"]')
+                            .val());
+                        $('#resetPassword').offcanvas('show');
+                    }, 1000);
+                }
+            },
+            error: function(xhr) {
+                let errorMsg = xhr.responseJSON && xhr.responseJSON.message ?
+                    xhr.responseJSON.message :
+                    'Mã OTP không hợp lệ. Vui lòng thử lại.';
+                $('#otpError').text(errorMsg).removeClass('d-none');
+            },
+            complete: function() {
+                // Đặt lại trạng thái nút
+                button.prop('disabled', false);
+                spinner.addClass('d-none');
+                buttonText.text('Xác Minh');
+            }
+        });
+    });
+
+    // Xử lý gửi form Đặt Lại Mật Khẩu
+    $('#resetPasswordForm').on('submit', function(e) {
+        e.preventDefault();
+        let form = $(this);
+        let button = $('#resetSubmit');
+        let spinner = button.find('.spinner-border');
+        let buttonText = button.find('span').first();
+
+        // Hiển thị trạng thái đang tải
+        button.prop('disabled', true);
+        spinner.removeClass('d-none');
+        buttonText.text('Đang cập nhật...');
+        $('#resetError, #resetSuccess').addClass('d-none');
+
+        $.ajax({
+            url: form.attr('action'),
+            method: 'POST',
+            data: form.serialize(),
+            success: function(response) {
+                if (response.success) {
+                    $('#resetSuccess').text(response.message).removeClass('d-none');
+                    setTimeout(() => {
+                        $('#resetPassword').offcanvas('hide');
+                        // Hiển thị offcanvas đăng nhập
+                        $('#login').offcanvas('show');
+                        // Điền trước email vào form đăng nhập
+                        $('#login').find('input[name="email"]').val(form.find(
+                            'input[name="email"]').val());
+                        // Hiển thị thông báo thành công trong offcanvas đăng nhập
+                        $('#loginSuccess').text(
+                            'Mật khẩu đã được đặt lại thành công. Vui lòng đăng nhập.'
+                        ).removeClass('d-none');
+                        // Reset form đặt lại mật khẩu
+                        resetFormAndAlerts('#resetPasswordForm', '#resetError',
+                            '#resetSuccess');
+                    }, 2000);
+                }
+            },
+            error: function(xhr) {
+                let errorMsg = xhr.responseJSON && xhr.responseJSON.message ?
+                    xhr.responseJSON.message :
+                    'Đã có lỗi xảy ra. Vui lòng thử lại.';
+                $('#resetError').text(errorMsg).removeClass('d-none');
+            },
+            complete: function() {
+                // Đặt lại trạng thái nút
+                button.prop('disabled', false);
+                spinner.addClass('d-none');
+                buttonText.text('Cập Nhật Mật Khẩu');
+            }
+        });
+    });
+});
+</script>
 
 <!-- search -->
 <div class="offcanvas offcanvas-top offcanvas-search" id="search">
@@ -326,8 +591,8 @@
                         <div class="heading">What are you looking for?</div>
                         <form class="form-search">
                             <fieldset class="text">
-                                <input type="text" placeholder="Search" class="" name="text"
-                                    tabindex="0" value="" aria-required="true" required="">
+                                <input type="text" placeholder="Search" class="" name="text" tabindex="0" value=""
+                                    aria-required="true" required="">
                             </fieldset>
                             <button class="" type="submit">
                                 <i class="icon icon-search"></i>
@@ -347,8 +612,7 @@
                 <div class="col-lg-10">
                     <div class="featured-product">
                         <div class="text-xl-2 fw-medium featured-product-heading">Featured product</div>
-                        <div dir="ltr" class="swiper tf-swiper wrap-sw-over"
-                            data-swiper='{
+                        <div dir="ltr" class="swiper tf-swiper wrap-sw-over" data-swiper='{
                                     "slidesPerView": 2,
                                     "spaceBetween": 12,
                                     "speed": 1000,
@@ -540,8 +804,7 @@
                                                     src="images/products/fashion/product-21.jpg" alt="image-product">
                                                 <img class="img-hover lazyload"
                                                     data-src="images/products/fashion/women-black-3.jpg"
-                                                    src="images/products/fashion/women-black-3.jpg"
-                                                    alt="image-product">
+                                                    src="images/products/fashion/women-black-3.jpg" alt="image-product">
                                             </a>
                                             <ul class="list-product-btn">
                                                 <li>
@@ -686,17 +949,14 @@
                                                     <span class="swatch-value bg-beige"></span>
                                                     <img class=" lazyload"
                                                         data-src="images/products/fashion/product-5.jpg"
-                                                        src="images/products/fashion/product-5.jpg"
-                                                        alt="image-product">
+                                                        src="images/products/fashion/product-5.jpg" alt="image-product">
                                                 </li>
-                                                <li
-                                                    class="list-color-item color-swatch hover-tooltip line tooltip-bot">
+                                                <li class="list-color-item color-swatch hover-tooltip line tooltip-bot">
                                                     <span class="tooltip color-filter">White</span>
                                                     <span class="swatch-value bg-white"></span>
                                                     <img class=" lazyload"
                                                         data-src="images/products/fashion/product-1.jpg"
-                                                        src="images/products/fashion/product-1.jpg"
-                                                        alt="image-product">
+                                                        src="images/products/fashion/product-1.jpg" alt="image-product">
                                                 </li>
 
                                             </ul>
@@ -835,8 +1095,7 @@
                                         Australia</option>
                                     <option value="Austria" data-provinces='[]'>Austria</option>
                                     <option value="Belgium" data-provinces='[]'>Belgium</option>
-                                    <option value="Canada"
-                                        data-provinces='[["Ontario","Ontario"],["Quebec","Quebec"]]'>
+                                    <option value="Canada" data-provinces='[["Ontario","Ontario"],["Quebec","Quebec"]]'>
                                         Canada
                                     </option>
                                     <option value="Czech Republic" data-provinces='[]'>Czechia</option>
@@ -865,14 +1124,12 @@
                         <div class="field">
                             <p class="text-sm">State/Province</p>
                             <div class="tf-select">
-                                <select id="shipping-province-form" name="address[province]"
-                                    data-default=""></select>
+                                <select id="shipping-province-form" name="address[province]" data-default=""></select>
                             </div>
                         </div>
                         <div class="field">
                             <p class="text-sm">Zipcode</p>
-                            <input type="text" data-opend-focus id="zipcode" name="address[zip]"
-                                value="">
+                            <input type="text" data-opend-focus id="zipcode" name="address[zip]" value="">
                         </div>
                         <div id="zipcode-message" class="error" style="display: none;">
                             We found one shipping rate available for undefined.
@@ -1063,119 +1320,122 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    $(document).ready(function() {
-        $('#form_register').submit(function(e) {
-            e.preventDefault();
+$(document).ready(function() {
+    $('#form_register').submit(function(e) {
+        e.preventDefault();
 
-            let firstName = $('#first_name').val().trim();
-            let lastName = $('#last_name').val().trim();
-            let name = $('#name').val().trim();
-            let email = $('#email').val().trim();
-            let password = $('#password').val();
-            let confirmPassword = $('#password_confirm').val();
-            let phone = $('#phone').val().trim();
-            let address = $('#address').val().trim();
-            let gender = $('#gender').val();
-            let agreeTerms = $('#agree_terms').prop('checked');
+        let firstName = $('#first_name').val().trim();
+        let lastName = $('#last_name').val().trim();
+        let name = $('#name').val().trim();
+        let email = $('#email').val().trim();
+        let password = $('#password').val();
+        let confirmPassword = $('#password_confirm').val();
+        let phone = $('#phone').val().trim();
+        let address = $('#address').val().trim();
+        let gender = $('#gender').val();
+        let agreeTerms = $('#agree_terms').prop('checked');
 
-            if (firstName === '' || lastName === '') {
-                Swal.fire("Lỗi", "Họ và Tên không được để trống!", "error");
-                return;
+        if (firstName === '' || lastName === '') {
+            Swal.fire("Lỗi", "Họ và Tên không được để trống!", "error");
+            return;
+        }
+
+        if (name === '') {
+            Swal.fire("Lỗi", "Tên không được để trống!", "error");
+            return;
+        }
+
+        let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            Swal.fire("Lỗi", "Email không hợp lệ!", "error");
+            return;
+        }
+
+        if (password.length < 6) {
+            Swal.fire("Lỗi", "Mật khẩu phải có ít nhất 6 ký tự!", "error");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            Swal.fire("Lỗi", "Mật khẩu không trùng khớp!", "error");
+            return;
+        }
+
+        let phoneRegex = /^(0[1-9][0-9]{8,9})$/;
+        if (phone !== '' && !phoneRegex.test(phone)) {
+            Swal.fire("Lỗi", "Số điện thoại không hợp lệ!", "error");
+            return;
+        }
+
+        if (gender === '') {
+            Swal.fire("Lỗi", "Vui lòng chọn giới tính!", "error");
+            return;
+        }
+
+        if (!agreeTerms) {
+            Swal.fire("Lỗi", "Bạn phải đồng ý với các điều khoản!", "error");
+            return;
+        }
+
+        let formData = new FormData(this);
+        formData.append('status', 1);
+        formData.append('is_admin', 0);
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
+        });
 
-            if (name === '') {
-                Swal.fire("Lỗi", "Tên không được để trống!", "error");
-                return;
-            }
+        let registerUrl = $('meta[name="register-url"]').attr('content');
+        console.log("Register URL:", registerUrl); // Ghi log URL để gỡ lỗi
 
-            let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                Swal.fire("Lỗi", "Email không hợp lệ!", "error");
-                return;
-            }
+        // if (!registerUrl) {
+        //     Swal.fire("Lỗi", "Không tìm thấy URL đăng ký! Vui lòng kiểm tra cấu hình.", "error");
+        //     return;
+        // }
 
-            if (password.length < 6) {
-                Swal.fire("Lỗi", "Mật khẩu phải có ít nhất 6 ký tự!", "error");
-                return;
-            }
-
-            if (password !== confirmPassword) {
-                Swal.fire("Lỗi", "Mật khẩu không trùng khớp!", "error");
-                return;
-            }
-
-            let phoneRegex = /^(0[1-9][0-9]{8,9})$/;
-            if (phone !== '' && !phoneRegex.test(phone)) {
-                Swal.fire("Lỗi", "Số điện thoại không hợp lệ!", "error");
-                return;
-            }
-
-            if (gender === '') {
-                Swal.fire("Lỗi", "Vui lòng chọn giới tính!", "error");
-                return;
-            }
-
-            if (!agreeTerms) {
-                Swal.fire("Lỗi", "Bạn phải đồng ý với các điều khoản!", "error");
-                return;
-            }
-
-            let formData = new FormData(this);
-            formData.append('status', 1);
-            formData.append('is_admin', 0);
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            let registerUrl = $('meta[name="register-url"]').attr('content');
-            console.log("Register URL:", registerUrl); // Ghi log URL để gỡ lỗi
-
-            if (!registerUrl) {
-                Swal.fire("Lỗi", "Không tìm thấy URL đăng ký! Vui lòng kiểm tra cấu hình.", "error");
-                return;
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "{{ route('web.register.store') }}",
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    console.log("Success:", response); // Ghi log phản hồi thành công
-                    Swal.fire({
-                        title: "Thành Công",
-                        text: "Đăng ký thành công!",
-                        icon: "success",
-                        showConfirmButton: true // Hiển thị nút xác nhận để người dùng tự đóng
+        $.ajax({
+            type: "POST",
+            url: "{{ route('web.register.store') }}",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+    console.log("Success:", response);
+    Swal.fire({
+        title: "Thành Công",
+        text: response.message || "Đăng ký thành công!",
+        icon: "success",
+        showConfirmButton: true
+    }).then(() => {
+        // Chuyển hướng đến URL được trả về từ server
+        window.location.href = response.redirect || "/";
+    });
+},
+            error: function(xhr) {
+                console.log("Error:", xhr); // Ghi log lỗi
+                console.log("Status:", xhr.status); // Ghi log mã trạng thái
+                console.log("Response:", xhr.responseText); // Ghi log phản hồi lỗi
+                if (xhr.status === 400 && xhr.responseJSON?.errors) {
+                    let errorMessages = "";
+                    $.each(xhr.responseJSON.errors, function(field, messages) {
+                        messages.forEach(message => {
+                            errorMessages += `<p>⚠️ ${message}</p>`;
+                        });
                     });
-                },
-                error: function(xhr) {
-                    console.log("Error:", xhr); // Ghi log lỗi
-                    console.log("Status:", xhr.status); // Ghi log mã trạng thái
-                    console.log("Response:", xhr.responseText); // Ghi log phản hồi lỗi
-                    if (xhr.status === 400 && xhr.responseJSON?.errors) {
-                        let errorMessages = "";
-                        $.each(xhr.responseJSON.errors, function(field, messages) {
-                            messages.forEach(message => {
-                                errorMessages += `<p>⚠️ ${message}</p>`;
-                            });
-                        });
 
-                        Swal.fire({
-                            title: "Lỗi!",
-                            html: errorMessages,
-                            icon: "error"
-                        });
-                    } else {
-                        Swal.fire("Lỗi", "Đăng ký thất bại! Vui lòng thử lại. Status: " +
-                            xhr.status, "error");
-                    }
+                    Swal.fire({
+                        title: "Lỗi!",
+                        html: errorMessages,
+                        icon: "error"
+                    });
+                } else {
+                    Swal.fire("Lỗi", "Đăng ký thất bại! Vui lòng thử lại. Status: " +
+                        xhr.status, "error");
                 }
-            });
+            }
         });
     });
+});
 </script>

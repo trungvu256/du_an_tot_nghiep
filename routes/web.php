@@ -33,7 +33,9 @@ use App\Http\Controllers\Admin\PerfumeVariantController;
 use App\Http\Controllers\Admin\PromotionController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\Web\AccountController;
 use App\Http\Controllers\Web\BlogController as WebBlogController;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\CheckoutController;
@@ -367,6 +369,10 @@ Route::post('/forget', [WebLoginController::class, 'postForget'])->name('web.pos
 Route::get('/getPass', [WebLoginController::class, 'getPass'])->name('web.getPass');
 Route::post('/getPass/{id}', [WebLoginController::class, 'savePass'])->name('web.getPass.post');
 
+// liên hệ
+Route::get('/contact', [HomeController::class, 'contactPage'])->name('web.contact.page');
+
+Route::post('/contact', [HomeController::class, 'contact'])->name('web.contact');
 //Checkout
 Route::get('/checkout', [HomeController::class, 'checkout'])->name('web.checkout');
 Route::post('/checkout', [HomeController::class, 'checkoutPost'])->name('web.checkout.post');
@@ -416,7 +422,15 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/checkout/ofline', [CheckoutController::class, 'offline'])->name('checkout.offline');
     });
 
-    Route::prefix('donhang')->middleware('auth')->group(function () {
+    // THông tin địa chỉ
+     Route::prefix('address')->group(function () {
+        Route::get('/address', [AccountController::class, 'checkaddress'])->name('address.index');
+        Route::post('/address', [AccountController::class, 'store'])->name('address.store');
+        Route::delete('/address/{id}', [AccountController::class, 'destroy'])->name('addresses.destroy');
+        Route::put('/address/update/{id}', [AccountController::class, 'update'])->name('addresses.edit');
+    });
+
+    Route::prefix('donhang')->group(function () {
         Route::get('/', [WebOrderController::class, 'index'])->name('donhang.index');
         Route::get('/show/{id}', [WebOrderController::class, 'show'])->name('donhang.show');
         // Route hủy đơn hàng
@@ -427,7 +441,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('order/{id}/returned', [WebOrderController::class, 'returned'])->name('order.returned');
         // Route yêu cầu trả hàng
         Route::post('order/{id}/request-return', [WebOrderController::class, 'requestReturn'])->name('order.requestReturn');
-        
     });
 
 
@@ -438,6 +451,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('comment/{comment}/reply', [WebProductController::class, 'storeReply'])->name('client.storeReply');
 });
 });
+    //reset pass user
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendOtp'])->name('password.email');
+    Route::post('/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])->name('password.verify');
+    Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('password.reset');
+
+
+
 
 
     // Bình luận và phản hồi
@@ -468,6 +488,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/viewCart/show', [CartController::class, 'showHeaderCart'])->name('cart.showHeaderCart');
         Route::post('/cart/removesss/{key}', [CartController::class, 'remove'])->name('cart.removess');
         Route::post('/cart/checkout-selected', [CartController::class, 'checkoutSelected'])->name('cart.checkoutSelected');
+        Route::post('/checkout/{product_id}', [CartController::class, 'create'])->name('checkout.create');
         // routes/web.php
 Route::post('/cart/select-items', [CartController::class, 'selectItems'])->name('cart.selectItems');
 

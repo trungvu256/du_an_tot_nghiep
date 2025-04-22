@@ -142,6 +142,9 @@
             </div>
 
             <hr>
+            @error('variants')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
             <h4 class="text-center mb-3">Thêm biến thể</h4>
             <div class="mb-3">
                 <label class="form-label">Chọn thuộc tính</label>

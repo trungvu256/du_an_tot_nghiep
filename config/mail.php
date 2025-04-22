@@ -39,8 +39,8 @@ return [
             'host' => 'smtp.gmail.com',
             'port' => 587,
             'encryption' => 'tls',
-            'username' => 'uytdph47353@fpt.edu.vn',
-            'password' => 'rmdfyzrfijmcbsey',
+            'username' => 'vutmph35719@fpt.edu.vn',
+            'password' => 'dhhrobiswicjkrks',
             'timeout' => null,
             'auth_mode' => null,
         ],
@@ -92,7 +92,7 @@ return [
     */
 
     'from' => [
-        'address' => 'uytdph47353@fpt.edu.vn',
+        'address' => 'vutmph35719@fpt.edu.vn',
         'name' => "Ethereal Noir",
     ],
 

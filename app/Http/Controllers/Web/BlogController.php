@@ -11,8 +11,8 @@ class BlogController extends Controller
 {
     public function listBlog(Request $request)
     {
-        $blogs = Blog::orderBy('id', 'desc')->paginate(2);
-        $mostViewedBlogs = Blog::orderBy('views', 'desc')->take(5)->get();
+        $blogs = Blog::orderBy('id', 'desc')->paginate(3);
+        $mostViewedBlogs = Blog::orderBy('views', 'desc')->paginate(4);
         $categories = Catalogue::all();
         if ($request->ajax()) {
             return view('web3.Blogs.load_more', compact('blogs'))->render();

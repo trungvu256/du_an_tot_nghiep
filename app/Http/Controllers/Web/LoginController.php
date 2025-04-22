@@ -42,10 +42,10 @@ class LoginController extends Controller
         $user = User::where('email', $request->email)->first();
     
         if (!$user) {
-            return back()->with('error', 'Email hoặc mật khẩu không đúng.');
+            return back()->with('error', 'Email không đúng.');
         }
         if (!Hash::check($request->password, $user->password)) {
-            return back()->with('error', 'Email hoặc mật khẩu không đúng.');
+            return back()->with('error', 'Mật khẩu không đúng.');
         }
     
     
@@ -60,7 +60,7 @@ class LoginController extends Controller
         }
     
         // Nếu mật khẩu sai, chỉ thông báo lỗi mật khẩu
-        return back()->with('error', 'Email hoặc mật khẩu không đúng.');
+        return response()->json(['message' => 'Email hoặc mật khẩu không đúng, Vui lòng thử lại sau.'], 500);
     }
     
 
@@ -107,10 +107,12 @@ class LoginController extends Controller
         $user->is_admin = 0;
         $user->save();
     
-        return redirect()->back()->with(
-            'message' , 'Tạo tài khoản thành công!',
-            
-        );
+        // return response()->json(['success' => true, 'message' => 'Tài khoản của bạn đã được tạo thành công!']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Tài khoản của bạn đã được tạo thành công!',
+            'redirect' => url('/')
+        ]);
     }
     
 
