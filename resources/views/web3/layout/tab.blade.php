@@ -94,17 +94,7 @@
     </div>
 </div>
 <!-- /toolbar  -->
-@if (session('error'))
-<script>
-Swal.fire({
-    icon: 'error',
-    title: 'Oops...',
-    text: '{{ session('
-    error ') }}',
-    confirmButtonText: 'OK'
-});
-</script>
-@endif
+
 
 <!-- login -->
 <div class="offcanvas offcanvas-end popup-style-1 popup-login" id="login">
@@ -283,6 +273,7 @@ Swal.fire({
         </div>
     </div>
 </div>
+
 <!-- /register -->
 
 <!-- Reset pass -->
@@ -1397,10 +1388,10 @@ $(document).ready(function() {
         let registerUrl = $('meta[name="register-url"]').attr('content');
         console.log("Register URL:", registerUrl); // Ghi log URL để gỡ lỗi
 
-        if (!registerUrl) {
-            Swal.fire("Lỗi", "Không tìm thấy URL đăng ký! Vui lòng kiểm tra cấu hình.", "error");
-            return;
-        }
+        // if (!registerUrl) {
+        //     Swal.fire("Lỗi", "Không tìm thấy URL đăng ký! Vui lòng kiểm tra cấu hình.", "error");
+        //     return;
+        // }
 
         $.ajax({
             type: "POST",
@@ -1409,14 +1400,17 @@ $(document).ready(function() {
             processData: false,
             contentType: false,
             success: function(response) {
-                console.log("Success:", response); // Ghi log phản hồi thành công
-                Swal.fire({
-                    title: "Thành Công",
-                    text: "Đăng ký thành công!",
-                    icon: "success",
-                    showConfirmButton: true // Hiển thị nút xác nhận để người dùng tự đóng
-                });
-            },
+    console.log("Success:", response);
+    Swal.fire({
+        title: "Thành Công",
+        text: response.message || "Đăng ký thành công!",
+        icon: "success",
+        showConfirmButton: true
+    }).then(() => {
+        // Chuyển hướng đến URL được trả về từ server
+        window.location.href = response.redirect || "/";
+    });
+},
             error: function(xhr) {
                 console.log("Error:", xhr); // Ghi log lỗi
                 console.log("Status:", xhr.status); // Ghi log mã trạng thái
