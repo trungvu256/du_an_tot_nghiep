@@ -128,6 +128,11 @@
                 </ul>
             </div>
         @endif
+        @if (session('message'))
+    <div class="alert alert-success">
+        {{ session('message') }}
+    </div>
+@endif
         <div class="canvas-body popup-inner">
             @if (Auth::check())
                 {{-- Người dùng đã đăng nhập --}}
