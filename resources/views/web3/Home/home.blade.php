@@ -178,7 +178,7 @@
                                                             src="{{ asset('storage/' . $product->image) }}"
                                                             alt="image-product" />
                                                     </a>
-                                                    <ul class="list-product-btn">
+                                                    {{-- <ul class="list-product-btn">
                                                         <li>
                                                             <a href="#shoppingCart" data-bs-toggle="offcanvas"
                                                                 class="hover-tooltip tooltip-left box-icon">
@@ -208,7 +208,7 @@
                                                                 <span class="tooltip">Add to Compare</span>
                                                             </a>
                                                         </li>
-                                                    </ul>
+                                                    </ul> --}}
 
                                                     <div class="on-sale-wrap"><span class="on-sale-item">Ưu đãi
                                                             </span>
@@ -328,7 +328,7 @@
                                                             src="{{ asset('storage/' . $product->image) }}"
                                                             alt="image-product" />
                                                     </a>
-                                                    <ul class="list-product-btn">
+                                                    {{-- <ul class="list-product-btn">
                                                         <li>
                                                             <a href="#shoppingCart" data-bs-toggle="offcanvas"
                                                                 class="hover-tooltip tooltip-left box-icon">
@@ -358,11 +358,11 @@
                                                                 <span class="tooltip">Add to Compare</span>
                                                             </a>
                                                         </li>
-                                                    </ul>
+                                                    </ul> --}}
 
-                                                    {{-- <div class="on-sale-wrap"><span class="on-sale-item">
-                                                            </span> --}}
-                                                    {{-- </div> --}}
+                                                    <div class="on-sale-wrap"><span class="on-sale-item">New
+                                                    </span>
+                                            </div>
                                                 </div>
                                                 <div class="card-product-info text-center">
                                                     <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"

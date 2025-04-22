@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Shipping;
+use App\Models\ProductReview;
 use App\Services\GHTKService;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -74,7 +75,12 @@ class OrderController extends Controller
             }
         }
 
-        return view('admin.order.detailOder', compact('order'), ['status' => $request->input('status')]);
+        // Lấy tất cả các đánh giá liên quan đến đơn hàng này
+        $reviews = ProductReview::where('order_id', $id)
+        ->with('user') // Load mối quan hệ user để lấy thông tin người dùng
+        ->get();
+
+        return view('admin.order.detailOder', compact('order','reviews'), ['status' => $request->input('status')]);
     }
 
 

@@ -422,6 +422,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/checkout/ofline', [CheckoutController::class, 'offline'])->name('checkout.offline');
     });
 
+
+    Route::prefix('donhang')->middleware('auth')->group(function () {
+
     // THông tin địa chỉ
      Route::prefix('address')->group(function () {
         Route::get('/address', [AccountController::class, 'checkaddress'])->name('address.index');
@@ -431,19 +434,18 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::prefix('donhang')->group(function () {
+
         Route::get('/', [WebOrderController::class, 'index'])->name('donhang.index');
         Route::get('/show/{id}', [WebOrderController::class, 'show'])->name('donhang.show');
         // Route hủy đơn hàng
         Route::post('order/{id}/cancel', [WebOrderController::class, 'cancel'])->name('order.cancel');
-
         // Route xác nhận đã nhận được hàng
         Route::get('order/{id}/received', [WebOrderController::class, 'received'])->name('order.received');
-
         // Route xác nhận đã trả hàng
         Route::get('order/{id}/returned', [WebOrderController::class, 'returned'])->name('order.returned');
-
         // Route yêu cầu trả hàng
         Route::post('order/{id}/request-return', [WebOrderController::class, 'requestReturn'])->name('order.requestReturn');
+        
     });
 
 
