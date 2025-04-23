@@ -165,9 +165,9 @@
                     </div>
                 </div>
             </form>
-            <p style="margin-top: 10px;">
+            <!-- <p style="margin-top: 10px;">
                 <a href="{{ url('/forgot-password') }}">Bạn đã quên mật khẩu?</a>
-            </p>
+            </p> -->
             <!-- <div class="other-login mt-3">
                     <p class="text-sm text-center text-main-2">Hoặc đăng nhập bằng:</p>
                     <a href="#" class="w-100 text-md mb_8">

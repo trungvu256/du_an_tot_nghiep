@@ -421,7 +421,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/order/{id}/continue-payment', [CheckoutController::class, 'continuePayment'])->name('order.continuePayment');
         Route::post('/checkout/ofline', [CheckoutController::class, 'offline'])->name('checkout.offline');
     });
-
+    //đánh giá
+    
 
     Route::prefix('donhang')->middleware('auth')->group(function () {
 
@@ -457,9 +458,10 @@ Route::middleware(['auth'])->group(function () {
 });
 });
     //reset pass user
-    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendOtp'])->name('password.email');
-    Route::post('/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])->name('password.verify');
-    Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('password.reset');
+    
+
+    Route::get('/products/{product}/check-review', [WebProductController::class, 'checkReview'])->name('products.checkReview');
+    Route::get('/products/{product}/get-review', [WebProductController::class, 'getReview'])->name('products.getReview');});
 
 
 
@@ -518,6 +520,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/chat/unread/count', [ChatController::class, 'getUnreadCount']);
     Route::post('/chat/send', [ChatController::class, 'sendMessage']);
 });
-
-Route::get('/products/{product}/check-review', [WebProductController::class, 'checkReview'])->name('products.checkReview');
-Route::get('/products/{product}/get-review', [WebProductController::class, 'getReview'])->name('products.getReview');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendOtp'])->name('password.email');
+    Route::post('/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])->name('password.verify');
+    Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('password.reset');
