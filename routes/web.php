@@ -378,8 +378,8 @@ Route::get('/checkout', [HomeController::class, 'checkout'])->name('web.checkout
 Route::post('/checkout', [HomeController::class, 'checkoutPost'])->name('web.checkout.post');
 
 //Login with Google
-Route::get('login/google', [HomeController::class, 'redirectToGoogle'])->name('login.google');
-Route::get('login/google/callback', [HomeController::class, 'handleGoogleCallback']);
+// Route::get('login/google', [HomeController::class, 'redirectToGoogle'])->name('login.google');
+// Route::get('login/google/callback', [HomeController::class, 'handleGoogleCallback']);
 
 
 //web
@@ -422,6 +422,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/checkout/ofline', [CheckoutController::class, 'offline'])->name('checkout.offline');
     });
 
+
+
+
+    Route::prefix('donhang')->middleware('auth')->group(function () {
+
+
     // THông tin địa chỉ
      Route::prefix('address')->group(function () {
         Route::get('/address', [AccountController::class, 'checkaddress'])->name('address.index');
@@ -451,17 +457,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('comment/{comment}/reply', [WebProductController::class, 'storeReply'])->name('client.storeReply');
 });
 });
-    //reset pass user
-    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendOtp'])->name('password.email');
-    Route::post('/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])->name('password.verify');
-    Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('password.reset');
 
-
-
-
-
-    // Bình luận và phản hồi
-
+    Route::get('/products/{product}/check-review', [WebProductController::class, 'checkReview'])->name('products.checkReview');
+    Route::get('/products/{product}/get-review', [WebProductController::class, 'getReview'])->name('products.getReview');});
 
     // Sửa và xóa bình luận
     Route::put('product/{product}/comment/{comment}/edit', [WebProductController::class, 'updateComment'])->name('client.updateComment');
@@ -496,7 +494,6 @@ Route::get('/gmail', [Controller::class, 'gmail'])->name('web.gmail');
 
 Route::get('/search', [WebController::class, 'search'])->name('product.search');
 
-
 Route::middleware('auth')->group(function () {
     Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
     Route::get('/chat/{user}', [ChatController::class, 'fetchMessages'])->name('chat.fetch');
@@ -514,5 +511,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/chat/send', [ChatController::class, 'sendMessage']);
 });
 
-Route::get('/products/{product}/check-review', [WebProductController::class, 'checkReview'])->name('products.checkReview');
-Route::get('/products/{product}/get-review', [WebProductController::class, 'getReview'])->name('products.getReview');
+
+// Route::get('/products/{product}/check-review', [WebProductController::class, 'checkReview'])->name('products.checkReview');
+// Route::get('/products/{product}/get-review', [WebProductController::class, 'getReview'])->name('products.getReview');
+
+//reset pass
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendOtp'])->name('password.email');
+    Route::post('/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])->name('password.verify');
+    Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('password.reset');
