@@ -63,33 +63,37 @@ class ProfileController extends Controller
     $request->validate([
         'name' => 'required|string|max:255',
         'email' => 'required|email|max:255|unique:users,email,' . $user->id,
-        'phone' => 'nullable|string|max:255',
-        'address' => 'nullable|string|max:255',
+        'phone' => 'required|regex:/^0[0-9]{9}$/',
+        'address' => 'required|string|max:255',
         'gender' => 'required|in:Male,Female,Unisex',
         'avatar' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
     ], [
         'name.required' => 'Vui lòng nhập họ tên.',
         'name.string' => 'Họ tên phải là chuỗi ký tự.',
         'name.max' => 'Họ tên không được vượt quá 255 ký tự.',
-    
+        
         'email.required' => 'Vui lòng nhập email.',
         'email.email' => 'Email không đúng định dạng.',
         'email.max' => 'Email không được vượt quá 255 ký tự.',
         'email.unique' => 'Email này đã được sử dụng.',
-    
-        'phone.string' => 'Số điện thoại phải là chuỗi ký tự.',
-        'phone.max' => 'Số điện thoại không được vượt quá 255 ký tự.',
-    
+        
+        'phone.required' => 'Vui lòng nhập số điện thoại.',
+        'phone.regex' => 'Số điện thoại không hợp lệ. Vui lòng nhập đúng định dạng (ví dụ: 0987654321).',
+        
+        'address.required' => 'Vui lòng nhập địa chỉ.',
         'address.string' => 'Địa chỉ phải là chuỗi ký tự.',
         'address.max' => 'Địa chỉ không được vượt quá 255 ký tự.',
-    
+        
         'gender.required' => 'Vui lòng chọn giới tính.',
         'gender.in' => 'Giới tính không hợp lệ.',
-    
+        
         'avatar.image' => 'Tệp tải lên phải là hình ảnh.',
         'avatar.mimes' => 'Ảnh đại diện phải có định dạng: jpg, png, jpeg.',
         'avatar.max' => 'Ảnh đại diện không được vượt quá 2MB.',
     ]);
+    
+    
+    
 
     // Cập nhật thông tin người dùng
     $user->name = $request->name;

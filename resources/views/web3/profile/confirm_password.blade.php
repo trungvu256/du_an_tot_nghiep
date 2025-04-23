@@ -8,7 +8,7 @@
                 <p class="text-muted text-center mb-4">Vui lòng nhập mật khẩu của bạn để tiếp tục chỉnh sửa thông tin.</p>
 
                 @if (session('error'))
-                    <div class="alert alert-danger text-center">{{ session('error') }}</div>
+                    <div id="successAlert" class="alert alert-danger text-center">{{ session('error') }}</div>
                 @endif
 
 

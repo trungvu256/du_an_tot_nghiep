@@ -132,10 +132,10 @@
                     <hr>
                     <li><a onmouseover="this.style.color='#ff6f61'" onmouseout="this.style.color='black'" href="{{ route('donhang.index') }}"><i class="icon icon-cart"></i> Đơn hàng của bạn</a></li>
                     <hr>
-                    <li><a onmouseover="this.style.color='#ff6f61'" onmouseout="this.style.color='black'" href="{{ route('address.index') }}"><i class="icon icon-user"></i> Sổ địa chỉ</a>
+                    <li><a onmouseover="this.style.color='#ff6f61'" onmouseout="this.style.color='black'" href="{{ route('address.index') }}"><i class="bi bi-geo-alt"></i> Địa chỉ của bạn</a>
                     </li>
                     <hr>
-                    <li><a href="{{ route('web.logout') }}" class="btn btn-danger"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a></li>
+                    <li><a href="{{ route('web.logout') }}" class="btn btn-danger"><i class="bi bi-box-arrow-left"></i>  Đăng xuất</a></li>
                 </div>
 
             @else

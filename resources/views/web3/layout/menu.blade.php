@@ -130,7 +130,7 @@
 
 
                                     <li class="menu-item position-relative">
-                                        <a href="#" class="item-link">Liên hệ</a>
+                                        <a href="{{ route('web.contact.page')}}" class="item-link">Liên hệ</a>
 
                                     </li>
                                     <li class="menu-item position-relative">
@@ -219,9 +219,6 @@
                 </div>
             </header>
         </div>
-
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
     @push('scripts')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
