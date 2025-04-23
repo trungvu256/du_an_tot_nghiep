@@ -155,8 +155,7 @@
                     </fieldset>
                 </div>
                 <div class="bot">
-                    <a href="#resetPass" data-bs-toggle="offcanvas" class="text text-sm text-main-2">Forgot your
-                        password?</a>
+                    <a href="#resetPass" data-bs-toggle="offcanvas" class="text text-sm text-main-2">Quên mật khẩu?</a>
                     <div class="button-wrap">
                         <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100"
                             type="submit">Đăng nhập</button>
