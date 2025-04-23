@@ -520,6 +520,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/chat/unread/count', [ChatController::class, 'getUnreadCount']);
     Route::post('/chat/send', [ChatController::class, 'sendMessage']);
 });
+
+//reset pass
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendOtp'])->name('password.email');
     Route::post('/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])->name('password.verify');
     Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('password.reset');
