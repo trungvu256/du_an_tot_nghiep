@@ -175,11 +175,20 @@
                             </td>
                             <td>{{ $detail->product->name }}
                                 @if($detail->productVariant)
-                                                            <span class="text-muted">
-                                                                (Dung tích: {{ $detail->productVariant->concentration }},
-                                                                 Nồng độ: {{ $detail->productVariant->size }})
-                                                            </span>
-                                                        @endif
+                                    @php
+                                        $attributes = $detail->productVariant->product_variant_attributes ?? [];
+                                    @endphp
+                                    @if(count($attributes) > 0)
+                                        @foreach($attributes as $attribute)
+                                            <p class="text-muted mb-0">
+                                                <strong>{{ $attribute->attribute->name }}:</strong> 
+                                                {{ $attribute->attributeValue->value }}
+                                            </p>
+                                        @endforeach
+                                    @else
+                                        <p class="text-muted mb-0">Không có biến thể</p>
+                                    @endif
+                                @endif
                             </td>
                             <td>{{ $detail->quantity }}</td>
                             <td>

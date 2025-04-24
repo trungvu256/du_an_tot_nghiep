@@ -243,6 +243,17 @@
             const quantityDisplay = $('#quantity-display-' + cartKey);
             const stockQuantity = parseInt(quantityInput.data('stock-quantity')) || 0;
 
+            // Kiểm tra nếu số lượng vượt quá tồn kho
+            if (quantity > stockQuantity) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Số lượng không hợp lệ!',
+                    text: `Số lượng tồn kho chỉ còn ${stockQuantity} sản phẩm. Số lượng đã được điều chỉnh về mức tối đa có thể.`,
+                    confirmButtonText: 'Đã hiểu'
+                });
+                quantity = stockQuantity;
+            }
+
             // Giới hạn số lượng: tối thiểu 1, tối đa là stock
             quantity = Math.max(1, Math.min(stockQuantity, parseInt(quantity) || 1));
 
@@ -254,7 +265,7 @@
             const price = parseFloat(priceElement.data('price')) || 0;
             const itemTotal = price * quantity;
 
-            $('#item-total-' + cartKey).text(formatCurrency(itemTotal));
+            $('#item-total-' + cartKey).text(formatCurrency(itemTotal) + '₫');
 
             // Gọi AJAX để cập nhật server
             $.ajax({
@@ -267,10 +278,29 @@
                 success: function(response) {
                     if (response.success) {
                         updateSummary();
+                        
+                        // Cập nhật số lượng trong menu
+                        if (response.cartCount !== undefined) {
+                            // Cập nhật trực tiếp badge số lượng
+                            $('.cart-count').text(response.cartCount);
+                            
+                            // Sử dụng hàm toàn cục để cập nhật số lượng
+                            if (typeof updateCartCount === 'function') {
+                                updateCartCount(response.cartCount);
+                            }
+                            
+                            // Tạo sự kiện cập nhật giỏ hàng để menu có thể lắng nghe
+                            $(document).trigger('cartUpdated', { cartCount: response.cartCount });
+                        }
                     }
                 },
                 error: function(xhr) {
-                    alert('Có lỗi xảy ra khi cập nhật giỏ hàng: ' + xhr.responseText);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Có lỗi xảy ra khi cập nhật giỏ hàng: ' + xhr.responseText,
+                        confirmButtonText: 'Đóng'
+                    });
                     quantityDisplay.val(quantityInput.val());
                     updateSummary();
                 }
@@ -365,6 +395,17 @@
                                     // Cập nhật số lượng trong badge
                                     if (response.cartCount !== undefined) {
                                         $('.cart-badge').text(response.cartCount);
+                                        
+                                        // Cập nhật badge trong header
+                                        $('.cart-count').text(response.cartCount);
+                                        
+                                        // Sử dụng hàm toàn cục để cập nhật số lượng
+                                        if (typeof updateCartCount === 'function') {
+                                            updateCartCount(response.cartCount);
+                                        }
+                                        
+                                        // Tạo sự kiện cập nhật giỏ hàng để menu có thể lắng nghe
+                                        $(document).trigger('cartUpdated', { cartCount: response.cartCount });
                                     }
 
                                     // Hiển thị thông báo thành công
@@ -470,12 +511,21 @@
             // Xử lý khi nhập tay vào input
             $(document).on('input', '.quantity-display', function() {
                 const cartKey = $(this).attr('id').replace('quantity-display-', '');
-                let newQuantity = $(this).val();
+                const stockQuantity = parseInt($('#quantity-' + cartKey).data('stock-quantity')) || 0;
+                let newQuantity = parseInt($(this).val().replace(/\D/g, '')) || 1;
 
-                newQuantity = newQuantity.replace(/\D/g, '');
-                if (newQuantity === '') newQuantity = 1;
+                // Kiểm tra nếu số lượng vượt quá tồn kho
+                if (newQuantity > stockQuantity) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Số lượng không hợp lệ!',
+                        text: `Số lượng tồn kho chỉ còn ${stockQuantity} sản phẩm. Số lượng đã được điều chỉnh về mức tối đa có thể.`,
+                        confirmButtonText: 'Đã hiểu'
+                    });
+                    newQuantity = stockQuantity;
+                }
+
                 $(this).val(newQuantity);
-
                 updateCartQuantity(cartKey, newQuantity);
             });
 
