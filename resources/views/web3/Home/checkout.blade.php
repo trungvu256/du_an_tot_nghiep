@@ -208,6 +208,14 @@
                             <img src="{{ asset('storage/' . ($item['image'] ?? 'default.jpg')) }}" alt="" class="item-image me-3">
                             <div>
                                 <p class="mb-1 fw-semibold">{{ $item['name'] }}</p>
+                                @if (isset($item['variant']) && isset($item['variant']['attributes']) && count($item['variant']['attributes']) > 0)
+                                @foreach ($item['variant']['attributes'] as $attrName => $attrValue)
+                                    <p><strong>{{ $attrName }}:</strong> {{ $attrValue }}</p>
+                                @endforeach
+                            @else
+                                <p>Không có biến thể</p>
+                            @endif
+                                
                                 <small class="text-muted">x{{ $item['quantity'] }}</small>
                             </div>
                         </div>
