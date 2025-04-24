@@ -150,7 +150,9 @@
                         <ul class="box-nav-menu">
                             <li class="menu-item">
                                 <a href="{{ route('web.home') }}" class="item-link">Trang chủ</a>
-
+                            </li>
+                            <li class="menu-item">
+                                <a href="{{ route('web.shop') }}" class="item-link">Nước hoa</a>
                             </li>
                             <li class="menu-item" style="position: relative;">
                                 <a href="#" class="item-link">Thương hiệu <i class="icon icon-arr-down"></i></a>
