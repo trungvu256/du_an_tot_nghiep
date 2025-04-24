@@ -199,10 +199,6 @@
             <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div id="error-message" class="alert alert-danger" style="display: none;"></div>
-
-
-
-
         <div class="canvas-body popup-inner">
             <form id="form_register" action="{{ route('web.register.store') }}" enctype="multipart/form-data"
                 class="form-login" method="POST">
@@ -1406,7 +1402,17 @@ $(document).ready(function() {
         title: "Thành Công",
         text: response.message || "Đăng ký thành công!",
         icon: "success",
-        showConfirmButton: true
+        showConfirmButton: true,
+        didOpen: () => {
+        const popup = document.querySelector('.swal2-popup');
+        if (popup) {
+            popup.style.zIndex = '9999'; // Đảm bảo luôn ở trên cùng
+        }
+        const container = document.querySelector('.swal2-container');
+        if (container) {
+            container.style.zIndex = '9999';
+        }
+    }
     }).then(() => {
         // Chuyển hướng đến URL được trả về từ server
         window.location.href = response.redirect || "/";
