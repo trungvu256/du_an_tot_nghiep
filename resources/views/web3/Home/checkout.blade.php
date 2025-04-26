@@ -198,7 +198,7 @@
             <div class="col-lg-4">
                 <div class="card">
                     <div class="card-header text-center" style="background-color: #cff4fc;">
-                        <h4 class="font-weight-semi-bold m-0">Tổng Đơn Hàng</h4>
+                        <h4>Tóm tắt đơn hàng</h4>
                     </div>
                     <div class="card-body">
                         @foreach ($filteredCart as $cartKey => $item)
@@ -241,27 +241,32 @@
 
                         <hr class="mt-0">
 
-                        <div class="d-flex justify-content-between mb-3 pt-1">
-                            <h6 class="font-weight-medium">Tạm tính</h6>
-                            <h6 class="font-weight-medium" id="summary-subtotal">
-                                {{ number_format($subtotal, 0, ',', '.') }}₫</h6>
+                        <div class="d-flex justify-content-between my-1 mb-3">
+                            <p class="fs-5">Tổng tiền hàng</p>
+                            <p class="fs-5" id="summary-subtotal">
+                                {{ number_format($subtotal, 0, ',', '.') }}₫</p>
                         </div>
+                        {{-- <div class="d-flex justify-content-between my-1">
+                            <p class="fs-5">Vận chuyển</p>
+                            <p class="fs-5" id="summary-shipping">
+                                {{ number_format(15000, 0, ',', '.') }}₫</p>
+                        </div> --}}
 
                         @if ($discount > 0)
                             <div class="d-flex justify-content-between mb-3 pt-1">
-                                <h6 class="font-weight-medium text-success">Giảm giá ({{ session('promotion')['code'] }})
-                                </h6>
-                                <h6 class="font-weight-medium text-success" id="summary-discount">
-                                    -{{ number_format($discount, 0, ',', '.') }}₫</h6>
+                                <p class="fs-5 text-success">Giảm giá ({{ session('promotion')['code'] }})
+                                </p>
+                                <p class="fs-5 text-success" id="summary-discount">
+                                    -{{ number_format($discount, 0, ',', '.') }}₫</p>
                             </div>
                         @endif
                     </div>
 
                     <div class="card-footer bg-transparent">
-                        <div class="d-flex justify-content-between mt-2">
-                            <h5 class="font-weight-bold">Tổng</h5>
-                            <h5 class="font-weight-bold" id="summary-total">
-                                {{ number_format($totalAmount, 0, ',', '.') }}₫</h5>
+                        <div class="d-flex justify-content-between mt-2 mb-1">
+                            <p class="fs-5 fw-semibold">Thanh toán</p>
+                            <p class="fs-5 fw-semibold" id="summary-total">
+                                {{ number_format($totalAmount, 0, ',', '.') }}₫</p>
                         </div>
                     </div>
                 </div>
