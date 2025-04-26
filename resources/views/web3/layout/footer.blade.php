@@ -73,13 +73,13 @@
                                     công ty của chúng tôi.
                                     Chúng tôi cam kết không gửi thư rác đến hộp thư của bạn.
                                 </p>
-                                <form action="#" class="form-newsletter" method="post" accept-charset="utf-8"
-                                    data-mailchimp="true">
+                                <form action="{{ route('newsletter.subscribe') }}" class="form-newsletter" method="post"
+                                    accept-charset="utf-8" id="newsletterForm">
+                                    @csrf
                                     <div class="subscribe-content">
                                         <fieldset class="email">
-                                            <input type="email" name="email-form" class="subscribe-email"
-                                                placeholder="Email address" tabindex="0" aria-required="true"
-                                                required>
+                                            <input type="email" name="email" class="subscribe-email"
+                                                placeholder="Email address" tabindex="0" aria-required="true" required>
                                         </fieldset>
                                         <div class="button-submit">
                                             <button class="subscribe-button animate-btn" type="submit">
@@ -100,6 +100,40 @@
                                         </div>
                                     </div>
                                 </form>
+                                <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const form = document.getElementById('newsletterForm');
+                                    const responseMessage = document.createElement(
+                                        'div'); // Tạo div để hiển thị thông báo
+                                    form.appendChild(responseMessage); // Thêm div vào form
+
+                                    form.addEventListener('submit', function(e) {
+                                        e.preventDefault(); // Ngăn reload trang
+
+                                        const formData = new FormData(form);
+
+                                        fetch(form.action, {
+                                                method: 'POST',
+                                                headers: {
+                                                    'X-CSRF-TOKEN': document.querySelector(
+                                                        'input[name="_token"]').value
+                                                },
+                                                body: formData
+                                            })
+                                            .then(res => res.ok ? res.text() : Promise.reject(res))
+                                            .then(() => {
+                                                responseMessage.innerHTML =
+                                                    `<div class="success-message" style="color: green;margin-left: 5px; margin-top: 5px;">Bạn đã đăng ký nhận tin thành công</div>`;
+                                                form.reset(); // Xóa form sau khi gửi
+                                            })
+                                            .catch(err => {
+                                                responseMessage.innerHTML =
+                                                    `<div style="color: red;">Đã xảy ra lỗi. Vui lòng thử lại.</div>`;
+                                                console.error('Error:', err);
+                                            });
+                                    });
+                                });
+                                </script>
                             </div>
                         </div>
                     </div>
