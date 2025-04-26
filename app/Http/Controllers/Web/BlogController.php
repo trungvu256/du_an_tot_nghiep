@@ -11,14 +11,15 @@ class BlogController extends Controller
 {
     public function listBlog(Request $request)
     {
-        $blogs = Blog::orderBy('id', 'desc')->paginate(3);
-        $mostViewedBlogs = Blog::orderBy('views', 'desc')->paginate(4);
+        $latestBlogs = Blog::orderBy('id', 'desc')->take(4)->get();
+        $blogs = Blog::orderBy('id', 'desc')->paginate(4);
+        $mostViewedBlogs = Blog::orderBy('views', 'desc')->take(4)->get();
         $categories = Catalogue::all();
         if ($request->ajax()) {
             return view('web3.Blogs.load_more', compact('blogs'))->render();
         }
 
-        return view('web3.Blogs.ListBlog', compact('blogs', 'mostViewedBlogs','categories'));
+        return view('web3.Blogs.ListBlog', compact('blogs', 'latestBlogs', 'mostViewedBlogs','categories'));
     }
     public function detaiWebBlog($id, Request $request)
     {
@@ -26,7 +27,8 @@ class BlogController extends Controller
         $blog = Blog::findOrFail($id);
         $blogs = Blog::where('id', '!=', $id) // Loại trừ bài viết đang xem
             ->orderBy('created_at', 'desc')
-            ->paginate(2);
+            ->take(3)
+            ->get();
 
         // Kiểm tra nếu là AJAX request thì chỉ trả về danh sách bài viết
         if ($request->ajax()) {
