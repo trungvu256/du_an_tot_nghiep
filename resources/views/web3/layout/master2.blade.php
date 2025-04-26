@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
 <head>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -51,15 +52,22 @@
             font-size: 12px;
             color: #888;
         }
+
         .nav-tabs .nav-link.active {
             color: #ff6f61 !important;
         }
+
         .nav-tabs .nav-link.active::after {
             background-color: #ff6f61 !important;
         }
-        table.table-bordered th, table.table-bordered td {
-        border: 1px solid #d2d2d2 !important;
-    }
+
+        table.table-bordered th,
+        table.table-bordered td {
+            border: 1px solid #d2d2d2 !important;
+        }
+        .button-custom-hover:hover{
+            background-color: #0dcaf0 !important;
+        }
     </style>
 </head>
 

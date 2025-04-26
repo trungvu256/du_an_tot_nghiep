@@ -5,15 +5,16 @@
         <div class="row px-xl-5">
             <div class="col-lg-8 table-responsive mb-5">
                 <form id="cart-items-form">
-                    <table class="table table-bordered text-center mb-2">
-                        <thead class="bg-info text-dark">
-                            <th>Chọn</th>
-                            <th>Sản phẩm</th>
-                            <th>Giá</th>
-                            <th>Số lượng</th>
-                            <th>Tổng cộng</th>
-                            {{-- <th>Biến thể</th> --}}
-                            <th>Xóa</th>
+                    <table class="table table-bordered text-center mb-3">
+                        <thead>
+                            <tr class="table-info">
+                                <th>Chọn</th>
+                                <th>Sản phẩm</th>
+                                <th>Giá</th>
+                                <th>Số lượng</th>
+                                <th>Tổng cộng</th>
+                                <th>Xóa</th>
+                            </tr>
                         </thead>
                         <tbody class="align-middle">
                             @foreach (session('cart', []) as $cartKey => $item)
@@ -29,7 +30,7 @@
                                                 <p class="mb-1"><strong>{{ Str::limit($item['name'], 20) }}</strong></p>
                                                 @if (isset($item['variant']) && isset($item['variant']['attributes']) && count($item['variant']['attributes']) > 0)
                                                     @foreach ($item['variant']['attributes'] as $attrName => $attrValue)
-                                                        <p class="mb-0"><strong>{{ $attrName }}:</strong> {{ $attrValue }}</p>
+                                                        <p class="mb-0">{{ $attrName }}: {{ $attrValue }}</p>
                                                     @endforeach
                                                 @else
                                                     <p class="mb-0">Không có biến thể</p>
@@ -96,7 +97,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <a href="{{ route('web.shop') }}" class="btn btn-success">Mua thêm</a>
+                    <a href="{{ route('web.shop') }}" class="btn btn-outline-success">Mua thêm</a>
                 </form>
             </div>
 
@@ -110,11 +111,7 @@
                         </div>
                     </div>
                 </form> --}}
-                <div class="mt-2 text-center">
-                    <button type="button" class="btn btn-outline-success mb-2" id="viewPromotionsBtn">
-                        <i class="fa fa-tag"></i> Xem mã khuyến mãi có thể áp dụng
-                    </button>
-                </div>
+                
                 {{-- @if (session('success'))
                     <p class="text-success">{{ session('success') }}</p>
                 @endif
@@ -135,7 +132,7 @@
                 ?>
 
                 <div class="card mb-3">
-                    <div class="card-header bg-info">
+                    <div class="card-header" style="background-color: #cff4fc;">
                         <h6 class="m-0 text-center">Tóm tắt giỏ hàng</h6>
                     </div>
                     <div class="card-footer bg-transparent">
@@ -172,11 +169,16 @@
                             <input type="hidden" name="discount" id="discount" value="0">
                             <input type="hidden" name="total" id="total" value="0">
 
-                            <button type="submit" class="btn btn-block btn-info my-1 py-2">
+                            <button type="submit" class="btn btn-block btn-info my-1 py-2 button-custom-hover" style="background-color: #cff4fc;">
                                 Tiến hành thanh toán
                             </button>
                         </form>
                     </div>
+                </div>
+                <div class=" text-center">
+                    <button type="button" style="width:100%;" class="btn btn-outline-success mb-2" id="viewPromotionsBtn">
+                        <i class="fa fa-tag"></i> Xem mã khuyến mãi có thể áp dụng
+                    </button>
                 </div>
             </div>
         </div>
