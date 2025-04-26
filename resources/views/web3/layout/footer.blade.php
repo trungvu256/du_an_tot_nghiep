@@ -1,3 +1,14 @@
+<style>
+.success-message {
+    background-color: #e0f7e9;
+    color: #28a745;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+</style>
+</style>
 <div id="wrapper">
     <footer id="footer" class="footer-default xl-pb-70">
         <hr style="margin:0;">
@@ -71,15 +82,15 @@
                                 <p>
                                     Chúng tôi mời bạn đăng ký để đọc những tin tức, ưu đãi và sự kiện mới nhất về
                                     công ty của chúng tôi.
-                                    Chúng tôi cam kết không gửi thư rác đến hộp thư của bạn.
+
                                 </p>
                                 <form action="{{ route('newsletter.subscribe') }}" class="form-newsletter" method="post"
                                     accept-charset="utf-8" id="newsletterForm">
                                     @csrf
                                     <div class="subscribe-content">
                                         <fieldset class="email">
-                                            <input type="email" name="email" class="subscribe-email"
-                                                placeholder="Email address" tabindex="0" aria-required="true" required>
+                                            <input type="email" name="email" class="subscribe-email" placeholder="Email"
+                                                tabindex="0" aria-required="true" required>
                                         </fieldset>
                                         <div class="button-submit">
                                             <button class="subscribe-button animate-btn" type="submit">
@@ -123,7 +134,7 @@
                                             .then(res => res.ok ? res.text() : Promise.reject(res))
                                             .then(() => {
                                                 responseMessage.innerHTML =
-                                                    `<div class="success-message" style="color: green;margin-left: 5px; margin-top: 5px;">Bạn đã đăng ký nhận tin thành công</div>`;
+                                                    `<div class="success-message" style="color: green;">Bạn đã đăng ký nhận tin thành công</div>`;
                                                 form.reset(); // Xóa form sau khi gửi
                                             })
                                             .catch(err => {
