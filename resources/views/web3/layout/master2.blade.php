@@ -57,6 +57,9 @@
         .nav-tabs .nav-link.active::after {
             background-color: #ff6f61 !important;
         }
+        table.table-bordered th, table.table-bordered td {
+        border: 1px solid #d2d2d2 !important;
+    }
     </style>
 </head>
 

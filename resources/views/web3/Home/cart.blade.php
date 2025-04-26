@@ -5,16 +5,16 @@
         <div class="row px-xl-5">
             <div class="col-lg-8 table-responsive mb-5">
                 <form id="cart-items-form">
-                    <table class="table table-bordered text-center mb-0">
-                        <thead class="bg-secondary text-dark">
-                                <th>Chọn</th>
-                                <th>Sản phẩm</th>
-                                <th>Giá</th>
-                                <th>Số lượng</th>
-                                <th>Tổng cộng</th>
-                                <th>Biến thể</th>
-                                <th>Xóa</th>
-                                    </thead>
+                    <table class="table table-bordered text-center mb-2">
+                        <thead class="bg-info text-dark">
+                            <th>Chọn</th>
+                            <th>Sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Tổng cộng</th>
+                            {{-- <th>Biến thể</th> --}}
+                            <th>Xóa</th>
+                        </thead>
                         <tbody class="align-middle">
                             @foreach (session('cart', []) as $cartKey => $item)
                                 <tr id="cart-item-{{ $cartKey }}">
@@ -23,13 +23,25 @@
                                             value="{{ $cartKey }}" onchange="updateSummary()">
                                     </td>
                                     <td class="align-middle">
-                                        <img src="{{ asset('storage/' . ($item['image'] ?? 'default.jpg')) }}"
-                                            alt="" style="width: 50px;">
-                                        {{ $item['name'] }}
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{ asset('storage/' . ($item['image'] ?? 'default.jpg')) }}" alt="" style="width: 50px; margin-right: 10px;">
+                                            <div>
+                                                <p class="mb-1"><strong>{{ Str::limit($item['name'], 20) }}</strong></p>
+                                                @if (isset($item['variant']) && isset($item['variant']['attributes']) && count($item['variant']['attributes']) > 0)
+                                                    @foreach ($item['variant']['attributes'] as $attrName => $attrValue)
+                                                        <p class="mb-0"><strong>{{ $attrName }}:</strong> {{ $attrValue }}</p>
+                                                    @endforeach
+                                                @else
+                                                    <p class="mb-0">Không có biến thể</p>
+                                                @endif
+                                            </div>
+                                        </div>
                                     </td>
-                                    <td class="align-middle text-center price" data-price="{{ isset($item['price_sale']) && $item['price_sale'] > 0 ? $item['price_sale'] : $item['price'] }}"
+                                    
+                                    <td class="align-middle text-center price"
+                                        data-price="{{ isset($item['price_sale']) && $item['price_sale'] > 0 ? $item['price_sale'] : $item['price'] }}"
                                         id="price-{{ $cartKey }}">
-                                        @if(isset($item['price_sale']) && $item['price_sale'] > 0)
+                                        @if (isset($item['price_sale']) && $item['price_sale'] > 0)
                                             {{ number_format($item['price_sale'], 0, ',', '.') }}VNĐ
                                         @else
                                             {{ number_format($item['price'], 0, ',', '.') }}VNĐ
@@ -47,22 +59,25 @@
                                             </button>
                                             <input type="text"
                                                 class="form-control form-control-sm text-center bg-light quantity-display"
-                                                style="width: 100px;" id="quantity-display-{{ $cartKey }}"
+                                                style="width: 50px; height: 35px;" id="quantity-display-{{ $cartKey }}"
                                                 value="{{ $item['quantity'] }}">
                                             <button type="button" class="btn btn-sm btn-outline-secondary btn-plus"
                                                 data-cart-key="{{ $cartKey }}" data-action="increase">
                                                 +
                                             </button>
-                                                </div>
-                                            </td>
+                                        </div>
+                                    </td>
                                     <td class="align-middle item-total" id="item-total-{{ $cartKey }}">
                                         @php
-                                            $finalPrice = isset($item['price_sale']) && $item['price_sale'] > 0 ? $item['price_sale'] : $item['price'];
-                                            $total = $finalPrice * (int)$item['quantity'];
+                                            $finalPrice =
+                                                isset($item['price_sale']) && $item['price_sale'] > 0
+                                                    ? $item['price_sale']
+                                                    : $item['price'];
+                                            $total = $finalPrice * (int) $item['quantity'];
                                         @endphp
                                         {{ number_format($total, 0, ',', '.') }}VNĐ
-                                            </td>
-                                    <td class="align-middle">
+                                    </td>
+                                    {{-- <td class="align-middle">
                                         @if (isset($item['variant']) && isset($item['variant']['attributes']) && count($item['variant']['attributes']) > 0)
                                             @foreach ($item['variant']['attributes'] as $attrName => $attrValue)
                                                 <p><strong>{{ $attrName }}:</strong> {{ $attrValue }}</p>
@@ -70,20 +85,20 @@
                                         @else
                                             <p>Không có biến thể</p>
                                         @endif
-                                            </td>
-                                    <td>
+                                    </td> --}}
+                                    <td class="align-middle">
                                         <button type="button" class="btn btn-sm btn-danger btn-remove-item"
                                             data-cart-key="{{ $cartKey }}">
                                             x
                                         </button>
-                                            </td>
-                                        </tr>
+                                    </td>
+                                </tr>
                             @endforeach
-                                    </tbody>
-                                </table>
+                        </tbody>
+                    </table>
                     <a href="{{ route('web.shop') }}" class="btn btn-success">Mua thêm</a>
-                            </form>
-                                    </div>
+                </form>
+            </div>
 
             <div class="col-lg-4">
                 {{-- <form action="{{ route('cart.applyPromotion') }}" method="POST">
@@ -99,7 +114,7 @@
                     <button type="button" class="btn btn-outline-success mb-2" id="viewPromotionsBtn">
                         <i class="fa fa-tag"></i> Xem mã khuyến mãi có thể áp dụng
                     </button>
-                                    </div>
+                </div>
                 {{-- @if (session('success'))
                     <p class="text-success">{{ session('success') }}</p>
                 @endif
@@ -122,12 +137,13 @@
                 <div class="card mb-3">
                     <div class="card-header bg-info">
                         <h6 class="m-0 text-center">Tóm tắt giỏ hàng</h6>
-                                                        </div>
+                    </div>
                     <div class="card-footer bg-transparent">
                         <div class="d-flex justify-content-between">
                             <h6>Tạm tính :</h6>
-                            <h6 class="font-weight-medium" id="summary-subtotal">{{ number_format($subtotal, 0, ',', '.') }}₫</h6>
-                                                    </div>
+                            <h6 class="font-weight-medium" id="summary-subtotal">
+                                {{ number_format($subtotal, 0, ',', '.') }}₫</h6>
+                        </div>
                         <div id="discount-container">
                             @php
                                 $promotion = session('promotion');
@@ -140,8 +156,8 @@
                                     echo '</div>';
                                 }
                             @endphp
-                                                </div>
-                                            </div>
+                        </div>
+                    </div>
                     <div class="card-footer bg-transparent">
                         <div class="d-flex justify-content-between">
                             <h6>Tổng cộng :</h6>
@@ -278,19 +294,21 @@
                 success: function(response) {
                     if (response.success) {
                         updateSummary();
-                        
+
                         // Cập nhật số lượng trong menu
                         if (response.cartCount !== undefined) {
                             // Cập nhật trực tiếp badge số lượng
                             $('.cart-count').text(response.cartCount);
-                            
+
                             // Sử dụng hàm toàn cục để cập nhật số lượng
                             if (typeof updateCartCount === 'function') {
                                 updateCartCount(response.cartCount);
                             }
-                            
+
                             // Tạo sự kiện cập nhật giỏ hàng để menu có thể lắng nghe
-                            $(document).trigger('cartUpdated', { cartCount: response.cartCount });
+                            $(document).trigger('cartUpdated', {
+                                cartCount: response.cartCount
+                            });
                         }
                     }
                 },
@@ -364,7 +382,7 @@
             e.stopPropagation();
             const cartKey = $(this).data('cart-key');
             const $row = $(this).closest('tr');
-            
+
             Swal.fire({
                 title: 'Xác nhận xóa?',
                 text: "Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?",
@@ -384,28 +402,31 @@
                         },
                         beforeSend: function() {
                             // Disable nút xóa để tránh double-click
-                            $('.btn-remove-item[data-cart-key="' + cartKey + '"]').prop('disabled', true);
+                            $('.btn-remove-item[data-cart-key="' + cartKey + '"]').prop(
+                                'disabled', true);
                         },
                         success: function(response) {
                             if (response.success) {
                                 $row.fadeOut(300, function() {
                                     $(this).remove();
                                     updateSummary();
-                                    
+
                                     // Cập nhật số lượng trong badge
                                     if (response.cartCount !== undefined) {
                                         $('.cart-badge').text(response.cartCount);
-                                        
+
                                         // Cập nhật badge trong header
                                         $('.cart-count').text(response.cartCount);
-                                        
+
                                         // Sử dụng hàm toàn cục để cập nhật số lượng
                                         if (typeof updateCartCount === 'function') {
                                             updateCartCount(response.cartCount);
                                         }
-                                        
+
                                         // Tạo sự kiện cập nhật giỏ hàng để menu có thể lắng nghe
-                                        $(document).trigger('cartUpdated', { cartCount: response.cartCount });
+                                        $(document).trigger('cartUpdated', {
+                                            cartCount: response.cartCount
+                                        });
                                     }
 
                                     // Hiển thị thông báo thành công
@@ -426,8 +447,11 @@
                                                 text: 'Giỏ hàng của bạn hiện đang trống. Hãy tiếp tục mua sắm!',
                                                 confirmButtonText: 'Tiếp tục mua sắm'
                                             }).then((result) => {
-                                                if (result.isConfirmed) {
-                                                    window.location.href = '{{ route('web.shop') }}';
+                                                if (result
+                                                    .isConfirmed) {
+                                                    window.location
+                                                        .href =
+                                                        '{{ route('web.shop') }}';
                                                 }
                                             });
                                         }, 1500);
@@ -437,7 +461,8 @@
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Lỗi!',
-                                    text: response.message || 'Có lỗi xảy ra khi xóa sản phẩm'
+                                    text: response.message ||
+                                        'Có lỗi xảy ra khi xóa sản phẩm'
                                 });
                             }
                         },
@@ -451,7 +476,8 @@
                         },
                         complete: function() {
                             // Enable lại nút xóa
-                            $('.btn-remove-item[data-cart-key="' + cartKey + '"]').prop('disabled', false);
+                            $('.btn-remove-item[data-cart-key="' + cartKey + '"]').prop(
+                                'disabled', false);
                         }
                     });
                 }
@@ -568,11 +594,15 @@
                     if (response.success) {
                         displayPromotions(response.promotions);
                     } else {
-                        $('#promotions-list').html('<tr><td colspan="7" class="text-center">Không có mã khuyến mãi nào có thể áp dụng</td></tr>');
+                        $('#promotions-list').html(
+                            '<tr><td colspan="7" class="text-center">Không có mã khuyến mãi nào có thể áp dụng</td></tr>'
+                            );
                     }
                 },
                 error: function() {
-                    $('#promotions-list').html('<tr><td colspan="7" class="text-center">Có lỗi xảy ra khi tải danh sách mã khuyến mãi</td></tr>');
+                    $('#promotions-list').html(
+                        '<tr><td colspan="7" class="text-center">Có lỗi xảy ra khi tải danh sách mã khuyến mãi</td></tr>'
+                        );
                 }
             });
         }
@@ -580,7 +610,8 @@
         // Hàm hiển thị danh sách mã khuyến mãi
         function displayPromotions(promotions) {
             if (!promotions || promotions.length === 0) {
-                $('#promotions-list').html('<tr><td colspan="7" class="text-center">Không có mã khuyến mãi nào có thể áp dụng</td></tr>');
+                $('#promotions-list').html(
+                    '<tr><td colspan="7" class="text-center">Không có mã khuyến mãi nào có thể áp dụng</td></tr>');
                 return;
             }
 
@@ -622,10 +653,12 @@
                 // Định dạng thời gian
                 const startDate = new Date(promotion.start_date);
                 const endDate = new Date(promotion.end_date);
-                const dateRange = startDate.toLocaleDateString('vi-VN') + ' - ' + endDate.toLocaleDateString('vi-VN');
+                const dateRange = startDate.toLocaleDateString('vi-VN') + ' - ' + endDate.toLocaleDateString(
+                    'vi-VN');
 
                 // Hiển thị số lượng còn lại
-                const quantityText = promotion.quantity > 0 ? promotion.quantity : '<i class="text-danger">Đã hết</i>';
+                const quantityText = promotion.quantity > 0 ? promotion.quantity :
+                    '<i class="text-danger">Đã hết</i>';
 
                 html += `
                     <tr>
@@ -654,7 +687,9 @@
 
                 // Disable nút trong khi xử lý
                 button.prop('disabled', true);
-                button.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Đang xử lý...');
+                button.html(
+                    '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Đang xử lý...'
+                    );
 
                 // Gọi AJAX để áp dụng mã khuyến mãi
                 $.ajax({
@@ -769,5 +804,5 @@
     </script>
 @endsection
 @section('scripts')
-@include('alert')
+    @include('alert')
 @endsection
