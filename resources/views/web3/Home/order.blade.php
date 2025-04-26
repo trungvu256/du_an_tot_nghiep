@@ -30,11 +30,12 @@
                 <h5 class="fw-bold mb-0">Danh sách đơn hàng</h5>
             </div>
             <div>
-                <a href="#" class="text-primary me-3">Giao hàng thành công ({{ $orders->where('status', 3)->count() }})</a>
+                <a href="#" class="text-primary me-3">Giao hàng thành công
+                    ({{ $orders->where('status', 3)->count() }})</a>
             </div>
         </div>
 
-        @if($orders->isEmpty())
+        @if ($orders->isEmpty())
             <div class="text-center py-5">
                 <div class="mb-3">
                     <i class="fas fa-shopping-bag fa-3x text-muted"></i>
@@ -201,35 +202,37 @@
 
                     <!-- Order Items -->
                     @foreach ($order->orderItems as $item)
+                    <a href="{{ route('donhang.show', $order->id) }}" class="d-block">
                         <div class="order-item d-flex align-items-center">
-                            <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product->name }}">
-                            <div class="order-item-details">
-                                <a href="{{ route('donhang.show', $order->id) }}">{{ $item->product->name }}</a>
-                                <p class="text-muted mb-0">Phân loại hàng:
-                                    <span class="text-muted">
-                                        @if($item->productVariant)
-                                    @php
-                                        $attributes = $item->productVariant->product_variant_attributes ?? [];
-                                    @endphp
-                                    @if(count($attributes) > 0)
-                                        @foreach($attributes as $attribute)
-                                            <p class="text-muted mb-0">
-                                                <strong>{{ $attribute->attribute->name }}:</strong> 
-                                                {{ $attribute->attributeValue->value }}
-                                            </p>
-                                        @endforeach
-                                    @else
-                                        <p class="text-muted mb-0">Không có biến thể</p>
-                                    @endif
-                                @endif
-                                    </span>
-                                </p>
-                                <p class="mb-0">x{{ $item->quantity }}</p>
+                                <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product->name }}">
+                                <div class="order-item-details">
+                                    <p class="fw-semibold">{{ $item->product->name }}</p>
+                                        <span class="text-muted">
+                                            @if ($item->productVariant)
+                                                @php
+                                                    $attributes =
+                                                        $item->productVariant->product_variant_attributes ?? [];
+                                                @endphp
+                                                @if (count($attributes) > 0)
+                                                    @foreach ($attributes as $attribute)
+                                                        <p class="text-muted mb-0">
+                                                            <strong>{{ $attribute->attribute->name }}:</strong>
+                                                            {{ $attribute->attributeValue->value }}
+                                                        </p>
+                                                    @endforeach
+                                                @else
+                                                    <p class="text-muted mb-0">Không có biến thể</p>
+                                                @endif
+                                            @endif
+                                        </span>
+                                    </p>
+                                    <p class="mb-0">x{{ $item->quantity }}</p>
+                                </div>
+                                <div class="order-item-price ms-auto">
+                                    {{ number_format($item->price * $item->quantity, 0, ',', '.') }}₫
+                                </div>
                             </div>
-                            <div class="order-item-price ms-auto">
-                                {{ number_format($item->price * $item->quantity, 0, ',', '.') }}₫
-                            </div>
-                        </div>
+                        </a>
                     @endforeach
 
                     <!-- Order Footer -->
@@ -244,43 +247,47 @@
                             @endif
                         </p>
                         <div class="d-flex align-items-center action-buttons" id="action-buttons-{{ $order->id }}">
-                            <span class="order-total me-3">Thành tiền: {{ number_format($order->total_price, 0, ',', '.') }}₫</span>
+                            <span class="order-total me-3">Thành tiền:
+                                {{ number_format($order->total_price, 0, ',', '.') }}₫</span>
                             @if ($order->status == 0 || $order->status == 1)
                                 <a href="javascript:void(0);" class="btn btn-outline-action" data-bs-toggle="modal"
                                     data-bs-target="#cancelModal{{ $order->id }}">Hủy đơn</a>
                             @elseif ($order->status == 3)
-                                @if($order->return_status == 0)
-                                    <a href="{{ route('order.received', $order->id) }}" class="btn btn-outline-action received-btn"
+                                @if ($order->return_status == 0)
+                                    <a href="{{ route('order.received', $order->id) }}"
+                                        class="btn btn-outline-action received-btn"
                                         onclick="handleReceived(event, {{ $order->id }}, '{{ route('order.received', $order->id) }}')">
                                         Đã nhận
                                     </a>
                                 @endif
-                                <a href="{{ route('order.returned', $order->id) }}" class="btn btn-outline-action return-btn"
+                                <a href="{{ route('order.returned', $order->id) }}"
+                                    class="btn btn-outline-action return-btn"
                                     onclick="handleReturn(event, '{{ route('order.returned', $order->id) }}')">
                                     Trả hàng
                                 </a>
                             @elseif ($order->status == 4)
-                                        @php
-                                            $hasReview = \App\Models\ProductReview::where('order_id', $order->id)
-                                                ->where('user_id', auth()->id())
-                                                ->exists();
-                                        @endphp
+                                @php
+                                    $hasReview = \App\Models\ProductReview::where('order_id', $order->id)
+                                        ->where('user_id', auth()->id())
+                                        ->exists();
+                                @endphp
 
-                                        @if(!$hasReview)
-                                            <button type="button" class="btn btn-outline-action review-btn" data-bs-toggle="modal"
-                                                data-bs-target="#reviewOrderModal{{ $order->id }}">
-                                                Đánh giá
-                                            </button>
-                                        @else
-                                            <button type="button" class="btn btn-outline-action view-review-btn" data-bs-toggle="modal"
-                                                data-bs-target="#viewOrderReviewModal{{ $order->id }}">
-                                                Xem đánh giá
-                                            </button>
-                                        @endif
-                                        <a href="{{ route('order.returned', $order->id) }}" class="btn btn-outline-action return-btn"
-                                            onclick="handleReturn(event, '{{ route('order.returned', $order->id) }}')">
-                                            Trả hàng
-                                        </a>
+                                @if (!$hasReview)
+                                    <button type="button" class="btn btn-outline-action review-btn" data-bs-toggle="modal"
+                                        data-bs-target="#reviewOrderModal{{ $order->id }}">
+                                        Đánh giá
+                                    </button>
+                                @else
+                                    <button type="button" class="btn btn-outline-action view-review-btn"
+                                        data-bs-toggle="modal" data-bs-target="#viewOrderReviewModal{{ $order->id }}">
+                                        Xem đánh giá
+                                    </button>
+                                @endif
+                                <a href="{{ route('order.returned', $order->id) }}"
+                                    class="btn btn-outline-action return-btn"
+                                    onclick="handleReturn(event, '{{ route('order.returned', $order->id) }}')">
+                                    Trả hàng
+                                </a>
                             @endif
                             @if ($order->status == 3 || $order->status == 4)
                                 <button class="btn btn-buy-again">Mua Lại</button>
@@ -296,8 +303,10 @@
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content" style="max-width: 500px; margin: 0 auto;">
                                 <div class="modal-header border-0">
-                                    <h5 class="modal-title" id="cancelModalLabel{{ $order->id }}">Lý do hủy đơn hàng</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <h5 class="modal-title" id="cancelModalLabel{{ $order->id }}">Lý do hủy đơn hàng
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
                                 <form action="{{ route('order.cancel', $order->id) }}" method="POST">
                                     @csrf
@@ -314,9 +323,12 @@
                                             @endphp
                                             @foreach ($reasons as $reason)
                                                 <div class="form-check">
-                                                    <input class="form-check-input d-none" type="radio" name="cancel_reason"
-                                                        id="reason_{{ $loop->index }}_{{ $order->id }}" value="{{ $reason }}" required>
-                                                    <label class="btn btn-outline-secondary w-100 text-start rounded-pill px-3 py-2"
+                                                    <input class="form-check-input d-none" type="radio"
+                                                        name="cancel_reason"
+                                                        id="reason_{{ $loop->index }}_{{ $order->id }}"
+                                                        value="{{ $reason }}" required>
+                                                    <label
+                                                        class="btn btn-outline-secondary w-100 text-start rounded-pill px-3 py-2"
                                                         for="reason_{{ $loop->index }}_{{ $order->id }}">
                                                         {{ $reason }}
                                                     </label>
@@ -336,14 +348,16 @@
                 @endif
 
                 <!-- Modal for Return Request -->
-                @if($order->status == 3 || $order->status == 4)
+                @if ($order->status == 3 || $order->status == 4)
                     <div class="modal fade" id="returnModal{{ $order->id }}" tabindex="-1"
                         aria-labelledby="returnModalLabel{{ $order->id }}" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="returnModalLabel{{ $order->id }}">Yêu cầu trả hàng</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <h5 class="modal-title" id="returnModalLabel{{ $order->id }}">Yêu cầu trả hàng
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
                                 <form action="{{ route('order.requestReturn', $order->id) }}" method="POST">
                                     @csrf
@@ -352,16 +366,19 @@
                                             <label for="return_reason" class="form-label">Lý do trả hàng</label>
                                             <select class="form-select" id="return_reason" name="return_reason" required>
                                                 <option value="">-- Chọn lý do --</option>
-                                                <option value="Sản phẩm không đúng mô tả">Sản phẩm không đúng mô tả</option>
+                                                <option value="Sản phẩm không đúng mô tả">Sản phẩm không đúng mô tả
+                                                </option>
                                                 <option value="Sản phẩm bị lỗi">Sản phẩm bị lỗi</option>
                                                 <option value="Thay đổi ý định mua hàng">Thay đổi ý định mua hàng</option>
                                                 <option value="Sản phẩm không phù hợp">Sản phẩm không phù hợp</option>
-                                                <option value="Nhận được sản phẩm sau quá lâu">Nhận được sản phẩm sau quá lâu</option>
+                                                <option value="Nhận được sản phẩm sau quá lâu">Nhận được sản phẩm sau quá
+                                                    lâu</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Đóng</button>
                                         <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
                                     </div>
                                 </form>
@@ -371,7 +388,7 @@
                 @endif
 
                 <!-- Modal đánh giá đơn hàng -->
-                @if($order->status == 4)
+                @if ($order->status == 4)
                     <div class="modal fade" id="reviewOrderModal{{ $order->id }}" tabindex="-1">
                         <div class="modal-dialog modal-dialog-centered modal-lg">
                             <div class="modal-content border-0 shadow">
@@ -384,9 +401,10 @@
                                     <div class="modal-body px-4 py-4">
                                         <div class="order-info mb-4">
                                             <div class="products-list">
-                                                @foreach($order->orderItems as $item)
-                                                    <div class="product-item d-flex align-items-center p-3 mb-2 bg-light rounded">
-                                                        @if($item->product && $item->product->image)
+                                                @foreach ($order->orderItems as $item)
+                                                    <div
+                                                        class="product-item d-flex align-items-center p-3 mb-2 bg-light rounded">
+                                                        @if ($item->product && $item->product->image)
                                                             <img src="{{ Storage::url($item->product->image) }}"
                                                                 alt="{{ $item->product->name }}" class="rounded-3 me-3"
                                                                 style="width: 70px; height: 70px; object-fit: cover;">
@@ -394,23 +412,26 @@
                                                         <div class="flex-grow-1">
                                                             <h6 class="mb-1 fw-bold">{{ $item->product->name }}</h6>
                                                             <span class="text-muted">
-                                                                @if($item->productVariant)
-                                    @php
-                                        $attributes = $detail->productVariant->product_variant_attributes ?? [];
-                                    @endphp
-                                    @if(count($attributes) > 0)
-                                        @foreach($attributes as $attribute)
-                                            <p class="text-muted mb-0">
-                                                <strong>{{ $attribute->attribute->name }}:</strong> 
-                                                {{ $attribute->attributeValue->value }}
-                                            </p>
-                                        @endforeach
-                                    @else
-                                        <p class="text-muted mb-0">Không có biến thể</p>
-                                    @endif
-                                @endif
+                                                                @if ($item->productVariant)
+                                                                    @php
+                                                                        $attributes =
+                                                                            $detail->productVariant
+                                                                                ->product_variant_attributes ?? [];
+                                                                    @endphp
+                                                                    @if (count($attributes) > 0)
+                                                                        @foreach ($attributes as $attribute)
+                                                                            <p class="text-muted mb-0">
+                                                                                <strong>{{ $attribute->attribute->name }}:</strong>
+                                                                                {{ $attribute->attributeValue->value }}
+                                                                            </p>
+                                                                        @endforeach
+                                                                    @else
+                                                                        <p class="text-muted mb-0">Không có biến thể</p>
+                                                                    @endif
+                                                                @endif
                                                             </span>
-                                                            <input type="hidden" name="product_id" value="{{ $item->product->id }}">
+                                                            <input type="hidden" name="product_id"
+                                                                value="{{ $item->product->id }}">
                                                             <input type="hidden" name="variant_id"
                                                                 value="{{ $item->productVariant ? $item->productVariant->id : '' }}">
                                                         </div>
@@ -421,15 +442,20 @@
                                         <div class="rating-section text-center mb-4">
                                             <h6 class="text-center mb-3 fw-bold">Bạn cảm thấy sản phẩm thế nào?</h6>
                                             <div class="rating">
-                                                <input type="radio" name="rating" value="5" id="star5{{ $order->id }}">
+                                                <input type="radio" name="rating" value="5"
+                                                    id="star5{{ $order->id }}">
                                                 <label for="star5{{ $order->id }}">★</label>
-                                                <input type="radio" name="rating" value="4" id="star4{{ $order->id }}">
+                                                <input type="radio" name="rating" value="4"
+                                                    id="star4{{ $order->id }}">
                                                 <label for="star4{{ $order->id }}">★</label>
-                                                <input type="radio" name="rating" value="3" id="star3{{ $order->id }}">
+                                                <input type="radio" name="rating" value="3"
+                                                    id="star3{{ $order->id }}">
                                                 <label for="star3{{ $order->id }}">★</label>
-                                                <input type="radio" name="rating" value="2" id="star2{{ $order->id }}">
+                                                <input type="radio" name="rating" value="2"
+                                                    id="star2{{ $order->id }}">
                                                 <label for="star2{{ $order->id }}">★</label>
-                                                <input type="radio" name="rating" value="1" id="star1{{ $order->id }}">
+                                                <input type="radio" name="rating" value="1"
+                                                    id="star1{{ $order->id }}">
                                                 <label for="star1{{ $order->id }}">★</label>
                                             </div>
                                         </div>
@@ -449,12 +475,15 @@
                                                     <i class="fas fa-video"></i> Thêm Video
                                                 </button>
                                             </div>
-                                            <input type="file" id="imageUpload{{ $order->id }}" name="images[]" multiple
-                                                accept="image/*" class="d-none" onchange="previewImages(this, {{ $order->id }})">
-                                            <input type="file" id="videoUpload{{ $order->id }}" name="video" accept="video/*"
-                                                class="d-none" onchange="previewVideo(this, {{ $order->id }})">
+                                            <input type="file" id="imageUpload{{ $order->id }}" name="images[]"
+                                                multiple accept="image/*" class="d-none"
+                                                onchange="previewImages(this, {{ $order->id }})">
+                                            <input type="file" id="videoUpload{{ $order->id }}" name="video"
+                                                accept="video/*" class="d-none"
+                                                onchange="previewVideo(this, {{ $order->id }})">
                                             <div class="preview-section">
-                                                <div id="imagePreview{{ $order->id }}" class="d-flex flex-wrap gap-2 mb-2"></div>
+                                                <div id="imagePreview{{ $order->id }}"
+                                                    class="d-flex flex-wrap gap-2 mb-2"></div>
                                                 <div id="videoPreview{{ $order->id }}"></div>
                                             </div>
                                         </div>
@@ -462,7 +491,8 @@
                                     <div class="modal-footer border-0 justify-content-center">
                                         <button type="button" class="btn btn-light px-4 rounded-pill"
                                             data-bs-dismiss="modal">Đóng</button>
-                                        <button type="submit" class="btn btn-primary px-4 rounded-pill">Gửi đánh giá</button>
+                                        <button type="submit" class="btn btn-primary px-4 rounded-pill">Gửi đánh
+                                            giá</button>
                                     </div>
                                 </form>
                             </div>
@@ -480,19 +510,23 @@
                                 <div class="modal-body px-4 py-4">
                                     <div class="order-info mb-4">
                                         <div class="products-list">
-                                            @foreach($order->orderItems as $item)
-                                                <div class="product-item d-flex align-items-center p-3 mb-2 bg-light rounded">
-                                                    @if($item->product && $item->product->image)
-                                                        <img src="{{ Storage::url($item->product->image) }}" alt="{{ $item->product->name }}"
-                                                            class="rounded-3 me-3" style="width: 70px; height: 70px; object-fit: cover;">
+                                            @foreach ($order->orderItems as $item)
+                                                <div
+                                                    class="product-item d-flex align-items-center p-3 mb-2 bg-light rounded">
+                                                    @if ($item->product && $item->product->image)
+                                                        <img src="{{ Storage::url($item->product->image) }}"
+                                                            alt="{{ $item->product->name }}" class="rounded-3 me-3"
+                                                            style="width: 70px; height: 70px; object-fit: cover;">
                                                     @endif
                                                     <div>
                                                         <h6 class="mb-1 fw-bold">{{ $item->product->name }}</h6>
                                                         <span class="text-muted">
-                                                            Phân loại: Dung tích - {{ $item->productVariant->concentration }},
+                                                            Phân loại: Dung tích -
+                                                            {{ $item->productVariant->concentration }},
                                                             Nồng độ - {{ $item->productVariant->size }}
                                                         </span>
-                                                        <input type="hidden" name="product_id" value="{{ $item->product->id }}">
+                                                        <input type="hidden" name="product_id"
+                                                            value="{{ $item->product->id }}">
                                                         <input type="hidden" name="variant_id"
                                                             value="{{ $item->productVariant ? $item->productVariant->id : '' }}">
                                                     </div>
@@ -505,7 +539,8 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer border-0 justify-content-center">
-                                    <button type="button" class="btn btn-light px-4 rounded-pill" data-bs-dismiss="modal">Đóng</button>
+                                    <button type="button" class="btn btn-light px-4 rounded-pill"
+                                        data-bs-dismiss="modal">Đóng</button>
                                 </div>
                             </div>
                         </div>
@@ -521,25 +556,29 @@
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             // Cancel Modal Script
-            @if(isset($orders) && !$orders->isEmpty())
+            @if (isset($orders) && !$orders->isEmpty())
                 @foreach ($orders as $order)
                     @if ($order->status == 0 || $order->status == 1)
-                        document.querySelectorAll('#cancelModal{{ $order->id }} .form-check-input').forEach(input => {
-                            input.addEventListener('change', function () {
-                                document.querySelectorAll('#cancelModal{{ $order->id }} .form-check label').forEach(label => {
-                                    label.classList.remove('btn-primary');
-                                    label.classList.add('btn-outline-secondary');
-                                });
+                        document.querySelectorAll('#cancelModal{{ $order->id }} .form-check-input').forEach(
+                            input => {
+                                input.addEventListener('change', function() {
+                                    document.querySelectorAll(
+                                            '#cancelModal{{ $order->id }} .form-check label')
+                                        .forEach(label => {
+                                            label.classList.remove('btn-primary');
+                                            label.classList.add('btn-outline-secondary');
+                                        });
 
-                                const selectedLabel = document.querySelector("label[for='" + this.id + "']");
-                                if (selectedLabel) {
-                                    selectedLabel.classList.remove('btn-outline-secondary');
-                                    selectedLabel.classList.add('btn-primary');
-                                }
+                                    const selectedLabel = document.querySelector("label[for='" + this
+                                        .id + "']");
+                                    if (selectedLabel) {
+                                        selectedLabel.classList.remove('btn-outline-secondary');
+                                        selectedLabel.classList.add('btn-primary');
+                                    }
+                                });
                             });
-                        });
                     @endif
                 @endforeach
             @endif
@@ -565,7 +604,7 @@
         });
     </script>
 @endsection
-    @section('scripts')
+@section('scripts')
     <!-- Thêm SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -574,77 +613,84 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Cancel Modal Script
-            @if(isset($orders) && !$orders->isEmpty())
+            @if (isset($orders) && !$orders->isEmpty())
                 @foreach ($orders as $order)
                     @if ($order->status == 0 || $order->status == 1)
-                        document.querySelectorAll('#cancelModal{{ $order->id }} .form-check-input').forEach(input => {
-                            input.addEventListener('change', function () {
-                                document.querySelectorAll('#cancelModal{{ $order->id }} .form-check label').forEach(label => {
-                                    label.classList.remove('btn-primary');
-                                    label.classList.add('btn-outline-secondary');
-                                });
+                        document.querySelectorAll('#cancelModal{{ $order->id }} .form-check-input').forEach(
+                            input => {
+                                input.addEventListener('change', function() {
+                                    document.querySelectorAll(
+                                            '#cancelModal{{ $order->id }} .form-check label')
+                                        .forEach(label => {
+                                            label.classList.remove('btn-primary');
+                                            label.classList.add('btn-outline-secondary');
+                                        });
 
-                                const selectedLabel = document.querySelector("label[for='" + this.id + "']");
-                                if (selectedLabel) {
-                                    selectedLabel.classList.remove('btn-outline-secondary');
-                                    selectedLabel.classList.add('btn-primary');
-                                }
+                                    const selectedLabel = document.querySelector("label[for='" + this
+                                        .id + "']");
+                                    if (selectedLabel) {
+                                        selectedLabel.classList.remove('btn-outline-secondary');
+                                        selectedLabel.classList.add('btn-primary');
+                                    }
+                                });
                             });
-                        });
 
                         // Xử lý form hủy đơn hàng với SweetAlert
-                        document.querySelector('#cancelModal{{ $order->id }} form').addEventListener('submit', function(e) {
-                            e.preventDefault();
-                            Swal.fire({
-                                title: 'Xác nhận hủy đơn hàng',
-                                text: 'Bạn có chắc chắn muốn hủy đơn hàng #{{ $order->order_code }}?',
-                                icon: 'warning',
-                                showCancelButton: true,
-                                confirmButtonColor: '#3085d6',
-                                cancelButtonColor: '#d33',
-                                confirmButtonText: 'Có, hủy đơn!',
-                                cancelButtonText: 'Không'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    fetch(this.action, {
-                                        method: 'POST',
-                                        headers: {
-                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                            'Accept': 'application/json',
-                                        },
-                                        body: new FormData(this)
-                                    })
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        if (data.success) {
-                                            Swal.fire({
-                                                title: 'Thành công!',
-                                                text: data.message || 'Đơn hàng đã được hủy thành công!',
-                                                icon: 'success',
-                                                confirmButtonText: 'OK'
-                                            }).then(() => {
-                                                location.reload();
+                        document.querySelector('#cancelModal{{ $order->id }} form').addEventListener('submit',
+                            function(e) {
+                                e.preventDefault();
+                                Swal.fire({
+                                    title: 'Xác nhận hủy đơn hàng',
+                                    text: 'Bạn có chắc chắn muốn hủy đơn hàng #{{ $order->order_code }}?',
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Có, hủy đơn!',
+                                    cancelButtonText: 'Không'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        fetch(this.action, {
+                                                method: 'POST',
+                                                headers: {
+                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                                    'Accept': 'application/json',
+                                                },
+                                                body: new FormData(this)
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    Swal.fire({
+                                                        title: 'Thành công!',
+                                                        text: data.message ||
+                                                            'Đơn hàng đã được hủy thành công!',
+                                                        icon: 'success',
+                                                        confirmButtonText: 'OK'
+                                                    }).then(() => {
+                                                        location.reload();
+                                                    });
+                                                } else {
+                                                    Swal.fire({
+                                                        title: 'Lỗi!',
+                                                        text: data.message ||
+                                                            'Có lỗi xảy ra khi hủy đơn hàng.',
+                                                        icon: 'error',
+                                                        confirmButtonText: 'OK'
+                                                    });
+                                                }
+                                            })
+                                            .catch(error => {
+                                                Swal.fire({
+                                                    title: 'Lỗi!',
+                                                    text: 'Có lỗi xảy ra: ' + error.message,
+                                                    icon: 'error',
+                                                    confirmButtonText: 'OK'
+                                                });
                                             });
-                                        } else {
-                                            Swal.fire({
-                                                title: 'Lỗi!',
-                                                text: data.message || 'Có lỗi xảy ra khi hủy đơn hàng.',
-                                                icon: 'error',
-                                                confirmButtonText: 'OK'
-                                            });
-                                        }
-                                    })
-                                    .catch(error => {
-                                        Swal.fire({
-                                            title: 'Lỗi!',
-                                            text: 'Có lỗi xảy ra: ' + error.message,
-                                            icon: 'error',
-                                            confirmButtonText: 'OK'
-                                        });
-                                    });
-                                }
+                                    }
+                                });
                             });
-                        });
                     @endif
                 @endforeach
             @endif
@@ -694,45 +740,48 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         fetch(url, {
-                            method: 'GET',
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                'Accept': 'application/json',
-                            },
-                        })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok: ' + response.status);
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            if (data.success) {
-                                Swal.fire({
-                                    title: 'Thành công!',
-                                    text: data.message || 'Xác nhận nhận hàng thành công!',
-                                    icon: 'success',
-                                    confirmButtonText: 'OK'
-                                }).then(() => {
-                                    location.reload();
-                                });
-                            } else {
+                                method: 'GET',
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                    'Accept': 'application/json',
+                                },
+                            })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok: ' + response
+                                        .status);
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire({
+                                        title: 'Thành công!',
+                                        text: data.message ||
+                                            'Xác nhận nhận hàng thành công!',
+                                        icon: 'success',
+                                        confirmButtonText: 'OK'
+                                    }).then(() => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'Lỗi!',
+                                        text: data.message ||
+                                            'Có lỗi xảy ra khi xác nhận nhận hàng.',
+                                        icon: 'error',
+                                        confirmButtonText: 'OK'
+                                    });
+                                }
+                            })
+                            .catch(error => {
                                 Swal.fire({
                                     title: 'Lỗi!',
-                                    text: data.message || 'Có lỗi xảy ra khi xác nhận nhận hàng.',
+                                    text: 'Có lỗi xảy ra: ' + error.message,
                                     icon: 'error',
                                     confirmButtonText: 'OK'
                                 });
-                            }
-                        })
-                        .catch(error => {
-                            Swal.fire({
-                                title: 'Lỗi!',
-                                text: 'Có lỗi xảy ra: ' + error.message,
-                                icon: 'error',
-                                confirmButtonText: 'OK'
                             });
-                        });
                     }
                 });
             };
@@ -764,40 +813,42 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         fetch(url, {
-                            method: 'GET',
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                'Accept': 'application/json',
-                            },
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
+                                method: 'GET',
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                    'Accept': 'application/json',
+                                },
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire({
+                                        title: 'Thành công!',
+                                        text: data.message ||
+                                            'Yêu cầu trả hàng đã được gửi!',
+                                        icon: 'success',
+                                        confirmButtonText: 'OK'
+                                    }).then(() => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'Lưu ý!',
+                                        text: data.message ||
+                                            'Có lỗi xảy ra khi gửi yêu cầu trả hàng.',
+                                        icon: 'warning',
+                                        confirmButtonText: 'OK'
+                                    });
+                                }
+                            })
+                            .catch(error => {
                                 Swal.fire({
-                                    title: 'Thành công!',
-                                    text: data.message || 'Yêu cầu trả hàng đã được gửi!',
-                                    icon: 'success',
-                                    confirmButtonText: 'OK'
-                                }).then(() => {
-                                    location.reload();
-                                });
-                            } else {
-                                Swal.fire({
-                                    title: 'Lưu ý!',
-                                    text: data.message || 'Có lỗi xảy ra khi gửi yêu cầu trả hàng.',
-                                    icon: 'warning',
+                                    title: 'Lỗi!',
+                                    text: 'Có lỗi xảy ra: ' + error.message,
+                                    icon: 'error',
                                     confirmButtonText: 'OK'
                                 });
-                            }
-                        })
-                        .catch(error => {
-                            Swal.fire({
-                                title: 'Lỗi!',
-                                text: 'Có lỗi xảy ra: ' + error.message,
-                                icon: 'error',
-                                confirmButtonText: 'OK'
                             });
-                        });
                     }
                 });
             };

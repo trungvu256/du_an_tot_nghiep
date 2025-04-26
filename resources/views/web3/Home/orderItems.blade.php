@@ -6,8 +6,8 @@
 
     <div class="container">
         <div class="d-flex align-items-center justify-content-between">
-            <a href="{{ route('donhang.index') }}" class="btn btn-link text-decoration-none">&larr; Quay lại</a>
-            <h2 class="my-4 text-center text-primary flex-grow-1 text-center">Chi tiết đơn hàng #{{ $order->order_code }}</h2>
+            <a href="{{ route('donhang.index') }}" class="btn btn-outline-primary"><i class="bi bi-caret-left"></i> Quay lại</a>
+            <h4 class="my-4 text-center text-primary flex-grow-1 text-center">Chi tiết đơn hàng #{{ $order->order_code }}</h4>
         </div>
 
         <hr class="my-3">
