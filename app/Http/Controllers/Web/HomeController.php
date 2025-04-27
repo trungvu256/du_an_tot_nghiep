@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use PhpParser\Node\Expr\FuncCall;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Mail\Dangky;
 use Illuminate\Support\Facades\Session;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
@@ -359,5 +360,19 @@ class HomeController extends Controller
     {
         return view('web3.Home.contact');
     }
+
+    public function nhantin(Request $request)
+    {
+        $data = $request->validate([
+         
+            'email' => 'required|email',
+       
+        ]);
+    
+        Mail::to('trongvnph47351@fpt.edu.vn')->send(new Dangky($data));
+    
+        return back()->with('success', 'Bạn đã gửi tin nhắn thành công');
+    }
+    
     
 }

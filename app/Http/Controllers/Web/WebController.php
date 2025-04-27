@@ -46,6 +46,15 @@ class WebController extends Controller
         $selectedCategory = null;
         if ($request->filled('cate_id')) {
             $selectedCategory = Catalogue::find($request->input('cate_id'));
+            $query->where('catalogue_id', $request->input('cate_id'));
+        }
+        
+        // Nếu người dùng chọn từ checkbox nhiều danh mục
+        if ($request->filled('cate')) {
+            $cateArray = $request->input('cate'); // Mảng cate[]
+            if (is_array($cateArray) && count($cateArray)) {
+                $query->whereIn('catalogue_id', $cateArray);
+            }
         }
 
         $selectedBrand = null;

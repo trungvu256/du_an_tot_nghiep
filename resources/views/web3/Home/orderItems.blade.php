@@ -6,8 +6,8 @@
 
     <div class="container">
         <div class="d-flex align-items-center justify-content-between">
-            <a href="{{ route('donhang.index') }}" class="btn btn-link text-decoration-none">&larr; Quay lại</a>
-            <h2 class="my-4 text-center text-primary flex-grow-1 text-center">Chi tiết đơn hàng #{{ $order->order_code }}</h2>
+            <a href="{{ route('donhang.index') }}" class="btn btn-outline-primary"><i class="bi bi-caret-left"></i> Quay lại</a>
+            <h4 class="my-4 text-center text-primary flex-grow-1 text-center">Chi tiết đơn hàng #{{ $order->order_code }}</h4>
         </div>
 
         <hr class="my-3">
@@ -175,11 +175,20 @@
                             </td>
                             <td>{{ $detail->product->name }}
                                 @if($detail->productVariant)
-                                                            <span class="text-muted">
-                                                                (Dung tích: {{ $detail->productVariant->concentration }},
-                                                                 Nồng độ: {{ $detail->productVariant->size }})
-                                                            </span>
-                                                        @endif
+                                    @php
+                                        $attributes = $detail->productVariant->product_variant_attributes ?? [];
+                                    @endphp
+                                    @if(count($attributes) > 0)
+                                        @foreach($attributes as $attribute)
+                                            <p class="text-muted mb-0">
+                                                <strong>{{ $attribute->attribute->name }}:</strong> 
+                                                {{ $attribute->attributeValue->value }}
+                                            </p>
+                                        @endforeach
+                                    @else
+                                        <p class="text-muted mb-0">Không có biến thể</p>
+                                    @endif
+                                @endif
                             </td>
                             <td>{{ $detail->quantity }}</td>
                             <td>

@@ -11,6 +11,7 @@
     .header-default .box-nav-menu .item-link{
         font-size: larger !important;
         text-transform: uppercase;
+        padding: 0 !important;
     }
     </style>
 
@@ -47,6 +48,9 @@
                                 <ul class="box-nav-menu">
                                     <li class="menu-item">
                                         <a href="{{route('web.home')}}" class="item-link">Trang chủ</a>
+                                    </li>
+                                    <li class="menu-item">
+                                        <a href="{{ route('web.shop') }}" class="item-link">Nước hoa</a>
                                     </li>
                                     <li class="menu-item" style="position: relative;">
                                         <a href="#" class="item-link">Thương hiệu <i class="icon icon-arr-down"></i></a>
@@ -130,7 +134,7 @@
 
 
                                     <li class="menu-item position-relative">
-                                        <a href="#" class="item-link">Liên hệ</a>
+                                        <a href="{{ route('web.contact.page')}}" class="item-link">Liên hệ</a>
 
                                     </li>
                                     <li class="menu-item position-relative">
@@ -219,9 +223,6 @@
                 </div>
             </header>
         </div>
-
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
     @push('scripts')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

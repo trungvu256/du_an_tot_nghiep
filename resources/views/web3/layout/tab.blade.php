@@ -23,7 +23,8 @@
     <div class="toolbar-item">
         <a href="#login" data-bs-toggle="offcanvas">
             <div class="toolbar-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd"
                         d="M12.6849 6.28659C12.6849 7.00267 12.4004 7.68943 11.8941 8.19578C11.3877 8.70212 10.701 8.98659 9.98488 8.98659C9.2688 8.98659 8.58204 8.70212 8.07569 8.19578C7.56934 7.68943 7.28488 7.00267 7.28488 6.28659C7.28488 5.5705 7.56934 4.88375 8.07569 4.3774C8.58204 3.87105 9.2688 3.58659 9.98488 3.58659C10.701 3.58659 11.3877 3.87105 11.8941 4.3774C12.4004 4.88375 12.6849 5.5705 12.6849 6.28659ZM14.3515 6.28659C14.3515 6.86003 14.2386 7.42785 14.0192 7.95764C13.7997 8.48743 13.4781 8.96881 13.0726 9.37429C12.6671 9.77977 12.1857 10.1014 11.6559 10.3209C11.1261 10.5403 10.5583 10.6533 9.98488 10.6533C9.41144 10.6533 8.84362 10.5403 8.31383 10.3209C7.78404 10.1014 7.30266 9.77977 6.89718 9.37429C6.4917 8.96881 6.17005 8.48743 5.95061 7.95764C5.73116 7.42785 5.61821 6.86003 5.61821 6.28659C5.61821 5.12848 6.07827 4.0178 6.89718 3.19889C7.71609 2.37998 8.82677 1.91992 9.98488 1.91992C11.143 1.91992 12.2537 2.37998 13.0726 3.19889C13.8915 4.0178 14.3515 5.12848 14.3515 6.28659ZM3.83488 17.7049C3.83488 16.2183 4.48488 15.0616 5.55571 14.2524C6.64738 13.4283 8.20571 12.9491 9.98738 12.9491C11.7699 12.9491 13.3282 13.4283 14.419 14.2524C15.4907 15.0608 16.1407 16.2191 16.1407 17.7049C16.1407 17.9259 16.2285 18.1379 16.3848 18.2942C16.5411 18.4505 16.753 18.5383 16.974 18.5383C17.1951 18.5383 17.407 18.4505 17.5633 18.2942C17.7196 18.1379 17.8074 17.9259 17.8074 17.7049C17.8074 15.6633 16.8849 14.0258 15.424 12.9224C13.9824 11.8341 12.0474 11.2824 9.98738 11.2824C7.92738 11.2824 5.99238 11.8341 4.55155 12.9224C3.08988 14.0258 2.16821 15.6641 2.16821 17.7049C2.16821 17.9259 2.25601 18.1379 2.41229 18.2942C2.56857 18.4505 2.78053 18.5383 3.00155 18.5383C3.22256 18.5383 3.43452 18.4505 3.5908 18.2942C3.74708 18.1379 3.83488 17.9259 3.83488 17.7049Z"
                         fill="black" />
@@ -35,7 +36,8 @@
     <div class="toolbar-item">
         <a href="shop-default.html">
             <div class="toolbar-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd"
                         d="M1.875 8.479C1.875 8.134 2.155 7.854 2.5 7.854C2.845 7.854 3.125 8.134 3.125 8.479V15.5623C3.125 16.5982 3.96417 17.4373 5 17.4373H15C16.0358 17.4373 16.875 16.5982 16.875 15.5623V8.479C16.875 8.134 17.155 7.854 17.5 7.854C17.845 7.854 18.125 8.134 18.125 8.479V15.5623C18.125 17.2882 16.7258 18.6873 15 18.6873H5C3.27417 18.6873 1.875 17.2882 1.875 15.5623V8.479Z"
                         fill="black" />
@@ -59,7 +61,8 @@
     <div class="toolbar-item">
         <a href="wish-list.html">
             <div class="toolbar-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_4013_1872)">
                         <path
                             d="M18.3932 3.30791C16.218 1.13334 12.6795 1.13334 10.5049 3.30791L9.99983 3.8127L9.49504 3.30791C7.32046 1.13304 3.78163 1.13304 1.60706 3.30791C-0.523361 5.43833 -0.537195 8.81527 1.57498 11.1632C3.50142 13.3039 9.18304 17.9289 9.4241 18.1246C9.58775 18.2576 9.78467 18.3224 9.9804 18.3224C9.98688 18.3224 9.99335 18.3224 9.99953 18.3221C10.202 18.3315 10.406 18.2621 10.575 18.1246C10.816 17.9289 16.4982 13.3039 18.4253 11.1629C20.5371 8.81527 20.5233 5.43833 18.3932 3.30791ZM17.1125 9.98174C15.6105 11.6503 11.4818 15.0917 9.99953 16.313C8.51724 15.092 4.38944 11.6509 2.88773 9.98203C1.41427 8.34433 1.40044 6.01199 2.85564 4.55679C3.59885 3.81388 4.57488 3.44213 5.5509 3.44213C6.52693 3.44213 7.50295 3.81358 8.24616 4.55679L9.3564 5.66703C9.48856 5.79919 9.65516 5.87807 9.82999 5.90574C10.1137 5.96667 10.4216 5.88749 10.6424 5.66732L11.7532 4.55679C13.2399 3.07067 15.6582 3.07097 17.144 4.55679C18.5992 6.01199 18.5854 8.34433 17.1125 9.98174Z"
@@ -79,7 +82,8 @@
     <div class="toolbar-item">
         <a href="#shoppingCart" data-bs-toggle="offcanvas">
             <div class="toolbar-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd"
                         d="M4.70906 7.42985L4.0424 16.699H15.8641L15.1974 7.42985H4.70906ZM16.7491 5.76318H3.15823L2.38073 16.5798C2.36436 16.8082 2.39521 17.0374 2.47134 17.2533C2.54748 17.4692 2.66727 17.6671 2.82325 17.8347C2.97923 18.0022 3.16805 18.1358 3.37795 18.2272C3.58785 18.3186 3.81431 18.3657 4.04323 18.3657H15.8641C16.0931 18.3657 16.3196 18.3185 16.5296 18.2271C16.7395 18.1357 16.9284 18.002 17.0844 17.8344C17.2404 17.6667 17.3601 17.4687 17.4362 17.2527C17.5123 17.0368 17.5431 16.8074 17.5266 16.579L16.7491 5.76318Z"
                         fill="black" />
@@ -101,74 +105,80 @@
     <div class="canvas-wrapper">
 
         @if (session('error'))
-        <div class="alert alert-danger fw-bold text-center">
-            {{ session('error') }}
-        </div>
+            <div class="alert alert-danger fw-bold text-center">
+                {{ session('error') }}
+            </div>
         @endif
 
         @if ($errors->any())
-        <div class="alert alert-danger fw-bold">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+            <div class="alert alert-danger fw-bold">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
         @endif
         <div class="canvas-body popup-inner">
             @if (Auth::check())
-
                 {{-- Người dùng đã đăng nhập --}}
                 <div class="canvas-header popup-header">
                     <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('images/anhlogin.jpg') }}"
                         width="50" height="50" class="rounded-circle border" style="object-fit: cover;">
                     <span class="title">{{ Auth::user()->name }}</span>
-                    <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
                 </div>
                 <div class="user-info fs-5">
                     <hr>
-                    <li><a onmouseover="this.style.color='#ff6f61'" onmouseout="this.style.color='black'" href="{{ route('profile') }}"><i class="icon icon-user"></i> Thông tin cá nhân</a>
+                    <li><a onmouseover="this.style.color='#ff6f61'" onmouseout="this.style.color='black'"
+                            href="{{ route('profile') }}"><i class="icon icon-user"></i> Thông tin cá nhân</a>
                     </li>
                     <hr>
-                    <li><a onmouseover="this.style.color='#ff6f61'" onmouseout="this.style.color='black'" href="{{ route('donhang.index') }}"><i class="icon icon-cart"></i> Đơn hàng của bạn</a></li>
-                    <hr>
-                    <li><a onmouseover="this.style.color='#ff6f61'" onmouseout="this.style.color='black'" href="{{ route('address.index') }}"><i class="icon icon-user"></i> Sổ địa chỉ</a>
+                    <li><a onmouseover="this.style.color='#ff6f61'" onmouseout="this.style.color='black'"
+                            href="{{ route('donhang.index') }}"><i class="icon icon-cart"></i> Đơn hàng của bạn</a>
                     </li>
                     <hr>
-                    <li><a href="{{ route('web.logout') }}" class="btn btn-danger"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a></li>
+                    <li><a onmouseover="this.style.color='#ff6f61'" onmouseout="this.style.color='black'"
+                            href="{{ route('address.index') }}"><i class="bi bi-geo-alt"></i> Địa chỉ của bạn</a>
+                    </li>
+                    <hr>
+                    <li><a href="{{ route('web.logout') }}" class="btn btn-danger"><i
+                                class="bi bi-box-arrow-left"></i> Đăng xuất</a></li>
                 </div>
-
             @else
-            {{-- Form đăng nhập --}}
-            <div class="canvas-header popup-header">
-                <span class="title">Đăng nhập</span>
-                <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <form action="{{ route('login.store.web') }}" method="POST" accept-charset="utf-8" class="form-login">
-                @csrf
-                <div>
-                    <fieldset class="email mb_12">
-                        <input type="email" name="email" placeholder="Nhập email ">
-                    </fieldset>
-                    <fieldset class="password">
-                        <input type="password" name="password" placeholder="Nhập mật khẩu ">
-                    </fieldset>
+                {{-- Form đăng nhập --}}
+                <div class="canvas-header popup-header">
+                    <span class="title">Đăng nhập</span>
+                    <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
                 </div>
-                <div class="bot">
-                    <a href="#resetPass" data-bs-toggle="offcanvas" class="text text-sm text-main-2">Forgot your
-                        password?</a>
-                    <div class="button-wrap">
-                        <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100"
-                            type="submit">Đăng nhập</button>
-                        <button type="button" data-bs-target="#register" data-bs-toggle="offcanvas"
-                            class="tf-btn btn-out-line-dark2 w-100">Đăng ký</button>
+                <form action="{{ route('login.store.web') }}" method="POST" accept-charset="utf-8"
+                    class="form-login">
+                    @csrf
+                    <div>
+                        <fieldset class="email mb_12">
+                            <input type="email" name="email" placeholder="Nhập email ">
+                        </fieldset>
+                        <fieldset class="password">
+                            <input type="password" name="password" placeholder="Nhập mật khẩu ">
+                        </fieldset>
                     </div>
-                </div>
-            </form>
-            <!-- <p style="margin-top: 10px;">
+                    <div class="bot">
+                        <a href="#resetPass" data-bs-toggle="offcanvas" class="text text-sm text-main-2">Quên mật
+                            khẩu?</a>
+                        <div class="button-wrap">
+                            <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100"
+                                type="submit">Đăng nhập</button>
+                            <button type="button" data-bs-target="#register" data-bs-toggle="offcanvas"
+                                class="tf-btn btn-out-line-dark2 w-100">Đăng ký</button>
+                        </div>
+                    </div>
+                </form>
+                <!-- <p style="margin-top: 10px;">
                 <a href="{{ url('/forgot-password') }}">Bạn đã quên mật khẩu?</a>
             </p> -->
-            <!-- <div class="other-login mt-3">
+                <!-- <div class="other-login mt-3">
                     <p class="text-sm text-center text-main-2">Hoặc đăng nhập bằng:</p>
                     <a href="#" class="w-100 text-md mb_8">
                         {{-- Facebook Icon --}}
@@ -200,10 +210,6 @@
             <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div id="error-message" class="alert alert-danger" style="display: none;"></div>
-
-
-
-
         <div class="canvas-body popup-inner">
             <form id="form_register" action="{{ route('web.register.store') }}" enctype="multipart/form-data"
                 class="form-login" method="POST">
@@ -216,10 +222,6 @@
                     <fieldset class="text mb_12">
                         <input type="text" class="form-control rounded-3" id="last_name" name="last_name"
                             placeholder="Nhập tên" required>
-                    </fieldset>
-                    <fieldset class="email mb_12">
-                        <input type="text" class="form-control rounded-3" id="name" name="name"
-                            placeholder="Nhập họ tên" required>
                     </fieldset>
                     <fieldset class="text mb_12">
                         <input type="email" class="form-control rounded-3" id="email" name="email"
@@ -253,11 +255,12 @@
                     </fieldset>
 
                     <fieldset class="text mb_12">
-                        <input type="file" class="form-control rounded-3" id="avatar" name="avatar" accept="image/*">
+                        <input type="file" class="form-control rounded-3" id="avatar" name="avatar"
+                            accept="image/*">
                     </fieldset>
                     <fieldset class="text mb_12">
-                        <input type="checkbox" class="form-check-input" id="agree_terms" name="agree_terms" value="1"
-                            required>
+                        <input type="checkbox" class="form-check-input" id="agree_terms" name="agree_terms"
+                            value="1" required>
                         <label class="form-check-label text-muted" for="agree_terms">Tôi đồng ý với tất cả điều
                             khoản</label>
                     </fieldset>
@@ -332,8 +335,8 @@
                 <div>
                     <p class="text text-sm text-main-2">Vui lòng nhập mã OTP được gửi đến email của bạn.</p>
                     <fieldset class="otp mb_12">
-                        <input type="text" name="otp" class="form-control" placeholder="Nhập Mã OTP*" maxlength="6"
-                            required>
+                        <input type="text" name="otp" class="form-control" placeholder="Nhập Mã OTP*"
+                            maxlength="6" required>
                     </fieldset>
                 </div>
                 <div class="bot">
@@ -397,185 +400,188 @@
 <!-- JavaScript cho xử lý AJAX -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-$(document).ready(function() {
-    // Thiết lập token CSRF cho các yêu cầu AJAX
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    $(document).ready(function() {
+        // Thiết lập token CSRF cho các yêu cầu AJAX
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        // Hàm reset form và thông báo
+        function resetFormAndAlerts(formId, errorId, successId) {
+            $(formId)[0].reset(); // Reset các trường input
+            $(errorId).addClass('d-none').text(''); // Ẩn và xóa thông báo lỗi
+            $(successId).addClass('d-none').text(''); // Ẩn và xóa thông báo thành công
         }
-    });
 
-    // Hàm reset form và thông báo
-    function resetFormAndAlerts(formId, errorId, successId) {
-        $(formId)[0].reset(); // Reset các trường input
-        $(errorId).addClass('d-none').text(''); // Ẩn và xóa thông báo lỗi
-        $(successId).addClass('d-none').text(''); // Ẩn và xóa thông báo thành công
-    }
+        // Reset trạng thái khi offcanvas được hiển thị
+        $('#resetPass').on('shown.bs.offcanvas', function() {
+            resetFormAndAlerts('#forgotPasswordForm', '#forgotError', '#forgotSuccess');
+            $('#forgotSubmit').prop('disabled', false).find('.spinner-border').addClass('d-none')
+                .siblings(
+                    'span').text('Gửi Mã OTP');
+        });
 
-    // Reset trạng thái khi offcanvas được hiển thị
-    $('#resetPass').on('shown.bs.offcanvas', function() {
-        resetFormAndAlerts('#forgotPasswordForm', '#forgotError', '#forgotSuccess');
-        $('#forgotSubmit').prop('disabled', false).find('.spinner-border').addClass('d-none').siblings(
-            'span').text('Gửi Mã OTP');
-    });
+        $('#verifyOtp').on('shown.bs.offcanvas', function() {
+            resetFormAndAlerts('#verifyOtpForm', '#otpError', '#otpSuccess');
+            $('#otpSubmit').prop('disabled', false).find('.spinner-border').addClass('d-none').siblings(
+                'span').text('Xác Minh');
+        });
 
-    $('#verifyOtp').on('shown.bs.offcanvas', function() {
-        resetFormAndAlerts('#verifyOtpForm', '#otpError', '#otpSuccess');
-        $('#otpSubmit').prop('disabled', false).find('.spinner-border').addClass('d-none').siblings(
-            'span').text('Xác Minh');
-    });
+        $('#resetPassword').on('shown.bs.offcanvas', function() {
+            resetFormAndAlerts('#resetPasswordForm', '#resetError', '#resetSuccess');
+            $('#resetSubmit').prop('disabled', false).find('.spinner-border').addClass('d-none')
+                .siblings(
+                    'span').text('Cập Nhật Mật Khẩu');
+        });
 
-    $('#resetPassword').on('shown.bs.offcanvas', function() {
-        resetFormAndAlerts('#resetPasswordForm', '#resetError', '#resetSuccess');
-        $('#resetSubmit').prop('disabled', false).find('.spinner-border').addClass('d-none').siblings(
-            'span').text('Cập Nhật Mật Khẩu');
-    });
+        // Reset thông báo đăng nhập khi mở offcanvas đăng nhập
+        $('#login').on('shown.bs.offcanvas', function() {
+            $('#loginSuccess').addClass('d-none').text('');
+        });
 
-    // Reset thông báo đăng nhập khi mở offcanvas đăng nhập
-    $('#login').on('shown.bs.offcanvas', function() {
-        $('#loginSuccess').addClass('d-none').text('');
-    });
+        // Xử lý gửi form Quên Mật Khẩu
+        $('#forgotPasswordForm').on('submit', function(e) {
+            e.preventDefault();
+            let form = $(this);
+            let button = $('#forgotSubmit');
+            let spinner = button.find('.spinner-border');
+            let buttonText = button.find('span').first();
 
-    // Xử lý gửi form Quên Mật Khẩu
-    $('#forgotPasswordForm').on('submit', function(e) {
-        e.preventDefault();
-        let form = $(this);
-        let button = $('#forgotSubmit');
-        let spinner = button.find('.spinner-border');
-        let buttonText = button.find('span').first();
+            // Hiển thị trạng thái đang tải
+            button.prop('disabled', true);
+            spinner.removeClass('d-none');
+            buttonText.text('Đang gửi...');
+            $('#forgotError, #forgotSuccess').addClass('d-none');
 
-        // Hiển thị trạng thái đang tải
-        button.prop('disabled', true);
-        spinner.removeClass('d-none');
-        buttonText.text('Đang gửi...');
-        $('#forgotError, #forgotSuccess').addClass('d-none');
-
-        $.ajax({
-            url: form.attr('action'),
-            method: 'POST',
-            data: form.serialize(),
-            success: function(response) {
-                if (response.success) {
-                    $('#forgotSuccess').text(response.message).removeClass('d-none');
-                    setTimeout(() => {
-                        $('#resetPass').offcanvas('hide');
-                        $('#otpEmail').val(form.find('input[name="email"]').val());
-                        $('#verifyOtp').offcanvas('show');
-                    }, 1000);
+            $.ajax({
+                url: form.attr('action'),
+                method: 'POST',
+                data: form.serialize(),
+                success: function(response) {
+                    if (response.success) {
+                        $('#forgotSuccess').text(response.message).removeClass('d-none');
+                        setTimeout(() => {
+                            $('#resetPass').offcanvas('hide');
+                            $('#otpEmail').val(form.find('input[name="email"]')
+                                .val());
+                            $('#verifyOtp').offcanvas('show');
+                        }, 1000);
+                    }
+                },
+                error: function(xhr) {
+                    let errorMsg = xhr.responseJSON && xhr.responseJSON.message ?
+                        xhr.responseJSON.message :
+                        'Đã có lỗi xảy ra. Vui lòng thử lại.';
+                    $('#forgotError').text(errorMsg).removeClass('d-none');
+                },
+                complete: function() {
+                    // Đặt lại trạng thái nút
+                    button.prop('disabled', false);
+                    spinner.addClass('d-none');
+                    buttonText.text('Gửi Mã OTP');
                 }
-            },
-            error: function(xhr) {
-                let errorMsg = xhr.responseJSON && xhr.responseJSON.message ?
-                    xhr.responseJSON.message :
-                    'Đã có lỗi xảy ra. Vui lòng thử lại.';
-                $('#forgotError').text(errorMsg).removeClass('d-none');
-            },
-            complete: function() {
-                // Đặt lại trạng thái nút
-                button.prop('disabled', false);
-                spinner.addClass('d-none');
-                buttonText.text('Gửi Mã OTP');
-            }
+            });
+        });
+
+        // Xử lý gửi form Xác Minh OTP
+        $('#verifyOtpForm').on('submit', function(e) {
+            e.preventDefault();
+            let form = $(this);
+            let button = $('#otpSubmit');
+            let spinner = button.find('.spinner-border');
+            let buttonText = button.find('span').first();
+
+            // Hiển thị trạng thái đang tải
+            button.prop('disabled', true);
+            spinner.removeClass('d-none');
+            buttonText.text('Đang xác minh...');
+            $('#otpError, #otpSuccess').addClass('d-none');
+
+            $.ajax({
+                url: form.attr('action'),
+                method: 'POST',
+                data: form.serialize(),
+                success: function(response) {
+                    if (response.success) {
+                        $('#otpSuccess').text(response.message).removeClass('d-none');
+                        setTimeout(() => {
+                            $('#verifyOtp').offcanvas('hide');
+                            $('#resetEmail').val(form.find('input[name="email"]')
+                                .val());
+                            $('#resetPassword').offcanvas('show');
+                        }, 1000);
+                    }
+                },
+                error: function(xhr) {
+                    let errorMsg = xhr.responseJSON && xhr.responseJSON.message ?
+                        xhr.responseJSON.message :
+                        'Mã OTP không hợp lệ. Vui lòng thử lại.';
+                    $('#otpError').text(errorMsg).removeClass('d-none');
+                },
+                complete: function() {
+                    // Đặt lại trạng thái nút
+                    button.prop('disabled', false);
+                    spinner.addClass('d-none');
+                    buttonText.text('Xác Minh');
+                }
+            });
+        });
+
+        // Xử lý gửi form Đặt Lại Mật Khẩu
+        $('#resetPasswordForm').on('submit', function(e) {
+            e.preventDefault();
+            let form = $(this);
+            let button = $('#resetSubmit');
+            let spinner = button.find('.spinner-border');
+            let buttonText = button.find('span').first();
+
+            // Hiển thị trạng thái đang tải
+            button.prop('disabled', true);
+            spinner.removeClass('d-none');
+            buttonText.text('Đang cập nhật...');
+            $('#resetError, #resetSuccess').addClass('d-none');
+
+            $.ajax({
+                url: form.attr('action'),
+                method: 'POST',
+                data: form.serialize(),
+                success: function(response) {
+                    if (response.success) {
+                        $('#resetSuccess').text(response.message).removeClass('d-none');
+                        setTimeout(() => {
+                            $('#resetPassword').offcanvas('hide');
+                            // Hiển thị offcanvas đăng nhập
+                            $('#login').offcanvas('show');
+                            // Điền trước email vào form đăng nhập
+                            $('#login').find('input[name="email"]').val(form.find(
+                                'input[name="email"]').val());
+                            // Hiển thị thông báo thành công trong offcanvas đăng nhập
+                            $('#loginSuccess').text(
+                                'Mật khẩu đã được đặt lại thành công. Vui lòng đăng nhập.'
+                            ).removeClass('d-none');
+                            // Reset form đặt lại mật khẩu
+                            resetFormAndAlerts('#resetPasswordForm', '#resetError',
+                                '#resetSuccess');
+                        }, 2000);
+                    }
+                },
+                error: function(xhr) {
+                    let errorMsg = xhr.responseJSON && xhr.responseJSON.message ?
+                        xhr.responseJSON.message :
+                        'Đã có lỗi xảy ra. Vui lòng thử lại.';
+                    $('#resetError').text(errorMsg).removeClass('d-none');
+                },
+                complete: function() {
+                    // Đặt lại trạng thái nút
+                    button.prop('disabled', false);
+                    spinner.addClass('d-none');
+                    buttonText.text('Cập Nhật Mật Khẩu');
+                }
+            });
         });
     });
-
-    // Xử lý gửi form Xác Minh OTP
-    $('#verifyOtpForm').on('submit', function(e) {
-        e.preventDefault();
-        let form = $(this);
-        let button = $('#otpSubmit');
-        let spinner = button.find('.spinner-border');
-        let buttonText = button.find('span').first();
-
-        // Hiển thị trạng thái đang tải
-        button.prop('disabled', true);
-        spinner.removeClass('d-none');
-        buttonText.text('Đang xác minh...');
-        $('#otpError, #otpSuccess').addClass('d-none');
-
-        $.ajax({
-            url: form.attr('action'),
-            method: 'POST',
-            data: form.serialize(),
-            success: function(response) {
-                if (response.success) {
-                    $('#otpSuccess').text(response.message).removeClass('d-none');
-                    setTimeout(() => {
-                        $('#verifyOtp').offcanvas('hide');
-                        $('#resetEmail').val(form.find('input[name="email"]')
-                            .val());
-                        $('#resetPassword').offcanvas('show');
-                    }, 1000);
-                }
-            },
-            error: function(xhr) {
-                let errorMsg = xhr.responseJSON && xhr.responseJSON.message ?
-                    xhr.responseJSON.message :
-                    'Mã OTP không hợp lệ. Vui lòng thử lại.';
-                $('#otpError').text(errorMsg).removeClass('d-none');
-            },
-            complete: function() {
-                // Đặt lại trạng thái nút
-                button.prop('disabled', false);
-                spinner.addClass('d-none');
-                buttonText.text('Xác Minh');
-            }
-        });
-    });
-
-    // Xử lý gửi form Đặt Lại Mật Khẩu
-    $('#resetPasswordForm').on('submit', function(e) {
-        e.preventDefault();
-        let form = $(this);
-        let button = $('#resetSubmit');
-        let spinner = button.find('.spinner-border');
-        let buttonText = button.find('span').first();
-
-        // Hiển thị trạng thái đang tải
-        button.prop('disabled', true);
-        spinner.removeClass('d-none');
-        buttonText.text('Đang cập nhật...');
-        $('#resetError, #resetSuccess').addClass('d-none');
-
-        $.ajax({
-            url: form.attr('action'),
-            method: 'POST',
-            data: form.serialize(),
-            success: function(response) {
-                if (response.success) {
-                    $('#resetSuccess').text(response.message).removeClass('d-none');
-                    setTimeout(() => {
-                        $('#resetPassword').offcanvas('hide');
-                        // Hiển thị offcanvas đăng nhập
-                        $('#login').offcanvas('show');
-                        // Điền trước email vào form đăng nhập
-                        $('#login').find('input[name="email"]').val(form.find(
-                            'input[name="email"]').val());
-                        // Hiển thị thông báo thành công trong offcanvas đăng nhập
-                        $('#loginSuccess').text(
-                            'Mật khẩu đã được đặt lại thành công. Vui lòng đăng nhập.'
-                        ).removeClass('d-none');
-                        // Reset form đặt lại mật khẩu
-                        resetFormAndAlerts('#resetPasswordForm', '#resetError',
-                            '#resetSuccess');
-                    }, 2000);
-                }
-            },
-            error: function(xhr) {
-                let errorMsg = xhr.responseJSON && xhr.responseJSON.message ?
-                    xhr.responseJSON.message :
-                    'Đã có lỗi xảy ra. Vui lòng thử lại.';
-                $('#resetError').text(errorMsg).removeClass('d-none');
-            },
-            complete: function() {
-                // Đặt lại trạng thái nút
-                button.prop('disabled', false);
-                spinner.addClass('d-none');
-                buttonText.text('Cập Nhật Mật Khẩu');
-            }
-        });
-    });
-});
 </script>
 
 <!-- search -->
@@ -588,385 +594,17 @@ $(document).ready(function() {
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="looking-for-wrap">
-                        <div class="heading">What are you looking for?</div>
-                        <form class="form-search">
+                        <div class="heading">Bạn đang tìm kiếm gì?</div>
+                        <form class="form-search" action="{{ route('product.search') }}" method="GET"
+                        action="/search">
                             <fieldset class="text">
-                                <input type="text" placeholder="Search" class="" name="text" tabindex="0" value=""
-                                    aria-required="true" required="">
+                                <input type="text" placeholder="Nhập tên sản phẩm hoặc thông tin muốn tìm kiếm..." class="" name="searchInput"
+                                    tabindex="0" value="" aria-required="true" required="">
                             </fieldset>
                             <button class="" type="submit">
                                 <i class="icon icon-search"></i>
                             </button>
                         </form>
-                        <div class="popular-searches justify-content-md-center">
-                            <div class="text fw-medium">Popular searches:</div>
-                            <ul>
-                                <li><a class="link" href="#">Featured</a></li>
-                                <li><a class="link" href="#">Trendy</a></li>
-                                <li><a class="link" href="#">New</a></li>
-                                <li><a class="link" href="#">Sale</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-10">
-                    <div class="featured-product">
-                        <div class="text-xl-2 fw-medium featured-product-heading">Featured product</div>
-                        <div dir="ltr" class="swiper tf-swiper wrap-sw-over" data-swiper='{
-                                    "slidesPerView": 2,
-                                    "spaceBetween": 12,
-                                    "speed": 1000,
-                                    "observer": true,
-                                    "observeParents": true,
-                                    "slidesPerGroup": 2,
-                                    "pagination": { "el": ".sw-pagination-search", "clickable": true },
-                                    "breakpoints": {
-                                    "768": { "slidesPerView": 3, "spaceBetween": 12, "slidesPerGroup": 3 },
-                                    "1200": { "slidesPerView": 4, "spaceBetween": 24, "slidesPerGroup": 4}
-                                    }
-                                }'>
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide">
-                                    <div class="card-product grid style-3 card-product-size">
-                                        <div class="card-product-wrapper">
-                                            <a href="product-detail.html" class="product-img">
-                                                <img class="img-product lazyload"
-                                                    data-src="images/products/fashion/product-27.jpg"
-                                                    src="images/products/fashion/product-27.jpg" alt="image-product">
-                                                <img class="img-hover lazyload"
-                                                    data-src="images/products/fashion/product-23.jpg"
-                                                    src="images/products/fashion/product-23.jpg" alt="image-product">
-                                            </a>
-                                            <ul class="list-product-btn">
-                                                <li>
-                                                    <a href="javascript:void(0);"
-                                                        class="box-icon hover-tooltip wishlist">
-                                                        <span class="icon icon-heart2"></span>
-                                                        <span class="tooltip">Add to Wishlist</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#quickView" data-bs-toggle="modal"
-                                                        class="box-icon hover-tooltip quickview">
-                                                        <span class="icon icon-view"></span>
-                                                        <span class="tooltip">Quick View</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                                        class="box-icon hover-tooltip compare">
-                                                        <span class="icon icon-compare"></span>
-                                                        <span class="tooltip">Add to Compare</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                            <div class="product-btn-main">
-                                                <a href="product-detail.html" class="btn-main-product ">
-                                                    <span class="icon icon-cart2"></span>
-                                                    <span class="text-md fw-medium">
-                                                        Add to Cart
-                                                    </span>
-                                                </a>
-                                            </div>
-                                            <ul class="size-box">
-                                                <li class="size-item text-xs text-white">M</li>
-                                                <li class="size-item text-xs text-white">L</li>
-                                                <li class="size-item text-xs text-white">XL</li>
-                                            </ul>
-
-                                        </div>
-                                        <div class="card-product-info">
-                                            <a href="product-detail.html"
-                                                class="name-product link fw-medium text-md">Basic Sports T-Shirt
-                                                Crew Neck Ribbed</a>
-                                            <p class="price-wrap fw-medium">
-                                                <span class="price-new text-primary">80.00</span>
-                                                <span class="price-old">$100.00</span>
-                                            </p>
-                                            <ul class="list-color-product">
-                                                <li
-                                                    class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                    <span class="tooltip color-filter">Light Purple</span>
-                                                    <span class="swatch-value bg-light-purple-3"></span>
-                                                    <img class="lazyload"
-                                                        data-src="images/products/fashion/product-27.jpg"
-                                                        src="images/products/fashion/product-27.jpg"
-                                                        alt="image-product">
-                                                </li>
-                                                <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                    <span class="tooltip color-filter">Light Grey</span>
-                                                    <span class="swatch-value bg-grey-4"></span>
-                                                    <img class="lazyload"
-                                                        data-src="images/products/fashion/product-11.jpg"
-                                                        src="images/products/fashion/product-11.jpg"
-                                                        alt="image-product">
-                                                </li>
-                                                <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                    <span class="tooltip color-filter">Light Orange</span>
-                                                    <span class="swatch-value bg-light-orange"></span>
-                                                    <img class="lazyload"
-                                                        data-src="images/products/fashion/product-12.jpg"
-                                                        src="images/products/fashion/product-12.jpg"
-                                                        alt="image-product">
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="card-product grid style-3">
-                                        <div class="card-product-wrapper">
-                                            <a href="product-detail.html" class="product-img">
-                                                <img class="img-product lazyload"
-                                                    data-src="images/products/fashion/product-10.jpg"
-                                                    src="images/products/fashion/product-10.jpg" alt="image-product">
-                                                <img class="img-hover lazyload"
-                                                    data-src="images/products/fashion/product-20.jpg"
-                                                    src="images/products/fashion/product-20.jpg" alt="image-product">
-                                            </a>
-                                            <ul class="list-product-btn">
-                                                <li>
-                                                    <a href="javascript:void(0);"
-                                                        class="box-icon hover-tooltip wishlist">
-                                                        <span class="icon icon-heart2"></span>
-                                                        <span class="tooltip">Add to Wishlist</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#quickView" data-bs-toggle="modal"
-                                                        class="box-icon hover-tooltip quickview">
-                                                        <span class="icon icon-view"></span>
-                                                        <span class="tooltip">Quick View</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                                        class="box-icon hover-tooltip compare">
-                                                        <span class="icon icon-compare"></span>
-                                                        <span class="tooltip">Add to Compare</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                            <div class="product-btn-main">
-                                                <a href="product-detail.html" class="btn-main-product ">
-                                                    <span class="icon icon-cart2"></span>
-                                                    <span class="text-md fw-medium">
-                                                        Add to Cart
-                                                    </span>
-                                                </a>
-                                            </div>
-
-                                        </div>
-                                        <div class="card-product-info">
-                                            <a href="product-detail.html"
-                                                class="name-product link fw-medium text-md">Regular Fit
-                                                Fine Knit Polo Shirt</a>
-                                            <p class="price-wrap fw-medium">
-                                                <span class="price-new text-primary">$130.00</span>
-                                                <span class=" price-old">$130.00</span>
-                                            </p>
-                                            <ul class="list-color-product">
-                                                <li
-                                                    class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                    <span class="tooltip color-filter">Light Blue</span>
-                                                    <span class="swatch-value bg-light-blue-2"></span>
-                                                    <img class=" lazyload"
-                                                        data-src="images/products/fashion/product-10.jpg"
-                                                        src="images/products/fashion/product-10.jpg"
-                                                        alt="image-product">
-                                                </li>
-                                                <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                    <span class="tooltip color-filter">Black</span>
-                                                    <span class="swatch-value bg-dark"></span>
-                                                    <img class=" lazyload"
-                                                        data-src="images/products/fashion/product-13.jpg"
-                                                        src="images/products/fashion/product-13.jpg"
-                                                        alt="image-product">
-                                                </li>
-                                                <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                    <span class="tooltip color-filter">Purple</span>
-                                                    <span class="swatch-value bg-light-purple"></span>
-                                                    <img class=" lazyload"
-                                                        data-src="images/products/fashion/product-14.jpg"
-                                                        src="images/products/fashion/product-14.jpg"
-                                                        alt="image-product">
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="card-product grid style-3">
-                                        <div class="card-product-wrapper">
-                                            <a href="product-detail.html" class="product-img">
-                                                <img class="img-product lazyload"
-                                                    data-src="images/products/fashion/product-21.jpg"
-                                                    src="images/products/fashion/product-21.jpg" alt="image-product">
-                                                <img class="img-hover lazyload"
-                                                    data-src="images/products/fashion/women-black-3.jpg"
-                                                    src="images/products/fashion/women-black-3.jpg" alt="image-product">
-                                            </a>
-                                            <ul class="list-product-btn">
-                                                <li>
-                                                    <a href="javascript:void(0);"
-                                                        class="box-icon hover-tooltip wishlist">
-                                                        <span class="icon icon-heart2"></span>
-                                                        <span class="tooltip">Add to Wishlist</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#quickView" data-bs-toggle="modal"
-                                                        class="box-icon hover-tooltip quickview">
-                                                        <span class="icon icon-view"></span>
-                                                        <span class="tooltip">Quick View</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                                        class="box-icon hover-tooltip compare">
-                                                        <span class="icon icon-compare"></span>
-                                                        <span class="tooltip">Add to Compare</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                            <div class="product-btn-main">
-                                                <a href="product-detail.html" class="btn-main-product ">
-                                                    <span class="icon icon-cart2"></span>
-                                                    <span class="text-md fw-medium">
-                                                        Add to Cart
-                                                    </span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="card-product-info">
-                                            <a href="product-detail.html"
-                                                class="name-product link fw-medium text-md">Crop College T-Shirt</a>
-                                            <p class="price-wrap fw-medium">
-                                                <span class="price-new text-primary">$80.00</span>
-                                                <span class=" price-old">$100.00</span>
-                                            </p>
-                                            <ul class="list-color-product">
-                                                <li
-                                                    class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                    <span class="tooltip color-filter">Dark Green</span>
-                                                    <span class="swatch-value bg-dark-green"></span>
-                                                    <img class=" lazyload"
-                                                        data-src="images/products/fashion/product-21.jpg"
-                                                        src="images/products/fashion/product-21.jpg"
-                                                        alt="image-product">
-                                                </li>
-                                                <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                    <span class="tooltip color-filter">Black</span>
-                                                    <span class="swatch-value bg-dark"></span>
-                                                    <img class=" lazyload"
-                                                        data-src="images/products/fashion/women-black-3.jpg"
-                                                        src="images/products/fashion/women-black-3.jpg"
-                                                        alt="image-product">
-                                                </li>
-                                                <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                    <span class="tooltip color-filter">Light Purple</span>
-                                                    <span class="swatch-value bg-light-purple-3"></span>
-                                                    <img class="lazyload"
-                                                        data-src="images/products/fashion/product-23.jpg"
-                                                        src="images/products/fashion/product-23.jpg"
-                                                        alt="image-product">
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="card-product grid style-3 card-product-size">
-                                        <div class="card-product-wrapper">
-                                            <a href="product-detail.html" class="product-img">
-                                                <img class="img-product lazyload"
-                                                    data-src="images/products/fashion/product-22.jpg"
-                                                    src="images/products/fashion/product-22.jpg" alt="image-product">
-                                                <img class="img-hover lazyload"
-                                                    data-src="images/products/fashion/product-5.jpg"
-                                                    src="images/products/fashion/product-5.jpg" alt="image-product">
-                                            </a>
-                                            <ul class="list-product-btn">
-                                                <li>
-                                                    <a href="javascript:void(0);"
-                                                        class="box-icon hover-tooltip wishlist">
-                                                        <span class="icon icon-heart2"></span>
-                                                        <span class="tooltip">Add to Wishlist</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#quickView" data-bs-toggle="modal"
-                                                        class="box-icon hover-tooltip quickview">
-                                                        <span class="icon icon-view"></span>
-                                                        <span class="tooltip">Quick View</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                                        class="box-icon hover-tooltip compare">
-                                                        <span class="icon icon-compare"></span>
-                                                        <span class="tooltip">Add to Compare</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                            <div class="product-btn-main">
-                                                <a href="product-detail.html" class="btn-main-product ">
-                                                    <span class="icon icon-cart2"></span>
-                                                    <span class="text-md fw-medium">
-                                                        Add to Cart
-                                                    </span>
-                                                </a>
-                                            </div>
-                                            <ul class="size-box">
-                                                <li class="size-item text-xs text-white">XS</li>
-                                                <li class="size-item text-xs text-white">S</li>
-                                                <li class="size-item text-xs text-white">M</li>
-                                                <li class="size-item text-xs text-white">L</li>
-                                                <li class="size-item text-xs text-white">XL</li>
-                                                <li class="size-item text-xs text-white">2XL</li>
-                                            </ul>
-
-                                        </div>
-                                        <div class="card-product-info">
-                                            <a href="product-detail.html"
-                                                class="name-product link fw-medium text-md">Bow-Tie T-Shirt</a>
-                                            <p class="price-wrap fw-medium">
-                                                <span class="price-new text-primary">$120.00</span>
-                                                <span class=" price-old">$140.00</span>
-                                            </p>
-                                            <ul class="list-color-product">
-                                                <li
-                                                    class="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                                    <span class="tooltip color-filter">Black</span>
-                                                    <span class="swatch-value bg-dark"></span>
-                                                    <img class=" lazyload"
-                                                        data-src="images/products/fashion/product-22.jpg"
-                                                        src="images/products/fashion/product-22.jpg"
-                                                        alt="image-product">
-                                                </li>
-                                                <li class="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                                    <span class="tooltip color-filter">Beige</span>
-                                                    <span class="swatch-value bg-beige"></span>
-                                                    <img class=" lazyload"
-                                                        data-src="images/products/fashion/product-5.jpg"
-                                                        src="images/products/fashion/product-5.jpg" alt="image-product">
-                                                </li>
-                                                <li class="list-color-item color-swatch hover-tooltip line tooltip-bot">
-                                                    <span class="tooltip color-filter">White</span>
-                                                    <span class="swatch-value bg-white"></span>
-                                                    <img class=" lazyload"
-                                                        data-src="images/products/fashion/product-1.jpg"
-                                                        src="images/products/fashion/product-1.jpg" alt="image-product">
-                                                </li>
-
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex d-xl-none sw-dot-default sw-pagination-search justify-content-center">
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -975,467 +613,183 @@ $(document).ready(function() {
 </div>
 <!-- /search -->
 
-<!-- shoppingCart -->
-<div class="offcanvas offcanvas-end popup-style-1 popup-shopping-cart" id="shoppingCart">
-    <div class="canvas-wrapper">
-        <div class="popup-header">
-            <span class="title">Shopping cart</span>
-            <span class="icon-close icon-close-popup" data-bs-dismiss="offcanvas"></span>
-        </div>
-        <div class="wrap">
-
-            <div class="tf-mini-cart-wrap">
-                <div class="tf-mini-cart-main">
-                    <div class="tf-mini-cart-sroll">
-                        <div class="tf-mini-cart-items">
-                            <div class="tf-mini-cart-item file-delete">
-                                <div class="tf-mini-cart-image">
-                                    <a href="product-detail.html">
-                                        <img class="lazyload" data-src="images/products/fashion/women-1.jpg"
-                                            src="images/products/fashion/women-1.jpg" alt="img-product">
-                                    </a>
-                                </div>
-                                <div class="tf-mini-cart-info">
-                                    <div class="d-flex justify-content-between">
-                                        <a class="title link text-md fw-medium" href="product-detail.html">Short
-                                            Sleeve Sweat</a>
-                                        <i class="icon icon-close remove fs-12"></i>
-                                    </div>
-                                    <div class="d-flex gap-10">
-                                        <div class="text-xs">White / L</div>
-                                        <a href="#" class="link edit"><i class="icon-pen"></i></a>
-                                    </div>
-                                    <p class="price-wrap text-sm fw-medium">
-                                        <span class="new-price text-primary">$130.00</span>
-                                        <span class="old-price text-decoration-line-through text-dark-1">$150.00</span>
-                                    </p>
-
-                                </div>
-                            </div>
-                            <div class="tf-mini-cart-item file-delete">
-                                <div class="tf-mini-cart-image">
-                                    <a href="product-detail.html">
-                                        <img class="lazyload" data-src="images/products/fashion/women-2.jpg"
-                                            src="images/products/fashion/women-2.jpg" alt="img-product">
-                                    </a>
-                                </div>
-                                <div class="tf-mini-cart-info">
-                                    <div class="d-flex justify-content-between">
-                                        <a class="title link text-md fw-medium" href="product-detail.html">Loose
-                                            Fit Tee</a>
-                                        <i class="icon icon-close remove fs-12"></i>
-                                    </div>
-                                    <div class="d-flex gap-10">
-                                        <div class="text-xs">White / L</div>
-                                        <a href="#" class="link edit"><i class="icon-pen"></i></a>
-                                    </div>
-                                    <p class="price-wrap text-sm fw-medium">
-                                        <span class="new-price text-primary">$130.00</span>
-                                        <span class="old-price text-decoration-line-through text-dark-1">$150.00</span>
-                                    </p>
-
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="tf-mini-cart-tool-openable add-gift">
-                    <div class="overplay tf-mini-cart-tool-close"></div>
-                    <form action="#" class="tf-mini-cart-tool-content">
-                        <div class="tf-mini-cart-tool-text text-sm fw-medium">Add gift wrap</div>
-                        <div class="tf-mini-cart-tool-text1 text-dark-1">The product will be wrapped carefully.
-                            Free is only <span class="text fw-medium text-dark">$10.00</span>. Do you want a
-                            gift wrap?</div>
-                        <div class="tf-cart-tool-btns">
-                            <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100"
-                                type="submit">Save</button>
-                            <div class="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close">Close</div>
-                        </div>
-                    </form>
-                </div>
-                <div class="tf-mini-cart-tool-openable add-note">
-                    <div class="overplay tf-mini-cart-tool-close"></div>
-                    <form action="#" class="tf-mini-cart-tool-content">
-                        <label for="Cart-note" class="tf-mini-cart-tool-text text-sm fw-medium">Order
-                            note</label>
-                        <textarea name="note" id="Cart-note" placeholder="Instruction for seller..."></textarea>
-                        <div class="tf-cart-tool-btns">
-                            <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100"
-                                type="submit">Save</button>
-                            <div class="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close">Close</div>
-                        </div>
-                    </form>
-                </div>
-                <div class="tf-mini-cart-tool-openable coupon">
-                    <div class="overplay tf-mini-cart-tool-close"></div>
-                    <form action="#" class="tf-mini-cart-tool-content">
-                        <div class="tf-mini-cart-tool-text text-sm fw-medium">Add coupon</div>
-                        <div class="tf-mini-cart-tool-text1 text-dark-1">* Discount will be calculated and
-                            applied at checkout</div>
-                        <input type="text" name="text" placeholder="">
-                        <div class="tf-cart-tool-btns">
-                            <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100"
-                                type="submit">Add a Gift Wrap</button>
-                            <div class="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close">Cancel</div>
-                        </div>
-                    </form>
-                </div>
-                <div class="tf-mini-cart-tool-openable estimate-shipping">
-                    <div class="overplay tf-mini-cart-tool-close"></div>
-                    <form id="shipping-form" class="tf-mini-cart-tool-content">
-                        <div class="tf-mini-cart-tool-text text-sm fw-medium">Shipping estimates</div>
-                        <div class="field">
-                            <p class="text-sm">Country</p>
-                            <div class="tf-select">
-                                <select class="w-100" id="shipping-country-form" name="address[country]"
-                                    data-default="">
-                                    <option value="Australia"
-                                        data-provinces='[["Australian Capital Territory","Australian Capital Territory"],["New South Wales","New South Wales"],["Northern Territory","Northern Territory"],["Queensland","Queensland"],["South Australia","South Australia"],["Tasmania","Tasmania"],["Victoria","Victoria"],["Western Australia","Western Australia"]]'>
-                                        Australia</option>
-                                    <option value="Austria" data-provinces='[]'>Austria</option>
-                                    <option value="Belgium" data-provinces='[]'>Belgium</option>
-                                    <option value="Canada" data-provinces='[["Ontario","Ontario"],["Quebec","Quebec"]]'>
-                                        Canada
-                                    </option>
-                                    <option value="Czech Republic" data-provinces='[]'>Czechia</option>
-                                    <option value="Denmark" data-provinces='[]'>Denmark</option>
-                                    <option value="Finland" data-provinces='[]'>Finland</option>
-                                    <option value="France" data-provinces='[]'>France</option>
-                                    <option value="Germany" data-provinces='[]'>Germany</option>
-                                    <option selected value="United States"
-                                        data-provinces='[["Alabama","Alabama"],["California","California"],["Florida","Florida"]]'>
-                                        United States</option>
-                                    <option value="United Kingdom"
-                                        data-provinces='[["England","England"],["Scotland","Scotland"],["Wales","Wales"],["Northern Ireland","Northern Ireland"]]'>
-                                        United Kingdom</option>
-                                    <option value="India" data-provinces='[]'>India</option>
-                                    <option value="Japan" data-provinces='[]'>Japan</option>
-                                    <option value="Mexico" data-provinces='[]'>Mexico</option>
-                                    <option value="South Korea" data-provinces='[]'>South Korea</option>
-                                    <option value="Spain" data-provinces='[]'>Spain</option>
-                                    <option value="Italy" data-provinces='[]'>Italy</option>
-                                    <option value="Vietnam"
-                                        data-provinces='[["Ha Noi","Ha Noi"],["Da Nang","Da Nang"],["Ho Chi Minh","Ho Chi Minh"]]'>
-                                        Vietnam</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <p class="text-sm">State/Province</p>
-                            <div class="tf-select">
-                                <select id="shipping-province-form" name="address[province]" data-default=""></select>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <p class="text-sm">Zipcode</p>
-                            <input type="text" data-opend-focus id="zipcode" name="address[zip]" value="">
-                        </div>
-                        <div id="zipcode-message" class="error" style="display: none;">
-                            We found one shipping rate available for undefined.
-                        </div>
-                        <div id="zipcode-success" class="success" style="display: none;">
-                            <p>We found one shipping rate available for your address:</p>
-                            <p class="standard">Standard at <span>$0.00</span> USD</p>
-                        </div>
-                        <div class="tf-cart-tool-btns">
-                            <button class="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100"
-                                type="submit">Save</button>
-                            <div class="tf-mini-cart-tool-primary text-center fw-6 w-100 tf-mini-cart-tool-close">
-                                Cancel</div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <!-- /shoppingCart -->
 
 <!-- modal quickView -->
-<div class="modal fade modalCentered modal-quick-view" id="quickView">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
-            <div class="tf-product-media-wrap">
-                <div dir="ltr" class="swiper tf-single-slide">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide" data-color="orange">
-                            <div class="item">
-                                <img class="lazyload" data-src="images/products/fashion/product-40.jpg"
-                                    src="images/products/fashion/product-40.jpg" alt="">
-                            </div>
-                        </div>
-                        <div class="swiper-slide" data-color="green">
-                            <div class="item">
-                                <img class="lazyload" data-src="images/products/fashion/product-41.jpg"
-                                    src="images/products/fashion/product-41.jpg" alt="">
-                            </div>
-                        </div>
-                        <div class="swiper-slide" data-color="pink">
-                            <div class="item">
-                                <img class="lazyload" data-src="images/products/fashion/product-42.jpg"
-                                    src="images/products/fashion/product-42.jpg" alt="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-button-prev nav-swiper arrow-1 nav-prev-cls single-slide-prev"></div>
-                    <div class="swiper-button-next nav-swiper arrow-1 nav-next-cls single-slide-next"></div>
-                </div>
-            </div>
-            <div class="tf-product-info-wrap">
-                <div class="tf-product-info-inner">
-                    <div class="tf-product-info-heading">
-                        <h6 class="product-info-name">Striped T-Shirt</h6>
-                        <div class="product-info-price">
-                            <h6 class="price-new price-on-sale">$100.00</h6>
-                            <h6 class="price-old">$130.00</h6>
-                        </div>
-                        <p class="text">Pants in an airy weave made from a linen and viscose blend. Featuring a high
-                            waist and a zip fly with button. Shaping at the front and back and wide legs.</p>
-                    </div>
-                    <div class="tf-product-info-variant">
-                        <div class="variant-picker-item variant-color">
-                            <div class="variant-picker-label">
-                                Color:<span class="variant-picker-label-value value-currentColor">Orange</span>
-                            </div>
-                            <div class="variant-picker-values">
-                                <div class="hover-tooltip color-btn active" data-color="orange">
-                                    <span class="check-color bg-light-orange-2"></span>
-                                    <span class="tooltip">Orange</span>
-                                </div>
-                                <div class="hover-tooltip color-btn" data-color="green">
-                                    <span class="check-color bg-light-green"></span>
-                                    <span class="tooltip">Green</span>
-                                </div>
-                                <div class="hover-tooltip color-btn" data-color="pink">
-                                    <span class="check-color bg-pink"></span>
-                                    <span class="tooltip">Pink</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="variant-picker-item variant-size">
-                            <div class="variant-picker-label">
-                                <div>Size:<span class="variant-picker-label-value value-currentSize">Small</span>
-                                </div>
-                            </div>
-                            <div class="variant-picker-values">
-                                <span class="size-btn active" data-size="small">S</span>
-                                <span class="size-btn" data-size="medium">M</span>
-                                <span class="size-btn" data-size="large">L</span>
-                                <span class="size-btn" data-size="extra large">XL</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tf-product-total-quantity">
-                        <div class="group-btn">
-                            <div class="wg-quantity">
-                                <button class="btn-quantity minus-btn">-</button>
-                                <input class="quantity-product font-4" type="text" name="number" value="1">
-                                <button class="btn-quantity plus-btn">+</button>
-                            </div>
-                            <a href="#shoppingCart" data-bs-toggle="offcanvas" class="tf-btn hover-primary">Add to
-                                cart</a>
-                        </div>
-                        <a href="#" class="tf-btn w-100 animate-btn paypal btn-primary">Buy It Now</a>
-                        <a href="checkout.html" class="more-choose-payment link">More payment options</a>
-                    </div>
-                    <a href="product-detail.html" class="view-details link">View full details <i
-                            class="icon icon-arrow-right"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 <!-- /modal quickView -->
 
 <!-- compare  -->
-<div class="modal modalCentered fade modal-compare" id="compare">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <span class="icon icon-close btn-hide-popup" data-bs-dismiss="modal"></span>
-            <div class="modal-compare-wrap list-file-delete">
-                <h6 class="title text-center">Compare Products</h6>
-                <div class="tf-compare-inner">
-                    <div class="tf-compare-list">
-                        <div class="tf-compare-item file-delete">
-                            <span class="icon-close remove"></span>
-                            <a href="product-detail.html" class="image">
-                                <img class="lazyload" data-src="images/products/fashion/product-8.jpg"
-                                    src="images/products/fashion/product-8.jpg" alt="">
-                            </a>
-                            <div class="content">
-                                <div class="text-title">
-                                    <a class="link text-line-clamp-2" href="product-detail.html">Striped T-Shirt</a>
-                                </div>
-                                <p class="price-wrap">
-                                    <span class="new-price text-primary">$130.00</span>
-                                    <span class="old-price text-decoration-line-through text-dark-1">$150.00</span>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="tf-compare-item file-delete">
-                            <span class="icon-close remove"></span>
-                            <a href="product-detail.html" class="image">
-                                <img class="lazyload" data-src="images/products/fashion/product-6.jpg"
-                                    src="images/products/fashion/product-6.jpg" alt="">
-                            </a>
-                            <div class="content">
-                                <div class="text-title">
-                                    <a class="link text-line-clamp-2" href="product-detail.html">Striped T-Shirt</a>
-                                </div>
-                                <p class="price-wrap">
-                                    <span class="new-price text-primary">$130.00</span>
-                                    <span class="old-price text-decoration-line-through text-dark-1">$150.00</span>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="tf-compare-item file-delete">
-                            <span class="icon-close remove"></span>
-                            <a href="product-detail.html" class="image">
-                                <img class="lazyload" data-src="images/products/fashion/product-15.jpg"
-                                    src="images/products/fashion/product-15.jpg" alt="">
-                            </a>
-                            <div class="content">
-                                <div class="text-title">
-                                    <a class="link text-line-clamp-2" href="product-detail.html">Striped T-Shirt</a>
-                                </div>
-                                <p class="price-wrap">
-                                    <span class="new-price text-primary">$130.00</span>
-                                    <span class="old-price text-decoration-line-through text-dark-1">$150.00</span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="tf-compare-buttons justify-content-center">
-                    <a href="compare.html" class="tf-btn animate-btn justify-content-center">Compare</a>
-                    <div class="tf-btn btn-out-line-dark justify-content-center clear-file-delete"><span>Clear
-                            All</span></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-$(document).ready(function() {
-    $('#form_register').submit(function(e) {
-        e.preventDefault();
+    $(document).ready(function() {
+        $('#form_register').submit(function(e) {
+            e.preventDefault();
 
-        let firstName = $('#first_name').val().trim();
-        let lastName = $('#last_name').val().trim();
-        let name = $('#name').val().trim();
-        let email = $('#email').val().trim();
-        let password = $('#password').val();
-        let confirmPassword = $('#password_confirm').val();
-        let phone = $('#phone').val().trim();
-        let address = $('#address').val().trim();
-        let gender = $('#gender').val();
-        let agreeTerms = $('#agree_terms').prop('checked');
+            let firstName = $('#first_name').val().trim();
+            let lastName = $('#last_name').val().trim();
+            // let name = $('#name').val().trim();
+            let email = $('#email').val().trim();
+            let password = $('#password').val();
+            let confirmPassword = $('#password_confirm').val();
+            let phone = $('#phone').val().trim();
+            let address = $('#address').val().trim();
+            let gender = $('#gender').val();
+            let agreeTerms = $('#agree_terms').prop('checked');
 
-        if (firstName === '' || lastName === '') {
-            Swal.fire("Lỗi", "Họ và Tên không được để trống!", "error");
-            return;
-        }
-
-        if (name === '') {
-            Swal.fire("Lỗi", "Tên không được để trống!", "error");
-            return;
-        }
-
-        let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            Swal.fire("Lỗi", "Email không hợp lệ!", "error");
-            return;
-        }
-
-        if (password.length < 6) {
-            Swal.fire("Lỗi", "Mật khẩu phải có ít nhất 6 ký tự!", "error");
-            return;
-        }
-
-        if (password !== confirmPassword) {
-            Swal.fire("Lỗi", "Mật khẩu không trùng khớp!", "error");
-            return;
-        }
-
-        let phoneRegex = /^(0[1-9][0-9]{8,9})$/;
-        if (phone !== '' && !phoneRegex.test(phone)) {
-            Swal.fire("Lỗi", "Số điện thoại không hợp lệ!", "error");
-            return;
-        }
-
-        if (gender === '') {
-            Swal.fire("Lỗi", "Vui lòng chọn giới tính!", "error");
-            return;
-        }
-
-        if (!agreeTerms) {
-            Swal.fire("Lỗi", "Bạn phải đồng ý với các điều khoản!", "error");
-            return;
-        }
-
-        let formData = new FormData(this);
-        formData.append('status', 1);
-        formData.append('is_admin', 0);
-
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            if (firstName === '') {
+                Swal.fire("Lỗi", "Họ và không được để trống!", "error");
+                return;
             }
-        });
 
-        let registerUrl = $('meta[name="register-url"]').attr('content');
-        console.log("Register URL:", registerUrl); // Ghi log URL để gỡ lỗi
+            if (lastName === '') {
+                Swal.fire("Lỗi", "Tên không được để trống!", "error");
+                return;
+            }
 
-        // if (!registerUrl) {
-        //     Swal.fire("Lỗi", "Không tìm thấy URL đăng ký! Vui lòng kiểm tra cấu hình.", "error");
-        //     return;
-        // }
+            let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                Swal.fire("Lỗi", "Email không hợp lệ!", "error");
+                return;
+            }
 
-        $.ajax({
-            type: "POST",
-            url: "{{ route('web.register.store') }}",
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-    console.log("Success:", response);
-    Swal.fire({
-        title: "Thành Công",
-        text: response.message || "Đăng ký thành công!",
-        icon: "success",
-        showConfirmButton: true
-    }).then(() => {
-        // Chuyển hướng đến URL được trả về từ server
-        window.location.href = response.redirect || "/";
-    });
-},
-            error: function(xhr) {
-                console.log("Error:", xhr); // Ghi log lỗi
-                console.log("Status:", xhr.status); // Ghi log mã trạng thái
-                console.log("Response:", xhr.responseText); // Ghi log phản hồi lỗi
-                if (xhr.status === 400 && xhr.responseJSON?.errors) {
-                    let errorMessages = "";
-                    $.each(xhr.responseJSON.errors, function(field, messages) {
-                        messages.forEach(message => {
-                            errorMessages += `<p>⚠️ ${message}</p>`;
-                        });
-                    });
+            if (password.length < 6) {
+                Swal.fire("Lỗi", "Mật khẩu phải có ít nhất 6 ký tự!", "error");
+                return;
+            }
 
-                    Swal.fire({
-                        title: "Lỗi!",
-                        html: errorMessages,
-                        icon: "error"
-                    });
-                } else {
-                    Swal.fire("Lỗi", "Đăng ký thất bại! Vui lòng thử lại. Status: " +
-                        xhr.status, "error");
+            if (password !== confirmPassword) {
+                Swal.fire("Lỗi", "Mật khẩu không trùng khớp!", "error");
+                return;
+            }
+
+            let phoneRegex = /^(0[1-9][0-9]{8,9})$/;
+            if (phone !== '' && !phoneRegex.test(phone)) {
+                Swal.fire("Lỗi", "Số điện thoại không hợp lệ!", "error");
+                return;
+            }
+
+            if (gender === '') {
+                Swal.fire("Lỗi", "Vui lòng chọn giới tính!", "error");
+                return;
+            }
+
+            if (!agreeTerms) {
+                Swal.fire("Lỗi", "Bạn phải đồng ý với các điều khoản!", "error");
+                return;
+            }
+
+            let formData = new FormData(this);
+            formData.append('status', 1);
+            formData.append('is_admin', 0);
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-            }
+            });
+
+            let registerUrl = $('meta[name="register-url"]').attr('content');
+            console.log("Register URL:", registerUrl); // Ghi log URL để gỡ lỗi
+
+            // if (!registerUrl) {
+            //     Swal.fire("Lỗi", "Không tìm thấy URL đăng ký! Vui lòng kiểm tra cấu hình.", "error");
+            //     return;
+            // }
+
+            $.ajax({
+                type: "POST",
+                url: "{{ route('web.register.store') }}",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    console.log("Success:", response);
+                    Swal.fire({
+                        title: "Thành Công",
+                        text: response.message || "Đăng ký thành công!",
+                        icon: "success",
+                        showConfirmButton: true,
+                        didOpen: () => {
+                            const popup = document.querySelector(
+                                '.swal2-popup');
+                            if (popup) {
+                                popup.style.zIndex =
+                                    '9999'; // Đảm bảo luôn ở trên cùng
+                            }
+                            const container = document.querySelector(
+                                '.swal2-container');
+                            if (container) {
+                                container.style.zIndex = '9999';
+                            }
+                        }
+                    }).then(() => {
+                        // Chuyển hướng đến URL được trả về từ server
+                        window.location.href = response.redirect || "/";
+                    });
+                },
+                error: function(xhr) {
+                    console.log("Error:", xhr); // Ghi log lỗi
+                    console.log("Status:", xhr.status); // Ghi log mã trạng thái
+                    console.log("Response:", xhr.responseText); // Ghi log phản hồi lỗi
+                    if (xhr.status === 400 && xhr.responseJSON?.errors) {
+                        let errorMessages = "";
+                        $.each(xhr.responseJSON.errors, function(field, messages) {
+                            messages.forEach(message => {
+                                errorMessages += `<p>⚠️ ${message}</p>`;
+                            });
+                        });
+
+                        Swal.fire({
+                            title: "Lỗi!",
+                            html: "Số điện thoại không hợp lệ!",
+                            icon: "error",
+                            didOpen: () => {
+                                const popup = document.querySelector(
+                                    '.swal2-popup');
+                                const container = document.querySelector(
+                                    '.swal2-container');
+                                if (popup) {
+                                    popup.style.zIndex =
+                                    '2147483647'; // giá trị cao nhất an toàn
+                                    popup.style.position = 'relative';
+                                }
+                                if (container) {
+                                    container.style.zIndex = '2147483647';
+                                    container.style.position =
+                                    'fixed';
+                                }
+                            }
+                        });
+
+                    } else {
+                        Swal.fire({
+                            title: "Lỗi!",
+                            html: "Số điện thoại không hợp lệ!",
+                            icon: "error",
+                            didOpen: () => {
+                                const popup = document.querySelector(
+                                    '.swal2-popup');
+                                const container = document.querySelector(
+                                    '.swal2-container');
+                                if (popup) {
+                                    popup.style.zIndex =
+                                    '2147483647'; // giá trị cao nhất an toàn
+                                    popup.style.position = 'relative';
+                                }
+                                if (container) {
+                                    container.style.zIndex = '2147483647';
+                                    container.style.position =
+                                    'fixed'; 
+                                }
+                            }
+                        });
+
+                    }
+                }
+            });
         });
     });
-});
 </script>

@@ -18,7 +18,7 @@
                         <div class="mb-3">
                             <label for="name" class="form-label fw-bold"> Họ & tên</label>
                             <input type="text" class="form-control form-control-lg" name="name"
-                                value="{{ old('name', $user->name) }}" required>
+                                value="{{ old('name', $user->name) }}">
                             @error('name')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -27,7 +27,7 @@
                         <div class="mb-3">
                             <label for="email" class="form-label fw-bold">Email</label>
                             <input type="email" class="form-control form-control-lg" name="email"
-                                value="{{ old('email', $user->email) }}" required>
+                                value="{{ old('email', $user->email) }}">
                             @error('email')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -36,7 +36,7 @@
                         <div class="mb-3">
                             <label for="phone" class="form-label fw-bold"> Số điện thoại</label>
                             <input type="text" class="form-control form-control-lg" name="phone"
-                                value="{{ old('phone', $user->phone) }}" required>
+                                value="{{ old('phone', $user->phone) }}">
                             @error('phone')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -74,7 +74,7 @@
                                     @endif
                                 </div>
                                 <div class="col-8">
-                                    <input type="file" class="form-control" name="avatar" accept="image/*"
+                                    <input type="file" class="form-control" placeholder="Chọn ảnh đại diện" name="avatar" accept="image/*"
                                         onchange="previewAvatar(event)">
                                 </div>
                             </div>

@@ -519,3 +519,5 @@ Route::middleware(['auth'])->group(function () {
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendOtp'])->name('password.email');
     Route::post('/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])->name('password.verify');
     Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('password.reset');
+
+Route::post('/newsletter/subscribe', [HomeController::class, 'nhantin'])->name('newsletter.subscribe');
