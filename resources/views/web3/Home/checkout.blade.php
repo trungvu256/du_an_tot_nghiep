@@ -197,9 +197,11 @@
 
             <div class="col-lg-4">
                 <div class="card">
-                    <div class="card-header text-center" style="background-color: #cff4fc;">
-                        <h4>Tóm tắt đơn hàng</h4>
-                    </div>
+                <div class="card-header text-center" style="background-color: #ffffff !important; border-bottom: 1px solid #e0e0e0; padding: 20px;">
+    <h4 style="font-family: 'Roboto', sans-serif; font-weight: 500; color: #333; margin: 0; letter-spacing: 0.5px; text-transform: uppercase; font-size: 1.25rem;">
+        Tóm tắt đơn hàng
+    </h4>
+</div>
                     <div class="card-body">
                         @foreach ($filteredCart as $cartKey => $item)
                             <div class="cart-item d-flex align-items-center justify-content-between py-2 border-bottom">
@@ -294,7 +296,7 @@
                         <input type="hidden" name="shipping_ward" id="vnpay-shipping_ward">
                         <input type="hidden" name="shipping_note" id="vnpay-shipping_note">
                         <button type="submit" class="btn btn-primary btn-payment w-100 mt-3">
-                            💰 Thanh toán bằng VNPay
+                            Thanh toán bằng VNPay
                         </button>
                     </form>
                 </div>
@@ -302,38 +304,43 @@
                 <div class="mb-3">
                     <!-- Form thanh toán tiền mặt -->
                     <button type="submit" form="checkoutForm" class="btn btn-success btn-payment w-100">
-                        💵 Thanh toán bằng tiền mặt
+                        Thanh toán bằng tiền mặt
                     </button>
                 </div>
 
                 <style>
-                    .btn-payment {
-                        font-size: 16px;
-                        font-weight: bold;
-                        padding: 12px;
-                        text-align: center;
-                        border-radius: 8px;
-                        transition: all 0.3s ease;
-                    }
-
+   .btn-payment {
+    font-size: 20px;
+    font-weight: 450; /* Giảm độ đậm của chữ */
+    font-family: 'Roboto', sans-serif; /* Thêm font mảnh mai */
+    padding: 12px;
+    text-align: center;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    color: black;
+    border: 2px solid #000;
+    letter-spacing: 0.5px; /* Thêm khoảng cách giữa các chữ */
+}
                     .btn-payment.btn-primary {
-                        background-color: #007bff;
-                        border-color: #007bff;
+                        background-color: white;
+                        border-color: black;
+                        border: 1px solid #000; /* Thêm viền màu đen */
                     }
 
                     .btn-payment.btn-primary:hover {
-                        background-color: #0056b3;
-                        border-color: #004085;
+                        background-color: #101828;
+                        border-color: #101828;
                     }
 
                     .btn-payment.btn-success {
-                        background-color: #28a745;
-                        border-color: #28a745;
+                        background-color: white;
+                        border-color: black;
+                        border: 1px solid #000; /* Thêm viền màu đen */
                     }
 
                     .btn-payment.btn-success:hover {
-                        background-color: #218838;
-                        border-color: #1e7e34;
+                        background-color: #101828;
+                        border-color: #101828;
                     }
 
                     .w-100 {
