@@ -104,22 +104,73 @@ class ChatController extends Controller
 
     public function sendMessage(Request $request)
     {
-        $request->validate([
-            'message' => 'required|string',
-            'receiver_id' => 'required|exists:users,id'
-        ]);
-        
+        try {
+            $request->validate([
+                'message' => 'nullable|string|max:255',
+                'receiver_id' => 'required|exists:users,id',
+                'temp_id' => 'nullable|string',
+                'image.*' => 'nullable|image|max:5120' // 5MB max
+            ]);
 
-        $message = Message::create([
-            'sender_id' => Auth::id(),
-            'receiver_id' => $request->receiver_id,
-            'message' => $request->message,
-            'is_read' => false
-        ]);
+            $imageUrls = [];
+            if ($request->hasFile('image')) {
+                foreach ($request->file('image') as $file) {
+                    $path = $file->store('images', 'public');
+                    $imageUrls[] = asset('storage/' . $path);
+                }
+            }
 
-        broadcast(new MessageSent($message))->toOthers();
+            // Nếu không có tin nhắn và không có ảnh, trả về lỗi
+            if (empty($request->message) && empty($imageUrls)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Vui lòng nhập tin nhắn hoặc chọn ít nhất một hình ảnh'
+                ], 422);
+            }
 
-        return response()->json($message);
+            $message = Message::create([
+                'sender_id' => Auth::id(),
+                'receiver_id' => $request->receiver_id,
+                'message' => $request->message ?? '',
+                'image_urls' => json_encode($imageUrls),
+                'temp_id' => $request->temp_id,
+                'is_read' => false
+            ]);
+
+            // Lấy lại message từ DB để accessor hoạt động
+            $message = Message::find($message->id);
+
+            // Broadcast event với đầy đủ thông tin
+            broadcast(new MessageSent($message));
+
+            // Trả về response với đầy đủ thông tin
+            return response()->json([
+                'success' => true,
+                'message' => [
+                    'id' => $message->id,
+                    'sender_id' => $message->sender_id,
+                    'receiver_id' => $message->receiver_id,
+                    'message' => $message->message,
+                    'image_urls' => $imageUrls,
+                    'temp_id' => $message->temp_id,
+                    'created_at' => $message->created_at,
+                    'is_read' => $message->is_read
+                ]
+            ]);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi xác thực dữ liệu',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Chat error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi máy chủ: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     public function index()
@@ -134,6 +185,6 @@ class ChatController extends Controller
             $users = User::where('is_admin', true)->get();
         }
     
-        return view('chat', compact('users'));
+        return view('admin.chat.chat', compact('users'));
     }
 }

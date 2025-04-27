@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Brand;
 use App\Models\Attribute;
 use App\Models\ProductVariant;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -18,6 +19,7 @@ class WebController extends Controller
     //
     public function index()
     {
+        $users = User::all();
         $categories = Catalogue::all();
         $products = Product::where('status', 1)->get();
         $productNews = Product::where('status', 1)->orderBy('id', 'DESC')->take(4)->get();
@@ -30,7 +32,7 @@ class WebController extends Controller
             ->get();
         $blogs = Blog::latest()->take(3)->get();
         $brands = Brand::all();
-        return view('web3.Home.home', compact('list_product', 'categories', 'bestSellers', 'blogs', 'products', 'productNews', 'brands'));
+        return view('web3.Home.home', compact('list_product', 'categories', 'bestSellers', 'blogs', 'products', 'productNews', 'brands','users'));
     }
 
 

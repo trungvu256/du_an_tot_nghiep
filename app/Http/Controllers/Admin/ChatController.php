@@ -18,17 +18,50 @@ use Illuminate\Support\Facades\Log;
       
           public function send(Request $request)
           {
-              $request->validate([
-                  'message' => 'required|string|max:255',
-              ]);
-      
-              $message = new Message();
-              $message->sender_id = auth()->id(); // Gửi từ người dùng hiện tại
-              $message->receiver_id = 1; // Giả sử ID của admin là 1
-              $message->message = $request->message;
-              $message->save();
-      
-              return redirect()->route('admin.chat.index');
+              try {
+                  $request->validate([
+                      'message' => 'required|string|max:255',
+                      'receiver_id' => 'required|exists:users,id',
+                      'image.*' => 'nullable|image|max:5120', // 5MB max
+                  ]);
+
+                  $imageUrls = [];
+                  if ($request->hasFile('image')) {
+                      foreach ($request->file('image') as $file) {
+                          $path = $file->store('chat_images', 'public');
+                          $imageUrls[] = asset('storage/' . $path);
+                      }
+                  }
+
+                  $message = Message::create([
+                      'sender_id' => auth()->id(),
+                      'receiver_id' => $request->receiver_id,
+                      'message' => $request->message,
+                      'image_urls' => json_encode($imageUrls),
+                      'temp_id' => $request->temp_id,
+                  ]);
+
+                  broadcast(new MessageSent($message))->toOthers();
+
+                  return response()->json([
+                      'success' => true,
+                      'message' => $message,
+                      'image_urls' => $imageUrls
+                  ]);
+
+              } catch (\Illuminate\Validation\ValidationException $e) {
+                  return response()->json([
+                      'success' => false,
+                      'message' => 'Validation error',
+                      'errors' => $e->errors()
+                  ], 422);
+              } catch (\Exception $e) {
+                  \Log::error('Chat error: ' . $e->getMessage());
+                  return response()->json([
+                      'success' => false,
+                      'message' => 'Server error: ' . $e->getMessage()
+                  ], 500);
+              }
           }
       }
     
