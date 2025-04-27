@@ -35,6 +35,20 @@
             </div>
         </div>
 
+
+        @if($orders->isEmpty())
+        <div class="text-center py-5">
+            <div class="mb-3">
+                <i class="fas fa-shopping-bag fa-3x text-muted"></i>
+            </div>
+            <h4 class="text-muted">Bạn chưa có đơn hàng nào</h4>
+            <p class="text-muted">Hãy mua sắm để có đơn hàng đầu tiên của bạn!</p>
+            <a href="{{ route('web.shop') }}" class="btn btn-primary mt-3">
+                <i class="fas fa-shopping-cart me-2"></i>Mua sắm ngay
+            </a>
+        </div>
+    @else
+
         <style>
             .order-card {
                 border: none;
@@ -480,6 +494,7 @@
         <div class="d-flex justify-content-end mt-3">
             {{ $orders->links() }}
         </div>
+        @endif
     </div>
 
     <script>
