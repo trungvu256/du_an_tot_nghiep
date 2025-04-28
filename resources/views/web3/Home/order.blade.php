@@ -414,9 +414,7 @@
                                                             <span class="text-muted">
                                                                 @if ($item->productVariant)
                                                                     @php
-                                                                        $attributes =
-                                                                            $detail->productVariant
-                                                                                ->product_variant_attributes ?? [];
+                                                                        $attributes = $item->productVariant->product_variant_attributes ?? [];
                                                                     @endphp
                                                                     @if (count($attributes) > 0)
                                                                         @foreach ($attributes as $attribute)
@@ -428,6 +426,8 @@
                                                                     @else
                                                                         <p class="text-muted mb-0">Không có biến thể</p>
                                                                     @endif
+                                                                @else
+                                                                    <p class="text-muted mb-0">Không có biến thể</p>
                                                                 @endif
                                                             </span>
                                                             <input type="hidden" name="product_id"
@@ -521,9 +521,23 @@
                                                     <div>
                                                         <h6 class="mb-1 fw-bold">{{ $item->product->name }}</h6>
                                                         <span class="text-muted">
-                                                            Phân loại: Dung tích -
-                                                            {{ $item->productVariant->concentration }},
-                                                            Nồng độ - {{ $item->productVariant->size }}
+                                                            @if ($item->productVariant)
+                                                                @php
+                                                                    $attributes = $item->productVariant->product_variant_attributes ?? [];
+                                                                @endphp
+                                                                @if (count($attributes) > 0)
+                                                                    @foreach ($attributes as $attribute)
+                                                                        <p class="text-muted mb-0">
+                                                                            <strong>{{ $attribute->attribute->name }}:</strong>
+                                                                            {{ $attribute->attributeValue->value }}
+                                                                        </p>
+                                                                    @endforeach
+                                                                @else
+                                                                    <p class="text-muted mb-0">Không có biến thể</p>
+                                                                @endif
+                                                            @else
+                                                                <p class="text-muted mb-0">Không có biến thể</p>
+                                                            @endif
                                                         </span>
                                                         <input type="hidden" name="product_id"
                                                             value="{{ $item->product->id }}">
