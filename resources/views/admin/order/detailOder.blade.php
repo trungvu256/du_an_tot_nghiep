@@ -323,12 +323,25 @@
                                                          class="product-image me-3" style="width: 75px; height: 75px;">
                                                     <div>
                                                         <h6 class="mb-1">{{ $item->product->name }}</h6>
-                                                        @if($item->productVariant)
-                                                            <span class="text-muted">
-                                                                Dung tích: {{ $item->productVariant->concentration }},
-                                                                 Nồng độ: {{ $item->productVariant->size }}
-                                                            </span>
-                                                        @endif
+                                                        <span class="text-muted">
+                                                            @if ($item->productVariant)
+                                                                @php
+                                                                    $attributes = $item->productVariant->product_variant_attributes ?? [];
+                                                                @endphp
+                                                                @if (count($attributes) > 0)
+                                                                    @foreach ($attributes as $attribute)
+                                                                        <p class="text-muted mb-0">
+                                                                            <strong>{{ $attribute->attribute->name }}:</strong>
+                                                                            {{ $attribute->attributeValue->value }}
+                                                                        </p>
+                                                                    @endforeach
+                                                                @else
+                                                                    <p class="text-muted mb-0">Không có biến thể</p>
+                                                                @endif
+                                                            @else
+                                                                <p class="text-muted mb-0">Không có biến thể</p>
+                                                            @endif
+                                                        </span>
                                                         @if($item->review)
                                                             <div class="mt-2">
                                                                 <div class="d-flex align-items-center mb-1">

@@ -6,18 +6,18 @@
                         <img class="img-product" src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" style="width:100%; height: 100%;">
                         <img class="img-hover" src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" >
                     </a>
-                   
+
                     @if($product->discount)
                         <div class="on-sale-wrap">
                             <span class="on-sale-item">{{ $product->discount }}</span>
                         </div>
                     @endif
-                    <ul class="list-product-btn">
+                    {{-- <ul class="list-product-btn">
                         <!-- Thêm nút giỏ hàng, wishlist, quick view nếu cần -->
                         <li>
                             <a href="">Th</a>
                         </li>
-                    </ul>
+                    </ul> --}}
                 </div>
                 <div class="card-product-info">
                     <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}" class="name-product link fw-medium text-md">{{ $product->name }}</a>
@@ -27,7 +27,7 @@
                                 {{ number_format($product->variants->min('price'), 0, ',', '.') }}đ
                             </span>
                             @if($product->variants->count() > 1)
-                                <span class="price-old text-muted">
+                                <span class="price-new text-primary">
                                     - {{ number_format($product->variants->max('price'), 0, ',', '.') }}đ
                                 </span>
                             @endif

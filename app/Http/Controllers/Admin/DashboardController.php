@@ -15,6 +15,7 @@ use App\Models\Product;
 use App\Models\ProductComment;
 use App\Models\ProductReview;
 use App\Models\User;
+use App\Models\ProductVariant;
 use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\Auth;
 // use Illuminate\Support\Facades\Cookie;
@@ -102,26 +103,42 @@ class DashboardController extends Controller
         $totals = array_values($revenueData);
 
         // Lấy top 5 sản phẩm bán chạy nhất
-        $topProducts = DB::table('order_items')
-            ->select(
-                'order_items.product_id',
-                'products.name as product_name',
-                'products.image as product_image',
-                'product_variants.size',
-                'product_variants.concentration',
-                DB::raw('SUM(order_items.quantity) as total_quantity'),
-                DB::raw('SUM(order_items.quantity * order_items.price) as total_revenue')
-            )
-            ->join('products', 'order_items.product_id', '=', 'products.id')
-            ->leftJoin('product_variants', 'order_items.product_variant_id', '=', 'product_variants.id')
-            ->join('orders', 'order_items.order_id', '=', 'orders.id')
-            ->where('orders.status', Order::STATUS_COMPLETED)
-            ->where('orders.payment_status', 1)
-            ->whereBetween('orders.created_at', [$startDate, $endDate])
-            ->groupBy('order_items.product_id', 'products.name', 'products.image', 'product_variants.size', 'product_variants.concentration')
-            ->orderBy('total_quantity', 'desc')
-            ->limit(5)
-            ->get();
+$topProducts = OrderItem::select(
+    'order_items.product_id',
+    'order_items.product_variant_id', // Thêm product_variant_id để lấy biến thể cụ thể
+    'products.name as product_name',
+    'products.image as product_image',
+    DB::raw('SUM(order_items.quantity) as total_quantity'),
+    DB::raw('SUM(order_items.quantity * order_items.price) as total_revenue')
+)
+    ->join('products', 'order_items.product_id', '=', 'products.id')
+    ->join('orders', 'order_items.order_id', '=', 'orders.id')
+    ->where('orders.status', Order::STATUS_COMPLETED)
+    ->where('orders.payment_status', 1)
+    ->whereBetween('orders.created_at', [$startDate, $endDate])
+    ->groupBy('order_items.product_id', 'order_items.product_variant_id', 'products.name', 'products.image')
+    ->orderBy('total_quantity', 'desc')
+    ->limit(5)
+    ->get()
+    ->map(function ($item) {
+        // Tải sản phẩm
+        $product = Product::find($item->product_id);
+
+        // Tải biến thể cụ thể với product_variant_attributes
+        $variant = ProductVariant::with([
+            'product_variant_attributes.attribute',
+            'product_variant_attributes.attributeValue'
+        ])->find($item->product_variant_id);
+
+        // Gắn các thuộc tính tính toán và biến thể cụ thể
+        $product->product_name = $item->product_name;
+        $product->product_image = $item->product_image;
+        $product->total_quantity = $item->total_quantity;
+        $product->total_revenue = $item->total_revenue;
+        $product->variant = $variant; // Gắn biến thể cụ thể vào sản phẩm
+
+        return $product;
+    });
 
         // Lấy danh sách người dùng mua hàng gần đây
         $recentBuyers = Order::with('user')
@@ -156,7 +173,12 @@ class DashboardController extends Controller
         ];
 
         // Lấy danh sách đơn hàng gần đây
-        $recentOrders = Order::with(['user', 'orderItems.product', 'orderItems.productVariant'])
+        $recentOrders = Order::with([
+            'user',
+            'orderItems.product',
+            'orderItems.productVariant.product_variant_attributes.attribute',
+            'orderItems.productVariant.product_variant_attributes.attributeValue'
+        ])
             ->whereBetween('created_at', [$startDate, $endDate])
             ->latest()
             ->take(6)
@@ -173,8 +195,13 @@ class DashboardController extends Controller
                     'payment_status' => $order->payment_status,
                     'created_at' => $order->created_at,
                     'products' => $order->orderItems->map(function ($item) {
-                        $variantInfo = $item->productVariant ?
-                            "({$item->productVariant->size}, {$item->productVariant->concentration})" : '';
+                        $variantInfo = '';
+                        if ($item->productVariant && $item->productVariant->product_variant_attributes->isNotEmpty()) {
+                            $attributes = $item->productVariant->product_variant_attributes->map(function ($attribute) {
+                                return $attribute->attributeValue->value;
+                            })->toArray();
+                            $variantInfo = '(' . implode(', ', $attributes) . ')';
+                        }
                         return $item->product->name . $variantInfo;
                     })->implode(', ')
                 ];
