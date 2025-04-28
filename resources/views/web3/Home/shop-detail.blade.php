@@ -225,7 +225,7 @@
                                     </form>
 
                                     <!-- Các hành động phụ -->
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -905,9 +905,7 @@
                             `;
 
 
-
                             // Ẩn phân trang
-
 
                             document.getElementById('reviews-pagination').innerHTML = '';
                         }
@@ -931,8 +929,6 @@
 
 
                 // Đặt lại các thanh tiến trình
-
-
 
                 for (let i = 5; i >= 1; i--) {
                     const progressBar = document.querySelector(`.progress-bar[data-rating="${i}"]`);
@@ -1013,9 +1009,7 @@
 
                 reviews.forEach(review => {
 
-
                     if (!review) return; // Skip if review is null or undefined
-
 
 
                     let starsHtml = '';
@@ -1082,11 +1076,10 @@
                                     </div>
                                     <div class="review-badge">
                                         <span class="badge bg-success">Đã mua hàng</span>
+                                    </div>
                                 </div>
 
                             </div>
-
-
 
 
                                 <div class="review-content mt-3">
@@ -1094,11 +1087,9 @@
                                     ${imagesHtml}
                                     ${videoHtml}
 
-
                             </div>
 
                             ${review.responses && review.responses.length > 0 ? `
-
 
                                     <div class="review-responses mt-3 pt-3 border-top">
                                         <h6 class="mb-2 text-secondary"><i class="fas fa-reply me-2"></i>Phản hồi</h6>
@@ -1195,18 +1186,12 @@
             }
 
             document.addEventListener('DOMContentLoaded', function() {
-<<<<<<< HEAD
-=======
 
->>>>>>> 565ba00448792d20a3393f2aa188aef01c643d7e
                 // Automatically load reviews if a variant is pre-selected
                 // This will be triggered by the selectAttribute function when a user selects a variant
 
                 // Add tab switch handling for reviews tab to ensure correct display
-<<<<<<< HEAD
-=======
 
->>>>>>> 565ba00448792d20a3393f2aa188aef01c643d7e
                 const reviewsTab = document.getElementById('reviews-tab');
                 if (reviewsTab) {
                     reviewsTab.addEventListener('click', function() {
@@ -1233,7 +1218,7 @@
             // Thêm hàm addToCart vào cuối file
             function addToCart(event) {
                 event.preventDefault();
-                
+
                 // Kiểm tra xem đã chọn biến thể chưa
                 const selectedAttributesInput = document.getElementById('selectedAttributes');
                 if (!selectedAttributesInput.value) {
@@ -1273,12 +1258,12 @@
                                 if (cartCountElement) {
                                     cartCountElement.textContent = response.cartCount;
                                 }
-                                
+
                                 // Sử dụng hàm toàn cục để cập nhật số lượng
                                 if (typeof updateCartCount === 'function') {
                                     updateCartCount(response.cartCount);
                                 }
-                                
+
                                 // Tạo sự kiện cập nhật giỏ hàng để menu có thể lắng nghe
                                 $(document).trigger('cartUpdated', { cartCount: response.cartCount });
                             }
@@ -1306,7 +1291,7 @@
                         if (xhr.responseJSON && xhr.responseJSON.message) {
                             errorMessage = xhr.responseJSON.message;
                         }
-                        
+
                         Swal.fire({
                             icon: 'error',
                             title: 'Có lỗi xảy ra!',
@@ -1321,7 +1306,7 @@
             function removeFromCart(event, key) {
                 event.preventDefault();
                 const form = event.target.closest('form');
-                
+
                 $.ajax({
                     url: form.action,
                     method: 'POST',
@@ -1336,12 +1321,12 @@
                                 if (cartCountElement) {
                                     cartCountElement.textContent = response.cartCount;
                                 }
-                                
+
                                 // Sử dụng hàm toàn cục để cập nhật số lượng
                                 if (typeof updateCartCount === 'function') {
                                     updateCartCount(response.cartCount);
                                 }
-                                
+
                                 // Tạo sự kiện cập nhật giỏ hàng để menu có thể lắng nghe
                                 $(document).trigger('cartUpdated', { cartCount: response.cartCount });
                             }
