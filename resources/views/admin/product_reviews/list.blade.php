@@ -53,18 +53,29 @@
                                                 <td>{{ $review->user->name ?? 'N/A' }}</td>
                                                 <td>{{ $review->product->name ?? 'N/A' }}</td>
                                                 <td>
-                                                    @if($review->variant)
+
+                                                        @if ($review->variant)
                                                         <span class="badge bg-light text-dark">
-                                                            <span style="font-size: larger; font-style: italic;">
-                                                                Dung tích: {{ $review->variant->concentration }} - Nồng độ: {{ $review->variant->size }}
-                                                                @if($review->variant->special_edition)
-                                                                    - {{ $review->variant->special_edition }}
-                                                                @endif
-                                                            </span>
+                                                         <span style="font-size: larger; font-style: italic;">
+                                                            @php
+                                                                $attributes = $review->variant->product_variant_attributes ?? [];
+                                                            @endphp
+                                                            @if (count($attributes) > 0)
+                                                                @foreach ($attributes as $attribute)
+                                                                    <p class="text-muted mb-0">
+                                                                        <strong>{{ $attribute->attribute->name }}:</strong>
+                                                                        {{ $attribute->attributeValue->value }}
+                                                                    </p>
+                                                                @endforeach
+                                                            @else
+                                                                <p class="text-muted mb-0">Không có biến thể</p>
+                                                            @endif
+                                                        @else
+                                                            <p class="text-muted mb-0">Không có biến thể</p>
+
+                                                    </span>
                                                         </span>
-                                                    @else
-                                                        <span class="text-muted">Không có biến thể</span>
-                                                    @endif
+                                                        @endif
                                                 </td>
                                                 <td>
                                                     @for($i = 1; $i <= 5; $i++)

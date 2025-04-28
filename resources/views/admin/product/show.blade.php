@@ -409,16 +409,27 @@
                                                                         <small class="text-muted">{{ optional($review->created_at)->format('d M, Y') }}</small>
                                                                     </h6>
                                                                 </div>
-                                                                @if($review->variant)
-                                                                <div class="mb-2">
-                                                                    <span class="badge bg-light text-dark">
-                                                                        <span style="font-size: larger; font-style: italic;">{{ $product->name }}: Dung tích: {{ $review->variant->concentration }} - Nồng độ: {{ $review->variant->size }}</span>
-                                                                        @if($review->variant->special_edition)
-                                                                            - {{ $review->variant->special_edition }}
+                                                                <span class="badge bg-light text-dark" style="font-size: smaller; font-style: italic;">
+                                                                    @if ($review->variant)
+                                                                        @php
+                                                                            $attributes = $review->variant->product_variant_attributes ?? [];
+                                                                        @endphp
+                                                                        @if (count($attributes) > 0)
+                                                                            @foreach ($attributes as $attribute)
+                                                                                <p class="text-muted mb-0">
+                                                                                    <strong>{{ $attribute->attribute->name }}:</strong>
+                                                                                    {{ $attribute->attributeValue->value }}
+                                                                                </p>
+                                                                            @endforeach
+                                                                        @else
+                                                                            <p class="text-muted mb-0">Không có biến thể</p>
                                                                         @endif
-                                                                    </span>
-                                                                </div>
-                                                                @endif
+                                                                    @else
+                                                                        <p class="text-muted mb-0">Không có biến thể</p>
+                                                                    @endif
+                                                                </span>
+
+
                                                                 <div class="mb-2">
                                                                     @for($i = 1; $i <= 5; $i++)
                                                                         @if($i <= $review->rating)

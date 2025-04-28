@@ -31,11 +31,14 @@
                                             <p class="text-muted mb-0">Chào mừng đến với trang thống kê của bạn !</p>
                                         </div>
                                         <div class="mt-3 mt-lg-0">
-                                            <form action="{{ route('admin.dashboard') }}" method="GET" class="d-flex align-items-center gap-2">
+                                            <form action="{{ route('admin.dashboard') }}" method="GET"
+                                                class="d-flex align-items-center gap-2">
                                                 <div class="input-group" style="width: auto;">
-                                                    <input type="date" class="form-control form-control-sm" name="start_date" value="{{ $startDate->format('Y-m-d') }}">
+                                                    <input type="date" class="form-control form-control-sm"
+                                                        name="start_date" value="{{ $startDate->format('Y-m-d') }}">
                                                     <span class="input-group-text">đến</span>
-                                                    <input type="date" class="form-control form-control-sm" name="end_date" value="{{ $endDate->format('Y-m-d') }}">
+                                                    <input type="date" class="form-control form-control-sm" name="end_date"
+                                                        value="{{ $endDate->format('Y-m-d') }}">
                                                     <button class="btn btn-soft-primary btn-sm" type="submit">
                                                         <i class="ri-filter-2-fill"></i>
                                                     </button>
@@ -66,7 +69,8 @@
                                                 <div>
                                                     <h4 class="fs-22 fw-semibold ff-secondary mb-4">
                                                         {{ number_format($totalSales, 0, ',', '.') }}
-                                                        VNĐ</h4>
+                                                        VNĐ
+                                                    </h4>
                                                     {{-- <a href="" class="text-decoration-underline">Xem chi tiết doanh
                                                         thu</a> --}}
                                                 </div>
@@ -85,7 +89,8 @@
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-grow-1 overflow-hidden">
                                                     <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
-                                                        <a href="{{ route('admin.order') }}" class="text-decoration-none text-muted">Tổng
+                                                        <a href="{{ route('admin.order') }}"
+                                                            class="text-decoration-none text-muted">Tổng
                                                             Đơn hàng</a>
                                                     </p>
                                                 </div>
@@ -187,7 +192,8 @@
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-grow-1 overflow-hidden">
                                                     <a href="{{ route('admin.order', ['status' => 4]) }}"
-                                                        class="text-uppercase fw-medium text-muted text-truncate mb-0">Đơn hàng hoàn tất</a>
+                                                        class="text-uppercase fw-medium text-muted text-truncate mb-0">Đơn
+                                                        hàng hoàn tất</a>
                                                 </div>
                                                 <div class="flex-shrink-0">
                                                     <h5 class="text-success fs-14 mb-0">
@@ -198,7 +204,8 @@
                                             </div>
                                             <div class="d-flex align-items-end justify-content-between mt-4">
                                                 <div>
-                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4">{{ $completedOrderCount }}</h4>
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                                        {{ $completedOrderCount }}</h4>
                                                     {{-- <a href="" class="text-decoration-underline">Xem chi tiết doanh
                                                         thu</a> --}}
                                                 </div>
@@ -217,7 +224,7 @@
                                         <div class="card-body p-4">
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-grow-1 overflow-hidden">
-                                                        <a href="{{ route('admin.order', ['status' => 5]) }}"
+                                                    <a href="{{ route('admin.order', ['status' => 5]) }}"
                                                         class="text-uppercase fw-medium text-muted text-truncate mb-0">Đơn
                                                         hàng đã huỷ</a>
                                                 </div>
@@ -251,13 +258,16 @@
                                         <div class="card-header border-0 align-items-center d-flex">
                                             <h4 class="card-title mb-0 flex-grow-1">Biểu đồ doanh thu</h4>
                                             {{-- <div>
-                                                <button type="button" class="btn btn-soft-secondary btn-sm" onclick="updateChart('today')">
+                                                <button type="button" class="btn btn-soft-secondary btn-sm"
+                                                    onclick="updateChart('today')">
                                                     Hôm nay
                                                 </button>
-                                                <button type="button" class="btn btn-soft-secondary btn-sm" onclick="updateChart('7days')">
+                                                <button type="button" class="btn btn-soft-secondary btn-sm"
+                                                    onclick="updateChart('7days')">
                                                     7 ngày
                                                 </button>
-                                                <button type="button" class="btn btn-soft-primary btn-sm" onclick="updateChart('30days')">
+                                                <button type="button" class="btn btn-soft-primary btn-sm"
+                                                    onclick="updateChart('30days')">
                                                     30 ngày
                                                 </button>
                                             </div> --}}
@@ -278,22 +288,34 @@
                                             <h4 class="card-title mb-0 flex-grow-1">Top 5 sản phẩm bán chạy nhất</h4>
                                             <div class="flex-shrink-0">
                                                 {{-- <div class="dropdown">
-                                                    <button class="btn btn-soft-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <button class="btn btn-soft-secondary btn-sm dropdown-toggle"
+                                                        type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                         <span class="text-uppercase">Khoảng thời gian</span>
                                                     </button>
                                                     <ul class="dropdown-menu dropdown-menu-end">
-                                                        <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}?selectedOrderPeriod=1day">Hôm nay</a></li>
-                                                        <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}?selectedOrderPeriod=1week">7 ngày</a></li>
-                                                        <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}?selectedOrderPeriod=2weeks">14 ngày</a></li>
-                                                        <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}?selectedOrderPeriod=3weeks">21 ngày</a></li>
-                                                        <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}?selectedOrderPeriod=4weeks">28 ngày</a></li>
+                                                        <li><a class="dropdown-item"
+                                                                href="{{ route('admin.dashboard') }}?selectedOrderPeriod=1day">Hôm
+                                                                nay</a></li>
+                                                        <li><a class="dropdown-item"
+                                                                href="{{ route('admin.dashboard') }}?selectedOrderPeriod=1week">7
+                                                                ngày</a></li>
+                                                        <li><a class="dropdown-item"
+                                                                href="{{ route('admin.dashboard') }}?selectedOrderPeriod=2weeks">14
+                                                                ngày</a></li>
+                                                        <li><a class="dropdown-item"
+                                                                href="{{ route('admin.dashboard') }}?selectedOrderPeriod=3weeks">21
+                                                                ngày</a></li>
+                                                        <li><a class="dropdown-item"
+                                                                href="{{ route('admin.dashboard') }}?selectedOrderPeriod=4weeks">28
+                                                                ngày</a></li>
                                                     </ul>
                                                 </div> --}}
                                             </div>
                                         </div>
                                         <div class="card-body">
                                             <div class="table-responsive">
-                                                <table class="table table-hover table-centered align-middle table-nowrap mb-0">
+                                                <table
+                                                    class="table table-hover table-centered align-middle table-nowrap mb-0">
                                                     <thead>
                                                         <tr>
                                                             <th scope="col">Sản phẩm</th>
@@ -303,38 +325,54 @@
                                                     </thead>
                                                     <tbody>
                                                         @forelse($topProducts as $product)
-                                                        <tr>
-                                                            <td>
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="flex-shrink-0 me-2">
-                                                                        <img src="{{ asset('storage/' . $product->product_image) }}" alt="{{ $product->product_name }}" class="avatar-sm rounded">
-                                                                    </div>
-                                                                    <div class="flex-grow-1">
-                                                                        <h5 class="fs-14 my-1">
-                                                                            <span class="text-reset">{{ $product->product_name }}
-                                                                                @if($product->size && $product->concentration)
-                                                                                    ({{ $product->size }}, {{ $product->concentration }})
-                                                                                @endif
-                                                                            </span>
-                                                                        </h5>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <h5 class="fs-14 my-1 fw-normal">{{ number_format($product->total_quantity) }}</h5>
-                                                                <span class="text-muted">Sản phẩm</span>
-                                                            </td>
-                                                            <td>
-                                                                <h5 class="fs-14 my-1 fw-normal">{{ number_format($product->total_revenue, 0, ',', '.') }} VNĐ</h5>
-                                                                <span class="text-muted">Tổng doanh thu</span>
-                                                            </td>
-                                                        </tr>
+                                                                                                        <tr>
+                                                                                                            <td>
+                                                                                                                <div class="d-flex align-items-center">
+                                                                                                                    <div class="flex-shrink-0 me-2">
+                                                                                                                        <img src="{{ asset('storage/' . $product->product_image) }}"
+                                                                                                                            alt="{{ $product->product_name }}"
+                                                                                                                            class="avatar-sm rounded">
+                                                                                                                    </div>
+                                                                                                                    <div class="flex-grow-1">
+                                                                                                                        <h5 class="fs-14 my-1">
+                                                                                                                            <span class="text-reset">{{ $product->product_name }} </span>
+                                                                                                                            <span class="text-dark">
+                                                                                                                                <span style="font-size: smaller; font-style: italic;">
+                                                                                                                                @if ($product->variant && $product->variant->product_variant_attributes->isNotEmpty())
+                                                                                                                                                                                                        (
+                                                                                                                                                                                                        @php
+                                                                                                                                                                                                            $attributes = $product->variant->product_variant_attributes->map(function ($attribute) {
+                                                                                                                                                                                                                return $attribute->attribute->name . ': ' . $attribute->attributeValue->value;
+                                                                                                                                                                                                            })->toArray();
+                                                                                                                                                                                                        @endphp
+                                                                                                                                                                                                        {{ implode(', ', $attributes) }}
+                                                                                                                                                                                                        )
+                                                                                                                                @endif
+                                                                                                                                </span>
+                                                                                                                            </span>
+                                                                                                                        </h5>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </td>
+                                                                                                            <td>
+                                                                                                                <h5 class="fs-14 my-1 fw-normal">
+                                                                                                                    {{ number_format($product->total_quantity) }}</h5>
+                                                                                                                <span class="text-muted">Sản phẩm</span>
+                                                                                                            </td>
+                                                                                                            <td>
+                                                                                                                <h5 class="fs-14 my-1 fw-normal">
+                                                                                                                    {{ number_format($product->total_revenue, 0, ',', '.') }}
+                                                                                                                    VNĐ</h5>
+                                                                                                                <span class="text-muted">Tổng doanh thu</span>
+                                                                                                            </td>
+                                                                                                        </tr>
                                                         @empty
-                                                        <tr>
-                                                            <td colspan="3" class="text-center py-4">
-                                                                <p class="text-muted mb-0">Không có dữ liệu sản phẩm bán chạy trong khoảng thời gian này</p>
-                                                            </td>
-                                                        </tr>
+                                                            <tr>
+                                                                <td colspan="3" class="text-center py-4">
+                                                                    <p class="text-muted mb-0">Không có dữ liệu sản phẩm bán
+                                                                        chạy trong khoảng thời gian này</p>
+                                                                </td>
+                                                            </tr>
                                                         @endforelse
                                                     </tbody>
                                                 </table>
@@ -352,7 +390,8 @@
                                         </div>
 
                                         <div class="card-body">
-                                            <div id="order-status-chart" class="apex-charts" dir="ltr" style="min-height: 300px;">
+                                            <div id="order-status-chart" class="apex-charts" dir="ltr"
+                                                style="min-height: 300px;">
                                             </div>
                                         </div>
                                     </div>
@@ -366,7 +405,8 @@
 
                                         <div class="card-body">
                                             <div class="table-responsive table-card">
-                                                <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
+                                                <table
+                                                    class="table table-borderless table-centered align-middle table-nowrap mb-0">
                                                     <thead class="text-muted table-light">
                                                         <tr>
                                                             <th scope="col">Mã đơn hàng</th>
@@ -380,84 +420,91 @@
                                                     </thead>
                                                     <tbody>
                                                         @forelse($recentOrders as $order)
-                                                            <tr>
-                                                                <td>
-                                                                    <span class="fw-medium">#{{ $order['order_code'] ?? 'N/A' }}</span>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="d-flex align-items-center">
-                                                                        {{-- <div class="flex-shrink-0 me-2">
-                                                                            <img src="{{ asset('storage/' . ($order['user']['avatar'] ?? 'default-avatar.png')) }}"
-                                                                                 alt=""
-                                                                                 class="avatar-xs rounded-circle" />
-                                                                        </div> --}}
-                                                                        <div class="flex-grow-1">{{ $order['user']['name'] ?? 'Khách hàng' }}</div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <span class="text-truncate" style="max-width: 200px;" data-bs-toggle="tooltip" title="{{ $order['products'] ?? '' }}">
-                                                                        {{ Str::limit($order['products'] ?? '', 30) }}
-                                                                    </span>
-                                                                </td>
-                                                                <td>
-                                                                    <span class="text-success">{{ number_format($order['total_price'] ?? 0, 0, ',', '.') }} VNĐ</span>
-                                                                </td>
-                                                                <td>
-                                                                    @php
-                                                                        $statusClass = [
-                                                                            0 => 'bg-warning-subtle text-warning',    // Chờ xử lý
-                                                                            1 => 'bg-info-subtle text-info',          // Chuẩn bị hàng
-                                                                            2 => 'bg-primary-subtle text-primary',    // Đang giao
-                                                                            3 => 'bg-success-subtle text-success',    // Đã giao
-                                                                            4 => 'bg-success-subtle text-dark',    // Hoàn tất
-                                                                            5 => 'bg-danger-subtle text-danger',      // Đã hủy
-                                                                            6 => 'bg-secondary-subtle text-dark' // Trạng thái khác
-                                                                        ];
-                                                                        $statusText = [
-                                                                            0 => 'Chờ xử lý',
-                                                                            1 => 'Chuẩn bị hàng',
-                                                                            2 => 'Đang giao',
-                                                                            3 => 'Đã giao',
-                                                                            4 => 'Hoàn tất',
-                                                                            5 => 'Đã hủy',
-                                                                            6 => 'Trả hàng'
-                                                                        ];
-                                                                        $status = $order['status'] ?? 6;
-                                                                        $statusClassValue = $statusClass[$status] ?? $statusClass[6];
-                                                                        $statusTextValue = $statusText[$status] ?? $statusText[6];
-                                                                    @endphp
-                                                                    <span class="badge {{ $statusClassValue }}">
-                                                                        {{ $statusTextValue }}
-                                                                    </span>
-                                                                </td>
-                                                                <td>
-                                                                    @php
-                                                                        $paymentClass = [
-                                                                            1 => 'bg-success-subtle text-success',     // Đã thanh toán
-                                                                            2 => 'bg-info-subtle text-info',           // Thanh toán khi nhận hàng
-                                                                            3 => 'bg-dark-subtle text-blue'            // Hoàn tiền
-                                                                        ];
-                                                                        $paymentText = [
-                                                                            1 => 'Đã thanh toán',
-                                                                            2 => 'Thanh toán khi nhận hàng',
-                                                                            3 => 'Hoàn tiền'
-                                                                        ];
-                                                                        $paymentStatus = $order['payment_status'] ?? 2;
-                                                                        $paymentClassValue = isset($paymentClass[$paymentStatus]) ? $paymentClass[$paymentStatus] : $paymentClass[2];
-                                                                        $paymentTextValue = isset($paymentText[$paymentStatus]) ? $paymentText[$paymentStatus] : $paymentText[2];
-                                                                    @endphp
-                                                                    <span class="badge {{ $paymentClassValue }}">
-                                                                        {{ $paymentTextValue }}
-                                                                    </span>
-                                                                </td>
-                                                                <td>
-                                                                    <span class="text-muted">{{ isset($order['created_at']) ? \Carbon\Carbon::parse($order['created_at'])->format('d/m/Y H:i') : 'N/A' }}</span>
-                                                                </td>
-                                                            </tr>
+                                                                                                            <tr>
+                                                                                                                <td>
+                                                                                                                    <span
+                                                                                                                        class="fw-medium">#{{ $order['order_code'] ?? 'N/A' }}</span>
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    <div class="d-flex align-items-center">
+                                                                                                                        {{-- <div class="flex-shrink-0 me-2">
+                                                                                                                            <img src="{{ asset('storage/' . ($order['user']['avatar'] ?? 'default-avatar.png')) }}"
+                                                                                                                                alt="" class="avatar-xs rounded-circle" />
+                                                                                                                        </div> --}}
+                                                                                                                        <div class="flex-grow-1">
+                                                                                                                            {{ $order['user']['name'] ?? 'Khách hàng' }}</div>
+                                                                                                                    </div>
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    <span class="text-truncate" style="max-width: 200px;"
+                                                                                                                        data-bs-toggle="tooltip"
+                                                                                                                        title="{{ $order['products'] ?? '' }}">
+                                                                                                                        {{ Str::limit($order['products'] ?? '', 30) }}
+                                                                                                                    </span>
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    <span
+                                                                                                                        class="text-success">{{ number_format($order['total_price'] ?? 0, 0, ',', '.') }}
+                                                                                                                        VNĐ</span>
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    @php
+                                                                                                                        $statusClass = [
+                                                                                                                            0 => 'bg-warning-subtle text-warning',    // Chờ xử lý
+                                                                                                                            1 => 'bg-info-subtle text-info',          // Chuẩn bị hàng
+                                                                                                                            2 => 'bg-primary-subtle text-primary',    // Đang giao
+                                                                                                                            3 => 'bg-success-subtle text-success',    // Đã giao
+                                                                                                                            4 => 'bg-success-subtle text-dark',    // Hoàn tất
+                                                                                                                            5 => 'bg-danger-subtle text-danger',      // Đã hủy
+                                                                                                                            6 => 'bg-secondary-subtle text-dark' // Trạng thái khác
+                                                                                                                        ];
+                                                                                                                        $statusText = [
+                                                                                                                            0 => 'Chờ xử lý',
+                                                                                                                            1 => 'Chuẩn bị hàng',
+                                                                                                                            2 => 'Đang giao',
+                                                                                                                            3 => 'Đã giao',
+                                                                                                                            4 => 'Hoàn tất',
+                                                                                                                            5 => 'Đã hủy',
+                                                                                                                            6 => 'Trả hàng'
+                                                                                                                        ];
+                                                                                                                        $status = $order['status'] ?? 6;
+                                                                                                                        $statusClassValue = $statusClass[$status] ?? $statusClass[6];
+                                                                                                                        $statusTextValue = $statusText[$status] ?? $statusText[6];
+                                                                                                                    @endphp
+                                                                                                                    <span class="badge {{ $statusClassValue }}">
+                                                                                                                        {{ $statusTextValue }}
+                                                                                                                    </span>
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    @php
+                                                                                                                        $paymentClass = [
+                                                                                                                            1 => 'bg-success-subtle text-success',     // Đã thanh toán
+                                                                                                                            2 => 'bg-info-subtle text-info',           // Thanh toán khi nhận hàng
+                                                                                                                            3 => 'bg-dark-subtle text-blue'            // Hoàn tiền
+                                                                                                                        ];
+                                                                                                                        $paymentText = [
+                                                                                                                            1 => 'Đã thanh toán',
+                                                                                                                            2 => 'Thanh toán khi nhận hàng',
+                                                                                                                            3 => 'Hoàn tiền'
+                                                                                                                        ];
+                                                                                                                        $paymentStatus = $order['payment_status'] ?? 2;
+                                                                                                                        $paymentClassValue = isset($paymentClass[$paymentStatus]) ? $paymentClass[$paymentStatus] : $paymentClass[2];
+                                                                                                                        $paymentTextValue = isset($paymentText[$paymentStatus]) ? $paymentText[$paymentStatus] : $paymentText[2];
+                                                                                                                    @endphp
+                                                                                                                    <span class="badge {{ $paymentClassValue }}">
+                                                                                                                        {{ $paymentTextValue }}
+                                                                                                                    </span>
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    <span
+                                                                                                                        class="text-muted">{{ isset($order['created_at']) ? \Carbon\Carbon::parse($order['created_at'])->format('d/m/Y H:i') : 'N/A' }}</span>
+                                                                                                                </td>
+                                                                                                            </tr>
                                                         @empty
                                                             <tr>
                                                                 <td colspan="7" class="text-center py-4">
-                                                                    <p class="text-muted mb-0">Không có đơn hàng nào trong thời gian này</p>
+                                                                    <p class="text-muted mb-0">Không có đơn hàng nào trong thời
+                                                                        gian này</p>
                                                                 </td>
                                                             </tr>
                                                         @endforelse
@@ -979,7 +1026,7 @@
             window.location.href = "{{ route('admin.dashboard') }}?period=" + period;
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             var dates = @json($dates);
             var totals = @json($totals);
 
@@ -1035,14 +1082,14 @@
                 },
                 yaxis: {
                     labels: {
-                        formatter: function(value) {
+                        formatter: function (value) {
                             return value.toLocaleString('vi-VN') + ' VNĐ';
                         }
                     }
                 },
                 dataLabels: {
                     enabled: true,
-                    formatter: function(val) {
+                    formatter: function (val) {
                         return val.toLocaleString('vi-VN') + ' VNĐ';
                     },
                     offsetY: -20,
@@ -1062,7 +1109,7 @@
                 },
                 tooltip: {
                     y: {
-                        formatter: function(value) {
+                        formatter: function (value) {
                             return value.toLocaleString('vi-VN') + ' VNĐ';
                         }
                     }
@@ -1130,7 +1177,7 @@
                         height: 12,
                         radius: 6
                     },
-                    formatter: function(seriesName, opts) {
+                    formatter: function (seriesName, opts) {
                         return seriesName;
                     }
                 },
@@ -1144,7 +1191,7 @@
                 },
                 dataLabels: {
                     enabled: true,
-                    formatter: function(val, opts) {
+                    formatter: function (val, opts) {
                         // Lấy tổng của tất cả các giá trị
                         const total = opts.w.globals.seriesTotals.reduce((a, b) => a + b, 0);
                         // Tính phần trăm chính xác
@@ -1171,7 +1218,7 @@
                 tooltip: {
                     enabled: true,
                     y: {
-                        formatter: function(value) {
+                        formatter: function (value) {
                             return value + ' đơn';
                         }
                     }
