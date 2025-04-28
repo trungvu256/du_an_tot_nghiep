@@ -2,7 +2,117 @@
 
 @section('content')
     <!-- Kết thúc Thanh Điều Hướng -->
-
+    <style>
+                  
+                  .custom-hover:hover {
+                      background-color: #101828 !important;
+                      color: white !important;
+                      font-weight: 700 !important;
+                  }
+                  
+                     .btn-payment {
+                      font-size: 20px;
+                      font-weight: 450; /* Giảm độ đậm của chữ */
+                      font-family: 'Roboto', sans-serif; /* Thêm font mảnh mai */
+                      padding: 12px;
+                      text-align: center;
+                      border-radius: 8px;
+                      transition: all 0.3s ease;
+                      color: black;
+                      border: 2px solid #000;
+                      letter-spacing: 0.5px; /* Thêm khoảng cách giữa các chữ */
+                  }
+                                      .btn-payment.btn-primary {
+                                          background-color: white;
+                                          border-color: black;
+                                          border: 1px solid #000; /* Thêm viền màu đen */
+                                      }
+                  
+                                      .btn-payment.btn-primary:hover {
+                                          background-color: #101828;
+                                          border-color: #101828;
+                                      }
+                  
+                                      .btn-payment.btn-success {
+                                          background-color: white;
+                                          border-color: black;
+                                          border: 1px solid #000; /* Thêm viền màu đen */
+                                      }
+                  
+                                      .btn-payment.btn-success:hover {
+                                          background-color: #101828;
+                                          border-color: #101828;
+                                      }
+                  
+                                      .w-100 {
+                                          width: 100%;
+                                      }
+                  
+                                      .form-control {
+                                          border-radius: 5px;
+                                          border: 1px solid #ced4da;
+                                      }
+                  
+                                      .form-control:focus {
+                                          border-color: #007bff;
+                                          box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+                                      }
+                  
+                                      .input-group-text {
+                                          background-color: #fff;
+                                          border: 1px solid #ced4da;
+                                          border-right: 0;
+                                      }
+                  
+                                      .custom-control-label {
+                                          cursor: pointer;
+                                      }
+                  
+                                      /* CSS để tùy chỉnh giao diện dropdown giống hình ảnh */
+                                      .custom-select {
+                                          position: relative;
+                                          appearance: none;
+                                          -webkit-appearance: none;
+                                          -moz-appearance: none;
+                                          background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>') no-repeat right 10px center;
+                                          background-size: 12px;
+                                          padding-right: 30px;
+                                      }
+                  
+                                      .custom-select:focus {
+                                          border-color: #007bff;
+                                          box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+                                      }
+                  
+                                      /* Tùy chỉnh menu dropdown */
+                                      select.custom-select {
+                                          max-height: 40px;
+                                      }
+                  
+                                      select.custom-select option {
+                                          padding: 8px 10px;
+                                          font-size: 14px;
+                                      }
+                  
+                                      /* Thanh cuộn cho dropdown */
+                                      select.custom-select::-webkit-scrollbar {
+                                          width: 8px;
+                                      }
+                  
+                                      select.custom-select::-webkit-scrollbar-track {
+                                          background: #f1f1f1;
+                                          border-radius: 10px;
+                                      }
+                  
+                                      select.custom-select::-webkit-scrollbar-thumb {
+                                          background: #888;
+                                          border-radius: 10px;
+                                      }
+                  
+                                      select.custom-select::-webkit-scrollbar-thumb:hover {
+                                          background: #555;
+                                      }
+                                  </style>
     <!-- Bắt đầu Tiêu Đề Trang -->
     <div class="tf-breadcrumb">
         <div class="container">
@@ -207,7 +317,7 @@
                             <div class="cart-item d-flex align-items-center justify-content-between py-2 border-bottom">
                                 <div class="d-flex align-items-center">
                                     <img src="{{ asset('storage/' . ($item['image'] ?? 'default.jpg')) }}" alt=""
-                                        class="item-image me-3">
+                                        class="item-image me-3" style="width: 100px; height: fit-content;">
                                     <div>
                                         <p class="mb-1 fw-semibold">{{ $item['name'] }}</p>
                                         @if (isset($item['variant']) && isset($item['variant']['attributes']) && count($item['variant']['attributes']) > 0)
@@ -295,9 +405,11 @@
                         <input type="hidden" name="shipping_district" id="vnpay-shipping_district">
                         <input type="hidden" name="shipping_ward" id="vnpay-shipping_ward">
                         <input type="hidden" name="shipping_note" id="vnpay-shipping_note">
-                        <button type="submit" class="btn btn-primary btn-payment w-100 mt-3">
-                            Thanh toán bằng VNPay
-                        </button>
+                        <button type="submit" class="btn btn-primary btn-payment w-100 mt-3 custom-hover" style="background-color: black; color: white; border: none;">
+    Thanh toán bằng VNPay
+</button>
+
+
                     </form>
                 </div>
 
@@ -308,110 +420,7 @@
                     </button>
                 </div>
 
-                <style>
-   .btn-payment {
-    font-size: 20px;
-    font-weight: 450; /* Giảm độ đậm của chữ */
-    font-family: 'Roboto', sans-serif; /* Thêm font mảnh mai */
-    padding: 12px;
-    text-align: center;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    color: black;
-    border: 2px solid #000;
-    letter-spacing: 0.5px; /* Thêm khoảng cách giữa các chữ */
-}
-                    .btn-payment.btn-primary {
-                        background-color: white;
-                        border-color: black;
-                        border: 1px solid #000; /* Thêm viền màu đen */
-                    }
-
-                    .btn-payment.btn-primary:hover {
-                        background-color: #101828;
-                        border-color: #101828;
-                    }
-
-                    .btn-payment.btn-success {
-                        background-color: white;
-                        border-color: black;
-                        border: 1px solid #000; /* Thêm viền màu đen */
-                    }
-
-                    .btn-payment.btn-success:hover {
-                        background-color: #101828;
-                        border-color: #101828;
-                    }
-
-                    .w-100 {
-                        width: 100%;
-                    }
-
-                    .form-control {
-                        border-radius: 5px;
-                        border: 1px solid #ced4da;
-                    }
-
-                    .form-control:focus {
-                        border-color: #007bff;
-                        box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-                    }
-
-                    .input-group-text {
-                        background-color: #fff;
-                        border: 1px solid #ced4da;
-                        border-right: 0;
-                    }
-
-                    .custom-control-label {
-                        cursor: pointer;
-                    }
-
-                    /* CSS để tùy chỉnh giao diện dropdown giống hình ảnh */
-                    .custom-select {
-                        position: relative;
-                        appearance: none;
-                        -webkit-appearance: none;
-                        -moz-appearance: none;
-                        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>') no-repeat right 10px center;
-                        background-size: 12px;
-                        padding-right: 30px;
-                    }
-
-                    .custom-select:focus {
-                        border-color: #007bff;
-                        box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-                    }
-
-                    /* Tùy chỉnh menu dropdown */
-                    select.custom-select {
-                        max-height: 40px;
-                    }
-
-                    select.custom-select option {
-                        padding: 8px 10px;
-                        font-size: 14px;
-                    }
-
-                    /* Thanh cuộn cho dropdown */
-                    select.custom-select::-webkit-scrollbar {
-                        width: 8px;
-                    }
-
-                    select.custom-select::-webkit-scrollbar-track {
-                        background: #f1f1f1;
-                        border-radius: 10px;
-                    }
-
-                    select.custom-select::-webkit-scrollbar-thumb {
-                        background: #888;
-                        border-radius: 10px;
-                    }
-
-                    select.custom-select::-webkit-scrollbar-thumb:hover {
-                        background: #555;
-                    }
-                </style>
+             
             </div>
         </div>
     </div>

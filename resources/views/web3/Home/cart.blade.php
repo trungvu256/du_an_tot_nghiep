@@ -1,21 +1,107 @@
 @extends('web3.layout.master2')
 
 @section('content')
+<style>
+ 
+ .table-info, .table-info th {
+    background-color:  #101828 !important;
+    color: white !important;
+}
+
+    .custom-hover:hover {
+    background-color: red !important;
+    color: white !important;
+    border: 2px solid black !important;
+}
+    .button-custom-hover:hover {
+    background-color:  #101828 !important;
+    color: white !important;
+    border: 2px solid  #101828 !important;
+    font-weight: 500 !important;
+}
+.flex-button {
+    flex: 1 1 250px;
+    max-width: 300px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-custom-hover:hover, .custom-hover:hover {
+    background-color: black !important;
+    color: white !important;
+    border: 2px solid black !important;
+}
+
+@media (max-width: 576px) {
+    .flex-button {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+}
+.flex-button {
+    flex: 1 1 500px;
+    max-width: 600px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-hover:hover {
+    background-color:  #101828 !important;
+    color: white !important;
+    border: 2px solid  #101828 !important;
+}
+
+@media (max-width: 576px) {
+    .flex-button {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+}
+
+</style>
+<div class="tf-breadcrumb">
+            <div class="container">
+                <ul class="breadcrumb-list">
+                    <li class="item-breadcrumb">
+                        <a href="/" class="text">Trang chủ</a>
+                    </li>
+                    <li class="item-breadcrumb dot">
+                        <span></span>
+                    </li>
+                    <li class="item-breadcrumb">
+                        <span class="text">Giỏ hàng</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /Breadcrumb -->
+
+
+
+        <!-- Title Page -->
+
     <div class="container-fluid pt-5">
+        
         <div class="row px-xl-5">
             <div class="col-lg-8 table-responsive mb-5">
                 <form id="cart-items-form">
                     <table class="table table-bordered text-center mb-3">
-                        <thead>
-                            <tr class="table-info">
-                                <th>Chọn</th>
-                                <th>Sản phẩm</th>
-                                <th>Giá</th>
-                                <th>Số lượng</th>
-                                <th>Tổng cộng</th>
-                                <th>Xóa</th>
-                            </tr>
-                        </thead>
+                    <thead>
+    <tr class="table-info">
+        <th>Chọn</th>
+        <th>Sản phẩm</th>
+        <th>Giá</th>
+        <th>Số lượng</th>
+        <th>Tổng cộng</th>
+        <th>Xóa</th>
+    </tr>
+</thead>
+
+
                         <tbody class="align-middle">
                             @foreach (session('cart', []) as $cartKey => $item)
                                 <tr id="cart-item-{{ $cartKey }}">
@@ -25,7 +111,7 @@
                                     </td>
                                     <td class="align-middle">
                                         <div class="d-flex align-items-center">
-                                            <img src="{{ asset('storage/' . ($item['image'] ?? 'default.jpg')) }}" alt="" style="width: 50px; margin-right: 10px;">
+                                            <img src="{{ asset('storage/' . ($item['image'] ?? 'default.jpg')) }}" alt="" style="width: 100px; margin-right: 10px;">
                                             <div>
                                                 <p class="mb-1"><strong>{{ Str::limit($item['name'], 20) }}</strong></p>
                                                 @if (isset($item['variant']) && isset($item['variant']['attributes']) && count($item['variant']['attributes']) > 0)
@@ -60,7 +146,7 @@
                                             </button>
                                             <input type="text"
                                                 class="form-control form-control-sm text-center bg-light quantity-display"
-                                                style="width: 50px; height: 35px;" id="quantity-display-{{ $cartKey }}"
+                                                style="width: 100px; height: 35px;" id="quantity-display-{{ $cartKey }}"
                                                 value="{{ $item['quantity'] }}">
                                             <button type="button" class="btn btn-sm btn-outline-secondary btn-plus"
                                                 data-cart-key="{{ $cartKey }}" data-action="increase">
@@ -88,16 +174,18 @@
                                         @endif
                                     </td> --}}
                                     <td class="align-middle">
-                                        <button type="button" class="btn btn-sm btn-danger btn-remove-item"
-                                            data-cart-key="{{ $cartKey }}">
-                                            x
-                                        </button>
+                                    <button type="button" class="btn btn-sm btn-remove-item custom-hover" data-cart-key="{{ $cartKey }}" style="border: 2px solid black; background-color: white; color:  #101828;">
+    x
+</button>
+
+
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
-                    <a href="{{ route('web.shop') }}" class="btn btn-outline-success">Mua thêm</a>
+                   
+
                 </form>
             </div>
 
@@ -132,14 +220,19 @@
                 ?>
 
                 <div class="card mb-3">
-                    <div class="card-header" style="background-color: #cff4fc;">
-                        <h6 class="m-0 text-center">Tóm tắt giỏ hàng</h6>
+                    <div class="card-header" style="background-color:white;">
+                    <h6 class="m-0 text-center" style="font-size: 1.25rem; font-weight: 500;">
+    Tóm tắt giỏ hàng
+</h6>
                     </div>
                     <div class="card-footer bg-transparent">
                         <div class="d-flex justify-content-between">
-                            <h6>Tạm tính :</h6>
+                        <h6 style="font-size: 1.25rem; font-weight: 400;">
+    Tạm tính :
+</h6>
+                          
                             <h6 class="font-weight-medium" id="summary-subtotal">
-                                {{ number_format($subtotal, 0, ',', '.') }}₫</h6>
+                                {{ number_format($subtotal, 0, ',', '.') }}đ</h6>
                         </div>
                         <div id="discount-container">
                             @php
@@ -157,7 +250,9 @@
                     </div>
                     <div class="card-footer bg-transparent">
                         <div class="d-flex justify-content-between">
-                            <h6>Tổng cộng :</h6>
+                        <h6 style="font-size: 1.25rem; font-weight: 400;">
+    Tổng cộng :
+</h6>
                             <h6 class="font-weight-bold" id="summary-total">0₫</h6>
                         </div>
                     </div>
@@ -169,16 +264,26 @@
                             <input type="hidden" name="discount" id="discount" value="0">
                             <input type="hidden" name="total" id="total" value="0">
 
-                            <button type="submit" class="btn btn-block btn-info my-1 py-2 button-custom-hover" style="background-color: #cff4fc;">
-                                Tiến hành thanh toán
-                            </button>
+                            <div class="d-flex justify-content-center gap-2 flex-wrap">
+    <button type="submit" class="btn btn-block btn-info my-1 py-2 button-custom-hover flex-button" style="border: 2px solid black; color: white; background-color:  #101828;">
+        MUA NGAY
+    </button>
+    <a href="{{ route('web.shop') }}" class="btn btn-outline-success custom-hover flex-button" style="border: 2px solid black; color: black; text-decoration: none;">
+        TIẾP TỤC MUA HÀNG
+    </a>
+</div>
+
+
                         </form>
                     </div>
                 </div>
                 <div class=" text-center">
-                    <button type="button" style="width:100%;" class="btn btn-outline-success mb-2" id="viewPromotionsBtn">
-                        <i class="fa fa-tag"></i> Xem mã khuyến mãi có thể áp dụng
-                    </button>
+                <div class="d-flex justify-content-center">
+    <button type="button" class="btn btn-outline-success mb-2 custom-hover flex-button" style="border: 2px solid black; color: black;" id="viewPromotionsBtn">
+        <i class="fa fa-tag"></i> Xem mã khuyến mãi có thể áp dụng
+    </button>
+</div>
+
                 </div>
             </div>
         </div>
