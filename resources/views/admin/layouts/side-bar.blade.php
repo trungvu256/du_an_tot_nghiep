@@ -72,23 +72,14 @@
                         </ul>
                     </div>
                 </li>
-                <!-- Vận chuyển -->
+                <!-- Chat -->
 
-                {{-- <li class="nav-item">
-                    <a class="nav-link menu-link" href="#menuShipping" data-bs-toggle="collapse" role="button">
-                        <i class="ri-truck-line"></i> <span>Vận chuyển</span>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="{{route('chat.index')}}" >
+                        <i class="bi bi-chat-dots-fill"></i> <span>Chat</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="menuShipping">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.shipping.overview') }}" class="nav-link">Tổng quan</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('admin.shipping.orders') }}" class="nav-link">Vận đơn</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li> --}}
+                    
+                </li>
 
                 <!--Danh mục -->
                 <li class="nav-item">

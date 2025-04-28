@@ -52,7 +52,7 @@ class OrderController extends Controller
     }
 
     // Lấy dữ liệu với phân trang
-    $orders = $query->paginate(10);
+    $orders = $query->paginate(5);
 
     // Truyền dữ liệu vào view
     return view('web3.Home.order', compact('orders', 'categories'));

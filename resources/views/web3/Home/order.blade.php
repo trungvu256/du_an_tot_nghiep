@@ -19,7 +19,7 @@
         <div class="mb-3">
             <form action="{{ route('donhang.index') }}" method="GET" class="d-flex">
                 <input type="text" name="query" class="form-control me-2 px-4"
-                    placeholder="🔍 Bạn có thể tìm kiếm theo tên Shop, ID đơn hàng hoặc Tên Sản phẩm"
+                    placeholder="Bạn có thể tìm kiếm theo mã đơn hàng "
                     value="{{ request('query') }}" style="border-radius: 5px;">
             </form>
         </div>
@@ -183,19 +183,19 @@
                         </div>
                         <div>
                             @if ($order->status == 0)
-                                <span class="badge bg-warning status-badge">⏳ Chờ xác nhận</span>
+                                <span class="badge bg-warning status-badge"> Chờ xác nhận</span>
                             @elseif ($order->status == 1)
-                                <span class="badge bg-info status-badge">📦 Chờ lấy hàng</span>
+                                <span class="badge bg-info status-badge">Chờ lấy hàng</span>
                             @elseif ($order->status == 2)
-                                <span class="badge bg-secondary status-badge">🚚 Chờ giao hàng</span>
+                                <span class="badge bg-secondary status-badge">Chờ giao hàng</span>
                             @elseif ($order->status == 3)
-                                <span class="badge bg-success status-badge">✅ Đã giao</span>
+                                <span class="badge bg-success status-badge">Đã giao</span>
                             @elseif ($order->status == 4)
-                                <span class="badge bg-dark status-badge">🏁 Hoàn tất</span>
+                                <span class="badge bg-dark status-badge">Hoàn tất</span>
                             @elseif ($order->status == 5)
-                                <span class="badge bg-danger status-badge">❌ Đã hủy</span>
+                                <span class="badge bg-danger status-badge">Đã hủy</span>
                             @elseif ($order->status == 6)
-                                <span class="badge bg-secondary status-badge">↩️ Trả hàng</span>
+                                <span class="badge bg-secondary status-badge">Trả hàng</span>
                             @endif
                         </div>
                     </div>

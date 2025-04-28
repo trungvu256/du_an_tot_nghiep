@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
 {
-    protected $fillable = ['sender_id', 'receiver_id', 'message', 'is_read'];
+    protected $fillable = ['sender_id', 'receiver_id', 'message', 'is_read','image_urls'];
 
     public function sender()
     {
@@ -17,6 +17,11 @@ class Message extends Model
     public function receiver()
     {
         return $this->belongsTo(User::class, 'receiver_id');
+    }
+
+    public function getImageUrlsAttribute($value)
+    {
+        return $value ? json_decode($value, true) : [];
     }
 }
 
