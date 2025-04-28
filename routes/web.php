@@ -421,10 +421,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/order/{id}/continue-payment', [CheckoutController::class, 'continuePayment'])->name('order.continuePayment');
         Route::post('/checkout/ofline', [CheckoutController::class, 'offline'])->name('checkout.offline');
     });
-    //đánh giá
-    
+
+
+
 
     Route::prefix('donhang')->middleware('auth')->group(function () {
+
 
     // THông tin địa chỉ
      Route::prefix('address')->group(function () {
@@ -435,7 +437,6 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::prefix('donhang')->group(function () {
-
         Route::get('/', [WebOrderController::class, 'index'])->name('donhang.index');
         Route::get('/show/{id}', [WebOrderController::class, 'show'])->name('donhang.show');
         // Route hủy đơn hàng
@@ -446,7 +447,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('order/{id}/returned', [WebOrderController::class, 'returned'])->name('order.returned');
         // Route yêu cầu trả hàng
         Route::post('order/{id}/request-return', [WebOrderController::class, 'requestReturn'])->name('order.requestReturn');
-        
     });
 
 
@@ -510,6 +510,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/chat/unread/count', [ChatController::class, 'getUnreadCount']);
     Route::post('/chat/send', [ChatController::class, 'sendMessage']);
 });
+
+
+// Route::get('/products/{product}/check-review', [WebProductController::class, 'checkReview'])->name('products.checkReview');
+// Route::get('/products/{product}/get-review', [WebProductController::class, 'getReview'])->name('products.getReview');
 
 //reset pass
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendOtp'])->name('password.email');

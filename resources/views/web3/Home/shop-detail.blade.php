@@ -225,7 +225,7 @@
                                     </form>
 
                                     <!-- Các hành động phụ -->
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -1218,7 +1218,7 @@
             // Thêm hàm addToCart vào cuối file
             function addToCart(event) {
                 event.preventDefault();
-                
+
                 // Kiểm tra xem đã chọn biến thể chưa
                 const selectedAttributesInput = document.getElementById('selectedAttributes');
                 if (!selectedAttributesInput.value) {
@@ -1258,12 +1258,12 @@
                                 if (cartCountElement) {
                                     cartCountElement.textContent = response.cartCount;
                                 }
-                                
+
                                 // Sử dụng hàm toàn cục để cập nhật số lượng
                                 if (typeof updateCartCount === 'function') {
                                     updateCartCount(response.cartCount);
                                 }
-                                
+
                                 // Tạo sự kiện cập nhật giỏ hàng để menu có thể lắng nghe
                                 $(document).trigger('cartUpdated', { cartCount: response.cartCount });
                             }
@@ -1291,7 +1291,7 @@
                         if (xhr.responseJSON && xhr.responseJSON.message) {
                             errorMessage = xhr.responseJSON.message;
                         }
-                        
+
                         Swal.fire({
                             icon: 'error',
                             title: 'Có lỗi xảy ra!',
@@ -1306,7 +1306,7 @@
             function removeFromCart(event, key) {
                 event.preventDefault();
                 const form = event.target.closest('form');
-                
+
                 $.ajax({
                     url: form.action,
                     method: 'POST',
@@ -1321,12 +1321,12 @@
                                 if (cartCountElement) {
                                     cartCountElement.textContent = response.cartCount;
                                 }
-                                
+
                                 // Sử dụng hàm toàn cục để cập nhật số lượng
                                 if (typeof updateCartCount === 'function') {
                                     updateCartCount(response.cartCount);
                                 }
-                                
+
                                 // Tạo sự kiện cập nhật giỏ hàng để menu có thể lắng nghe
                                 $(document).trigger('cartUpdated', { cartCount: response.cartCount });
                             }
