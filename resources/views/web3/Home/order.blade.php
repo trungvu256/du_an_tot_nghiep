@@ -1,5 +1,26 @@
 @extends('web3.layout.master2')
 @section('content')
+<div class="tf-breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb-list">
+                <li class="item-breadcrumb">
+                    <a href="{{ route('web.home') }}" class="text">Trang chủ</a>
+                </li>
+                <li class="item-breadcrumb dot">
+                    <span></span>
+                </li>
+                <li class="item-breadcrumb">
+                <a href="{{ route('cart.viewCart') }}" class="text">Giỏ hàng</a>
+                </li>
+                <li class="item-breadcrumb dot">
+                    <span></span>
+                </li>
+                <li class="item-breadcrumb">
+                <a href="" class="text">Danh sách dơn hàng</a>
+                </li>
+            </ul>
+        </div>
+    </div>
     <div class="container mt-4">
         <!--Thông báo-->
         {{-- @if (session('success'))
@@ -40,11 +61,19 @@
                 <div class="mb-3">
                     <i class="fas fa-shopping-bag fa-3x text-muted"></i>
                 </div>
-                <h4 class="text-muted">Bạn chưa có đơn hàng nào</h4>
+                <h6 class="text-muted">Bạn chưa có đơn hàng nào</h6>
                 <p class="text-muted">Hãy mua sắm để có đơn hàng đầu tiên của bạn!</p>
-                <a href="{{ route('web.shop') }}" class="btn btn-primary mt-3">
-                    <i class="fas fa-shopping-cart me-2"></i>Mua sắm ngay
-                </a>
+                <a href="{{ route('web.shop') }}" class="btn btn-light border-dark text-dark mt-3 hover-shop">
+    <i class="fas fa-shopping-cart me-2"></i>Mua sắm ngay
+</a>
+<style>
+    .hover-shop:hover {
+    background-color: #101828 !important;
+    color: #fff !important;
+    border-color: #101828 !important;
+}
+
+</style>
             </div>
         @else
             <style>
@@ -179,7 +208,8 @@
                             <a href="#" class="me-3">{{ $order->user->name ?? 'Shop Name' }}</a>
                             <a href="#" class="me-3">Mã đơn: #{{ $order->order_code }}</a>
                             <a href="#" class="btn btn-outline-secondary btn-sm me-2">Chat</a>
-                            <a href="#" class="btn btn-outline-secondary btn-sm">Xem Shop</a>
+                            <a href="{{ route('web.shop') }}" class="btn btn-outline-secondary btn-sm">Xem Shop</a>
+                            <a href="{{ route('donhang.show', $order->id) }}" class="btn btn-outline-secondary btn-sm">Chi tiết đơn hàng</a>
                         </div>
                         <div>
                             @if ($order->status == 0)
@@ -204,7 +234,10 @@
                     @foreach ($order->orderItems as $item)
                     <a href="{{ route('donhang.show', $order->id) }}" class="d-block">
                         <div class="order-item d-flex align-items-center">
-                                <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product->name }}">
+                        <img src="{{ asset('storage/' . $item->product->image) }}"
+     alt="{{ $item->product->name }}"
+     style="width: 100px; height: 100px; object-fit: cover;">
+
                                 <div class="order-item-details">
                                     <p class="fw-semibold">{{ $item->product->name }}</p>
                                         <span class="text-muted">
