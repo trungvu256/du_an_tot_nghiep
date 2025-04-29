@@ -537,9 +537,9 @@
 
             /* Active Variant Button */
             .variant-option.active {
-                background-color: #007bff;
+                background-color:rgb(243, 126, 80);
                 color: white;
-                border-color: #007bff;
+                border-color: rgb(243, 126, 80);
             }
 
             /* Responsive */
