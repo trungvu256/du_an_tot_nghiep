@@ -129,23 +129,85 @@
                     <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas"
                         aria-label="Close"></button>
                 </div>
-                <div class="user-info fs-5">
-                    <hr>
-                    <li><a onmouseover="this.style.color='#ff6f61'" onmouseout="this.style.color='black'"
-                            href="{{ route('profile') }}"><i class="icon icon-user"></i> Thông tin cá nhân</a>
-                    </li>
-                    <hr>
-                    <li><a onmouseover="this.style.color='#ff6f61'" onmouseout="this.style.color='black'"
-                            href="{{ route('donhang.index') }}"><i class="icon icon-cart"></i> Đơn hàng của bạn</a>
-                    </li>
-                    <hr>
-                    <li><a onmouseover="this.style.color='#ff6f61'" onmouseout="this.style.color='black'"
-                            href="{{ route('address.index') }}"><i class="bi bi-geo-alt"></i> Địa chỉ của bạn</a>
-                    </li>
-                    <hr>
-                    <li><a href="{{ route('web.logout') }}" class="btn btn-danger"><i
-                                class="bi bi-box-arrow-left"></i> Đăng xuất</a></li>
-                </div>
+                <div class="user-info">
+    <ul class="list-unstyled">
+        <li>
+            <a href="{{ route('profile') }}" class="user-info-link">
+                <i class="bi bi-person"></i> Thông tin cá nhân
+            </a>
+        </li>
+        <hr>
+        <li>
+            <a href="{{ route('donhang.index') }}" class="user-info-link">
+                <i class="bi bi-cart"></i> Đơn hàng của bạn
+            </a>
+        </li>
+        <hr>
+        <li>
+            <a href="{{ route('address.index') }}" class="user-info-link">
+                <i class="bi bi-geo-alt"></i> Địa chỉ của bạn
+            </a>
+        </li>
+        <hr>
+        <li>
+        <a href="{{ route('web.logout') }}" class="btn btn-light border-dark text-dark btn-sm w-100 hover-logout">
+     ĐĂNG XUẤT
+</a>
+
+        </li>
+    </ul>
+</div>
+<style>
+    .hover-logout:hover {
+    background-color: #000 !important;
+    color: #fff !important;
+    border-color: #000 !important;
+}
+
+    .user-info {
+    font-size: 0.9rem; /* Smaller font size */
+    padding: 10px;
+    background-color: #f8f9fa; /* Light background for better contrast */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.user-info ul {
+    margin: 0;
+    padding: 0;
+}
+
+.user-info hr {
+    margin: 0.5rem 0; /* Reduced margin for tighter spacing */
+    border-color: #dee2e6; /* Light divider */
+}
+
+.user-info-link {
+    display: flex;
+    align-items: center;
+    color: #333; /* Darker text for readability */
+    text-decoration: none;
+    padding: 8px 10px;
+    transition: color 0.3s ease, background-color 0.3s ease; /* Smooth hover transition */
+}
+
+.user-info-link:hover {
+    color: #ff6f61; /* Hover color */
+    background-color: #e9ecef; /* Light background on hover */
+    border-radius: 5px; /* Rounded hover effect */
+}
+
+.user-info-link i {
+    margin-right: 8px; /* Space between icon and text */
+    font-size: 1rem; /* Consistent icon size */
+}
+
+.btn-danger {
+    font-size: 0.85rem; /* Smaller button text */
+    padding: 8px; /* Compact button */
+    transition: background-color 0.3s ease; /* Smooth button hover */
+}
+</style>
             @else
                 {{-- Form đăng nhập --}}
                 <div class="canvas-header popup-header">
