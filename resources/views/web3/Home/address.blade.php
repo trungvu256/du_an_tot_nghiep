@@ -38,45 +38,83 @@
         </div>
     </div>
 
-    <div class="address-section mt-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="fw-bold text-uppercase" style="font-size: 24px; color: #333;">Địa chỉ của bạn</h4>
-            <button class="btn btn-add-address" data-bs-toggle="modal" data-bs-target="#addAddressModal">
-                Thêm địa chỉ
-            </button>
+    <div class="container">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3" >
+            <div class="user-info">
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="{{ route('profile') }}" class="user-info-link">
+                            <i class="bi bi-person"></i> Thông tin cá nhân
+                        </a>
+                    </li>
+                    <hr>
+                    <li>
+                        <a href="{{ route('donhang.index') }}" class="user-info-link">
+                            <i class="bi bi-cart"></i> Đơn hàng của bạn
+                        </a>
+                    </li>
+                    <hr>
+                    <li>
+                        <a href="{{ route('address.index') }}" class="user-info-link">
+                            <i class="bi bi-geo-alt"></i> Địa chỉ của bạn
+                        </a>
+                    </li>
+                    <hr>
+                    <li>
+                        <a href="{{ route('web.logout') }}" class="btn btn-light border-dark text-dark btn-sm w-100 hover-logout">
+                            ĐĂNG XUẤT
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
 
-        @forelse ($addresses as $address)
-            <div class="address-item mb-3 p-3 border rounded d-flex justify-content-between align-items-start">
-                <div>
-                    <p class="mb-1">
-                        <strong>Họ tên:</strong> {{ $address->full_name }}
-                        @if($address->is_default)
-                            <span class="text-success ms-2">(Địa chỉ mặc định)</span>
-                        @endif
-                    </p>
-                    <p class="mb-1"><strong>Địa chỉ:</strong> {{ $address->full_address }}</p>
-                    <p class="mb-1"><strong>Số điện thoại:</strong> {{ $address->phone }}</p>
-                </div>
-                <div class="d-flex gap-3">
-                    <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#editAddressModal{{ $address->id }}">Chỉnh sửa địa chỉ</a>
-                    <form action="{{ route('addresses.destroy', $address->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc muốn xoá địa chỉ này không?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="text-danger btn btn-link p-0 m-0">Xóa</button>
-                    </form>
-                </div>
-            </div>
+        <!-- Address Section -->
+        <div class="col-md-9">
+            <div class="address-section mt-5">
+                <div class="d-flex justify-content-between align-items-center mb-4 " style="margin-top: 0px;">
+                    <h6 class=" text-uppercase" style="font-size: 24px; color: #333;">Địa chỉ của bạn</h6>
+                    <button class="btn"
+    data-bs-toggle="modal" data-bs-target="#addAddressModal"
+    style="background-color: white; color: black; border: 1px solid black;"
+    onmouseover="this.style.backgroundColor='black'; this.style.color='white';"
+    onmouseout="this.style.backgroundColor='white'; this.style.color='black';">
+    Thêm địa chỉ
+</button>
 
-            <!-- Modal Form Chỉnh Sửa Địa Chỉ -->
-            <div class="modal fade" id="editAddressModal{{ $address->id }}" tabindex="-1" aria-labelledby="editAddressModalLabel{{ $address->id }}" aria-hidden="true" data-bs-backdrop="false">
+                </div>
+
+                @forelse ($addresses as $address)
+                    <div class="address-item mb-3 p-3 border rounded d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="mb-1">
+                                <strong>Họ tên:</strong> {{ $address->full_name }}
+                                @if($address->is_default)
+                                    <span class="text-success ms-2">(Địa chỉ mặc định)</span>
+                                @endif
+                            </p>
+                            <p class="mb-1"><strong>Địa chỉ:</strong> {{ $address->full_address }}</p>
+                            <p class="mb-1"><strong>Số điện thoại:</strong> {{ $address->phone }}</p>
+                        </div>
+                        <div class="d-flex gap-3">
+                            <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#editAddressModal{{ $address->id }}">Chỉnh sửa địa chỉ</a>
+                            <form action="{{ route('addresses.destroy', $address->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc muốn xoá địa chỉ này không?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-danger btn btn-link p-0 m-0">Xóa</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="editAddressModal{{ $address->id }}" tabindex="-1" aria-labelledby="editAddressModalLabel{{ $address->id }}" aria-hidden="true" data-bs-backdrop="false">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <form action="{{ route('addresses.edit', $address->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="modal-header">
-                                <h5 class="modal-title fw-bold" id="editAddressModalLabel{{ $address->id }}">Chỉnh sửa địa chỉ</h5>
+                                <h6 class="modal-title " id="editAddressModalLabel{{ $address->id }}">Chỉnh sửa địa chỉ</h6>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -144,16 +182,26 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
-                                <button type="submit" class="btn btn-success">Cập nhật địa chỉ</button>
+                                <button type="submit"
+    class="btn"
+    style="background-color: black; color: white; border: 1px solid black; font-weight: 400;"
+    onmouseover="this.style.fontWeight='500';"
+    onmouseout="this.style.fontWeight='400';">
+    Cập nhật địa chỉ
+</button>
+
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-        @empty
-            <p class="text-muted">Chưa có địa chỉ nào. Vui lòng thêm địa chỉ mới!</p>
-        @endforelse
+                @empty
+                    <p class="text-muted">Chưa có địa chỉ nào. Vui lòng thêm địa chỉ mới!</p>
+                @endforelse
+            </div>
+        </div>
     </div>
+</div>
 
     <!-- Modal Form Thêm Địa Chỉ -->
     <div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true" data-bs-backdrop="false">
@@ -162,7 +210,7 @@
                 <form action="{{ route('address.store') }}" method="POST">
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title fw-bold">Thêm địa chỉ mới</h5>
+                        <h6 class="modal-title ">Thêm địa chỉ mới</h6>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -230,7 +278,17 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
-                        <button type="submit" class="btn btn-success">Thêm địa chỉ</button>
+                        <button type="submit"
+    class="btn"
+    style="background-color: black; color: white; border: 1px solid black; font-weight: 400;"
+    onmouseover="this.style.fontWeight='500';"
+    onmouseout="this.style.fontWeight='400';">
+    Thêm địa chỉ
+</button>
+
+
+
+
                     </div>
                 </form>
             </div>

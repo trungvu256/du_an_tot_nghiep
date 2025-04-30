@@ -129,9 +129,9 @@
                                         data-price="{{ isset($item['price_sale']) && $item['price_sale'] > 0 ? $item['price_sale'] : $item['price'] }}"
                                         id="price-{{ $cartKey }}">
                                         @if (isset($item['price_sale']) && $item['price_sale'] > 0)
-                                            {{ number_format($item['price_sale'], 0, ',', '.') }}VNĐ
+                                            {{ number_format($item['price_sale'], 0, ',', '.') }}₫
                                         @else
-                                            {{ number_format($item['price'], 0, ',', '.') }}VNĐ
+                                            {{ number_format($item['price'], 0, ',', '.') }}₫
                                         @endif
                                     </td>
                                     <td class="align-middle">
@@ -162,7 +162,7 @@
                                                     : $item['price'];
                                             $total = $finalPrice * (int) $item['quantity'];
                                         @endphp
-                                        {{ number_format($total, 0, ',', '.') }}VNĐ
+                                        {{ number_format($total, 0, ',', '.') }}₫
                                     </td>
                                     {{-- <td class="align-middle">
                                         @if (isset($item['variant']) && isset($item['variant']['attributes']) && count($item['variant']['attributes']) > 0)
@@ -232,7 +232,7 @@
 </h6>
                           
                             <h6 class="font-weight-medium" id="summary-subtotal">
-                                {{ number_format($subtotal, 0, ',', '.') }}đ</h6>
+                                {{ number_format($subtotal, 0, ',', '.') }}₫</h6>
                         </div>
                         <div id="discount-container">
                             @php
@@ -743,7 +743,7 @@
                     typeText = 'Số tiền cố định';
                     const discountValue = parseFloat(promotion.discount_value);
                     console.log('Parsed discount value:', discountValue);
-                    valueText = discountValue ? formatCurrency(discountValue) + ' VNĐ' : '0 VNĐ';
+                    valueText = discountValue ? formatCurrency(discountValue) + ' ₫' : '0 ₫';
                 }
 
                 // Định dạng điều kiện
