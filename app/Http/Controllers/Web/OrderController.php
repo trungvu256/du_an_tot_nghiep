@@ -107,6 +107,14 @@ class OrderController extends Controller
         ], 404);
     }
 
+    // Kiểm tra nếu đơn hàng đã thanh toán qua VNPay thì không cho phép huỷ hàng
+    if ($order->payment_status == 1 && $order->payment_method == 1) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Đơn hàng đã thanh toán qua VNPay không được phép huỷ đơn!'
+        ], 400);
+    }
+
     // Kiểm tra trạng thái đơn hàng
     if ($order->status == 0 || $order->status == 1) {
         try {
