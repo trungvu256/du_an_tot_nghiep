@@ -49,4 +49,11 @@ class ProductReviewController extends Controller
             return redirect()->route('product-reviews.index')->with('error', 'Có lỗi xảy ra khi gửi phản hồi.');
         }
     }
+
+    // Xem chi tiết đánh giá
+    public function show($id)
+    {
+        $review = ProductReview::with(['user', 'product', 'variant', 'order'])->findOrFail($id);
+        return view('admin.product_reviews.show', compact('review'));
+    }
 }

@@ -26,6 +26,7 @@ class Order extends Model
     const PAYMENT_PAID = 1;      // Đã thanh toán
     const PAYMENT_COD = 2;       // Thanh toán khi nhận hàng
     const PAYMENT_REFUNDED = 3;  // Đã hoàn tiền
+    const PAYMENT_Fail = 0;
 
     // Payment Method Constants
     const PAYMENT_METHOD_COD = 0;    // Thanh toán khi nhận hàng (COD)

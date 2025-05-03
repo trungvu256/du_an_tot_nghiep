@@ -38,6 +38,7 @@ class WebController extends Controller
 
     public function shop(Request $request)
     {
+        $users = User::all();
         $query = Product::query()->where('status', 1)->with(['variants', 'brand']);
         $productNews = Product::where('status', 1)->orderBy('id', 'DESC')->take(4)->get();
         // Lấy danh mục & hãng
@@ -184,7 +185,8 @@ class WebController extends Controller
             'brands',
             'productNews',
             'selectedCategory',  // Truyền tên danh mục vào view
-            'selectedBrand'
+            'selectedBrand',
+            'users'
         ));
     }
 
@@ -220,13 +222,15 @@ class WebController extends Controller
 
     public function contact()
     {
+        $users = User::all();
         $categories = Catalogue::all();
-        return view('web3.Home.contact', compact('categories'));
+        return view('web3.Home.contact', compact('categories','users'));
     }
 
     //    Tìm kiếm
     public function search(Request $request)
     {
+        $users = User::all();
         $keyword = $request->input('searchInput');
 
         $products = Product::with('variants') // để lấy giá từng phiên bản
@@ -237,7 +241,7 @@ class WebController extends Controller
             })
             ->paginate(25); // mỗi trang 25 sản phẩm
 
-        return view('web3.Home.search', compact('products', 'keyword'));
+        return view('web3.Home.search', compact('products', 'keyword', 'users'));
     }
 
 

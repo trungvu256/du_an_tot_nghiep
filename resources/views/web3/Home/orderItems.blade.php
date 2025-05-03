@@ -97,6 +97,7 @@
             <th>Trạng thái thanh toán</th>
             <td>
                 @switch($order->payment_status)
+                @case(0) <span class="badge bg-danger">Thanh toán thất bại</span> @break
                 @case(1) <span class="badge bg-success">Đã thanh toán</span> @break
                 @case(2) <span class="badge bg-info">Thanh toán khi nhận hàng</span> @break
                 @case(3) <span class="badge bg-dark">Hoàn tiền</span> @break

@@ -15,9 +15,9 @@ use App\Models\ProductVariant;
 use App\Models\ReviewResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class WebProductController extends Controller
 {
@@ -490,19 +490,141 @@ class WebProductController extends Controller
     //     // Return the search results to a view
     //     return view('client.products.product-search-results', compact('products', 'maxDiscountPrice'));
     // }
+    public function getProductComments($productId)
+    {
+        try {
+            $comments = ProductComment::with(['user', 'replies.user'])
+                ->where('product_id', $productId)
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'comments' => $comments->map(function($comment) {
+                    return [
+                        'id' => $comment->id,
+                        'reply' => $comment->reply,
+                        'user' => [
+                            'name' => $comment->user->name,
+                            'avatar' => $comment->user->avatar
+                        ],
+                        'created_at' => $comment->created_at->format('Y-m-d H:i:s'),
+                        'replies' => $comment->replies->map(function($reply) {
+                            return [
+                                'id' => $reply->id,
+                                'reply' => $reply->reply,
+                                'user' => [
+                                    'name' => $reply->user->name,
+                                    'avatar' => $reply->user->avatar,
+                                    'is_admin' => $reply->user->is_admin
+                                ],
+                                'created_at' => $reply->created_at->format('Y-m-d H:i:s')
+                            ];
+                        })
+                    ];
+                })
+            ]);
+        } catch (\Exception $e) {
+           Log::error('Error getting product comments: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Có lỗi xảy ra khi tải bình luận',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getVariantComments($productId, $variantId)
+    {
+        try {
+            $comments = ProductComment::where('product_id', $productId)
+                ->where('variant_id', $variantId)
+                ->with(['user', 'replies.user'])
+                ->orderBy('created_at', 'desc')
+                ->get()
+                ->map(function ($comment) {
+                    return [
+                        'id' => $comment->id,
+                        'reply' => $comment->reply,
+                        'user' => [
+                            'name' => $comment->user->name,
+                            'avatar' => $comment->user->avatar
+                        ],
+                        'replies' => $comment->replies->map(function($reply) {
+                            return [
+                                'id' => $reply->id,
+                                'reply' => $reply->reply,
+                                'user' => [
+                                    'name' => $reply->user->name,
+                                    'avatar' => $reply->user->avatar,
+                                    'is_admin' => $reply->user->is_admin
+                                ],
+                                'created_at' => $reply->created_at->format('d/m/Y')
+                            ];
+                        }),
+                        'created_at' => $comment->created_at->format('d/m/Y')
+                    ];
+                });
+
+            return response()->json([
+                'success' => true,
+                'comments' => $comments
+            ]);
+        } catch (\Exception $e) {
+           Log::error('Error getting variant comments: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Có lỗi xảy ra khi tải bình luận',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function storeComment(Request $request, $productId)
     {
-        $request->validate([
-            'comment' => 'required|string|max:500',
-        ]);
+        try {
+            if (!auth()->check()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Bạn cần đăng nhập để bình luận'
+                ], 401);
+            }
 
-        ProductComment::create([
-            'product_id' => $productId,
-            'user_id' => Auth::id(),
-            'comment' => $request->input('comment'),
-        ]);
+            $request->validate([
+                'comment' => 'required|string|max:1000',
+                'variant_id' => 'required|exists:product_variants,id'
+            ]);
 
-        return redirect()->back()->with('success', 'Bình luận của bạn đã được thêm!');
+            $comment = ProductComment::create([
+                'product_id' => $productId,
+                'user_id' => auth()->id(),
+                'variant_id' => $request->variant_id,
+                'comment' => $request->comment
+            ]);
+
+            $comment->load(['user']);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Bình luận đã được thêm thành công',
+                'comment' => [
+                    'id' => $comment->id,
+                    'comment' => $comment->comment,
+                    'user' => [
+                        'name' => $comment->user->name,
+                        'avatar' => $comment->user->avatar
+                    ],
+                    'created_at' => $comment->created_at->format('Y-m-d H:i:s'),
+                    'replies' => []
+                ]
+            ]);
+        } catch (\Exception $e) {
+           Log::error('Error storing comment: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Có lỗi xảy ra khi thêm bình luận'
+            ], 500);
+        }
     }
 
     // Phương thức lưu phản hồi bình luận
@@ -688,7 +810,7 @@ class WebProductController extends Controller
                 'errors' => $e->errors()
             ], 422);
         } catch (\Exception $e) {
-            \Log::error('Review creation error: ' . $e->getMessage());
+           Log::error('Review creation error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Có lỗi xảy ra khi thêm đánh giá',
@@ -838,38 +960,135 @@ class WebProductController extends Controller
      * @param int $variantId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getVariantReviews($productId, $variantId)
+    public function getVariantReviews($productId, $variantId, Request $request)
+{
+    try {
+        // Lấy page từ query string
+        $page = $request->query('page', 1);
+
+        // Lấy danh sách reviews với phân trang
+        $reviews = ProductReview::where('product_id', $productId)
+            ->where('variant_id', $variantId)
+            ->with([
+                'user',
+                'responses.user',
+                'variant.product_variant_attributes.attribute',
+                'variant.product_variant_attributes.attributeValue'
+            ])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10, ['*'], 'page', $page);
+
+        // Tính toán summary dựa trên tất cả reviews (không phân trang)
+        $allReviews = ProductReview::where('product_id', $productId)
+            ->where('variant_id', $variantId)
+            ->get();
+
+        $totalReviews = $allReviews->count();
+        $averageRating = $allReviews->avg('rating') ?? 0;
+        $ratingCounts = $allReviews->groupBy('rating')->map->count()->toArray();
+
+        // Định dạng reviews
+        $formattedReviews = $reviews->map(function ($review) {
+            return [
+                'id' => $review->id,
+                'rating' => $review->rating,
+                'review' => $review->review,
+                'images' => is_string($review->images) && json_decode($review->images, true) !== null
+                    ? json_decode($review->images, true)
+                    : (is_array($review->images) ? $review->images : []),
+                'video' => $review->video,
+                'user' => $review->user ? [
+                    'name' => $review->user->name,
+                    'avatar' => $review->user->avatar
+                ] : [
+                    'name' => 'Người dùng',
+                    'avatar' => null
+                ],
+                'responses' => $review->responses->map(function ($response) {
+                    return [
+                        'id' => $response->id,
+                        'response' => $response->response,
+                        'user' => $response->user ? [
+                            'name' => $response->user->name,
+                            'is_admin' => $response->user->is_admin ?? false
+                        ] : [
+                            'name' => 'Người dùng',
+                            'is_admin' => false
+                        ],
+                       'created_at' => $response->created_at->toIso8601String()
+                    ];
+                }),
+                'created_at' => $review->created_at->toIso8601String()
+            ];
+        });
+
+        return response()->json([
+            'success' => true,
+            'reviews' => $formattedReviews,
+            'summary' => [
+                'average_rating' => round($averageRating, 1),
+                'total_reviews' => $totalReviews,
+                'rating_counts' => $ratingCounts
+            ]
+        ]);
+    } catch (\Exception $e) {
+        Log::error('Error getting variant reviews: ' . $e->getMessage(), [
+            'product_id' => $productId,
+            'variant_id' => $variantId,
+            'exception' => $e->getTraceAsString()
+        ]);
+        return response()->json([
+            'success' => false,
+            'message' => 'Có lỗi xảy ra khi tải đánh giá',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
+
+    /**
+     * Lấy danh sách bình luận theo biến thể sản phẩm
+     */
+    public function getComments($productId, $variantId)
     {
         try {
-            $reviews = ProductReview::where('product_id', $productId)
+            $comments = ProductComment::where('product_id', $productId)
                 ->where('variant_id', $variantId)
-                ->with(['user', 'product', 'variant'])
+                ->with(['user', 'replies.user'])
                 ->orderBy('created_at', 'desc')
                 ->get()
-                ->map(function ($review) {
+                ->map(function ($comment) {
                     return [
-                        'id' => $review->id,
-                        'rating' => $review->rating,
-                        'content' => $review->content,
-                        'images' => is_string($review->images) ? json_decode($review->images, true) : $review->images,
-                        'video' => $review->video,
-                        'user_name' => $review->user->name,
-                        'product_name' => $review->product->name,
-                        'variant_name' => $review->variant->name ?? 'Mặc định',
-                        'created_at' => $review->created_at->format('d/m/Y H:i:s'),
+                        'id' => $comment->id,
+                        'comment' => $comment->comment,
+                        'user' => [
+                            'name' => $comment->user->name,
+                            'avatar' => $comment->user->avatar
+                        ],
+                        'replies' => $comment->replies->map(function($reply) {
+                            return [
+                                'id' => $reply->id,
+                                'reply' => $reply->reply,
+                                'user' => [
+                                    'name' => $reply->user->name,
+                                    'avatar' => $reply->user->avatar,
+                                    'is_admin' => $reply->user->is_admin
+                                ],
+                                'created_at' => $reply->created_at->toIso8601String()
+                            ];
+                        }),
+                        'created_at' => $comment->created_at->toIso8601String()
                     ];
                 });
 
             return response()->json([
                 'success' => true,
-                'reviews' => $reviews,
-                'total' => $reviews->count(),
+                'comments' => $comments
             ]);
         } catch (\Exception $e) {
-            Log::error('Error getting variant reviews: ' . $e->getMessage());
+           Log::error('Error getting comments: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => 'Có lỗi xảy ra khi tải đánh giá',
+                'message' => 'Có lỗi xảy ra khi tải bình luận',
                 'error' => $e->getMessage()
             ], 500);
         }

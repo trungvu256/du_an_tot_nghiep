@@ -13,9 +13,10 @@ class ProfileController extends Controller
 {
     public function showProfile()
     {
+        $users = User::all();
         $categories = Catalogue::all();
 
-        return view('web3.profile.show', compact('categories')); // Thay đổi 'user.profile' thành 'web2.profile'
+        return view('web3.profile.show', compact('categories','users')); // Thay đổi 'user.profile' thành 'web2.profile'
 
     }
 

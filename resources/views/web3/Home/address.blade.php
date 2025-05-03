@@ -109,6 +109,7 @@
                     </div>
                     <div class="modal fade" id="editAddressModal{{ $address->id }}" tabindex="-1" aria-labelledby="editAddressModalLabel{{ $address->id }}" aria-hidden="true" data-bs-backdrop="false">
                 <div class="modal-dialog modal-lg">
+                    
                     <div class="modal-content">
                         <form action="{{ route('addresses.edit', $address->id) }}" method="POST">
                             @csrf
@@ -137,8 +138,8 @@
 
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <label for="address_detail_{{ $address->id }}" class="form-label">Địa chỉ chi tiết</label>
-                                        <input type="text" name="address_detail" id="address_detail_{{ $address->id }}" class="form-control" value="{{ $address->full_address }}" required>
+                                        <label for="address_detail_{{ $address->id }}" class="form-label">Địa chỉ</label>
+                                        <input type="text" name="address_detail" id="address_detail_{{ $address->id }}" class="form-control" value="{{ $address->address_detail }}" required>
                                         @error('address_detail')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -148,7 +149,7 @@
                                 <div class="row mb-3">
                                     <div class="col-md-4">
                                         <label for="province_{{ $address->id }}" class="form-label">Tỉnh/Thành phố</label>
-                                        <select name="province" id="province_{{ $address->id }}" class="form-control custom-select" required>
+                                        <select name="province" id="province_{{ $address->id }}" class="form-control custom-select" value="{{ $address->province }}" required>
                                             <option value="">---</option>
                                         </select>
                                         @error('province')
@@ -583,9 +584,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 const wardSelect = document.getElementById('ward_{{ $address->id }}');
 
                 editAddressModal.addEventListener('shown.bs.modal', function () {
-                    provinceSelect.innerHTML = '<option value="">---</option>';
-                    districtSelect.innerHTML = '<option value="">---</option>';
-                    wardSelect.innerHTML = '<option value="">---</option>';
+                    // Thêm option tạm thời để luôn hiển thị giá trị đã chọn
+                    provinceSelect.innerHTML = `<option value="{{ $address->province_code }}" selected>{{ $address->province }}</option>`;
+                    districtSelect.innerHTML = `<option value="{{ $address->district_code }}" selected>{{ $address->district }}</option>`;
+                    wardSelect.innerHTML = `<option value="{{ $address->ward_code }}" selected>{{ $address->ward }}</option>`;
+
+                    // Sau đó load lại danh sách chính xác từ API
                     loadProvinces(provinceSelect, '{{ $address->province_code }}').then(() => {
                         loadDistricts('{{ $address->province_code }}', districtSelect, wardSelect, '{{ $address->district_code }}').then(() => {
                             loadWards('{{ $address->district_code }}', wardSelect, '{{ $address->ward_code }}');
