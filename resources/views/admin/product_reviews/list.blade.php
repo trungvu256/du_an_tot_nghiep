@@ -131,6 +131,10 @@
                                                         <i class="bi bi-reply"></i> Phản hồi
                                                     </button>
                                                 </td>
+
+                                                <td>
+                                                    <a href="{{ route('product-reviews.show', $review->id) }}" class="btn btn-info btn-sm">Xem chi tiết</a>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>

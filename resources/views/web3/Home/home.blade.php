@@ -9,10 +9,10 @@
             <div class="swiper-wrapper">
                 <div class="swiper-slide">
                     <div class="slider-wrap">
-                        <div class="image">
+                        <a href="{{route('web.shop')}}" class="image">
                             <img src="{{ asset('/images/Banner/slider_1.jpg') }}"
                                 data-src="{{ asset('/images/Banner/slider_1.jpg') }}" alt="slider" class="lazyload">
-                        </div>
+                        </a>
                         <div class="box-content">
                             <div class="container">
                                 <div class="row">
@@ -45,10 +45,10 @@
                 </div>
                 <div class="swiper-slide">
                     <div class="slider-wrap ">
-                        <div class="image">
+                        <a href="{{route('web.shop')}}" class="image">
                             <img src="{{ asset('/images/Banner/slider_2.jpg') }}"
                                 data-src="{{ asset('/images/Banner/slider_2.jpg') }}" alt="slider" class="lazyload">
-                        </div>
+                        </a     >
                         <div class="box-content">
                             <div class="container">
                                 <div class="row">

@@ -146,21 +146,29 @@
                     <div class="mb-4">
                         <h4 class="font-weight-semi-bold mb-4">Thông tin nhận hàng</h4>
                         <div class="mb-4">
-                            @if (count($user->addresses) > 1)
-                                <select name="selected_address" id="selected_address" class="form-control">
-                                    <option value="">Chọn địa chỉ khác</option>
+                            
+                            <select name="selected_address" id="selected_address" class="form-control">
+                                @if (count($user->addresses) > 0)
+                                    <option value="">Địa chỉ khác...</option>
                                     @foreach ($user->addresses as $address)
-                                        <option value="{{ $address->id }}" data-name="{{ $address->full_name }}"
-                                            data-phone="{{ $address->phone }}" data-address="{{ $address->full_address }}">
+                                        <option value="{{ $address->id }}"
+                                            data-name="{{ $address->full_name }}"
+                                            data-phone="{{ $address->phone }}"
+                                            data-address="{{ $address->full_address }}">
                                             {{ $address->full_name }}, {{ $address->full_address }}
                                         </option>
                                     @endforeach
-                                </select>
-                            @endif
+                                @else
+                                    <option value="">---- Không có địa chỉ nào ----</option>
+                                @endif
+                            </select>
+                            
                             <input type="hidden" name="user_address_id" id="user_address_id">
+                            
                             @error('user_address_id')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
+                            
 
                             <script>
                                 document.getElementById('selected_address').addEventListener('change', function() {
@@ -276,11 +284,11 @@
                                     <option value="">---</option>
                                 </select>
                             </div>
-                            <div class="col-md-12 form-group">
+                            {{-- <div class="col-md-12 form-group">
                                 <label class="fw-semibold">Ghi chú (tùy chọn)</label>
                                 <textarea class="form-control" name="shipping_note" rows="2"
                                     placeholder="Ghi chú về đơn hàng, ví dụ: thời gian hay chỉ dẫn địa điểm giao hàng chi tiết hơn"></textarea>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
 
@@ -592,6 +600,24 @@
 
             // Thêm validation phía client khi submit form
             document.getElementById('checkoutForm').addEventListener('submit', function(event) {
+                // Kiểm tra tổng số lượng sản phẩm
+                let totalQuantity = 0;
+                const selectedItems = JSON.parse(document.getElementById('selected_cart_items').value || '[]');
+                const cartItems = @json($filteredCart);
+
+                selectedItems.forEach(cartKey => {
+                    const item = cartItems[cartKey];
+                    if (item) {
+                        totalQuantity += item.quantity;
+                    }
+                });
+
+                if (totalQuantity > 50) {
+                    event.preventDefault();
+                    alert('Số lượng sản phẩm tối đa cho mỗi đơn hàng là 50 sản phẩm!');
+                    return false;
+                }
+
                 if (shipToDifferentAddressCheckbox.checked) {
                     const province = shippingProvinceSelect.value;
                     const district = shippingDistrictSelect.value;
@@ -658,6 +684,24 @@
 
             // Thêm validation khi submit form VNPay
             document.getElementById('vnpayForm').addEventListener('submit', function(event) {
+                // Kiểm tra tổng số lượng sản phẩm
+                let totalQuantity = 0;
+                const selectedItems = JSON.parse(document.getElementById('vnpay-selected_cart_items').value || '[]');
+                const cartItems = @json($filteredCart);
+
+                selectedItems.forEach(cartKey => {
+                    const item = cartItems[cartKey];
+                    if (item) {
+                        totalQuantity += item.quantity;
+                    }
+                });
+
+                if (totalQuantity > 50) {
+                    event.preventDefault();
+                    alert('Số lượng sản phẩm tối đa cho mỗi đơn hàng là 50 sản phẩm!');
+                    return false;
+                }
+
                 const billingName = document.getElementById('vnpay-billing_name').value;
                 const billingPhone = document.getElementById('vnpay-billing_phone').value;
                 const billingAddress = document.getElementById('vnpay-billing_address').value;

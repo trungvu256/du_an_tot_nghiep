@@ -207,7 +207,7 @@
                             <i class="bi bi-shop me-2"></i>
                             <a href="#" class="me-3">{{ $order->user->name ?? 'Shop Name' }}</a>
                             <a href="#" class="me-3">Mã đơn: #{{ $order->order_code }}</a>
-                            <a href="#" class="btn btn-outline-secondary btn-sm me-2">Chat</a>
+                            {{-- <a href="#" class="btn btn-outline-secondary btn-sm me-2">Chat</a> --}}
                             <a href="{{ route('web.shop') }}" class="btn btn-outline-secondary btn-sm">Xem Shop</a>
                             <a href="{{ route('donhang.show', $order->id) }}" class="btn btn-outline-secondary btn-sm">Chi tiết đơn hàng</a>
                         </div>
@@ -262,7 +262,12 @@
                                     <p class="mb-0">x{{ $item->quantity }}</p>
                                 </div>
                                 <div class="order-item-price ms-auto">
-                                    {{ number_format($item->price * $item->quantity, 0, ',', '.') }}₫
+                                    @if($item->product->price_sale && $item->product->price_sale < $item->product->price)
+                                        <span class="text-decoration-line-through text-muted me-2">{{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}₫</span>
+                                        <span class="text-danger">{{ number_format($item->product->price_sale * $item->quantity, 0, ',', '.') }}₫</span>
+                                    @else
+                                        {{ number_format($item->price * $item->quantity, 0, ',', '.') }}₫
+                                    @endif
                                 </div>
                             </div>
                         </a>
@@ -273,6 +278,8 @@
                         <p class="text-muted mb-0">
                             @if ($order->payment_status == 1)
                                 <span>🟢 Đã thanh toán</span>
+                                @elseif ($order->payment_status == 0)
+                                <span>🔴 Thanh toán thất bại</span>
                             @elseif ($order->payment_status == 2)
                                 <span>🔵 Thanh toán khi nhận hàng</span>
                             @elseif ($order->payment_status == 3)
@@ -282,6 +289,8 @@
                         <div class="d-flex align-items-center action-buttons" id="action-buttons-{{ $order->id }}">
                             <span class="order-total me-3">Thành tiền:
                                 {{ number_format($order->total_price, 0, ',', '.') }}₫</span>
+                        
+                            {{-- Nếu đơn đang chờ xác nhận hoặc đang giao --}}
                             @if ($order->status == 0 || $order->status == 1)
                                 <a href="javascript:void(0);" class="btn btn-outline-action" data-bs-toggle="modal"
                                     data-bs-target="#cancelModal{{ $order->id }}">Hủy đơn</a>
@@ -304,7 +313,7 @@
                                         ->where('user_id', auth()->id())
                                         ->exists();
                                 @endphp
-
+                        
                                 @if (!$hasReview)
                                     <button type="button" class="btn btn-outline-action review-btn" data-bs-toggle="modal"
                                         data-bs-target="#reviewOrderModal{{ $order->id }}">
@@ -322,10 +331,17 @@
                                     Trả hàng
                                 </a>
                             @endif
+                        
+                            {{-- Nếu chưa thanh toán (payment_status == 0) thì hiển thị nút "Thanh toán lại" --}}
+                            @if ($order->payment_status == 0)
+                                <a href="{{ route('order.continuePayment', $order->id) }}" class="btn btn-danger">Thanh toán lại</a>
+                            @endif
+                        
                             @if ($order->status == 3 || $order->status == 4)
-                                <button class="btn btn-buy-again">Mua Lại</button>
+                                <a href="{{ route('checkout.reorder', $order->id) }}" class="btn btn-buy-again">Mua Lại</a>
                             @endif
                         </div>
+                        
                     </div>
                 </div>
 

@@ -129,9 +129,9 @@
                                         data-price="{{ isset($item['price_sale']) && $item['price_sale'] > 0 ? $item['price_sale'] : $item['price'] }}"
                                         id="price-{{ $cartKey }}">
                                         @if (isset($item['price_sale']) && $item['price_sale'] > 0)
-                                            {{ number_format($item['price_sale'], 0, ',', '.') }}₫
+                                            {{ number_format($item['price_sale'], 0, ',', '.') }}VNĐ
                                         @else
-                                            {{ number_format($item['price'], 0, ',', '.') }}₫
+                                            {{ number_format($item['price'], 0, ',', '.') }}VNĐ
                                         @endif
                                     </td>
                                     <td class="align-middle">
@@ -162,7 +162,7 @@
                                                     : $item['price'];
                                             $total = $finalPrice * (int) $item['quantity'];
                                         @endphp
-                                        {{ number_format($total, 0, ',', '.') }}₫
+                                        {{ number_format($total, 0, ',', '.') }}VNĐ
                                     </td>
                                     {{-- <td class="align-middle">
                                         @if (isset($item['variant']) && isset($item['variant']['attributes']) && count($item['variant']['attributes']) > 0)
@@ -241,7 +241,7 @@
                                     echo '<div class="d-flex justify-content-between">';
                                     echo '<h6 class="text-success">Giảm giá (' . $promotion['code'] . ')</h6>';
                                     echo '<h6 class="font-weight-medium text-success" id="summary-discount">';
-                                    echo '-' . number_format($promotion['discount'], 0, ',', '.') . '₫';
+                                    echo '-' . number_format($promotion['discount'], 0, ',', '.') . 'VNĐ';
                                     echo '</h6>';
                                     echo '</div>';
                                 }
@@ -253,7 +253,7 @@
                         <h6 style="font-size: 1.25rem; font-weight: 400;">
     Tổng cộng :
 </h6>
-                            <h6 class="font-weight-bold" id="summary-total">0₫</h6>
+                            <h6 class="font-weight-bold" id="summary-total">0 VNĐ</h6>
                         </div>
                     </div>
                     <div class="card-footer bg-transparent text-center">
@@ -388,7 +388,7 @@
             const price = parseFloat(priceElement.data('price')) || 0;
             const itemTotal = price * quantity;
 
-            $('#item-total-' + cartKey).text(formatCurrency(itemTotal) + '₫');
+            $('#item-total-' + cartKey).text(formatCurrency(itemTotal) + 'VNĐ');
 
             // Gọi AJAX để cập nhật server
             $.ajax({
@@ -463,7 +463,7 @@
 
             if (!hasSelectedProducts) {
                 // Nếu không có sản phẩm nào được chọn
-                $('#summary-total').text('0₫');
+                $('#summary-total').text('0 VNĐ');
 
                 // Reset các input ẩn
                 $('#subtotal').val(0);
@@ -645,7 +645,13 @@
             $(document).on('input', '.quantity-display', function() {
                 const cartKey = $(this).attr('id').replace('quantity-display-', '');
                 const stockQuantity = parseInt($('#quantity-' + cartKey).data('stock-quantity')) || 0;
-                let newQuantity = parseInt($(this).val().replace(/\D/g, '')) || 1;
+                let newQuantity = parseInt($(this).val().replace(/\D/g, '')) || 0;
+
+                // Cho phép xóa hết số và nhập số mới
+                if ($(this).val() === '') {
+                    $(this).val('');
+                    return;
+                }
 
                 // Kiểm tra nếu số lượng vượt quá tồn kho
                 if (newQuantity > stockQuantity) {
@@ -660,6 +666,24 @@
 
                 $(this).val(newQuantity);
                 updateCartQuantity(cartKey, newQuantity);
+            });
+
+            // Thêm xử lý khi input mất focus
+            $(document).on('blur', '.quantity-display', function() {
+                const cartKey = $(this).attr('id').replace('quantity-display-', '');
+                const stockQuantity = parseInt($('#quantity-' + cartKey).data('stock-quantity')) || 0;
+                let currentValue = parseInt($(this).val()) || 0;
+
+                // Nếu giá trị trống hoặc không hợp lệ, đặt về 1
+                if ($(this).val() === '' || currentValue < 1) {
+                    $(this).val(1);
+                    updateCartQuantity(cartKey, 1);
+                }
+                // Nếu giá trị vượt quá stock, đặt về stock
+                else if (currentValue > stockQuantity) {
+                    $(this).val(stockQuantity);
+                    updateCartQuantity(cartKey, stockQuantity);
+                }
             });
 
             // Gắn sự kiện checkbox

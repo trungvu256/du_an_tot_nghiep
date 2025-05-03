@@ -12,7 +12,8 @@ class ProductComment extends Model
     protected $fillable = [
         'product_id',
         'user_id',
-        'comment'
+        'comment',
+        'variant_id'
     ];
 
     public function product()
@@ -29,5 +30,7 @@ class ProductComment extends Model
     {
         return $this->hasMany(ProductCommentReply::class, 'product_comment_id');
     }
-
+   public function variant () {
+    return $this->belongsTo(ProductVariant::class, 'variant_id');
+   }
 }

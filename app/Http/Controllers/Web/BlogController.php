@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
 use App\Models\Catalogue;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
     public function listBlog(Request $request)
     {
+        $users = User::all();
         $latestBlogs = Blog::orderBy('id', 'desc')->take(4)->get();
         $blogs = Blog::orderBy('id', 'desc')->paginate(4);
         $mostViewedBlogs = Blog::orderBy('views', 'desc')->take(4)->get();
@@ -19,7 +21,7 @@ class BlogController extends Controller
             return view('web3.Blogs.load_more', compact('blogs'))->render();
         }
 
-        return view('web3.Blogs.ListBlog', compact('blogs', 'latestBlogs', 'mostViewedBlogs','categories'));
+        return view('web3.Blogs.ListBlog', compact('blogs', 'latestBlogs', 'mostViewedBlogs','categories','users'));
     }
     public function detaiWebBlog($id, Request $request)
     {

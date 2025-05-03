@@ -25,6 +25,7 @@ class HomeController extends Controller
 {
     public function index()
     {
+        $users = User::all();
         $categories = Category::where('parent_id', 0)->get();
         $categories_2 = Category::all();
         $categories_3 = Category::all();
@@ -42,7 +43,7 @@ class HomeController extends Controller
         } elseif(isset($_GET['sort']) && $_GET['sort'] == 'name_z_a') {
             $products_all = Product::orderBy('name', 'DESC')->get();
         }
-        return view('web.home', compact('categories', 'categories_2', 'categories_3', 'products', 'products_all'));
+        return view('web.home', compact('categories', 'categories_2', 'categories_3', 'products', 'products_all','users'));
     }
     public function createContact()
     {
@@ -358,7 +359,8 @@ class HomeController extends Controller
     
     public function contactPage()
     {
-        return view('web3.Home.contact');
+        $users = User::all();
+        return view('web3.Home.contact',compact('users'));
     }
 
     public function nhantin(Request $request)

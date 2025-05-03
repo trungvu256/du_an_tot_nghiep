@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Catalogue;
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -14,6 +15,7 @@ class OrderController extends Controller
 {
     public function index(Request $request)
 {
+    $users = User::all();
     // Lấy ID của người dùng hiện tại
     $userId = Auth::id();
 
@@ -55,7 +57,7 @@ class OrderController extends Controller
     $orders = $query->paginate(5);
 
     // Truyền dữ liệu vào view
-    return view('web3.Home.order', compact('orders', 'categories'));
+    return view('web3.Home.order', compact('orders', 'categories','users'));
 }
 
     // show order
@@ -106,7 +108,12 @@ class OrderController extends Controller
             'message' => 'Không tìm thấy đơn hàng!'
         ], 404);
     }
-
+    if ($order->payment_status == 1 && $order->payment_method == 1) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Đơn hàng đã thanh toán qua VNPay không được phép trả hàng!'
+        ], 400);
+    }
     // Kiểm tra trạng thái đơn hàng
     if ($order->status == 0 || $order->status == 1) {
         try {

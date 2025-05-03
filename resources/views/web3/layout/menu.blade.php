@@ -168,20 +168,19 @@
                                        data-bs-toggle="dropdown" aria-expanded="false">
                                         <span class="position-relative">
                                             <i class="icon icon-cart"></i>
-                                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count"
                                                   style="font-size: 10px">
                                                 {{ session('cart') ? collect(session('cart'))->sum(fn($item) => (int) $item['quantity']) : 0 }}
                                             </span>
                                         </span>
-                                        {{-- <span class="text d-none d-xl-block">Giỏ hàng</span> --}}
                                     </a>
 
                                     <!-- Dropdown danh sách sản phẩm trong giỏ hàng -->
-                                    <ul class="dropdown-menu dropdown-menu-end p-2" aria-labelledby="cartDropdown" style="width: 300px;">
+                                    <ul class="dropdown-menu dropdown-menu-end p-2 cart-dropdown" aria-labelledby="cartDropdown" style="width: 300px;">
                                         @php $cart = session('cart', []); @endphp
 
-                                        @if (count($cart) > 0)
-                                        @foreach ($cart as $key => $item)
+                                        {{-- @if (count($cart) > 0)
+                                            @foreach ($cart as $key => $item)
                                                 <li class="d-flex align-items-center justify-content-between">
                                                     <div class="d-flex">
                                                         <img src="{{ asset('storage/' . $item['image']) }}"
@@ -197,7 +196,6 @@
                                                         @csrf
                                                         <button type="submit" class="btn btn-sm btn-danger">x</button>
                                                     </form>
-
                                                 </li>
                                                 <hr>
                                             @endforeach
@@ -205,16 +203,27 @@
                                             <li class="text-center">
                                                 <strong>
                                                     Tổng:
-                                                    {{ number_format(collect($cart)->sum(fn($i) => (int) $i['quantity'] * ((float) $i['price_sale'] ?? (float) $i['price'])), 0, ',', '.') }}
-                                                    VNĐ
+                                                    {{
+                                                        number_format(
+                                                            collect($cart)->sum(function ($item) {
+                                                                $price = isset($item['price_sale']) ? (float) $item['price_sale'] : (float) $item['price'];
+                                                                return (int) $item['quantity'] * $price;
+                                                            }),
+                                                            0,
+                                                            ',',
+                                                            '.'
+                                                        )
+                                                    }} VNĐ
                                                 </strong>
+                                                
                                             </li>
                                             <li class="text-center mt-2">
                                                 <a href="{{ route('cart.viewCart') }}" class="btn btn-primary btn-sm w-100">Xem giỏ hàng</a>
                                             </li>
                                         @else
                                             <li class="text-center text-muted">Giỏ hàng trống</li>
-                                        @endif
+                                        @endif --}}
+                                        @include('web3.layout.partials.cart_dropdown')
                                     </ul>
                                 </li>
                             </ul>
@@ -225,42 +234,10 @@
         </div>
     </body>
     @push('scripts')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    $(document).ready(function() {
-        // Khởi tạo dropdown
-        var dropdownElementList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'))
-        var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
-            return new bootstrap.Dropdown(dropdownToggleEl)
-        });
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 
-        // Xử lý sự kiện submit form xóa sản phẩm
-        $(document).on('submit', '.form-remove-item', function(e) {
-            e.preventDefault();
-            const form = $(this);
-            const url = form.attr('action');
-            const token = form.find('input[name="_token"]').val();
 
-            $.ajax({
-                url: url,
-                method: 'POST',
-                data: {
-                    _token: token
-                },
-                success: function(response) {
-                    if (response.success) {
-                        location.reload(); // Reload trang để cập nhật giỏ hàng
-                    } else {
-                        alert('Xóa sản phẩm không thành công');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.log('Lỗi AJAX:', error);
-                    alert('Xóa sản phẩm thất bại');
-                }
-            });
-        });
-    });
-</script>
+
 @endpush

@@ -49,37 +49,37 @@
                                      alt="{{ $product->name }}" />
                             </a>
                             <ul class="list-product-btn">
-                                <li>
-                                    <a href="#shoppingCart" data-bs-toggle="offcanvas"
+                                {{-- <li>
+                                    <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}" data-bs-toggle="offcanvas"
                                        class="hover-tooltip tooltip-left box-icon">
                                         <span class="icon icon-cart2"></span>
                                         <span class="tooltip">Add to Cart</span>
                                     </a>
-                                </li>
-                                <li class="wishlist">
+                                </li> --}}
+                                {{-- <li class="wishlist">
                                     <a href="javascript:void(0);"
                                        class="hover-tooltip tooltip-left box-icon">
                                         <span class="icon icon-heart2"></span>
                                         <span class="tooltip">Add to Wishlist</span>
                                     </a>
-                                </li>
-                                <li>
+                                </li> --}}
+                                {{-- <li>
                                     <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
                                        class="hover-tooltip tooltip-left box-icon quickview">
                                         <span class="icon icon-view"></span>
                                         <span class="tooltip">Chi tiết</span>
                                     </a>
-</li>
-                                <li class="compare">
+</li> --}}
+                                {{-- <li class="compare">
                                     <a href="#compare" data-bs-toggle="modal"
                                        class="hover-tooltip tooltip-left box-icon">
                                         <span class="icon icon-compare"></span>
                                         <span class="tooltip">Add to Compare</span>
                                     </a>
-                                </li>
+                                </li> --}}
                             </ul>
                             <div class="on-sale-wrap">
-                                <span class="on-sale-item">20% Off</span>
+                                {{-- <span class="on-sale-item">20% Off</span> --}}
                             </div>
                         </div>
                         <div class="card-product-info">

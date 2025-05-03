@@ -279,6 +279,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
                     Route::get('/returns', [ReturnOrderController::class, 'index'])->name('admin.return.index');
                     Route::post('/returns/{id}/update', [ReturnOrderController::class, 'update'])->name('admin.returns.update');
                 });
+                
 
                 Route::prefix('product')->group(function () {
                     route::get('/', [ProductController::class, 'index'])->name('admin.product');
@@ -397,30 +398,20 @@ Route::get('/shop/detail/{id}', [CartController::class, 'shopdetail'])->name('we
 // ví người dùng
 Route::middleware(['auth'])->group(function () {
     Route::prefix('user')->group(function () {
-    Route::prefix('wallet/user')->group(function () {
-        Route::get('/wallet', [WebWalletController::class, 'show'])->name('wallet.index');
-        Route::post('/wallet/deposit/vnpay', [WebWalletController::class, 'depositVNPay'])->name('wallet.deposit.vnpay');
-        Route::get('/wallet/deposit/vnpay', [WebWalletController::class, 'VNPay'])->name('wallet.vnpay');
-        Route::get('/wallet/vnpay-callback', [WebWalletController::class, 'vnpayCallback'])->name('wallet.vnpay.callback');
-        Route::get('/wallet/vnpay/return', [WebWalletController::class, 'vnpayReturn'])->name('wallet.vnpay.return');
-        Route::get('/wallet/history', [WebWalletController::class, 'transactionHistory'])->name('wallet.history');
+   // Thanh toán đơn hàng
+   Route::prefix('checkout')->group(function () {
+    Route::post('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::get('/checkout/app', [CheckoutController::class, 'appvnp'])->name('checkout.appvnp');
+    Route::post('/checkout/view', [CheckoutController::class, 'checkout'])->name('checkout.view');
+    Route::post('/checkout/vnpay', [CheckoutController::class, 'depositVNPay'])->name('checkout.depositVNPay');
+    Route::match(['get', 'post'], '/checkout/vnpay-callback', [CheckoutController::class, 'vnpayCallback'])->name('checkout.vnpay.callback');
+    Route::get('/checkout/order', [CheckoutController::class, 'order'])->name('checkout.order');
+    Route::get('/order/{id}/continue-payment', [CheckoutController::class, 'continuePayment'])->name('order.continuePayment');
+    Route::post('/checkout/ofline', [CheckoutController::class, 'offline'])->name('checkout.offline');
+});
 
-        Route::get('/wallet/withdraw', [WebWalletController::class, 'croen'])->name('wallet.croen');
-        Route::post('/wallet/withdraw', [WebWalletController::class, 'withdraw'])->name('wallet.withdraw');
-    });
 
-
-    // Thanh toán đơn hàng
-    Route::prefix('checkout')->group(function () {
-        Route::post('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-        Route::get('/checkout/app', [CheckoutController::class, 'appvnp'])->name('checkout.appvnp');
-        Route::post('/checkout/view', [CheckoutController::class, 'checkout'])->name('checkout.view');
-        Route::post('/checkout/vnpay', [CheckoutController::class, 'depositVNPay'])->name('checkout.depositVNPay');
-        Route::match(['get', 'post'], '/checkout/vnpay-callback', [CheckoutController::class, 'vnpayCallback'])->name('checkout.vnpay.callback');
-        Route::get('/checkout/order', [CheckoutController::class, 'order'])->name('checkout.order');
-        Route::get('/order/{id}/continue-payment', [CheckoutController::class, 'continuePayment'])->name('order.continuePayment');
-        Route::post('/checkout/ofline', [CheckoutController::class, 'offline'])->name('checkout.offline');
-    });
+    
 
 
 
@@ -521,3 +512,5 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'sendOtp'])->n
     Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('password.reset');
 
 Route::post('/newsletter/subscribe', [HomeController::class, 'nhantin'])->name('newsletter.subscribe');
+
+Route::get('/checkout/reorder/{orderId}', [CheckoutController::class, 'reorder'])->name('checkout.reorder');
