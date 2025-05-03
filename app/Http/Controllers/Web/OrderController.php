@@ -108,6 +108,7 @@ class OrderController extends Controller
             'message' => 'Không tìm thấy đơn hàng!'
         ], 404);
     }
+
     if ($order->payment_status == 1 && $order->payment_method == 1) {
         return response()->json([
             'success' => false,
