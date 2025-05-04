@@ -538,85 +538,120 @@
                             <h5 class="card-title mb-4">Đánh giá sản phẩm</h5>
                             @forelse($order->orderItems as $item)
                                 <div class="review-item mb-3 pb-3 border-bottom">
-                                    {{-- <div class="d-flex align-items-center mb-2">
-                                        <img src="{{ asset('storage/' . ($item->product->image ?? 'default.jpg')) }}"
-                                             alt="{{ $item->product->name }}"
-                                             class="product-image me-3" style="width: 40px; height: 40px;">
-                                        <div>
-                                            <h6 class="mb-1" style="font-size: 13px;">{{ $item->product->name }}</h6>
-                                            @if($item->productVariant)
-                                                <span class="text-muted" style="font-size: 12px;">
-                                                    Nồng độ - {{ $item->productVariant->size ?? '' }},
-                                                    Dung tích - {{ $item->productVariant->concentration ?? '' }}
-                                                </span>
-                                            @endif
-                                        </div>
-                                    </div> --}}
-
-                                    <!-- Tìm đánh giá tương ứng với sản phẩm hoặc biến thể -->
-                                    @php
-                                        $matchingReview = $reviews->first(function ($review) use ($item) {
-                                            return $review->product_id == $item->product_id &&
-                                                   ($item->productVariant ? $review->variant_id == $item->productVariant->id : true);
-                                        });
-                                    @endphp
-
-                                    @if($matchingReview)
-                                        <div class="ms-5 ps-2">
-                                            <div class="d-flex align-items-center mb-1">
-                                                <h6>Tổng quan:
-                                                @for($i = 1; $i <= 5; $i++)
-                                                    @if($i <= $matchingReview->rating)
-                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                    @else
-                                                        <i class="bi bi-star text-warning"></i>
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{ asset('storage/' . ($item->product->image ?? 'default.jpg')) }}"
+                                                alt="{{ $item->product->name }}"
+                                                class="product-image me-3" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;">
+                                            <div>
+                                                <h6 class="mb-0" style="font-size: 14px;">{{ $item->product->name }}</h6>
+                                                @if($item->productVariant)
+                                                    @php
+                                                        $attributes = $item->productVariant->product_variant_attributes ?? [];
+                                                        $variantInfo = [];
+                                                        foreach ($attributes as $attribute) {
+                                                            $variantInfo[] = $attribute->attribute->name . ': ' . $attribute->attributeValue->value;
+                                                        }
+                                                    @endphp
+                                                    @if(count($variantInfo) > 0)
+                                                        <span class="text-muted" style="font-size: 12px;">
+                                                            {{ implode(', ', $variantInfo) }}
+                                                        </span>
                                                     @endif
-                                                @endfor
-                                                <span class="ms-2 text-muted" style="font-size: 12px;">
-                                                    ({{ \Carbon\Carbon::parse($matchingReview->created_at)->format('d/m/Y') }})
-                                                </span>
-                                                </h6>
-                                            </div>
-                                            <h6>Nội dung đánh giá: </h6>
-                                            @if($matchingReview->review)
-                                                <p class="mb-2 text-muted" style="font-size: 12px;">
-                                                    " {{ $matchingReview->review }} "
-                                                </p>
-                                            @endif
-                                            <!-- Hiển thị hình ảnh nếu có -->
-                                            <h6>Hình ảnh đánh giá: </h6>
-                                            @if(!empty($matchingReview->images))
-                                                <div class="review-images d-flex flex-wrap gap-2 mt-2 mb-2">
-                                                    @foreach(json_decode($matchingReview->images, true) as $image)
-                                                        <a href="{{ $image }}" target="_blank" class="review-image-link">
-                                                            <img src="{{ $image }}" alt="Review image" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
-                                                        </a>
-                                                    @endforeach
-                                                </div>
-                                            @endif
-                                            <!-- Hiển thị video nếu có -->
-
-                                            @if($matchingReview->video)
-                                                <div class="review-video mt-2 mb-2">
-                                                    <video controls class="rounded" style="max-width: 100%; max-height: 200px;">
-                                                        <source src="{{ $matchingReview->video }}" type="video/mp4">
-                                                        Your browser does not support the video tag.
-                                                    </video>
-                                                </div>
-                                            @endif
-                                            <!-- Hiển thị thông tin người dùng -->
-                                            <div class="review-user mt-2">
-                                                <i><small class="text-muted" style="font-size: 12px;">
-                                                    Đánh giá bởi: {{ $matchingReview->user->name }}
-                                                </small></i>
+                                                @endif
                                             </div>
                                         </div>
-                                    @else
-                                        <div class="ms-5 ps-2">
-                                            <span class="text-muted" style="font-size: 12px;">
+
+                                        <!-- Tìm đánh giá tương ứng với sản phẩm hoặc biến thể -->
+                                        @php
+                                            $matchingReview = $reviews->first(function ($review) use ($item) {
+                                                return $review->product_id == $item->product_id &&
+                                                    ($item->productVariant ? $review->variant_id == $item->productVariant->id : true);
+                                            });
+                                        @endphp
+
+                                        <!-- Nút xem đánh giá hoặc trạng thái chưa có đánh giá -->
+                                        @if($matchingReview)
+                                            <button class="btn btn-sm btn-outline-primary review-toggle-btn" 
+                                                    data-review-id="review-content-{{ $item->id }}">
+                                                <i class="bi bi-eye me-1"></i> Xem đánh giá
+                                            </button>
+                                        @else
+                                            <span class="badge bg-light text-muted border">
                                                 <i class="bi bi-chat-square-text me-1"></i>
                                                 Chưa có đánh giá
                                             </span>
+                                        @endif
+                                    </div>
+
+                                    @if($matchingReview)
+                                        <div id="review-content-{{ $item->id }}" class="review-content ms-5 mt-3" style="display: none;">
+                                            <div class="card bg-light">
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                                        <div>
+                                                            <h6 class="mb-1">Đánh giá: 
+                                                                @for($i = 1; $i <= 5; $i++)
+                                                                    @if($i <= $matchingReview->rating)
+                                                                        <i class="bi bi-star-fill text-warning"></i>
+                                                                    @else
+                                                                        <i class="bi bi-star text-warning"></i>
+                                                                    @endif
+                                                                @endfor
+                                                            </h6>
+                                                            <p class="mb-0 text-muted small">
+                                                                Đánh giá vào: {{ \Carbon\Carbon::parse($matchingReview->created_at)->format('d/m/Y H:i') }}
+                                                            </p>
+                                                        </div>
+                                                        {{-- <span class="badge bg-white text-dark fst-italic">
+                                                            {{ $matchingReview->user->name }}
+                                                        </span> --}}
+                                                    </div>
+                                                    
+                                                    <div class="mb-3">
+                                                        <h6 class="fw-bold text-dark mb-2">Nội dung đánh giá:</h6>
+                                                        <div class="p-3 bg-white rounded shadow-sm">
+                                                            <p class="mb-0">{{ $matchingReview->review }}</p>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Hiển thị hình ảnh nếu có -->
+                                                    @if($matchingReview->images && !empty(json_decode($matchingReview->images, true)))
+                                                        <div class="mb-3">
+                                                            <h6 class="fw-bold text-dark mb-2">Hình ảnh đánh giá:</h6>
+                                                            <div class="d-flex flex-wrap gap-2">
+                                                                @foreach(json_decode($matchingReview->images, true) as $image)
+                                                                    <a href="{{ $image }}" target="_blank" class="review-image-link">
+                                                                        <img src="{{ $image }}" alt="Review image" 
+                                                                            class="img-thumbnail" 
+                                                                            style="width: 80px; height: 80px; object-fit: cover;">
+                                                                    </a>
+                                                                @endforeach
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                    
+                                                    
+                                                    <!-- Hiển thị video nếu có -->
+                                                    @if($matchingReview->video)
+                                                        <div class="mb-3">
+                                                            <h6 class="fw-bold text-dark mb-2">Video đánh giá:</h6>
+                                                            <div class="review-video">
+                                                                <video controls class="rounded" style="max-width: 100%; max-height: 240px;">
+                                                                    <source src="{{ $matchingReview->video }}" type="video/mp4">
+                                                                    Your browser does not support the video tag.
+                                                                </video>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+
+                                                    <div class="mb-3">
+                                                        <span class="badge bg-white text-dark fst-italic">
+                                                            Đánh giá bởi: {{ $matchingReview->user->name }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     @endif
                                 </div>
@@ -625,6 +660,27 @@
                                     <p class="text-muted mb-0">Không có sản phẩm nào trong đơn hàng.</p>
                                 </div>
                             @endforelse
+                            
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const toggleButtons = document.querySelectorAll('.review-toggle-btn');
+                                    
+                                    toggleButtons.forEach(button => {
+                                        button.addEventListener('click', function() {
+                                            const reviewId = this.getAttribute('data-review-id');
+                                            const reviewContent = document.getElementById(reviewId);
+                                            
+                                            if (reviewContent.style.display === 'none') {
+                                                reviewContent.style.display = 'block';
+                                                this.innerHTML = '<i class="bi bi-eye-slash me-1"></i> Ẩn đánh giá';
+                                            } else {
+                                                reviewContent.style.display = 'none';
+                                                this.innerHTML = '<i class="bi bi-eye me-1"></i> Xem đánh giá';
+                                            }
+                                        });
+                                    });
+                                });
+                            </script>
                         </div>
                     </div>
                 </div>

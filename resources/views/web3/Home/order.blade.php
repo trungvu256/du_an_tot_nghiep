@@ -233,45 +233,71 @@
 
                     <!-- Order Items -->
                     @foreach ($order->orderItems as $item)
-                    <a href="{{ route('donhang.show', $order->id) }}" class="d-block">
-                        <div class="order-item d-flex align-items-center">
-                        <img src="{{ asset('storage/' . $item->product->image) }}"
-     alt="{{ $item->product->name }}"
-     style="width: 100px; height: 100px; object-fit: cover;">
+                    <div class="order-item d-flex align-items-center">
+                        <a href="{{ route('donhang.show', $order->id) }}" class="d-flex align-items-center flex-grow-1">
+                            <img src="{{ asset('storage/' . $item->product->image) }}"
+                                alt="{{ $item->product->name }}"
+                                style="width: 100px; height: 100px; object-fit: cover;">
 
-                                <div class="order-item-details">
-                                    <p class="fw-semibold">{{ $item->product->name }}</p>
-                                        <span class="text-muted">
-                                            @if ($item->productVariant)
-                                                @php
-                                                    $attributes =
-                                                        $item->productVariant->product_variant_attributes ?? [];
-                                                @endphp
-                                                @if (count($attributes) > 0)
-                                                    @foreach ($attributes as $attribute)
-                                                        <p class="text-muted mb-0">
-                                                            <strong>{{ $attribute->attribute->name }}:</strong>
-                                                            {{ $attribute->attributeValue->value }}
-                                                        </p>
-                                                    @endforeach
-                                                @else
-                                                    <p class="text-muted mb-0">Không có biến thể</p>
-                                                @endif
+                            <div class="order-item-details">
+                                <p class="fw-semibold">{{ $item->product->name }}</p>
+                                    <span class="text-muted">
+                                        @if ($item->productVariant)
+                                            @php
+                                                $attributes =
+                                                    $item->productVariant->product_variant_attributes ?? [];
+                                            @endphp
+                                            @if (count($attributes) > 0)
+                                                @foreach ($attributes as $attribute)
+                                                    <p class="text-muted mb-0">
+                                                        <strong>{{ $attribute->attribute->name }}:</strong>
+                                                        {{ $attribute->attributeValue->value }}
+                                                    </p>
+                                                @endforeach
+                                            @else
+                                                <p class="text-muted mb-0">Không có biến thể</p>
                                             @endif
-                                        </span>
-                                    </p>
-                                    <p class="mb-0">x{{ $item->quantity }}</p>
-                                </div>
-                                <div class="order-item-price ms-auto">
-                                    @if($item->product->price_sale && $item->product->price_sale < $item->product->price)
-                                        <span class="text-decoration-line-through text-muted me-2">{{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}VNĐ</span>
-                                        <span class="text-danger">{{ number_format($item->product->price_sale * $item->quantity, 0, ',', '.') }}VNĐ</span>
-                                    @else
-                                        {{ number_format($item->price * $item->quantity, 0, ',', '.') }}VNĐ
-                                    @endif
-                                </div>
+                                        @endif
+                                    </span>
+                                </p>
+                                <p class="mb-0">x{{ $item->quantity }}</p>
+                            </div>
+                            <div class="order-item-price ms-auto">
+                                @if($item->product->price_sale && $item->product->price_sale < $item->product->price)
+                                    <span class="text-decoration-line-through text-muted me-2">{{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}VNĐ</span>
+                                    <span class="text-danger">{{ number_format($item->product->price_sale * $item->quantity, 0, ',', '.') }}VNĐ</span>
+                                @else
+                                    {{ number_format($item->price * $item->quantity, 0, ',', '.') }}VNĐ
+                                @endif
                             </div>
                         </a>
+
+                        {{-- Nút đánh giá hoặc xem đánh giá cho từng sản phẩm (khi đơn hàng đã hoàn thành) --}}
+                        @if ($order->status == 4)
+                            @php
+                                $hasReview = \App\Models\ProductReview::where('order_id', $order->id)
+                                    ->where('product_id', $item->product_id)
+                                    ->where('variant_id', $item->product_variant_id)
+                                    ->where('user_id', auth()->id())
+                                    ->exists();
+                            @endphp
+                            <div class="ms-3">
+                                @if (!$hasReview)
+                                    <button type="button" class="btn btn-light btn-sm rounded-pill px-3 py-1 border"
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#reviewProductModal{{ $order->id }}_{{ $item->id }}">
+                                        <i class="fas fa-star me-1"></i>⭐ Đánh giá
+                                    </button>
+                                @else
+                                    <button type="button" class="btn btn-warning btn-sm rounded-pill px-3 py-1"
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#viewProductReviewModal{{ $order->id }}_{{ $item->id }}">
+                                        <i class="fas fa-eye me-1"></i> 🗸 Xem đánh giá
+                                    </button>
+                                @endif
+                            </div>
+                        @endif
+                    </div>
                     @endforeach
 
                     <!-- Order Footer -->
@@ -310,22 +336,25 @@
                                 </a>
                             @elseif ($order->status == 4)
                                 @php
-                                    $hasReview = \App\Models\ProductReview::where('order_id', $order->id)
-                                        ->where('user_id', auth()->id())
-                                        ->exists();
+                                    $pendingReviews = 0;
+                                    foreach ($order->orderItems as $item) {
+                                        if (!\App\Models\ProductReview::where('order_id', $order->id)
+                                            ->where('product_id', $item->product_id)
+                                            ->where('variant_id', $item->product_variant_id)
+                                            ->where('user_id', auth()->id())
+                                            ->exists()) {
+                                            $pendingReviews++;
+                                        }
+                                    }
                                 @endphp
-                        
-                                @if (!$hasReview)
+                                
+                                @if ($pendingReviews > 0)
                                     <button type="button" class="btn btn-outline-action review-btn" data-bs-toggle="modal"
                                         data-bs-target="#reviewOrderModal{{ $order->id }}">
-                                        Đánh giá
-                                    </button>
-                                @else
-                                    <button type="button" class="btn btn-outline-action view-review-btn"
-                                        data-bs-toggle="modal" data-bs-target="#viewOrderReviewModal{{ $order->id }}">
-                                        Xem đánh giá
+                                        Chưa đánh giá ({{ $pendingReviews }})
                                     </button>
                                 @endif
+                                
                                 <a href="{{ route('order.returned', $order->id) }}"
                                     class="btn btn-outline-action return-btn"
                                     onclick="handleReturn(event, '{{ route('order.returned', $order->id) }}')">
@@ -333,6 +362,7 @@
                                 </a>
                             @endif
                         
+                            
                             {{-- Nếu chưa thanh toán (payment_status == 0) thì hiển thị nút "Thanh toán lại" --}}
                             @if ($order->payment_status == 0)
                                 <a href="{{ route('order.continuePayment', $order->id) }}" class="btn btn-danger">Thanh toán lại</a>
@@ -443,17 +473,26 @@
                         <div class="modal-dialog modal-dialog-centered modal-lg">
                             <div class="modal-content border-0 shadow">
                                 <div class="modal-header border-0 text-center bg-light">
-                                    <h5 class="modal-title w-100 fw-bold">Đánh giá đơn hàng #{{ $order->order_code }}</h5>
+                                    <h5 class="modal-title w-100 fw-bold">Đánh giá sản phẩm</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                 </div>
-                                <form id="orderReviewForm{{ $order->id }}" class="order-review-form">
-                                    @csrf
-                                    <div class="modal-body px-4 py-4">
-                                        <div class="order-info mb-4">
-                                            <div class="products-list">
-                                                @foreach ($order->orderItems as $item)
-                                                    <div
-                                                        class="product-item d-flex align-items-center p-3 mb-2 bg-light rounded">
+                                <div class="modal-body px-4 py-4">
+                                    {{-- <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i> Vui lòng đánh giá các sản phẩm còn lại trong đơn hàng
+                                    </div> --}}
+                                    <div class="order-info mb-4">
+                                        <div class="products-list">
+                                            @foreach ($order->orderItems as $item)
+                                                @php
+                                                    $itemHasReview = \App\Models\ProductReview::where('order_id', $order->id)
+                                                        ->where('product_id', $item->product_id)
+                                                        ->where('variant_id', $item->product_variant_id)
+                                                        ->where('user_id', auth()->id())
+                                                        ->exists();
+                                                @endphp
+                                                
+                                                @if (!$itemHasReview)
+                                                    <div class="product-item d-flex align-items-center p-3 mb-3 bg-light rounded">
                                                         @if ($item->product && $item->product->image)
                                                             <img src="{{ Storage::url($item->product->image) }}"
                                                                 alt="{{ $item->product->name }}" class="rounded-3 me-3"
@@ -480,76 +519,38 @@
                                                                     <p class="text-muted mb-0">Không có biến thể</p>
                                                                 @endif
                                                             </span>
-                                                            <input type="hidden" name="product_id"
-                                                                value="{{ $item->product->id }}">
-                                                            <input type="hidden" name="variant_id"
-                                                                value="{{ $item->productVariant ? $item->productVariant->id : '' }}">
+                                                        </div>
+                                                        <div>
+                                                            <button type="button" class="btn btn-primary rounded-pill px-4 py-2 shadow-sm hover-effect"
+                                                                data-bs-toggle="modal" 
+                                                                data-bs-target="#reviewProductModal{{ $order->id }}_{{ $item->id }}">
+                                                                <i class="fas fa-star me-2"></i>Đánh giá
+                                                            </button>
+                                                            <style>
+                                                                .hover-effect {
+                                                                    transition: all 0.3s ease;
+                                                                }
+                                                                .hover-effect:hover {
+                                                                    transform: translateY(-2px);
+                                                                    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                                                                }
+                                                            </style>
                                                         </div>
                                                     </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                        <div class="rating-section text-center mb-4">
-                                            <h6 class="text-center mb-3 fw-bold">Bạn cảm thấy sản phẩm thế nào?</h6>
-                                            <div class="rating">
-                                                <input type="radio" name="rating" value="5"
-                                                    id="star5{{ $order->id }}">
-                                                <label for="star5{{ $order->id }}">★</label>
-                                                <input type="radio" name="rating" value="4"
-                                                    id="star4{{ $order->id }}">
-                                                <label for="star4{{ $order->id }}">★</label>
-                                                <input type="radio" name="rating" value="3"
-                                                    id="star3{{ $order->id }}">
-                                                <label for="star3{{ $order->id }}">★</label>
-                                                <input type="radio" name="rating" value="2"
-                                                    id="star2{{ $order->id }}">
-                                                <label for="star2{{ $order->id }}">★</label>
-                                                <input type="radio" name="rating" value="1"
-                                                    id="star1{{ $order->id }}">
-                                                <label for="star1{{ $order->id }}">★</label>
-                                            </div>
-                                        </div>
-                                        <div class="comment-section mb-4">
-                                            <h6 class="fw-bold text-dark mb-3">Nội dung đánh giá</h6>
-                                            <textarea class="form-control border-0 bg-light p-3" name="review" rows="4" required
-                                                placeholder="Hãy chia sẻ những điều bạn thích về sản phẩm này..."></textarea>
-                                        </div>
-                                        <div class="media-upload-section">
-                                            <div class="d-flex gap-2 mb-3">
-                                                <button type="button" class="btn btn-outline-primary rounded-pill"
-                                                    onclick="document.getElementById('imageUpload{{ $order->id }}').click()">
-                                                    <i class="fas fa-camera"></i> Thêm Hình ảnh
-                                                </button>
-                                                <button type="button" class="btn btn-outline-primary rounded-pill"
-                                                    onclick="document.getElementById('videoUpload{{ $order->id }}').click()">
-                                                    <i class="fas fa-video"></i> Thêm Video
-                                                </button>
-                                            </div>
-                                            <input type="file" id="imageUpload{{ $order->id }}" name="images[]"
-                                                multiple accept="image/*" class="d-none"
-                                                onchange="previewImages(this, {{ $order->id }})">
-                                            <input type="file" id="videoUpload{{ $order->id }}" name="video"
-                                                accept="video/*" class="d-none"
-                                                onchange="previewVideo(this, {{ $order->id }})">
-                                            <div class="preview-section">
-                                                <div id="imagePreview{{ $order->id }}"
-                                                    class="d-flex flex-wrap gap-2 mb-2"></div>
-                                                <div id="videoPreview{{ $order->id }}"></div>
-                                            </div>
+                                                @endif
+                                            @endforeach
                                         </div>
                                     </div>
-                                    <div class="modal-footer border-0 justify-content-center">
-                                        <button type="button" class="btn btn-light px-4 rounded-pill"
-                                            data-bs-dismiss="modal">Đóng</button>
-                                        <button type="submit" class="btn btn-primary px-4 rounded-pill">Gửi đánh
-                                            giá</button>
-                                    </div>
-                                </form>
+                                </div>
+                                <div class="modal-footer border-0 justify-content-center">
+                                    <button type="button" class="btn btn-light px-4 rounded-pill"
+                                        data-bs-dismiss="modal">Đóng</button>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Modal xem đánh giá -->
+                    {{-- Modal xem đánh giá đơn hàng --}}
                     <div class="modal fade" id="viewOrderReviewModal{{ $order->id }}" tabindex="-1">
                         <div class="modal-dialog modal-dialog-centered modal-lg">
                             <div class="modal-content border-0 shadow">
@@ -561,14 +562,13 @@
                                     <div class="order-info mb-4">
                                         <div class="products-list">
                                             @foreach ($order->orderItems as $item)
-                                                <div
-                                                    class="product-item d-flex align-items-center p-3 mb-2 bg-light rounded">
+                                                <div class="product-item d-flex align-items-center p-3 mb-3 bg-light rounded">
                                                     @if ($item->product && $item->product->image)
                                                         <img src="{{ Storage::url($item->product->image) }}"
                                                             alt="{{ $item->product->name }}" class="rounded-3 me-3"
                                                             style="width: 70px; height: 70px; object-fit: cover;">
                                                     @endif
-                                                    <div>
+                                                    <div class="flex-grow-1">
                                                         <h6 class="mb-1 fw-bold">{{ $item->product->name }}</h6>
                                                         <span class="text-muted">
                                                             @if ($item->productVariant)
@@ -589,17 +589,32 @@
                                                                 <p class="text-muted mb-0">Không có biến thể</p>
                                                             @endif
                                                         </span>
-                                                        <input type="hidden" name="product_id"
-                                                            value="{{ $item->product->id }}">
-                                                        <input type="hidden" name="variant_id"
-                                                            value="{{ $item->productVariant ? $item->productVariant->id : '' }}">
+                                                    </div>
+                                                    <div>
+                                                        @php
+                                                            $hasReview = \App\Models\ProductReview::where('order_id', $order->id)
+                                                                ->where('product_id', $item->product_id)
+                                                                ->where('variant_id', $item->product_variant_id)
+                                                                ->where('user_id', auth()->id())
+                                                                ->exists();
+                                                        @endphp
+                                                        @if ($hasReview)
+                                                            <button type="button" class="btn btn-success rounded-pill px-3"
+                                                                data-bs-toggle="modal" 
+                                                                data-bs-target="#viewProductReviewModal{{ $order->id }}_{{ $item->id }}">
+                                                                Xem đánh giá
+                                                            </button>
+                                                        @else
+                                                            <button type="button" class="btn btn-primary rounded-pill px-3"
+                                                                data-bs-toggle="modal" 
+                                                                data-bs-target="#reviewProductModal{{ $order->id }}_{{ $item->id }}">
+                                                                Đánh giá
+                                                            </button>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             @endforeach
                                         </div>
-                                    </div>
-                                    <div class="review-content">
-                                        <!-- Nội dung đánh giá sẽ được load bằng AJAX -->
                                     </div>
                                 </div>
                                 <div class="modal-footer border-0 justify-content-center">
@@ -609,6 +624,167 @@
                             </div>
                         </div>
                     </div>
+
+                    {{-- Modal đánh giá cho từng sản phẩm --}}
+                    @foreach ($order->orderItems as $item)
+                        <div class="modal fade" id="reviewProductModal{{ $order->id }}_{{ $item->id }}" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content border-0 shadow">
+                                    <div class="modal-header border-0 text-center bg-light">
+                                        <h5 class="modal-title w-100 fw-bold">Đánh giá sản phẩm</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <form id="productReviewForm{{ $order->id }}_{{ $item->id }}" class="order-review-form">
+                                        @csrf
+                                        <div class="modal-body px-4 py-4">
+                                            <div class="product-item d-flex align-items-center p-3 mb-3 bg-light rounded">
+                                                @if ($item->product && $item->product->image)
+                                                    <img src="{{ Storage::url($item->product->image) }}"
+                                                        alt="{{ $item->product->name }}" class="rounded-3 me-3"
+                                                        style="width: 70px; height: 70px; object-fit: cover;">
+                                                @endif
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-1 fw-bold">{{ $item->product->name }}</h6>
+                                                    <span class="text-muted">
+                                                        @if ($item->productVariant)
+                                                            @php
+                                                                $attributes = $item->productVariant->product_variant_attributes ?? [];
+                                                            @endphp
+                                                            @if (count($attributes) > 0)
+                                                                @foreach ($attributes as $attribute)
+                                                                    <p class="text-muted mb-0">
+                                                                        <strong>{{ $attribute->attribute->name }}:</strong>
+                                                                        {{ $attribute->attributeValue->value }}
+                                                                    </p>
+                                                                @endforeach
+                                                            @else
+                                                                <p class="text-muted mb-0">Không có biến thể</p>
+                                                            @endif
+                                                        @else
+                                                            <p class="text-muted mb-0">Không có biến thể</p>
+                                                        @endif
+                                                    </span>
+                                                    <input type="hidden" name="product_id" value="{{ $item->product_id }}">
+                                                    <input type="hidden" name="variant_id" value="{{ $item->product_variant_id }}">
+                                                    <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                                </div>
+                                            </div>
+                                            <div class="rating-section text-center mb-4">
+                                                <h6 class="text-center mb-3 fw-bold">Bạn cảm thấy sản phẩm thế nào?</h6>
+                                                <div class="rating">
+                                                    <input type="radio" name="rating" value="5"
+                                                        id="star5_{{ $order->id }}_{{ $item->id }}">
+                                                    <label for="star5_{{ $order->id }}_{{ $item->id }}">★</label>
+                                                    <input type="radio" name="rating" value="4"
+                                                        id="star4_{{ $order->id }}_{{ $item->id }}">
+                                                    <label for="star4_{{ $order->id }}_{{ $item->id }}">★</label>
+                                                    <input type="radio" name="rating" value="3"
+                                                        id="star3_{{ $order->id }}_{{ $item->id }}">
+                                                    <label for="star3_{{ $order->id }}_{{ $item->id }}">★</label>
+                                                    <input type="radio" name="rating" value="2"
+                                                        id="star2_{{ $order->id }}_{{ $item->id }}">
+                                                    <label for="star2_{{ $order->id }}_{{ $item->id }}">★</label>
+                                                    <input type="radio" name="rating" value="1"
+                                                        id="star1_{{ $order->id }}_{{ $item->id }}">
+                                                    <label for="star1_{{ $order->id }}_{{ $item->id }}">★</label>
+                                                </div>
+                                            </div>
+                                            <div class="comment-section mb-4">
+                                                <h6 class="fw-bold text-dark mb-3">Nội dung đánh giá</h6>
+                                                <textarea class="form-control border-0 bg-light p-3" name="review" rows="4" required
+                                                    placeholder="Hãy chia sẻ những điều bạn thích về sản phẩm này..."></textarea>
+                                            </div>
+                                            <div class="media-upload-section">
+                                                <div class="d-flex gap-2 mb-3">
+                                                    <button type="button" class="btn btn-outline-primary rounded-pill"
+                                                        onclick="document.getElementById('imageUpload{{ $order->id }}_{{ $item->id }}').click()">
+                                                        <i class="fas fa-camera"></i> Thêm Hình ảnh
+                                                    </button>
+                                                    <button type="button" class="btn btn-outline-primary rounded-pill"
+                                                        onclick="document.getElementById('videoUpload{{ $order->id }}_{{ $item->id }}').click()">
+                                                        <i class="fas fa-video"></i> Thêm Video
+                                                    </button>
+                                                </div>
+                                                <input type="file" id="imageUpload{{ $order->id }}_{{ $item->id }}" name="images[]"
+                                                    multiple accept="image/*" class="d-none"
+                                                    onchange="window.previewImages(this, '{{ $order->id }}_{{ $item->id }}')">
+                                                <input type="file" id="videoUpload{{ $order->id }}_{{ $item->id }}" name="video"
+                                                    accept="video/*" class="d-none"
+                                                    onchange="window.previewVideo(this, '{{ $order->id }}_{{ $item->id }}')">
+                                                <div class="preview-section">
+                                                    <div id="imagePreview{{ $order->id }}_{{ $item->id }}"
+                                                        class="d-flex flex-wrap gap-2 mb-2"></div>
+                                                    <div id="videoPreview{{ $order->id }}_{{ $item->id }}"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer border-0 justify-content-center">
+                                            <button type="button" class="btn btn-light px-4 rounded-pill"
+                                                data-bs-dismiss="modal">Đóng</button>
+                                            <button type="submit" class="btn btn-primary px-4 rounded-pill">Gửi đánh giá</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Modal xem đánh giá cho từng sản phẩm --}}
+                        <div class="modal fade" id="viewProductReviewModal{{ $order->id }}_{{ $item->id }}" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content border-0 shadow">
+                                    <div class="modal-header border-0 text-center bg-light">
+                                        <h5 class="modal-title w-100 fw-bold">Đánh giá sản phẩm của bạn</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body px-4 py-4">
+                                        <div class="product-item d-flex align-items-center p-3 mb-3 bg-light rounded">
+                                            @if ($item->product && $item->product->image)
+                                                <img src="{{ Storage::url($item->product->image) }}"
+                                                    alt="{{ $item->product->name }}" class="rounded-3 me-3"
+                                                    style="width: 70px; height: 70px; object-fit: cover;">
+                                            @endif
+                                            <div class="flex-grow-1">
+                                                <h6 class="mb-1 fw-bold">{{ $item->product->name }}</h6>
+                                                <span class="text-muted">
+                                                    @if ($item->productVariant)
+                                                        @php
+                                                            $attributes = $item->productVariant->product_variant_attributes ?? [];
+                                                        @endphp
+                                                        @if (count($attributes) > 0)
+                                                            @foreach ($attributes as $attribute)
+                                                                <p class="text-muted mb-0">
+                                                                    <strong>{{ $attribute->attribute->name }}:</strong>
+                                                                    {{ $attribute->attributeValue->value }}
+                                                                </p>
+                                                            @endforeach
+                                                        @else
+                                                            <p class="text-muted mb-0">Không có biến thể</p>
+                                                        @endif
+                                                    @else
+                                                        <p class="text-muted mb-0">Không có biến thể</p>
+                                                    @endif
+                                                </span>
+                                                <input type="hidden" name="product_id" value="{{ $item->product_id }}">
+                                                <input type="hidden" name="variant_id" value="{{ $item->product_variant_id }}">
+                                            </div>
+                                        </div>
+                                        <div class="review-content product-review-content-{{ $order->id }}-{{ $item->id }}">
+                                            <!-- Nội dung đánh giá sẽ được load bằng AJAX -->
+                                            <div class="d-flex justify-content-center p-4">
+                                                <div class="spinner-border text-primary" role="status">
+                                                    <span class="visually-hidden">Đang tải...</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer border-0 justify-content-center">
+                                        <button type="button" class="btn btn-light px-4 rounded-pill"
+                                            data-bs-dismiss="modal">Đóng</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 @endif
             @endforeach
 
