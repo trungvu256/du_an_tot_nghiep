@@ -101,6 +101,13 @@
                                 </li>
                                 <li>
                                     <p>
+                                        Fanpage:
+                                        <a class="link" href="https://www.facebook.com/people/Ethereal-Noir/61574929003641/">Ethereal Noir
+                                        </a>
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
                                         Mở:
                                         <span class="text-main">
                                             8 giờ sáng - 7 giờ tối, Thứ Hai - Thứ Bảy
