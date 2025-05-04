@@ -124,6 +124,8 @@
                                             </div>
                                             <div class="product-info-price">
                                                 @php
+                                                    $minPrice = $detailproduct->variants->min('price');
+                                                    $maxPrice = $detailproduct->variants->max('price');
                                                     $minPriceSale = $detailproduct->variants
                                                         ->where('price_sale', '>', 0)
                                                         ->min('price_sale');
@@ -459,15 +461,18 @@
                                         </h3>
                                         <div class="product-price">
                                             @php
-                                                $minPrice = $product->variants->min('price');
-                                                $minPriceSale = $product->variants->where('price_sale', '>', 0)->min('price_sale');
+                                            $minPrice = $product->variants->isNotEmpty()
+                                            ? $product->variants->min('price')
+                                            : $product->price;
+                                            $maxPrice = $product->variants->isNotEmpty()
+                                            ? $product->variants->max('price')
+                                            : $product->price;
                                             @endphp
-                                            @if($minPriceSale > 0)
-                                                <span class="price-sale">{{ number_format($minPriceSale, 0, ',', '.') }}VNĐ</span>
-                                                <span class="price-original">{{ number_format($minPrice, 0, ',', '.') }}VNĐ</span>
-                                            @else
-                                                <span class="price">{{ number_format($minPrice, 0, ',', '.') }}VNĐ</span>
-                                            @endif
+                                            <span class="price-new text-primary">{{ number_format($minPrice) }}VNĐ
+                                                @if ($minPrice !== $maxPrice)
+                                                - {{ number_format($maxPrice) }}VNĐ
+                                                @endif
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -907,7 +912,7 @@
                                 let stockEl = document.getElementById("product-stock");
                                 let discountBadge = document.getElementById("discount-badge");
 
-                                if (salePrice > 0 && salePrice < price) {
+                                if (salePrice > 0) {
                                     originalPriceEl.style.display = "inline";
                                     originalPriceEl.innerText = new Intl.NumberFormat('vi-VN').format(price) + 'VNĐ';
                                     salePriceEl.innerText = new Intl.NumberFormat('vi-VN').format(salePrice) + 'VNĐ';
