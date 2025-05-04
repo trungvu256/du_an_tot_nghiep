@@ -44,8 +44,20 @@ class CheckoutController extends Controller
             }
         }
 
-        $promotion = session('promotion', []);
-        $discount = isset($promotion['discount']) ? $promotion['discount'] : 0;
+        // Kiểm tra mã giảm giá còn tồn tại không
+        $promotion = session('promotion');
+        $discount = 0;
+        if ($promotion && isset($promotion['id'])) {
+            $promotionModel = \App\Models\Promotion::where('id', $promotion['id'])->where('quantity', '>', 0)->first();
+            if ($promotionModel) {
+                $discount = $promotion['discount'] ?? 0;
+            } else {
+                session()->forget('promotion');
+                $promotion = null;
+                $discount = 0;
+            }
+        }
+
         $totalAmount = max(0, $subtotal - $discount);
 
         return view('web3.Home.checkout', [
@@ -94,12 +106,19 @@ class CheckoutController extends Controller
             }
         }
 
-        // Lấy thông tin giảm giá từ session
+        // Kiểm tra mã giảm giá còn tồn tại không
         $promotion = session('promotion');
-        $discount = $promotion['discount'] ?? 0;
-
-        // Phí vận chuyển mặc định
-
+        $discount = 0;
+        if ($promotion && isset($promotion['id'])) {
+            $promotionModel = \App\Models\Promotion::where('id', $promotion['id'])->where('quantity', '>', 0)->first();
+            if ($promotionModel) {
+                $discount = $promotion['discount'] ?? 0;
+            } else {
+                session()->forget('promotion');
+                $promotion = null;
+                $discount = 0;
+            }
+        }
 
         // Tính tổng số tiền cần thanh toán
         $totalAmount = max(0, $subtotal - $discount);
@@ -113,7 +132,8 @@ class CheckoutController extends Controller
             'totalAmount',
             'categories',
             'address',
-            'user'
+            'user',
+            'promotion'
         ));
     }
 
@@ -378,6 +398,7 @@ class CheckoutController extends Controller
                         'quantity' => $quantity,
                         'price' => $price,
                     ]);
+                    $variant->decrement('stock_quantity', $quantity);
 
                     $selectedKeys[] = $itemKey;
                 }
@@ -1054,7 +1075,6 @@ public function vnpayCallback(Request $request)
                     'quantity' => $quantity,
                     'price' => $price,
                 ]);
-
                 $variant->decrement('stock_quantity', $quantity);
                 $selectedKeys[] = $itemKey;
             }

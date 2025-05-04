@@ -392,16 +392,78 @@
             100% { transform: translate(0, 0); }
         }
     </style>
+    <style>
+        .order-notification {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    align-items: flex-start;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-decoration: none;
+    max-width: 320px;
+    z-index: 1000;
+    color: inherit;
+    transition: all 0.3s ease;
+}
+
+.order-notification img {
+    width: 50px;
+    height: 70px;
+    object-fit: cover;
+    margin-right: 12px;
+    border-radius: 4px;
+}
+
+.order-notification .content {
+    flex: 1;
+}
+
+.order-notification .title {
+    margin: 0;
+    font-size: 13px;
+    color: #666;
+}
+
+.order-notification .name {
+    margin: 2px 0;
+    font-size: 15px;
+    font-weight: bold;
+    color: #000;
+}
+
+.order-notification .time {
+    font-size: 12px;
+    color: #888;
+}
+
+.order-notification .close-btn {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #aaa;
+    cursor: pointer;
+}
+
+    </style>
 </head>
 <body>
     @yield('content')
     <a id="orderNotification" class="order-notification" href="#">
         <img id="orderImage" src="" alt="Hình ảnh sản phẩm">
         <div class="content">
-            <p id="orderMessage"></p>
-            <span id="orderTime" class="time"></span>
+            <p id="orderMessage" class="name"></p>
+            <span id="orderTime" class="time">Một khách đã mua cách đây</span>
         </div>
+        <button class="close-btn" onclick="this.parentElement.style.display='none';">×</button>
     </a>
+    
 
     @if (Auth::check() && !Auth::user()->is_admin)
         <div class="chat-bubble" id="chatBubble">

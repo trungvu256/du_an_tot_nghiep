@@ -76,7 +76,7 @@
         <tr>
             <th>Tổng tiền</th>
             <td class="fw-bold text-danger">
-                {{ number_format($order->total_price, 0, ',', '.') }} ₫
+                {{ number_format($order->total_price, 0, ',', '.') }} VNĐ
             </td>
         </tr>
         <tr>
@@ -237,7 +237,7 @@
                 <td>{{ $detail->quantity }}</td>
                 <td>
                     {{-- Hiển thị giá giống giỏ hàng --}}
-                    {{ number_format($itemTotal, 0, ',', '.') }} ₫
+                    {{ number_format($itemTotal, 0, ',', '.') }} VNĐ
                     <br>
                     <small>({{ number_format($variantPrice, 0, ',', '.') }} x {{ $detail->quantity }})</small>
                 </td>
@@ -246,7 +246,7 @@
             {{-- Hiển thị tổng giá đơn hàng --}}
             <tr>
                 <td colspan="3" class="text-end fw-bold">Tổng cộng:</td>
-                <td class="fw-bold text-danger">{{ number_format($totalOrderPrice, 0, ',', '.') }} ₫</td>
+                <td class="fw-bold text-danger">{{ number_format($totalOrderPrice, 0, ',', '.') }} VNĐ</td>
             </tr>
             @else
             <tr>

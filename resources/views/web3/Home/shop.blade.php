@@ -70,12 +70,12 @@
                                         <div style="max-height: 150px; overflow-y: auto;">
                                             @php
                                                 $priceOptions = [
-                                                    '0-100000' => 'Giá dưới 100.000đ',
-                                                    '100000-200000' => '100.000đ - 200.000đ',
-                                                    '200000-300000' => '200.000đ - 300.000đ',
-                                                    '300000-500000' => '300.000đ - 500.000đ',
-                                                    '500000-1000000' => '500.000đ - 1.000.000đ',
-                                                    '1000000-99999999' => 'Giá trên 1.000.000đ',
+                                                    '0-100000' => 'Giá dưới 100.000VNĐ',
+                                                    '100000-200000' => '100.000VNĐ - 200.000VNĐ',
+                                                    '200000-300000' => '200.000VNĐ - 300.000VNĐ',
+                                                    '300000-500000' => '300.000VNĐ - 500.000VNĐ',
+                                                    '500000-1000000' => '500.000VNĐ - 1.000.000VNĐ',
+                                                    '1000000-99999999' => 'Giá trên 1.000.000VNĐ',
                                                 ];
                                             @endphp
 
@@ -300,7 +300,7 @@
             cursor: pointer;
         }
 
-        /* --- Button “Bỏ hết” --- */
+        /* --- Button "Bỏ hết" --- */
         #remove-all {
             font-size: 13px;
             padding: 6px 10px;
@@ -370,7 +370,7 @@
                             </svg>
                             <div class="content">
                                 <div class="title">Free Shipping</div>
-                                <p class="desc text-grey-2">Miễn phí vận chuyển cho đơn hàng từ 150.000đ</p>
+                                <p class="desc text-grey-2">Miễn phí vận chuyển cho đơn hàng từ 150.000VNĐ</p>
                             </div>
                         </div>
                     </div>

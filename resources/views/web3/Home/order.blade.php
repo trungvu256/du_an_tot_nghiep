@@ -37,13 +37,13 @@
         @endif --}}
 
         {{-- Thanh tìm kiếm --}}
-        <div class="mb-3">
+        {{-- <div class="mb-3">
             <form action="{{ route('donhang.index') }}" method="GET" class="d-flex">
                 <input type="text" name="query" class="form-control me-2 px-4"
                     placeholder="Bạn có thể tìm kiếm theo mã đơn hàng "
                     value="{{ request('query') }}" style="border-radius: 5px;">
             </form>
-        </div>
+        </div> --}}
 
         {{-- Tiêu đề và thông tin Shop --}}
         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -52,7 +52,8 @@
             </div>
             <div>
                 <a href="#" class="text-primary me-3">Giao hàng thành công
-                    ({{ $orders->where('status', 3)->count() }})</a>
+                    ({{ $orders->where('status', \App\Models\Order::STATUS_COMPLETED)->count() }}
+                    )</a>
             </div>
         </div>
 
@@ -263,10 +264,10 @@
                                 </div>
                                 <div class="order-item-price ms-auto">
                                     @if($item->product->price_sale && $item->product->price_sale < $item->product->price)
-                                        <span class="text-decoration-line-through text-muted me-2">{{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}₫</span>
-                                        <span class="text-danger">{{ number_format($item->product->price_sale * $item->quantity, 0, ',', '.') }}₫</span>
+                                        <span class="text-decoration-line-through text-muted me-2">{{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}VNĐ</span>
+                                        <span class="text-danger">{{ number_format($item->product->price_sale * $item->quantity, 0, ',', '.') }}VNĐ</span>
                                     @else
-                                        {{ number_format($item->price * $item->quantity, 0, ',', '.') }}₫
+                                        {{ number_format($item->price * $item->quantity, 0, ',', '.') }}VNĐ
                                     @endif
                                 </div>
                             </div>
@@ -288,7 +289,7 @@
                         </p>
                         <div class="d-flex align-items-center action-buttons" id="action-buttons-{{ $order->id }}">
                             <span class="order-total me-3">Thành tiền:
-                                {{ number_format($order->total_price, 0, ',', '.') }}₫</span>
+                                {{ number_format($order->total_price, 0, ',', '.') }}VNĐ</span>
                         
                             {{-- Nếu đơn đang chờ xác nhận hoặc đang giao --}}
                             @if ($order->status == 0 || $order->status == 1)

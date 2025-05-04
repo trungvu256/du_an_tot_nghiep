@@ -22,13 +22,13 @@ class WebController extends Controller
         $users = User::all();
         $categories = Catalogue::all();
         $products = Product::where('status', 1)->get();
-        $productNews = Product::where('status', 1)->orderBy('id', 'DESC')->take(4)->get();
+        $productNews = Product::where('status', 1)->orderBy('id', 'DESC')->take(8)->get();
         $list_product = Product::where('status', 1)->with('category')->paginate(8);
         $bestSellers = Product::where('status', 1)->withCount(['orderItems as total_sold' => function ($query) {
             $query->select(DB::raw("SUM(quantity)"));
         }])
             ->orderByDesc('total_sold')
-            ->take(4)
+            ->take(8)
             ->get();
         $blogs = Blog::latest()->take(3)->get();
         $brands = Brand::all();

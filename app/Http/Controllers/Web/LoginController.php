@@ -69,52 +69,61 @@ class LoginController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
-            'phone' => 'nullable|string|regex:/^(0[1-9][0-9]{8,9})$/',
+            'phone' => 'required|string|regex:/^0[1-9][0-9]{8}$/|unique:users,phone',
             'address' => 'nullable|string|max:255',
             'gender' => 'required|string|in:Male,Female,Other',
             'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'agree_terms' => 'accepted',
+        ], [
+            'email.unique' => 'Email này đã được sử dụng.',
+            'phone.unique' => 'Số điện thoại này đã được sử dụng.',
+            'phone.regex' => 'Số điện thoại phải bắt đầu bằng số 0 và có đúng 10 chữ số.',
+            'agree_terms.accepted' => 'Bạn phải đồng ý với điều khoản sử dụng.',
         ]);
     
         if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors(),
+            ], 422);
         }
-        
     
         // Xử lý ảnh đại diện nếu có
         $avatarPath = null;
         if ($request->hasFile('avatar')) {
-            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+            try {
+                $avatarPath = $request->file('avatar')->store('avatars', 'public');
+            } catch (\Exception $e) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ['avatar' => 'Tải ảnh đại diện thất bại.'],
+                ], 422);
+            }
         }
     
         // Lưu vào database
         $user = new User();
-        $user->first_name = $request->first_name;
-        $user->last_name = $request->last_name;
-        $user->name = $request->first_name . ' ' . $request->last_name;
-        $user->email = $request->email;
+        $user->first_name = trim($request->first_name);
+        $user->last_name = trim($request->last_name);
+        $user->name = $user->first_name . ' ' . $user->last_name;
+        $user->email = trim($request->email);
         $user->password = Hash::make($request->password);
-        $user->phone = $request->phone;
-        $user->address = $request->address;
+        $user->phone = trim($request->phone);
+        $user->address = trim($request->address);
         $user->gender = $request->gender;
         $user->avatar = $avatarPath;
         $user->status = 1;
         $user->is_admin = 0;
         $user->save();
     
-        // return response()->json(['success' => true, 'message' => 'Tài khoản của bạn đã được tạo thành công!']);
         return response()->json([
             'success' => true,
             'message' => 'Tài khoản của bạn đã được tạo thành công!',
             'redirect' => url('/')
         ]);
     }
-    
-
 
 
     public function logout()

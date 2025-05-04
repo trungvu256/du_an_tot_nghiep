@@ -23,12 +23,12 @@
                     <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}" class="name-product link fw-medium text-md">{{ $product->name }}</a>
                     <p class="price-wrap fw-medium">
                         @if($product->variants->isNotEmpty())
-                            <span class="price-new text-primary">
-                                {{ number_format($product->variants->min('price'), 0, ',', '.') }}đ
+                            <span class="price-new text-primary" style="font-size: 13px">
+                                {{ number_format($product->variants->min('price'), 0, ',', '.') }}VNĐ
                             </span>
                             @if($product->variants->count() > 1)
-                                <span class="price-new text-primary">
-                                    - {{ number_format($product->variants->max('price'), 0, ',', '.') }}đ
+                                <span class="price-new text-primary" style="font-size: 13px">
+                                    - {{ number_format($product->variants->max('price'), 0, ',', '.') }}VNĐ
                                 </span>
                             @endif
                         @else

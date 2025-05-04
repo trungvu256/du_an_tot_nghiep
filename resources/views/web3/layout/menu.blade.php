@@ -121,13 +121,13 @@
                                             $latestProduct = $productNews->first();
                                         @endphp
                                         
-                                        @if ($latestProduct)
+                                        {{-- @if ($latestProduct)
                                             <li style="margin-bottom: 5px;">
                                                 <a href="{{ route('web.shop', ['type' => 'new']) }}" style="font-size: 16px">
                                                     Sản phẩm mới
                                                 </a>
                                             </li>
-                                        @endif
+                                        @endif --}}
                                             </ul>
                                         </div>
                                     </li>

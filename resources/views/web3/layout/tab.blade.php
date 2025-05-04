@@ -271,7 +271,6 @@
             <span class="title">Đăng ký tài khoản</span>
             <button class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        <div id="error-message" class="alert alert-danger" style="display: none;"></div>
         <div class="canvas-body popup-inner">
             <form id="form_register" action="{{ route('web.register.store') }}" enctype="multipart/form-data"
                 class="form-login" method="POST">
@@ -279,28 +278,33 @@
                 <div class="">
                     <fieldset class="text mb_12">
                         <input type="text" class="form-control rounded-3" id="first_name" name="first_name"
-                            placeholder="Nhập Họ">
+                            placeholder="Nhập Họ" required>
+                        <span class="text-danger error-message" id="first_name_error"></span>
                     </fieldset>
                     <fieldset class="text mb_12">
                         <input type="text" class="form-control rounded-3" id="last_name" name="last_name"
                             placeholder="Nhập tên" required>
+                        <span class="text-danger error-message" id="last_name_error"></span>
                     </fieldset>
                     <fieldset class="text mb_12">
                         <input type="email" class="form-control rounded-3" id="email" name="email"
                             placeholder="Nhập email" required>
+                        <span class="text-danger error-message" id="email_error"></span>
                     </fieldset>
                     <fieldset class="text mb_12">
                         <input type="password" class="form-control rounded-3" id="password" name="password"
                             placeholder="Nhập mật khẩu" required>
+                        <span class="text-danger error-message" id="password_error"></span>
                     </fieldset>
                     <fieldset class="text mb_12">
                         <input type="password" class="form-control rounded-3" id="password_confirm"
                             name="password_confirmation" placeholder="Nhập lại mật khẩu" required>
+                        <span class="text-danger error-message" id="password_confirmation_error"></span>
                     </fieldset>
-
                     <fieldset class="text mb_12">
                         <input type="text" class="form-control rounded-3" id="phone" name="phone"
-                            placeholder="Nhập số điện thoại">
+                            placeholder="Nhập số điện thoại" required>
+                        <span class="text-danger error-message" id="phone_error"></span>
                     </fieldset>
                     <fieldset class="text mb_12">
                         <select class="form-select rounded-3" id="gender" name="gender" required>
@@ -309,26 +313,27 @@
                             <option value="Female">Nữ</option>
                             <option value="Other">Khác</option>
                         </select>
+                        <span class="text-danger error-message" id="gender_error"></span>
                     </fieldset>
-
                     <fieldset class="text mb_12">
                         <input type="text" class="form-control rounded-3" id="address" name="address"
                             placeholder="Nhập địa chỉ">
+                        <span class="text-danger error-message" id="address_error"></span>
                     </fieldset>
-
                     <fieldset class="text mb_12">
                         <input type="file" class="form-control rounded-3" id="avatar" name="avatar"
-                            accept="image/*">
+                            accept="image/jpeg,image/png">
+                        <span class="text-danger error-message" id="avatar_error"></span>
                     </fieldset>
                     <fieldset class="text mb_12">
                         <input type="checkbox" class="form-check-input" id="agree_terms" name="agree_terms"
                             value="1" required>
                         <label class="form-check-label text-muted" for="agree_terms">Tôi đồng ý với tất cả điều
                             khoản</label>
+                        <div><span class="text-danger error-message" id="agree_terms_error"></span></div>
                     </fieldset>
                 </div>
                 <div class="bot">
-
                     <div class="button-wrap">
                         <button class="subscribe-button tf-btn animate-btn bg-dark-2 w-100" type="submit">Đăng
                             ký</button>
@@ -340,6 +345,231 @@
         </div>
     </div>
 </div>
+<!-- /register -->
+
+<!-- CSS để đảm bảo thông báo lỗi hiển thị rõ ràng -->
+<style>
+    .error-message {
+        display: block;
+        font-size: 0.875rem;
+        margin-top: 5px;
+        color: #dc3545; /* Màu đỏ của Bootstrap text-danger */
+    }
+    .text.mb_12 {
+        position: relative;
+        margin-bottom: 12px;
+    }
+</style>
+
+<!-- JavaScript cho xử lý AJAX và validation -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function() {
+        // Thiết lập token CSRF cho các yêu cầu AJAX
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        // Xử lý submit form đăng ký
+        $('#form_register').on('submit', function(e) {
+            e.preventDefault();
+
+            // Xóa thông báo lỗi cũ
+            $('.error-message').text('');
+
+            // Lấy giá trị các trường
+            let firstName = $('#first_name').val().trim();
+            let lastName = $('#last_name').val().trim();
+            let email = $('#email').val().trim();
+            let password = $('#password').val();
+            let confirmPassword = $('#password_confirm').val();
+            let phone = $('#phone').val().trim();
+            let gender = $('#gender').val();
+            let avatar = $('#avatar')[0].files[0];
+            let agreeTerms = $('#agree_terms').prop('checked');
+
+            // Validation phía client
+            if (firstName === '') {
+                $('#first_name_error').text('Họ không được để trống!');
+                return;
+            }
+            if (firstName.length > 255) {
+                $('#first_name_error').text('Họ không được vượt quá 255 ký tự!');
+                return;
+            }
+
+            if (lastName === '') {
+                $('#last_name_error').text('Tên không được để trống!');
+                return;
+            }
+            if (lastName.length > 255) {
+                $('#last_name_error').text('Tên không được vượt quá 255 ký tự!');
+                return;
+            }
+
+            let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email === '') {
+                $('#email_error').text('Email không được để trống!');
+                return;
+            }
+            if (!emailRegex.test(email)) {
+                $('#email_error').text('Email không hợp lệ!');
+                return;
+            }
+            if (email.length > 255) {
+                $('#email_error').text('Email không được vượt quá 255 ký tự!');
+                return;
+            }
+
+            if (password === '') {
+                $('#password_error').text('Mật khẩu không được để trống!');
+                return;
+            }
+            if (password.length < 6) {
+                $('#password_error').text('Mật khẩu phải có ít nhất 6 ký tự!');
+                return;
+            }
+            if (password !== confirmPassword) {
+                $('#password_confirmation_error').text('Mật khẩu xác nhận không khớp!');
+                return;
+            }
+
+            if (phone === '') {
+                $('#phone_error').text('Số điện thoại không được để trống!');
+                return;
+            }
+            let phoneRegex = /^0[1-9][0-9]{8}$/;
+            if (!phoneRegex.test(phone)) {
+                $('#phone_error').text('Số điện thoại phải bắt đầu bằng số 0 và có đúng 10 chữ số!');
+                return;
+            }
+
+            if (gender === '') {
+                $('#gender_error').text('Vui lòng chọn giới tính!');
+                return;
+            }
+            if (!['Male', 'Female', 'Other'].includes(gender)) {
+                $('#gender_error').text('Giới tính không hợp lệ!');
+                return;
+            }
+
+            if (avatar) {
+                let allowedExtensions = ['jpg', 'jpeg', 'png'];
+                let extension = avatar.name.split('.').pop().toLowerCase();
+                if (!allowedExtensions.includes(extension)) {
+                    $('#avatar_error').text('Ảnh đại diện chỉ hỗ trợ định dạng jpg, jpeg, png!');
+                    return;
+                }
+                if (avatar.size > 2048 * 1024) { // 2MB
+                    $('#avatar_error').text('Ảnh đại diện không được vượt quá 2MB!');
+                    return;
+                }
+            }
+
+            if (!agreeTerms) {
+                $('#agree_terms_error').text('Bạn phải đồng ý với các điều khoản!');
+                return;
+            }
+
+            // Gửi yêu cầu AJAX
+            let formData = new FormData(this);
+            let submitButton = $(this).find('button[type="submit"]');
+            submitButton.prop('disabled', true).text('Đang xử lý...');
+
+            $.ajax({
+                type: "POST",
+                url: "{{ route('web.register.store') }}",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire({
+                            title: "Thành Công",
+                            text: response.message,
+                            icon: "success",
+                            didOpen: () => {
+                                const popup = document.querySelector('.swal2-popup');
+                                const container = document.querySelector('.swal2-container');
+                                if (popup) {
+                                    popup.style.zIndex = '9999';
+                                }
+                                if (container) {
+                                    container.style.zIndex = '9999';
+                                }
+                            }
+                        }).then(() => {
+                            window.location.href = response.redirect || "/";
+                        });
+                    } else {
+                        // Trường hợp response không có success: true
+                        Swal.fire({
+                            title: "Lỗi!",
+                            text: response.message || "Đăng ký thất bại. Vui lòng thử lại.",
+                            icon: "error",
+                            didOpen: () => {
+                                const popup = document.querySelector('.swal2-popup');
+                                const container = document.querySelector('.swal2-container');
+                                if (popup) {
+                                    popup.style.zIndex = '9999';
+                                }
+                                if (container) {
+                                    container.style.zIndex = '9999';
+                                }
+                            }
+                        });
+                    }
+                },
+                error: function(xhr) {
+                    submitButton.prop('disabled', false).text('Đăng ký');
+                    console.log('Error:', xhr); // Log lỗi để debug
+                    console.log('Status:', xhr.status);
+                    console.log('Response:', xhr.responseJSON); // Log response để kiểm tra cấu trúc
+
+                    if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
+                        console.log('Validation Errors:', xhr.responseJSON.errors); // Log các lỗi validation
+                        // Hiển thị lỗi theo từng trường
+                        $.each(xhr.responseJSON.errors, function(field, messages) {
+                            let errorElement = $(`#${field}_error`);
+                            console.log(`Field: ${field}, Error Element:`, errorElement); // Log để kiểm tra
+                            if (errorElement.length) {
+                                errorElement.text(messages[0]); // Hiển thị thông báo lỗi đầu tiên
+                            } else {
+                                console.log(`Error element for field ${field} not found!`);
+                            }
+                        });
+                    } else {
+                        // Hiển thị lỗi chung nếu không phải lỗi validation
+                        let errorMessage = xhr.responseJSON && xhr.responseJSON.message
+                            ? xhr.responseJSON.message
+                            : 'Đã có lỗi xảy ra. Vui lòng thử lại.';
+                        Swal.fire({
+                            title: "Lỗi!",
+                            text: errorMessage,
+                            icon: "error",
+                            didOpen: () => {
+                                const popup = document.querySelector('.swal2-popup');
+                                const container = document.querySelector('.swal2-container');
+                                if (popup) {
+                                    popup.style.zIndex = '9999';
+                                }
+                                if (container) {
+                                    container.style.zIndex = '9999';
+                                }
+                            }
+                        });
+                    }
+                },
+                complete: function() {
+                    submitButton.prop('disabled', false).text('Đăng ký');
+                }
+            });
+        });
+    });
+</script>
 
 <!-- /register -->
 
@@ -685,7 +915,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script>
+{{-- <script>
     $(document).ready(function() {
         $('#form_register').submit(function(e) {
             e.preventDefault();
@@ -854,4 +1084,4 @@
             });
         });
     });
-</script>
+</script> --}}

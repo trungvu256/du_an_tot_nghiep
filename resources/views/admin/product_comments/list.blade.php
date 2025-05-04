@@ -29,6 +29,13 @@
                                             value="{{ request()->search }}">
                                     </div>
                                     <div class="col-auto">
+                                        <select class="form-select form-select-sm" name="response_status">
+                                            <option value="">-- Trạng thái phản hồi --</option>
+                                            <option value="replied" {{ $responseStatus == 'replied' ? 'selected' : '' }}>Đã phản hồi</option>
+                                            <option value="not_replied" {{ $responseStatus == 'not_replied' ? 'selected' : '' }}>Chưa phản hồi</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-auto">
                                         <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
                                     </div>
                                     <div class="col-auto">
@@ -76,12 +83,12 @@
                                                                         <br>
                                                                         <small class="text-muted">Đã phản hồi vào:
                                                                             {{ $response->created_at->format('d/m/Y H:i') }}</small>
-                                                                        <button type="button"
+                                                                        {{-- <button type="button"
                                                                             class="btn btn-sm btn-warning edit-reply"
                                                                             data-id="{{ $response->id }}"
                                                                             data-reply="{{ $response->reply }}">
                                                                             Sửa
-                                                                        </button>
+                                                                        </button> --}}
                                                                     </li>
                                                                 @endforeach
                                                             </ul>
@@ -92,14 +99,30 @@
                                                 </td>
 
                                                 <td>
-                                                    <button type="button"
-                                                        class="btn rounded-pill btn-primary btnModalReply"
-                                                        data-toggle="modal" data-target="#responseModal" id="btnModalReply"
-                                                        data-id="{{ $comment->id }}"
-                                                        data-user="{{ $comment->user->name ?? '' }}"
-                                                        data-content="{{ $comment->content }}">
-                                                        <i class="bi bi-reply"></i> Phản hồi
-                                                    </button>
+                                                    @php
+                                                        $adminHasReplied = false;
+                                                        foreach ($comment->replies as $reply) {
+                                                            if ($reply->user && $reply->user->is_admin) {
+                                                                $adminHasReplied = true;
+                                                                break;
+                                                            }
+                                                        }
+                                                    @endphp
+
+                                                    @if ($adminHasReplied)
+                                                        <button type="button" class="btn rounded-pill btn-secondary" disabled>
+                                                            <i class="bi bi-check-circle"></i> Đã phản hồi
+                                                        </button>
+                                                    @else
+                                                        <button type="button"
+                                                            class="btn rounded-pill btn-primary btnModalReply"
+                                                            data-toggle="modal" data-target="#responseModal" id="btnModalReply"
+                                                            data-id="{{ $comment->id }}"
+                                                            data-user="{{ $comment->user->name ?? '' }}"
+                                                            data-content="{{ $comment->comment }}">
+                                                            <i class="bi bi-reply"></i> Phản hồi
+                                                        </button>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -193,6 +216,7 @@
         $(document).ready(function() {
             $('#filterRemove').click(function() {
                 $('#search').val('');
+                $('select[name="response_status"]').val('');
                 $(this).closest('form').submit();
             });
         });

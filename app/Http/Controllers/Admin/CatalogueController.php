@@ -100,6 +100,7 @@ class CatalogueController extends Controller
             }
 
             $catalogue->save();
+
             DB::commit();
 
             return redirect()->route('catalogues.index')->with('success', 'Danh mục đã được thêm mới.');
@@ -124,6 +125,7 @@ class CatalogueController extends Controller
             'slug' => 'required|string|max:255|unique:catalogues,slug,' . $catalogue->id,
             'status' => 'required|in:active,inactive',
             'image' => 'nullable|image|max:2048',
+            'description' => 'nullable|string',
         ], [
             'name.required' => 'Tên danh mục là bắt buộc.',
             'name.unique' => 'Tên danh mục đã tồn tại.', // Thông báo lỗi khi trùng tên
@@ -145,7 +147,7 @@ class CatalogueController extends Controller
             $catalogue->name = $request->name;
             $catalogue->slug = $request->slug;
             $catalogue->status = $request->status;
-
+            $catalogue->description = $request->description;
             // Kiểm tra và lưu ảnh nếu có
             if ($request->hasFile('image')) {
                 // Xóa ảnh cũ nếu có

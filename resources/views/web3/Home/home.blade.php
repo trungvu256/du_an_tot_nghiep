@@ -9,10 +9,10 @@
             <div class="swiper-wrapper">
                 <div class="swiper-slide">
                     <div class="slider-wrap">
-                        <a href="{{route('web.shop')}}" class="image">
+                        <div class="image">
                             <img src="{{ asset('/images/Banner/slider_1.jpg') }}"
                                 data-src="{{ asset('/images/Banner/slider_1.jpg') }}" alt="slider" class="lazyload">
-                        </a>
+                        </div>
                         <div class="box-content">
                             <div class="container">
                                 <div class="row">
@@ -31,7 +31,7 @@
                                             <div class="box-btn-slider fade-item fade-item-3">
                                                 <a href="{{ route('web.shop') }}"
                                                     class="tf-btn btn-white hover-primary">
-                                                    Khám Phá Bộ Sưu Tập
+                                                    Mua ngay
                                                     <i class="icon icon-arr-right"></i>
                                                 </a>
                                             </div>
@@ -67,7 +67,7 @@
                                             <div class="box-btn-slider fade-item fade-item-3">
                                                 <a href="{{ route('web.shop') }}"
                                                     class="tf-btn btn-white hover-primary">
-                                                    Khám Phá Bộ Sưu Tập
+                                                   Mua ngay
                                                     <i class="icon icon-arr-right"></i>
                                                 </a>
                                             </div>
@@ -216,9 +216,9 @@
                                             <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
                                                 class="name-product link fw-medium text-md">{{ $product->name }}</a>
                                             <p class="price-wrap fw-medium">
-                                                <span class="price-new text-primary">{{ number_format($minPrice) }}₫
+                                                <span class="price-new text-primary">{{ number_format($minPrice) }}VNĐ
                                                     @if ($minPrice !== $maxPrice)
-                                                    - {{ number_format($maxPrice) }}₫
+                                                    - {{ number_format($maxPrice) }}VNĐ
                                                     @endif
                                                 </span>
                                                 {{-- <span class="price-old text-dark ">$100.00</span> --}}
@@ -364,9 +364,9 @@
                                             <a href="{{ route('web.shop-detail', ['id' => $product->id]) }}"
                                                 class="name-product link fw-medium text-md">{{ $product->name }}</a>
                                             <p class="price-wrap fw-medium">
-                                                <span class="price-new text-primary">{{ number_format($minPrice) }}₫
+                                                <span class="price-new text-primary">{{ number_format($minPrice) }}VNĐ
                                                     @if ($minPrice !== $maxPrice)
-                                                    - {{ number_format($maxPrice) }}₫
+                                                    - {{ number_format($maxPrice) }}VNĐ
                                                     @endif
                                                 </span>
                                                 {{-- <span class="price-old text-dark ">$100.00</span> --}}
@@ -393,46 +393,26 @@
     <section class="flat-spacing-4">
         <div class="container">
             <div class="tf-grid-layout md-col-2">
+                @foreach ($categories as $category)
                 <div class="wg-offer hover-img">
-                    <a href="{{ route('web.shop') }}" class="image d-block img-style">
-                        <img src="{{ asset('/images/Banner/featured_coll_2_1_img.jpg') }}"
-                            data-src="{{ asset('/images/Banner/featured_coll_2_1_img.jpg') }}" alt="" class="lazyload">
+                    <a href="{{ route('web.shop', ['cate_id' => $category->id]) }}" class="image d-block img-style">
+                        <img src="{{ asset('storage/'.$category->image) }}"
+                            data-src="{{ asset('storage/'.$category->image) }}" alt="" class="lazyload">
                     </a>
                     <div class="content text-center wow fadeInUp">
                         <div class="box-title">
-                            <h6><a href="{{ route('web.shop') }}" class="link"> Hàng mới về</a></h6>
+                            <h5><a href="{{ route('web.shop', ['cate_id' => $category->id]) }}" class="link"> {{$category->name}}</a></h5>
                             <p class="text-md text-main">
-                                Khám phá các xu hướng mới nhất trong trang phục năng động và nâng cấp tủ
-                                quần áo thể dục của bạn.
+                               {{$category->description}}
                             </p>
                         </div>
                         <div class="box-btn">
-                            <a href="{{ route('web.shop') }}" class="tf-btn btn-out-line-dark-2">Mua Ngay</a>
+                            <a href="{{ route('web.shop', ['cate_id' => $category->id]) }}" class="tf-btn btn-out-line-dark-2">Mua Ngay</a>
                         </div>
                     </div>
                 </div>
-                <div class="wg-offer hover-img">
-                    <a href="{{ route('web.shop') }}" class="image d-block img-style">
-                        <img src="{{ asset('/images/Banner/featured_coll_2_2_img.jpg') }}"
-                            data-src="{{ asset('/images/Banner/featured_coll_2_2_img.jpg') }}" alt="" class="lazyload">
-                    </a>
-                    <div class="content text-center wow fadeInUp">
-                        <div class="box-title">
-                            <h6><a href="{{ route('web.shop') }}" class="link">Ưu Đãi Có Hạn</a></h6>
-                            <p class="text-md text-main">
-                                Giảm giá lên đến 30% cho các mặt hàng đồ thể thao được chọn.
-                                Đừng bỏ lỡ những ưu đãi này!
-                                <br class="d-none d-xl-block">
-                                Nhanh tay kẻo lỡ những ưu đãi cực hot này!
-                            </p>
-                        </div>
-                        <div class="box-btn">
-                            <a href="{{ route('web.shop') }}" class="tf-btn btn-out-line-dark-2">
-                                Mua Ngay
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
+                
             </div>
         </div>
     </section>

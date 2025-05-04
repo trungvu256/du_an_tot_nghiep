@@ -5,13 +5,40 @@ namespace App\Http\Controllers\Admin;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class UserController
 {
-    public function index()
+    public function index(Request $request)
     {
         $title = "List User";
-        $users = User::paginate(10);
+
+        $query = User::query();
+
+        // Xử lý tìm kiếm theo tên, email hoặc số điện thoại
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('name', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('first_name', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('last_name', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('email', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('phone', 'like', '%' . $searchTerm . '%');
+            });
+        }
+
+        // Lọc theo vai trò (admin/user)
+        if ($request->filled('role')) {
+            $query->where('is_admin', (int)$request->role);
+        }
+
+        // Lọc theo trạng thái (active/locked)
+        if ($request->filled('status')) {
+            $query->where('status', (int)$request->status);
+        }
+
+        $users = $query->paginate(10)->appends($request->all());
+
         return view('admin.user.index', compact('title', 'users'));
     }
 
