@@ -138,6 +138,7 @@ class CheckoutController extends Controller
     }
 
 
+
     public function depositVNPay(Request $request)
     {
         try {
@@ -148,15 +149,15 @@ class CheckoutController extends Controller
             $user = Auth::user();
             $selectedCart = session()->get('selected_cart', []);
             $cart = session()->get('cart', []);
-
+    
             if (empty($cart)) {
                 return redirect()->route('cart.viewCart')->with('error', 'Giỏ hàng của bạn đang trống!');
             }
-
+    
             if (empty($selectedCart)) {
                 return redirect()->route('cart.viewCart')->with('error', 'Không có sản phẩm nào được chọn!');
             }
-
+    
             // Tính lại tổng tiền dựa trên price_sale nếu có
             $orderTotal = 0;
             foreach ($selectedCart as $item) {
@@ -165,18 +166,18 @@ class CheckoutController extends Controller
                     : $item['price'];
                 $orderTotal += $price * $item['quantity'];
             }
-
+    
             // Áp dụng mã giảm giá nếu có
             $promotion = session('promotion');
             $discount = $promotion['discount'] ?? 0;
             $finalTotal = max(0, $orderTotal - $discount);
-
+    
             if (!is_numeric($finalTotal) || $finalTotal <= 0) {
                 return redirect()->route('cart.viewCart')->with('error', 'Giá trị thanh toán không hợp lệ!');
             }
-
+    
             DB::beginTransaction();
-
+    
             try {
                 // Kiểm tra và xử lý mã giảm giá nếu có
                 if (isset($promotion['id'])) {
@@ -184,26 +185,26 @@ class CheckoutController extends Controller
                         ->where('quantity', '>', 0)
                         ->lockForUpdate()
                         ->first();
-
+    
                     if (!$promotionModel) {
                         DB::rollBack();
                         return redirect()->route('cart.viewCart')->with('error', 'Mã giảm giá không tồn tại hoặc đã hết lượt sử dụng!');
                     }
-
+    
                     $promotionModel->decrement('quantity');
                 }
-
+    
                 // Xử lý giao hàng đến địa chỉ khác
                 $shipToDifferentAddress = $request->has('ship_to_different_address') && $request->input('ship_to_different_address') == '1';
                 $selectedAddress = null;
-
+    
                 // Xử lý địa chỉ giao hàng
                 if ($shipToDifferentAddress) {
                     // Lấy thông tin từ form giao hàng khác
                     $billingName = $request->billing_name ?? $user->name;
                     $billingPhone = $request->billing_phone ?? $user->phone;
                     $billingAddress = $request->billing_address ?? $user->address;
-
+    
                     $name = $request->shipping_name;
                     $phone = $request->shipping_phone;
                     $address = $request->shipping_address;
@@ -211,15 +212,15 @@ class CheckoutController extends Controller
                     $districtCode = $request->input('shipping_district');
                     $wardCode = $request->input('shipping_ward');
                     $note = $request->shipping_note;
-
+    
                     // Lấy tên địa điểm từ mã code
                     $provinceData = Http::timeout(5)->get("https://provinces.open-api.vn/api/p/{$provinceCode}")->json();
                     $districtData = Http::timeout(5)->get("https://provinces.open-api.vn/api/d/{$districtCode}?depth=2")->json();
-
+    
                     $provinceName = $provinceData['name'] ?? '';
                     $districtName = $districtData['name'] ?? '';
                     $wardName = '';
-
+    
                     // Tìm tên phường/xã theo wardCode
                     if (!empty($districtData['wards'])) {
                         foreach ($districtData['wards'] as $ward) {
@@ -229,7 +230,7 @@ class CheckoutController extends Controller
                             }
                         }
                     }
-
+    
                     // Loại bỏ tiền tố
                     $provinceName = preg_replace('/^(Thành phố|Tỉnh)\s+/i', '', $provinceName);
                     $districtName = preg_replace('/^(Quận|Huyện)\s+/i', '', $districtName);
@@ -238,11 +239,11 @@ class CheckoutController extends Controller
                     if ($request->filled('user_address_id')) {
                         $selectedAddress = UserAddress::where('user_id', $user->id)
                             ->findOrFail($request->input('user_address_id'));
-
+    
                         $billingName = $selectedAddress->full_name ?? $request->billing_name ?? $user->name;
                         $billingPhone = $selectedAddress->phone ?? $request->billing_phone ?? $user->phone;
                         $billingAddress = $selectedAddress->full_address ?? $request->billing_address ?? $user->address;
-
+    
                         $name = $selectedAddress->full_name ?? $billingName;
                         $phone = $selectedAddress->phone ?? $billingPhone;
                         $address = $selectedAddress->full_address ?? $billingAddress;
@@ -253,17 +254,17 @@ class CheckoutController extends Controller
                         $districtName = $selectedAddress->district_name ?? '';
                         $wardName = $selectedAddress->ward_name ?? '';
                         $note = null;
-
+    
                         // Chỉ gọi API nếu thiếu tên và có mã code hợp lệ
                         if ((empty($provinceName) || empty($districtName) || empty($wardName)) && $provinceCode && $districtCode && $wardCode) {
                             try {
                                 $provinceData = Http::timeout(5)->get("https://provinces.open-api.vn/api/p/{$provinceCode}")->json();
                                 $districtData = Http::timeout(5)->get("https://provinces.open-api.vn/api/d/{$districtCode}?depth=2")->json();
-
+    
                                 $provinceName = $provinceData['name'] ?? '';
                                 $districtName = $districtData['name'] ?? '';
                                 $wardName = '';
-
+    
                                 if (!empty($districtData['wards'])) {
                                     foreach ($districtData['wards'] as $ward) {
                                         if ($ward['code'] == $wardCode) {
@@ -272,7 +273,7 @@ class CheckoutController extends Controller
                                         }
                                     }
                                 }
-
+    
                                 // Loại bỏ tiền tố
                                 $provinceName = preg_replace('/^(Thành phố|Tỉnh)\s+/i', '', $provinceName);
                                 $districtName = preg_replace('/^(Quận|Huyện)\s+/i', '', $districtName);
@@ -291,7 +292,7 @@ class CheckoutController extends Controller
                         $billingName = $request->billing_name;
                         $billingPhone = $request->billing_phone;
                         $billingAddress = $request->billing_address;
-
+    
                         $name = $billingName;
                         $phone = $billingPhone;
                         $address = $billingAddress;
@@ -304,7 +305,7 @@ class CheckoutController extends Controller
                         $note = null;
                     }
                 }
-
+    
                 // Kiểm tra nếu địa chỉ không đầy đủ (chỉ áp dụng khi có shipToDifferentAddress)
                 if ($shipToDifferentAddress) {
                     if (empty($provinceName) || empty($districtName) || empty($wardName)) {
@@ -312,21 +313,21 @@ class CheckoutController extends Controller
                         return redirect()->route('cart.viewCart')->with('error', 'Thông tin địa chỉ giao hàng không đầy đủ. Vui lòng kiểm tra lại tỉnh, quận, xã.');
                     }
                 }
-
+    
                 // Ghép địa chỉ đầy đủ
                 $addressParts = [$address];
                 if ($wardName) $addressParts[] = $wardName;
                 if ($districtName) $addressParts[] = $districtName;
                 if ($provinceName) $addressParts[] = $provinceName;
-
+    
                 $fullAddress = implode(', ', array_filter($addressParts));
-
+    
                 // Email luôn lấy từ user nếu không có trong request
                 $email = $request->email ?? $user->email ?? 'no-email@example.com';
-
+    
                 $txnRef = now()->timestamp . rand(1000, 9999);
                 $paymentDeadline = now()->addMinutes(15);
-
+    
                 $order = Order::create([
                     'user_id' => $user->id,
                     'billing_name' => $billingName,
@@ -353,14 +354,14 @@ class CheckoutController extends Controller
                     'promotion_id' => $promotion['id'] ?? null,
                     'note' => $note,
                 ]);
-
+    
                 $orderTotal = 0;
                 $variantErrors = [];
                 $selectedKeys = [];
-
+    
                 foreach ($selectedCart as $itemKey => $item) {
-                    $variantQuery = ProductVariant::where('product_id', $item['id']);
-
+                    $variantQuery = ProductVariant::where('product_id', $item['id'])->lockForUpdate();
+    
                     foreach ($item['variant']['attributes'] as $attrName => $attrValue) {
                         $variantQuery->whereHas('product_variant_attributes', function ($query) use ($attrName, $attrValue) {
                             $query->whereHas('attribute', function ($q) use ($attrName) {
@@ -370,27 +371,27 @@ class CheckoutController extends Controller
                             });
                         });
                     }
-
+    
                     $variant = $variantQuery->first();
-
+    
                     if (!$variant) {
                         $variantErrors[] = "Không tìm thấy biến thể sản phẩm: {$item['name']}";
                         continue;
                     }
-
+    
                     $quantity = intval($item['quantity']);
                     if ($variant->stock_quantity < $quantity) {
                         $variantErrors[] = "Sản phẩm {$item['name']} không đủ số lượng (Còn {$variant->stock_quantity})";
                         continue;
                     }
-
+    
                     $price = (!empty($variant->price_sale) && $variant->price_sale > 0 && $variant->price_sale < $variant->price)
                         ? $variant->price_sale
                         : $variant->price;
-
+    
                     $itemTotal = $price * $quantity;
                     $orderTotal += $itemTotal;
-
+    
                     OrderItem::create([
                         'order_id' => $order->id,
                         'product_id' => $item['id'],
@@ -399,15 +400,15 @@ class CheckoutController extends Controller
                         'price' => $price,
                     ]);
                     $variant->decrement('stock_quantity', $quantity);
-
+    
                     $selectedKeys[] = $itemKey;
                 }
-
+    
                 if (!empty($variantErrors)) {
                     DB::rollBack();
                     return redirect()->route('cart.viewCart')->with('error', implode('<br>', $variantErrors));
                 }
-
+    
                 // Thêm log để debug
                 Log::info('VNPay payment values', [
                     'finalTotal' => $finalTotal,
@@ -430,7 +431,7 @@ class CheckoutController extends Controller
                 event(new EventsOrderPlaced($order));
                 Mail::to($user->email)->send(new OrderPlacedMail($order));
                 DB::commit();
-
+    
                 // Xóa sản phẩm đã đặt khỏi giỏ hàng
                 $cart = session('cart', []);
                 foreach ($selectedKeys as $key) {
@@ -439,18 +440,18 @@ class CheckoutController extends Controller
                     }
                 }
                 session(['cart' => $cart]);
-
+    
                 // Xóa mã giảm giá và sản phẩm đã chọn khỏi session
                 session()->forget('promotion');
                 session()->forget('selected_cart');
                 session()->forget('selected_cart_keys');
-
+    
                 // Cấu hình VNPay
                 $vnp_TmnCode = "RJBK6J49";
                 $vnp_HashSecret = "0FFMB5EJI6AL35QE35TKCP18SYKI6N30";
                 $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
                 $vnp_ReturnUrl = route('checkout.vnpay.callback');
-
+    
                 // Dữ liệu thanh toán
                 $inputData = [
                     "vnp_Version" => "2.1.0",
@@ -466,17 +467,17 @@ class CheckoutController extends Controller
                     "vnp_ReturnUrl" => $vnp_ReturnUrl,
                     "vnp_TxnRef" => $txnRef,
                 ];
-
+    
                 ksort($inputData);
                 $query = [];
                 foreach ($inputData as $key => $value) {
                     $query[] = urlencode($key) . "=" . urlencode($value);
                 }
-
+    
                 $queryString = implode('&', $query);
                 $vnpSecureHash = hash_hmac('sha512', $queryString, $vnp_HashSecret);
                 $paymentUrl = $vnp_Url . "?" . $queryString . "&vnp_SecureHash=" . $vnpSecureHash;
-
+    
                 return redirect()->away($paymentUrl);
             } catch (\Exception $e) {
                 DB::rollBack();
@@ -494,8 +495,7 @@ class CheckoutController extends Controller
             return redirect()->route('cart.viewCart')->with('error', 'Đã xảy ra lỗi khi xử lý thanh toán!');
         }
     }
-
-
+    
 
 public function vnpayCallback(Request $request)
 {
@@ -723,7 +723,8 @@ public function vnpayCallback(Request $request)
 
 
     // thanh toán bằng tiền mặt
-    public function offline(Request $request)
+
+public function offline(Request $request)
 {
     try {
         if (!Auth::check()) {
@@ -1035,9 +1036,12 @@ public function vnpayCallback(Request $request)
             $variantErrors = [];
             $selectedKeys = [];
 
+            // Duyệt qua từng sản phẩm trong giỏ hàng đã chọn
             foreach ($selectedCart as $itemKey => $item) {
-                $variantQuery = ProductVariant::where('product_id', $item['id']);
+                // Bắt đầu truy vấn biến thể sản phẩm
+                $variantQuery = ProductVariant::where('product_id', $item['id'])->lockForUpdate();
 
+                // Thêm điều kiện lọc theo thuộc tính biến thể
                 foreach ($item['variant']['attributes'] as $attrName => $attrValue) {
                     $variantQuery->whereHas('product_variant_attributes', function ($query) use ($attrName, $attrValue) {
                         $query->whereHas('attribute', function ($q) use ($attrName) {
@@ -1048,6 +1052,7 @@ public function vnpayCallback(Request $request)
                     });
                 }
 
+                // Lấy biến thể với khóa để đảm bảo đồng bộ
                 $variant = $variantQuery->first();
 
                 if (!$variant) {
@@ -1068,6 +1073,7 @@ public function vnpayCallback(Request $request)
                 $itemTotal = $price * $quantity;
                 $orderTotal += $itemTotal;
 
+                // Tạo OrderItem
                 OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $item['id'],
@@ -1075,6 +1081,8 @@ public function vnpayCallback(Request $request)
                     'quantity' => $quantity,
                     'price' => $price,
                 ]);
+
+                // Giảm số lượng tồn kho
                 $variant->decrement('stock_quantity', $quantity);
                 $selectedKeys[] = $itemKey;
             }
@@ -1132,7 +1140,6 @@ public function vnpayCallback(Request $request)
         return redirect()->route('cart.viewCart')->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
     }
 }
-
     public function reorder($orderId)
     {
         try {
