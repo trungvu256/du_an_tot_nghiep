@@ -232,7 +232,7 @@
 </h6>
                           
                             <h6 class="font-weight-medium" id="summary-subtotal">
-                                {{ number_format($subtotal, 0, ',', '.') }}₫</h6>
+                                {{ number_format($subtotal, 0, ',', '.') }}VNĐ</h6>
                         </div>
                         <div id="discount-container">
                             @php
@@ -459,7 +459,7 @@
             });
 
             // Cập nhật tạm tính
-            $('#summary-subtotal').text(formatCurrency(subtotal));
+            $('#summary-subtotal').text(formatCurrency(subtotal) + 'VNĐ');
 
             if (!hasSelectedProducts) {
                 // Nếu không có sản phẩm nào được chọn
@@ -471,7 +471,7 @@
                 $('#total').val(0);
             } else {
                 // Nếu có sản phẩm được chọn, chỉ hiển thị tổng tiền bằng với tạm tính
-                $('#summary-total').text(formatCurrency(subtotal));
+                $('#summary-total').text(formatCurrency(subtotal) + 'VNĐ');
 
                 // Cập nhật các input ẩn
                 $('#subtotal').val(subtotal);
@@ -705,11 +705,11 @@
             const hasSelectedProducts = $('.product-checkbox:checked').length > 0;
             if (!hasSelectedProducts) {
                 // Reset tất cả các giá trị về 0
-                $('#summary-subtotal').text('0₫');
+                $('#summary-subtotal').text('0 VNĐ');
                 // Nếu không có sản phẩm nào được chọn, ẩn phần giảm giá
                 const discountContainer = $('#summary-discount').parent();
                 discountContainer.hide();
-                $('#summary-total').text('0₫');
+                $('#summary-total').text('0 VNĐ');
             }
 
             // Gọi updateSummary để cập nhật hiển thị ban đầu
@@ -767,7 +767,7 @@
                     typeText = 'Số tiền cố định';
                     const discountValue = parseFloat(promotion.discount_value);
                     console.log('Parsed discount value:', discountValue);
-                    valueText = discountValue ? formatCurrency(discountValue) + ' ₫' : '0 ₫';
+                    valueText = discountValue ? formatCurrency(discountValue) + ' VNĐ' : '0 VNĐ';
                 }
 
                 // Định dạng điều kiện
@@ -883,7 +883,7 @@
         // Hàm cập nhật hiển thị tổng tiền và giảm giá
         function updateDisplay(data) {
             // Cập nhật tạm tính
-            $('#summary-subtotal').text(formatCurrency(data.subtotal));
+            $('#summary-subtotal').text(formatCurrency(data.subtotal) + 'VNĐ');
 
             // Cập nhật phần giảm giá
             const discountContainer = $('#discount-container');
@@ -892,7 +892,7 @@
                     <div class="d-flex justify-content-between">
                         <h6 class="text-success">Giảm giá (${data.code})</h6>
                         <h6 class="font-weight-medium text-success" id="summary-discount">
-                            -${formatCurrency(parseFloat(data.discount))}
+                            -${formatCurrency(parseFloat(data.discount))}VNĐ
                         </h6>
                     </div>`;
                 discountContainer.html(discountHtml);
@@ -901,7 +901,7 @@
             }
 
             // Cập nhật tổng cộng
-            $('#summary-total').text(formatCurrency(data.final_total));
+            $('#summary-total').text(formatCurrency(data.final_total) + 'VNĐ');
 
             // Cập nhật các input ẩn
             $('#subtotal').val(data.subtotal || 0);

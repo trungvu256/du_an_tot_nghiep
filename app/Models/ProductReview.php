@@ -25,21 +25,22 @@ class ProductReview extends Model
     ];
 
     public static function boot()
-    {
-        parent::boot();
+{
+    parent::boot();
 
-        static::creating(function ($review) {
-            $exists = static::where('product_id', $review->product_id)
-                ->where('variant_id', $review->variant_id)
-                ->where('user_id', $review->user_id)
-                ->where('order_id', $review->order_id)
-                ->exists();
+    static::creating(function ($review) {
+        $exists = static::where('product_id', $review->product_id)
+            ->where('variant_id', $review->variant_id)
+            ->where('user_id', $review->user_id)
+            ->where('order_id', $review->order_id)
+            ->exists();
 
-            if ($exists) {
-                throw new \Exception('Bạn đã đánh giá sản phẩm này cho đơn hàng này rồi');
-            }
-        });
-    }
+        if ($exists) {
+            throw new \Exception('Bạn đã đánh giá biến thể này trong đơn hàng này rồi.');
+        }
+    });
+}
+
 
     public function product()
     {

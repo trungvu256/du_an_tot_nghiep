@@ -438,6 +438,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('order/{id}/returned', [WebOrderController::class, 'returned'])->name('order.returned');
         // Route yêu cầu trả hàng
         Route::post('order/{id}/request-return', [WebOrderController::class, 'requestReturn'])->name('order.requestReturn');
+        Route::get('/donhang/hoantat', [WebOrderController::class, 'filter'])->name('orders.filter');
+
     });
 
 

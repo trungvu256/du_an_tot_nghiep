@@ -342,9 +342,9 @@
                                 <div class="text-end">
                                     <p class="mb-0 text-danger fw-bold">
                                         @if (!empty($item['price_sale']) && $item['price_sale'] > 0)
-                                            {{ number_format($item['price_sale'], 0, ',', '.') }}₫
+                                            {{ number_format($item['price_sale'], 0, ',', '.') }}VNĐ
                                         @else
-                                            {{ number_format($item['price'], 0, ',', '.') }}₫
+                                            {{ number_format($item['price'], 0, ',', '.') }}VNĐ
                                         @endif
                                     </p>
                                 </div>
@@ -364,12 +364,12 @@
                         <div class="d-flex justify-content-between my-1 mb-3">
                             <p class="fs-5">Tổng tiền hàng</p>
                             <p class="fs-5" id="summary-subtotal">
-                                {{ number_format($subtotal, 0, ',', '.') }}₫</p>
+                                {{ number_format($subtotal, 0, ',', '.') }}VNĐ</p>
                         </div>
                         {{-- <div class="d-flex justify-content-between my-1">
                             <p class="fs-5">Vận chuyển</p>
                             <p class="fs-5" id="summary-shipping">
-                                {{ number_format(15000, 0, ',', '.') }}₫</p>
+                                {{ number_format(15000, 0, ',', '.') }}VNĐ</p>
                         </div> --}}
 
                         @if ($discount > 0)
@@ -377,7 +377,7 @@
                                 <p class="fs-5 text-success">Giảm giá ({{ session('promotion')['code'] }})
                                 </p>
                                 <p class="fs-5 text-success" id="summary-discount">
-                                    -{{ number_format($discount, 0, ',', '.') }}₫</p>
+                                    -{{ number_format($discount, 0, ',', '.') }}VNĐ</p>
                             </div>
                         @endif
                     </div>
@@ -386,7 +386,7 @@
                         <div class="d-flex justify-content-between mt-2 mb-1">
                             <p class="fs-5 fw-semibold">Thanh toán</p>
                             <p class="fs-5 fw-semibold" id="summary-total">
-                                {{ number_format($totalAmount, 0, ',', '.') }}₫</p>
+                                {{ number_format($totalAmount, 0, ',', '.') }}VNĐ</p>
                         </div>
                     </div>
                 </div>
@@ -436,7 +436,7 @@
     <script>
         // Hàm định dạng tiền tệ
         function formatCurrency(value) {
-            return value.toLocaleString('vi-VN') + '₫';
+            return value.toLocaleString('vi-VN') + 'VNĐ';
         }
 
         // Hàm lấy số từ chuỗi tiền tệ
@@ -608,13 +608,13 @@
                 selectedItems.forEach(cartKey => {
                     const item = cartItems[cartKey];
                     if (item) {
-                        totalQuantity += item.quantity;
+                        totalQuantity += parseInt(item.quantity);
                     }
                 });
 
                 if (totalQuantity > 50) {
                     event.preventDefault();
-                    alert('Số lượng sản phẩm tối đa cho mỗi đơn hàng là 50 sản phẩm!');
+                    alert('Tổng số lượng sản phẩm trong đơn hàng không được vượt quá 50 sản phẩm!');
                     return false;
                 }
 
@@ -692,13 +692,13 @@
                 selectedItems.forEach(cartKey => {
                     const item = cartItems[cartKey];
                     if (item) {
-                        totalQuantity += item.quantity;
+                        totalQuantity += parseInt(item.quantity);
                     }
                 });
 
                 if (totalQuantity > 50) {
                     event.preventDefault();
-                    alert('Số lượng sản phẩm tối đa cho mỗi đơn hàng là 50 sản phẩm!');
+                    alert('Tổng số lượng sản phẩm trong đơn hàng không được vượt quá 50 sản phẩm!');
                     return false;
                 }
 
@@ -729,6 +729,53 @@
                 }
             });
         });
+        // Validation cho số điện thoại
+function validatePhoneNumber(phone) {
+    const phoneRegex = /^(?:\+84|0)(3|5|7|8|9)\d{8}$/;
+    return phoneRegex.test(phone);
+}
+
+// Thêm validation khi submit form checkout
+document.getElementById('checkoutForm').addEventListener('submit', function(event) {
+    const billingPhone = document.querySelector('input[name="billing_phone"]').value;
+    const shipToDifferentAddress = document.getElementById('ship-to-different-address').checked;
+    
+    if (!validatePhoneNumber(billingPhone)) {
+        event.preventDefault();
+        alert('Số điện thoại không đúng định dạng! Vui lòng nhập số điện thoại Việt Nam hợp lệ (VD: +84912345678 hoặc 0912345678)');
+        return false;
+    }
+
+    if (shipToDifferentAddress) {
+        const shippingPhone = document.querySelector('input[name="shipping_phone"]').value;
+        if (shippingPhone && !validatePhoneNumber(shippingPhone)) {
+            event.preventDefault();
+            alert('Số điện thoại giao hàng không đúng định dạng! Vui lòng nhập số điện thoại Việt Nam hợp lệ (VD: +84912345678 hoặc 0912345678)');
+            return false;
+        }
+    }
+});
+
+// Thêm validation khi submit form VNPay
+document.getElementById('vnpayForm').addEventListener('submit', function(event) {
+    const billingPhone = document.getElementById('vnpay-billing_phone').value;
+    const shipToDifferentAddress = document.getElementById('ship-to-different-address').checked;
+    
+    if (!validatePhoneNumber(billingPhone)) {
+        event.preventDefault();
+        alert('Số điện thoại không đúng định dạng! Vui lòng nhập số điện thoại Việt Nam hợp lệ (VD: +84912345678 hoặc 0912345678)');
+        return false;
+    }
+
+    if (shipToDifferentAddress) {
+        const shippingPhone = document.getElementById('vnpay-shipping_phone').value;
+        if (shippingPhone && !validatePhoneNumber(shippingPhone)) {
+            event.preventDefault();
+            alert('Số điện thoại giao hàng không đúng định dạng! Vui lòng nhập số điện thoại Việt Nam hợp lệ (VD: +84912345678 hoặc 0912345678)');
+            return false;
+        }
+    }
+});
     </script>
     <!-- Kết thúc Thanh Toán -->
 @endsection

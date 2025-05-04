@@ -47,13 +47,13 @@ class OrderPlaced implements ShouldBroadcast
         // dd($productImage);
 
         // Che 6 số đầu của số điện thoại
-        $phone = $this->orders->phone;
-        $maskedPhone = $phone ? '******' . substr($phone, -4) : 'Không có số điện thoại';
+        // $phone = $this->orders->phone;
+        // $maskedPhone = $phone ? '******' . substr($phone, -4) : 'Không có số điện thoại';
 
         return [
             'order_id' => $this->orders->id,
-            'created_at' => $this->orders->created_at->toDateTimeString(),
-            'message' => "{$maskedPhone} đã vừa mua {$productName}",
+            'created_at' =>  $this->orders->created_at->toDateTimeString(),
+            'message' => "{$productName}",
             'product_image' => $productImage,
             'product_url' =>$productUrl
         ];

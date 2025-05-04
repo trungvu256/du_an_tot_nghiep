@@ -22,8 +22,8 @@ class ProfileController extends Controller
 
     public function confirmPassword()
     {
-
-        return view('web3.profile.confirm_password'); // Thay đổi đường dẫn view
+        $categories = Catalogue::all();
+        return view('web3.profile.confirm_password', compact('categories')); // Thay đổi đường dẫn view
 
     }
 
@@ -43,12 +43,13 @@ class ProfileController extends Controller
 
     public function editProfile()
     {
+        $categories = Catalogue::all();
         if (!session('password_confirmed')) {
             return redirect()->route('profile.confirm_password');
         }
 
 
-        return view('web3.profile.edit', ['user' => Auth::user()]); // Cập nhật đường dẫn view
+        return view('web3.profile.edit', ['user' => Auth::user()], compact('categories')); // Cập nhật đường dẫn view
 
     }
 

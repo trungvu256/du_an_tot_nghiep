@@ -727,23 +727,25 @@ class WebProductController extends Controller
                 'video' => 'nullable|mimes:mp4,mov,avi|max:20480', // 20MB max
                 'order_id' => 'required|exists:orders,id'
             ]);
-
-            // Kiểm tra xem người dùng đã có đơn hàng với sản phẩm này hay chưa
-            $hasOrder = Order::where('user_id', Auth::id())
-                ->whereHas('orderItems', function ($query) use ($productId) {
-                    $query->where('product_id', $productId);
-                })
+    
+            // Kiểm tra xem người dùng đã mua biến thể này trong đơn hàng đã giao/thành công chưa
+            $hasOrderedVariant = Order::where('user_id', Auth::id())
+                ->where('id', $request->input('order_id'))
                 ->whereIn('status', [Order::STATUS_DELIVERED, Order::STATUS_COMPLETED])
+                ->whereHas('orderItems', function ($query) use ($productId, $request) {
+                    $query->where('product_id', $productId)
+                          ->where('product_variant_id', $request->input('variant_id'));
+                })
                 ->exists();
-
-            if (!$hasOrder) {
+    
+            if (!$hasOrderedVariant) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Bạn cần có ít nhất một đơn hàng để đánh giá sản phẩm.'
+                    'message' => 'Bạn chỉ có thể đánh giá biến thể đã mua trong đơn hàng.'
                 ], 403);
             }
-
-            // Xử lý upload ảnh
+    
+            // Upload hình ảnh
             $imageUrls = [];
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
@@ -751,16 +753,16 @@ class WebProductController extends Controller
                     $imageUrls[] = Storage::url($path);
                 }
             }
-
-            // Xử lý upload video
+    
+            // Upload video nếu có
             $videoUrl = null;
             if ($request->hasFile('video')) {
                 $path = $request->file('video')->store('public/review_videos');
                 $videoUrl = Storage::url($path);
             }
-
+    
             try {
-                // Tạo đánh giá mới
+                // Tạo đánh giá
                 $review = ProductReview::create([
                     'product_id' => $productId,
                     'user_id' => Auth::id(),
@@ -771,38 +773,36 @@ class WebProductController extends Controller
                     'video' => $videoUrl,
                     'order_id' => $request->input('order_id')
                 ]);
-
-                // Decode images array khi trả về response
+    
+                // Trả kết quả
                 $review->images = json_decode($review->images);
-
+    
                 return response()->json([
                     'success' => true,
                     'message' => 'Đánh giá của bạn đã được thêm!',
                     'data' => $review
                 ], 200);
-
+    
             } catch (\Exception $e) {
-                // Xóa các file đã upload nếu tạo review thất bại
+                // Xoá file đã upload nếu lỗi
                 foreach ($imageUrls as $imageUrl) {
-                    $path = str_replace('/storage/', 'public/', $imageUrl);
-                    Storage::delete($path);
+                    Storage::delete(str_replace('/storage/', 'public/', $imageUrl));
                 }
                 if ($videoUrl) {
-                    $path = str_replace('/storage/', 'public/', $videoUrl);
-                    Storage::delete($path);
+                    Storage::delete(str_replace('/storage/', 'public/', $videoUrl));
                 }
-
-                // Kiểm tra nếu là lỗi trùng lặp từ Model
+    
+                // Trả lỗi nếu là lỗi đánh giá trùng
                 if (strpos($e->getMessage(), 'đã đánh giá') !== false) {
                     return response()->json([
                         'success' => false,
                         'message' => $e->getMessage()
                     ], 400);
                 }
-
+    
                 throw $e;
             }
-
+    
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'success' => false,
@@ -810,7 +810,7 @@ class WebProductController extends Controller
                 'errors' => $e->errors()
             ], 422);
         } catch (\Exception $e) {
-           Log::error('Review creation error: ' . $e->getMessage());
+            Log::error('Review creation error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Có lỗi xảy ra khi thêm đánh giá',
@@ -818,6 +818,7 @@ class WebProductController extends Controller
             ], 500);
         }
     }
+    
 
     public function showReviews($productId)
     {
@@ -829,103 +830,7 @@ class WebProductController extends Controller
         return view('web3.Home.shop-detail', compact('product'));
     }
 
-    // Phương thức lưu phản hồi đánh giá
-    // public function storeResponse(Request $request, $reviewId)
-    // {
-    //     // Kiểm tra xem người dùng có phải là admin không
-    //     if (!Auth::user()->hasRole('admin')) {
-    //         return redirect()->back()->with('error', 'Bạn không có quyền phản hồi đánh giá.');
-    //     }
-
-    //     $request->validate([
-    //         'response' => 'required|string|max:1000',
-    //     ]);
-
-    //     ReviewResponse::create([
-    //         'review_id' => $reviewId,
-    //         'response' => $request->input('response'),
-    //         'responder_id' => Auth::id(),
-    //     ]);
-
-    //     return redirect()->back()->with('success', 'Phản hồi của bạn đã được thêm!');
-    // }
-
-
-    // public function productFavorite()
-    // {
-
-    //     // Kiểm tra xem người dùng đã đăng nhập hay chưa
-    //     if (!Auth::check()) {
-    //         return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để thêm vào danh sách yêu thích.');
-    //     }
-    //     $user = Auth::user();
-    //     $products = Product::whereHas('favoritedBy.favorites', function ($query) use ($user) {
-    //         $query->where('user_id', $user->id);
-    //     })->paginate(12);
-    //     // dd($products);
-
-    //     return view('client.products.product-favorite', compact('products'));
-    // }
-
-
-    // public function addProductFavorite(Request $request)
-    // {
-
-    //     // Kiểm tra xem người dùng đã đăng nhập hay chưa
-    //     if (!Auth::check()) {
-    //         return response()->json([
-    //             'error' => 'Bạn cần đăng nhập để thêm vào danh sách yêu thích.'
-    //         ], 401); // Trả về mã lỗi 401 khi chưa đăng nhập
-    //     }
-
-    //     $user = Auth::user();
-    //     // dd($user);
-    //     $productId = $request->input('product_id');
-    //     // Kiểm tra sản phẩm đã tồn tại trong danh sách yêu thích hay chưa
-    //     $isFavorited = $user->favorites()->where('product_id', $productId)->exists();
-
-    //     if ($isFavorited) {
-    //         return response()->json([
-    //             'error' => 'Sản phẩm đã có trong danh sách yêu thích.'
-    //         ], 400); // Trả về mã lỗi 400 khi sản phẩm đã có trong danh sách yêu thích
-    //     }
-
-    //     $user->favorites()->attach($productId);
-
-    //     return response()->json([
-    //         'success' => 'Sản phẩm đã được thêm vào danh sách yêu thích.'
-    //     ], 200); // Trả về mã lỗi 200 khi thành công
-    // }
-
-
-    // public function removeProductFavorite(Request $request)
-    // {
-    //     // Kiểm tra xem người dùng đã đăng nhập hay chưa
-    //     if (!Auth::check()) {
-    //         return response()->json([
-    //             'error' => 'Bạn cần đăng nhập để xóa khỏi danh sách yêu thích.'
-    //         ], 401); // Trả về mã lỗi 401 khi chưa đăng nhập
-    //     }
-
-    //     $user = Auth::user();
-    //     $productId = $request->input('product_id');
-
-    //     // Kiểm tra xem sản phẩm có tồn tại trong danh sách yêu thích hay không
-    //     $isFavorited = $user->favorites()->where('product_id', $productId)->exists();
-
-    //     if (!$isFavorited) {
-    //         return response()->json([
-    //             'error' => 'Sản phẩm không có trong danh sách yêu thích.'
-    //         ], 400); // Trả về mã lỗi 400 nếu sản phẩm không có trong danh sách yêu thích
-    //     }
-
-    //     // Nếu sản phẩm có trong danh sách yêu thích, xóa nó
-    //     $user->favorites()->detach($productId);
-
-    //     return response()->json([
-    //         'success' => 'Sản phẩm đã được xóa khỏi danh sách yêu thích.'
-    //     ], 200); // Trả về mã lỗi 200 khi thành công
-    // }
+   
 
     public function checkReview(Request $request, $productId)
     {

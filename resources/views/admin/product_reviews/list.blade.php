@@ -24,6 +24,13 @@
                                             value="{{ request()->search }}">
                                     </div>
                                     <div class="col-auto">
+                                        <select class="form-select form-select-sm" name="response_status">
+                                            <option value="">-- Trạng thái phản hồi --</option>
+                                            <option value="replied" {{ $responseStatus == 'replied' ? 'selected' : '' }}>Đã phản hồi</option>
+                                            <option value="not_replied" {{ $responseStatus == 'not_replied' ? 'selected' : '' }}>Chưa phản hồi</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-auto">
                                         <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
                                     </div>
                                     <div class="col-auto">
@@ -42,7 +49,7 @@
                                             <th>Biến thể</th>
                                             <th>Xếp hạng</th>
                                             <th>Đánh giá</th>
-                                            <th>Phản hồi</th>
+                                            
                                             <th>Thao tác</th>
                                         </tr>
                                     </thead>
@@ -87,50 +94,7 @@
                                                     @endfor
                                                 </td>
                                                 <td>{{ $review->review }}</td>
-                                                <td>
-                                                    @if ($review->responses->count() > 0)
-                                                        <button class="btn btn-link p-0" type="button"
-                                                            data-toggle="collapse"
-                                                            data-target="#responses-{{ $review->id }}" aria-expanded="false"
-                                                            aria-controls="responses-{{ $review->id }}">
-                                                            Xem {{ $review->responses->count() }} phản hồi
-                                                        </button>
-                                                        <div class="collapse mt-2" id="responses-{{ $review->id }}">
-                                                            <ul class="list-group" style="padding: 0; margin: 0;">
-                                                                @foreach ($review->responses as $response)
-                                                                    <li class="list-group-item border-0"
-                                                                        style="border-bottom: 1px solid #dee2e6 !important;"
-                                                                        data-review-id="{{ $review->id }}">
-                                                                        <strong>{{ $response->responder->name ?? 'Người dùng' }}:</strong>
-                                                                        {{ $response->response }}
-                                                                        <br>
-                                                                        <small class="text-muted">Đã phản hồi vào:
-                                                                            {{ $response->created_at->format('d/m/Y H:i') }}</small>
-                                                                        <button type="button"
-                                                                            class="btn btn-sm btn-warning edit-response"
-                                                                            data-id="{{ $response->id }}"
-                                                                            data-response="{{ $response->response }}">
-                                                                            Sửa
-                                                                        </button>
-                                                                    </li>
-                                                                @endforeach
-                                                            </ul>
-                                                        </div>
-                                                    @else
-                                                        <span>Chưa có phản hồi.</span>
-                                                    @endif
-                                                </td>
-
-                                                <td>
-                                                    <button type="button"
-                                                        class="btn rounded-pill btn-primary btnModalResponse"
-                                                        data-toggle="modal" data-target="#responseModal" id="btnModalResponse"
-                                                        data-id="{{ $review->id }}"
-                                                        data-user="{{ $review->user->name ?? '' }}"
-                                                        data-content="{{ $review->review }}">
-                                                        <i class="bi bi-reply"></i> Phản hồi
-                                                    </button>
-                                                </td>
+                                                
 
                                                 <td>
                                                     <a href="{{ route('product-reviews.show', $review->id) }}" class="btn btn-info btn-sm">Xem chi tiết</a>
@@ -224,6 +188,7 @@
         $(document).ready(function() {
             $('#filterRemove').click(function() {
                 $('#search').val('');
+                $('select[name="response_status"]').val('');
                 $(this).closest('form').submit();
             });
         });

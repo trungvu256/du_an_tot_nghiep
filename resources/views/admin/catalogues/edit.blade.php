@@ -70,6 +70,22 @@
                                 <p class="text-danger mt-2">Hình ảnh không tồn tại</p>
                                 @endif
                             </div>
+                            
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Mô tả</label>
+                                <textarea
+                                    name="description"
+                                    id="description"
+                                    class="form-control @error('description') is-invalid @enderror"
+                                    rows="4"
+                                >{{ old('description', $catalogue->description) }}</textarea>
+                            
+                                @error('description')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            
+                            
                             <div class="card-body">
                                 <label for="status" class="form-label">Trạng thái:</label>
                                 <div class="form-check">

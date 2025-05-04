@@ -13,13 +13,33 @@ class ProductCommentController extends Controller
     {
         $title = 'Danh sách bình luận sản phẩm';
         $search = $request->input('search');
+        $responseStatus = $request->input('response_status');
+
         $productComments = ProductComment::with(['user', 'product', 'replies']) // Đổi thành 'replies'
             ->when($search, function ($query, $search) {
                 $query->where('comment', 'LIKE', "%{$search}%");
             })
-            ->get();
+            ->when($responseStatus, function ($query, $responseStatus) {
+                if ($responseStatus == 'replied') {
+                    // Bình luận đã có phản hồi của admin
+                    $query->whereHas('replies', function ($q) {
+                        $q->whereHas('user', function ($q2) {
+                            $q2->where('is_admin', 1);
+                        });
+                    });
+                } elseif ($responseStatus == 'not_replied') {
+                    // Bình luận chưa có phản hồi của admin
+                    $query->whereDoesntHave('replies', function ($q) {
+                        $q->whereHas('user', function ($q2) {
+                            $q2->where('is_admin', 1);
+                        });
+                    });
+                }
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
 
-        return view('admin.product_comments.list', compact('productComments', 'title'));
+        return view('admin.product_comments.list', compact('productComments', 'title', 'responseStatus'));
     }
 
     public function destroy($id)

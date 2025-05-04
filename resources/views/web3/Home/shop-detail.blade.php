@@ -132,7 +132,7 @@
                                                 @endphp
                                                 <div class="display-sm price-new price-on-sale" id="product-sale-price">
                                                     {{ number_format($minPrice, 0, ',', '.') }} -
-                                                    {{ number_format($maxPrice, 0, ',', '.') }}₫
+                                                    {{ number_format($maxPrice, 0, ',', '.') }}VNĐ
                                                 </div>
                                                 <div class="display-sm price-old" id="product-original-price"
                                                     style="display: none; font-style: italic;"></div>
@@ -265,7 +265,8 @@
                                                         onclick="addToCart(event)">Thêm vào giỏ hàng</button>
                                                     <button type="submit"
                                                         formaction="{{ route('checkout.create', $detailproduct->id) }}"
-                                                        class="tf-btn hover-primary btn-add-to-cart">Mua ngay</button>
+                                                        class="tf-btn hover-primary btn-add-to-cart"
+                                                        onclick="handleBuyNow(event)">Mua ngay</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -462,10 +463,10 @@
                                                 $minPriceSale = $product->variants->where('price_sale', '>', 0)->min('price_sale');
                                             @endphp
                                             @if($minPriceSale > 0)
-                                                <span class="price-sale">{{ number_format($minPriceSale, 0, ',', '.') }}₫</span>
-                                                <span class="price-original">{{ number_format($minPrice, 0, ',', '.') }}₫</span>
+                                                <span class="price-sale">{{ number_format($minPriceSale, 0, ',', '.') }}VNĐ</span>
+                                                <span class="price-original">{{ number_format($minPrice, 0, ',', '.') }}VNĐ</span>
                                             @else
-                                                <span class="price">{{ number_format($minPrice, 0, ',', '.') }}₫</span>
+                                                <span class="price">{{ number_format($minPrice, 0, ',', '.') }}VNĐ</span>
                                             @endif
                                         </div>
                                     </div>
@@ -896,7 +897,7 @@
 
                                 originalPriceEl.style.display = "none";
                                 salePriceEl.innerText = new Intl.NumberFormat('vi-VN').format(defaultMinPrice) + " - " + new Intl
-                                    .NumberFormat('vi-VN').format(defaultMaxPrice) + "₫";
+                                    .NumberFormat('vi-VN').format(defaultMaxPrice) + "VNĐ";
                                 stockWrapper.innerText = "";
                             }
 
@@ -908,12 +909,12 @@
 
                                 if (salePrice > 0 && salePrice < price) {
                                     originalPriceEl.style.display = "inline";
-                                    originalPriceEl.innerText = new Intl.NumberFormat('vi-VN').format(price) + '₫';
-                                    salePriceEl.innerText = new Intl.NumberFormat('vi-VN').format(salePrice) + '₫';
+                                    originalPriceEl.innerText = new Intl.NumberFormat('vi-VN').format(price) + 'VNĐ';
+                                    salePriceEl.innerText = new Intl.NumberFormat('vi-VN').format(salePrice) + 'VNĐ';
                                     discountBadge.style.display = "inline";
                                 } else {
                                     originalPriceEl.style.display = "none";
-                                    salePriceEl.innerText = new Intl.NumberFormat('vi-VN').format(price) + '₫';
+                                    salePriceEl.innerText = new Intl.NumberFormat('vi-VN').format(price) + 'VNĐ';
                                     discountBadge.style.display = "none";
                                 }
 
@@ -2015,6 +2016,42 @@
 
                     return null;
                 }
+            </script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
+            <script>
+            window.cart = @json(session('cart', []));
+            window.productId = {{ $detailproduct->id }};
+            function handleBuyNow(event) {
+                const quantityInput = document.getElementById('quantity');
+                const stock = parseInt(document.getElementById('selectedStock').value) || 0;
+                const quantity = parseInt(quantityInput.value) || 0;
+
+                // Lấy thuộc tính biến thể đang chọn
+                let selectedAttributes = {};
+                try {
+                    selectedAttributes = JSON.parse(document.getElementById('selectedAttributes').value || '{}');
+                } catch (e) {}
+
+                // Tạo cartKey giống backend
+                const attributesString = Object.values(selectedAttributes).join('-');
+                const cartKey = window.productId + '-' + md5(attributesString);
+
+                // Lấy số lượng đã có trong giỏ
+                const cart = window.cart || {};
+                const cartQuantity = cart[cartKey]?.quantity || 0;
+
+                if (quantity + cartQuantity > stock) {
+                    event.preventDefault();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Bạn đã thêm tối đa sản phẩm này trước đó',
+                        text: `Số lượng trong giỏ vượt quá tồn kho. Chỉ còn ${stock - cartQuantity} sản phẩm.`,
+                        confirmButtonText: 'Đã Hiểu'
+                    });
+                    return false;
+                }
+                // Nếu hợp lệ, form sẽ tự submit
+            }
             </script>
         </div>
     </body>

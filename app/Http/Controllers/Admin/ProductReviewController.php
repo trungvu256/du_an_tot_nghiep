@@ -13,13 +13,33 @@ class ProductReviewController extends Controller
     {
         $title = 'Danh Sách Đánh Giá';
         $search = $request->input('search');
+        $responseStatus = $request->input('response_status');
+
         $productReviews = ProductReview::with(['user', 'product', 'responses'])
             ->when($search, function ($query, $search) {
                 $query->where('review', 'LIKE', "%{$search}%");
             })
-            ->get();
+            ->when($responseStatus, function ($query, $responseStatus) {
+                if ($responseStatus == 'replied') {
+                    // Đánh giá đã có phản hồi
+                    $query->whereHas('responses', function ($q) {
+                        $q->whereHas('responder', function ($q2) {
+                            $q2->where('is_admin', 1);
+                        });
+                    });
+                } elseif ($responseStatus == 'not_replied') {
+                    // Đánh giá chưa có phản hồi của admin
+                    $query->whereDoesntHave('responses', function ($q) {
+                        $q->whereHas('responder', function ($q2) {
+                            $q2->where('is_admin', 1);
+                        });
+                    });
+                }
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
 
-        return view('admin.product_reviews.list', compact('productReviews', 'title'));
+        return view('admin.product_reviews.list', compact('productReviews', 'title', 'responseStatus'));
     }
 
     // Xóa đánh giá

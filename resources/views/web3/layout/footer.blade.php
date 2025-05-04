@@ -63,7 +63,7 @@
                                         <a href="mailto:support@example.com">etherealnoir04@gmail.com</a>
                                     </li>
                                 </ul>
-                                <a href="https://www.google.com/maps/place/Tr%C6%B0%E1%BB%9Dng+Cao+%C4%91%E1%BA%B3ng+FPT+Polytechnic/@21.0381348,105.7446869,17z/data=!3m1!4b1!4m6!3m5!1s0x313455e940879933:0xcf10b34e9f1a03df!8m2!3d21.0381298!4d105.7472618!16s%2Fg%2F11krd97y__?hl=vi-VN&entry=ttu&g_ep=EgoyMDI1MDQwMi4xIKXMDSoASAFQAw%3D%3D"
+                                <a href="https://byvn.net/5QuH"
                                     class="tf-btn btn-line-dark fw-normal">
                                     <span class="text-sm">
                                         Địa chỉ
@@ -153,13 +153,12 @@
                             <div class="footer-heading footer-heading-mobile text-xl fw-medium">Sản phẩm</div>
                             <div class="tf-collapse-content">
                                 <ul class="footer-menu-list">
-                                    <li>
-                                        <a href="#">Nước hoa nam</a>
+                                    
+                                    <li><a href="{{ route('web.shop') }}">Nước hoa
+                                    </a>
                                     </li>
-                                    <li>
-                                        <a href="#">Nước hoa nữ</a>
-                                    </li>
-
+                                   
+                                   
                                 </ul>
                             </div>
                         </div>
