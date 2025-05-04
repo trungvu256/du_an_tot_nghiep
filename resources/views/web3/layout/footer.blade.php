@@ -62,6 +62,18 @@
                                         </span>
                                         <a href="mailto:support@example.com">etherealnoir04@gmail.com</a>
                                     </li>
+
+                                    <li class="item">
+                                        <span class="box-icon" style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 1px solid #ccc; border-radius: 50%;">
+                                            <!-- Facebook icon đen -->
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                                <path fill="#000000" d="M22.675 0h-21.35C.593 0 0 .593 0 1.325v21.351C0 23.407.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.464.099 2.797.143v3.24l-1.919.001c-1.504 0-1.796.715-1.796 1.763v2.312h3.587l-.467 3.622h-3.12V24h6.116C23.407 24 24 23.407 24 22.676V1.325C24 .593 23.407 0 22.675 0z"/>
+                                            </svg>
+                                        </span>
+                                        <a href="https://www.facebook.com/people/Ethereal-Noir/61574929003641/">Ethereal Noir
+                                        </a>
+                                    </li>
+                                    
                                 </ul>
                                 <a href="https://byvn.net/5QuH"
                                     class="tf-btn btn-line-dark fw-normal">

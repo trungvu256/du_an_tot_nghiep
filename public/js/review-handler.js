@@ -61,33 +61,47 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Phân tích ID thành các thành phần
+    function parseComplexId(complexId) {
+        if (!complexId) return { orderId: null, itemId: null };
+        
+        // Kiểm tra xem có dấu gạch dưới không
+        if (complexId.includes('_')) {
+            const [orderId, itemId] = complexId.split('_');
+            return { orderId, itemId };
+        }
+        
+        // Nếu không có dấu gạch dưới, giả định nó chỉ là orderId
+        return { orderId: complexId, itemId: null };
+    }
+
     // Kiểm tra trạng thái đánh giá khi trang load - chỉ kiểm tra các form hiện đang hiển thị
     async function checkReviewStatus() {
         // Lấy tất cả các nút "Xem đánh giá" đã visible trên trang
-        const viewButtons = Array.from(document.querySelectorAll('button[data-bs-target^="#viewOrderReviewModal"]')).filter(
+        const viewButtons = Array.from(document.querySelectorAll('button[data-bs-target^="#viewProductReviewModal"]')).filter(
             btn => btn.offsetParent !== null // Chỉ lấy các button đang hiển thị
         );
         
         // Nếu có quá nhiều nút, chỉ xử lý những nút đầu tiên hiển thị trong viewport
-        const visibleButtons = viewButtons.slice(0, 3);
+        const visibleButtons = viewButtons.slice(0, 5);
         
         // Xử lý tuần tự thay vì đồng thời
         for (const button of visibleButtons) {
-            const orderId = button.getAttribute('data-bs-target').replace('#viewOrderReviewModal', '');
-            await updateReviewButtonStatus(orderId);
+            const modalId = button.getAttribute('data-bs-target').replace('#viewProductReviewModal', '');
+            const { orderId, itemId } = parseComplexId(modalId);
+            
+            if (orderId && itemId) {
+                await updateProductReviewStatus(orderId, itemId);
+            }
         }
     }
 
-    // Hàm cập nhật trạng thái nút đánh giá
-    async function updateReviewButtonStatus(orderId) {
-        // Kiểm tra review chỉ cho đơn hàng và sản phẩm hiện tại
-        const reviewButton = document.querySelector(`button[data-bs-target="#reviewOrderModal${orderId}"]`);
-        const viewReviewButton = document.querySelector(`button[data-bs-target="#viewOrderReviewModal${orderId}"]`);
+    // Hàm cập nhật trạng thái nút đánh giá cho một sản phẩm cụ thể
+    async function updateProductReviewStatus(orderId, itemId) {
+        const complexId = `${orderId}_${itemId}`;
         
-        // Nếu không có nút đánh giá hoặc đã có nút xem đánh giá, không cần kiểm tra
-        if (!reviewButton && viewReviewButton) return;
-        
-        const reviewModal = document.getElementById(`reviewOrderModal${orderId}`);
+        // Tìm modal đánh giá
+        const reviewModal = document.getElementById(`reviewProductModal${complexId}`);
         if (!reviewModal) return;
         
         const productIdInput = reviewModal.querySelector('input[name="product_id"]');
@@ -102,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const review = await fetchReview(productId, variantId, orderId);
             if (review && review.id) {
-                updateReviewButton(orderId, review);
+                updateReviewButton(complexId, review);
             }
         } catch (error) {
             console.error('Error checking review status:', error);
@@ -110,14 +124,53 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Hàm cập nhật UI sau khi đánh giá (tránh reload trang)
-    async function updateReviewUI(productId, variantId, orderId) {
+    async function updateReviewUI(productId, variantId, orderId, itemId) {
+        const complexId = itemId ? `${orderId}_${itemId}` : orderId;
+        
         try {
             const review = await fetchReview(productId, variantId, orderId);
             if (review && review.id) {
-                updateReviewButton(orderId, review);
+                updateReviewButton(complexId, review);
+                
+                // Nếu đã đánh giá tất cả sản phẩm trong đơn hàng, cập nhật trạng thái nút đánh giá chính
+                updateOrderReviewStatus(orderId);
             }
         } catch (error) {
             console.error('Error updating review UI:', error);
+        }
+    }
+    
+    // Hàm kiểm tra và cập nhật trạng thái đánh giá của toàn đơn hàng
+    async function updateOrderReviewStatus(orderId) {
+        const orderModal = document.getElementById(`reviewOrderModal${orderId}`);
+        if (!orderModal) return;
+        
+        // Kiểm tra tất cả sản phẩm trong đơn hàng đã được đánh giá chưa
+        const productItems = orderModal.querySelectorAll('.product-item');
+        let allReviewed = true;
+        
+        for (const item of productItems) {
+            const reviewButton = item.querySelector('.btn-primary');
+            if (reviewButton) {
+                allReviewed = false;
+                break;
+            }
+        }
+        
+        // Nếu tất cả sản phẩm đã được đánh giá, cập nhật nút đánh giá chính
+        if (allReviewed) {
+            const mainReviewButton = document.querySelector(`button[data-bs-target="#reviewOrderModal${orderId}"]`);
+            const mainViewButton = document.querySelector(`button[data-bs-target="#viewOrderReviewModal${orderId}"]`);
+            
+            if (mainReviewButton && !mainViewButton) {
+                const viewReviewButton = document.createElement('button');
+                viewReviewButton.type = 'button';
+                viewReviewButton.className = 'btn btn-success rounded-pill px-3 me-2';
+                viewReviewButton.setAttribute('data-bs-toggle', 'modal');
+                viewReviewButton.setAttribute('data-bs-target', `#viewOrderReviewModal${orderId}`);
+                viewReviewButton.textContent = 'Xem đánh giá';
+                mainReviewButton.parentNode.replaceChild(viewReviewButton, mainReviewButton);
+            }
         }
     }
 
@@ -126,33 +179,38 @@ document.addEventListener('DOMContentLoaded', function() {
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const formId = this.closest('.modal').id;
-            if (submittingForms.has(formId)) {
+            const modalId = this.closest('.modal').id;
+            const { orderId, itemId } = parseComplexId(modalId.replace(/^(reviewProductModal|reviewOrderModal)/, ''));
+            
+            if (submittingForms.has(modalId)) {
                 return;
             }
 
             const submitButton = this.querySelector('button[type="submit"]');
             submitButton.disabled = true;
-            submittingForms.add(formId);
+            submittingForms.add(modalId);
 
             try {
                 const formData = new FormData(this);
                 const productId = formData.get('product_id');
                 const variantId = formData.get('variant_id');
-                const orderId = this.closest('.modal').id.replace('reviewOrderModal', '');
-                formData.append('order_id', orderId);
+                
+                // Đảm bảo order_id đã được đưa vào FormData
+                if (!formData.get('order_id')) {
+                    formData.append('order_id', orderId);
+                }
 
                 if (!formData.get('rating')) {
                     await showErrorMessage('Vui lòng chọn số sao đánh giá');
                     submitButton.disabled = false;
-                    submittingForms.delete(formId);
+                    submittingForms.delete(modalId);
                     return;
                 }
 
                 if (!formData.get('review')) {
                     await showErrorMessage('Vui lòng nhập nội dung đánh giá');
                     submitButton.disabled = false;
-                    submittingForms.delete(formId);
+                    submittingForms.delete(modalId);
                     return;
                 }
 
@@ -172,20 +230,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
 
                 // Đóng modal đánh giá
-                const modal = bootstrap.Modal.getInstance(document.getElementById(`reviewOrderModal${orderId}`));
+                const complexId = itemId ? `${orderId}_${itemId}` : orderId;
+                const modalSelector = itemId ? `reviewProductModal${complexId}` : `reviewOrderModal${orderId}`;
+                const modal = bootstrap.Modal.getInstance(document.getElementById(modalSelector));
                 if (modal) {
                     modal.hide();
                 }
 
                 // Cập nhật UI và hiển thị thông báo thành công
-                await updateReviewUI(productId, variantId, orderId);
+                await updateReviewUI(productId, variantId, orderId, itemId);
                 
                 // Đảm bảo chỉ hiển thị một thông báo tại một thời điểm
                 if (swalInstance) {
                     swalInstance.close();
                 }
                 
-                // Hiển thị thông báo thành công và sau đó reload trang
+                // Hiển thị thông báo thành công
                 swalInstance = await Swal.fire({
                     title: 'Thành công!',
                     text: 'Cảm ơn bạn đã đánh giá sản phẩm',
@@ -195,7 +255,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     allowOutsideClick: false
                 });
                 
-                // Reload trang sau khi thông báo được đóng
+                // Reload trang sau khi đánh giá thành công
                 window.location.reload();
 
             } catch (error) {
@@ -205,12 +265,72 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 swalInstance = await showErrorMessage(error.message || 'Có lỗi xảy ra khi thêm đánh giá');
                 submitButton.disabled = false;
-                submittingForms.delete(formId);
+                submittingForms.delete(modalId);
             }
         });
     });
+    
+    // Hàm kiểm tra xem tất cả sản phẩm trong đơn hàng đã được đánh giá chưa
+    async function checkAllProductsReviewed(orderId) {
+        const orderModal = document.getElementById(`reviewOrderModal${orderId}`);
+        if (!orderModal) return false;
+        
+        const productItems = orderModal.querySelectorAll('.product-item');
+        for (const item of productItems) {
+            const reviewButton = item.querySelector('.btn-primary');
+            if (reviewButton) {
+                // Còn sản phẩm chưa đánh giá
+                return false;
+            }
+        }
+        
+        return true;
+    }
 
-    // Thêm event listener cho nút xem đánh giá, tải dữ liệu theo yêu cầu (lazy loading)
+    // Thêm event listener cho nút xem đánh giá sản phẩm
+    document.querySelectorAll('button[data-bs-target^="#viewProductReviewModal"]').forEach(button => {
+        button.addEventListener('click', async function() {
+            const modalId = this.getAttribute('data-bs-target').replace('#viewProductReviewModal', '');
+            const { orderId, itemId } = parseComplexId(modalId);
+            
+            const modal = document.querySelector(`#viewProductReviewModal${modalId}`);
+            
+            if (modal) {
+                const productIdInput = modal.querySelector('input[name="product_id"]');
+                const variantIdInput = modal.querySelector('input[name="variant_id"]');
+                
+                if (productIdInput && variantIdInput) {
+                    const productId = productIdInput.value;
+                    const variantId = variantIdInput.value;
+                    
+                    try {
+                        // Hiển thị loading spinner trong modal
+                        const reviewContent = modal.querySelector(`.product-review-content-${orderId}-${itemId}`);
+                        if (reviewContent) {
+                            reviewContent.innerHTML = '<div class="d-flex justify-content-center p-4"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Đang tải...</span></div></div>';
+                        }
+                        
+                        const review = await fetchReview(productId, variantId, orderId);
+                        if (review) {
+                            updateProductReviewModal(modalId, review);
+                        } else {
+                            if (reviewContent) {
+                                reviewContent.innerHTML = '<div class="alert alert-info my-3">Không tìm thấy đánh giá cho sản phẩm này</div>';
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error loading review:', error);
+                        const reviewContent = modal.querySelector(`.product-review-content-${orderId}-${itemId}`);
+                        if (reviewContent) {
+                            reviewContent.innerHTML = '<div class="alert alert-danger my-3">Có lỗi xảy ra khi tải đánh giá</div>';
+                        }
+                    }
+                }
+            }
+        });
+    });
+    
+    // Thêm event listener cho nút xem tất cả đánh giá đơn hàng
     document.querySelectorAll('button[data-bs-target^="#viewOrderReviewModal"]').forEach(button => {
         button.addEventListener('click', async function() {
             const orderId = this.getAttribute('data-bs-target').replace('#viewOrderReviewModal', '');
@@ -218,32 +338,20 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (modal) {
                 const productItems = modal.querySelectorAll('.product-item');
-                if (productItems.length > 0) {
-                    const productId = productItems[0].querySelector('input[name="product_id"]')?.value;
-                    const variantId = productItems[0].querySelector('input[name="variant_id"]')?.value;
+                for (const item of productItems) {
+                    const productId = item.querySelector('input[name="product_id"]')?.value;
+                    const variantId = item.querySelector('input[name="variant_id"]')?.value;
                     
                     if (productId && variantId) {
                         try {
-                            // Hiển thị loading spinner trong modal
-                            const reviewContent = modal.querySelector('.review-content');
-                            if (reviewContent) {
-                                reviewContent.innerHTML = '<div class="d-flex justify-content-center p-4"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Đang tải...</span></div></div>';
-                            }
-                            
-                            const review = await fetchReview(productId, variantId, orderId);
-                            if (review) {
-                                updateViewReviewModal(orderId, review);
-                            } else {
-                                if (reviewContent) {
-                                    reviewContent.innerHTML = '<div class="alert alert-info my-3">Không tìm thấy đánh giá cho sản phẩm này</div>';
-                                }
+                            const reviewButton = item.querySelector('.btn-success');
+                            if (reviewButton) {
+                                // Kích hoạt sự kiện click để mở modal xem đánh giá sản phẩm
+                                reviewButton.click();
+                                break;  // Chỉ mở modal đầu tiên
                             }
                         } catch (error) {
-                            console.error('Error loading review:', error);
-                            const reviewContent = modal.querySelector('.review-content');
-                            if (reviewContent) {
-                                reviewContent.innerHTML = '<div class="alert alert-danger my-3">Có lỗi xảy ra khi tải đánh giá</div>';
-                            }
+                            console.error('Error loading order reviews:', error);
                         }
                     }
                 }
@@ -252,38 +360,45 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Hàm cập nhật nút đánh giá
-    function updateReviewButton(orderId, reviewData) {
-        const reviewButton = document.querySelector(`button[data-bs-target="#reviewOrderModal${orderId}"]`);
-        if (reviewButton) {
-            const viewReviewButton = document.createElement('button');
-            viewReviewButton.type = 'button';
-            viewReviewButton.className = 'btn btn-success rounded-pill px-3 me-2';
-            viewReviewButton.setAttribute('data-bs-toggle', 'modal');
-            viewReviewButton.setAttribute('data-bs-target', `#viewOrderReviewModal${orderId}`);
-            viewReviewButton.textContent = 'Xem đánh giá';
-            reviewButton.parentNode.replaceChild(viewReviewButton, reviewButton);
+    function updateReviewButton(complexId, reviewData) {
+        const { orderId, itemId } = parseComplexId(complexId);
+        
+        if (itemId) {
+            // Cập nhật nút đánh giá sản phẩm cụ thể
+            const reviewButton = document.querySelector(`button[data-bs-target="#reviewProductModal${complexId}"]`);
+            if (reviewButton) {
+                const viewReviewButton = document.createElement('button');
+                viewReviewButton.type = 'button';
+                viewReviewButton.className = 'btn btn-success rounded-pill px-3';
+                viewReviewButton.setAttribute('data-bs-toggle', 'modal');
+                viewReviewButton.setAttribute('data-bs-target', `#viewProductReviewModal${complexId}`);
+                viewReviewButton.textContent = 'Xem đánh giá';
+                reviewButton.parentNode.replaceChild(viewReviewButton, reviewButton);
+            }
+        } else {
+            // Cập nhật nút đánh giá đơn hàng
+            const reviewButton = document.querySelector(`button[data-bs-target="#reviewOrderModal${complexId}"]`);
+            if (reviewButton) {
+                const viewReviewButton = document.createElement('button');
+                viewReviewButton.type = 'button';
+                viewReviewButton.className = 'btn btn-success rounded-pill px-3 me-2';
+                viewReviewButton.setAttribute('data-bs-toggle', 'modal');
+                viewReviewButton.setAttribute('data-bs-target', `#viewOrderReviewModal${complexId}`);
+                viewReviewButton.textContent = 'Xem đánh giá';
+                reviewButton.parentNode.replaceChild(viewReviewButton, reviewButton);
+            }
         }
     }
 
-    // Hàm cập nhật modal xem đánh giá
-    function updateViewReviewModal(orderId, reviewData) {
-        const viewModal = document.querySelector(`#viewOrderReviewModal${orderId}`);
+    // Hàm cập nhật modal xem đánh giá sản phẩm cụ thể
+    function updateProductReviewModal(complexId, reviewData) {
+        const { orderId, itemId } = parseComplexId(complexId);
+        const viewModal = document.querySelector(`#viewProductReviewModal${complexId}`);
         if (!viewModal) return;
         
-        const reviewContent = viewModal.querySelector('.review-content');
+        const reviewContent = viewModal.querySelector(`.product-review-content-${orderId}-${itemId}`);
         if (!reviewContent) return;
         
-        // Hiển thị thông tin sản phẩm
-        const productItems = viewModal.querySelectorAll('.product-item');
-        let productName = '';
-        let productVariant = '';
-        
-        if (productItems.length > 0) {
-            const productItem = productItems[0];
-            productName = productItem.querySelector('h6')?.textContent || '';
-            productVariant = productItem.querySelector('.text-muted')?.textContent || '';
-        }
-
         let starsHtml = '';
         for (let i = 1; i <= 5; i++) {
             starsHtml += `<span class="star ${i <= reviewData.rating ? 'filled' : ''}">${i <= reviewData.rating ? '★' : '☆'}</span>`;
@@ -393,10 +508,16 @@ document.addEventListener('DOMContentLoaded', function() {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const viewButton = entry.target;
-                    const orderId = viewButton.getAttribute('data-bs-target')?.replace('#viewOrderReviewModal', '');
-                    if (orderId) {
-                        updateReviewButtonStatus(orderId);
-                        observer.unobserve(viewButton);
+                    const targetId = viewButton.getAttribute('data-bs-target');
+                    
+                    if (targetId && targetId.startsWith('#viewProductReviewModal')) {
+                        const complexId = targetId.replace('#viewProductReviewModal', '');
+                        const { orderId, itemId } = parseComplexId(complexId);
+                        
+                        if (orderId && itemId) {
+                            updateProductReviewStatus(orderId, itemId);
+                            observer.unobserve(viewButton);
+                        }
                     }
                 }
             });
@@ -406,7 +527,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Observe các nút "Xem đánh giá" 
-        document.querySelectorAll('button[data-bs-target^="#viewOrderReviewModal"]').forEach(button => {
+        document.querySelectorAll('button[data-bs-target^="#viewProductReviewModal"]').forEach(button => {
             reviewObserver.observe(button);
         });
     } else {
@@ -417,8 +538,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Xuất các hàm xử lý preview ra global scope
-    window.previewImages = function(input, orderId) {
-        const previewDiv = document.getElementById(`imagePreview${orderId}`);
+    window.previewImages = function(input, complexId) {
+        const previewDiv = document.getElementById(`imagePreview${complexId}`);
         const files = input.files;
 
         if (files) {
@@ -442,7 +563,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                         <button type="button" class="remove-preview btn btn-sm btn-danger position-absolute" 
                             style="top: -10px; right: -10px; border-radius: 50%; padding: 0.2rem 0.5rem;"
-                            onclick="window.removePreview(this, ${orderId})">×</button>
+                            onclick="window.removePreview(this, '${complexId}')">×</button>
                     `;
                     previewDiv.appendChild(previewItem);
                 }
@@ -451,8 +572,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    window.previewVideo = function(input, orderId) {
-        const previewDiv = document.getElementById(`videoPreview${orderId}`);
+    window.previewVideo = function(input, complexId) {
+        const previewDiv = document.getElementById(`videoPreview${complexId}`);
         const file = input.files[0];
 
         if (file) {
@@ -472,7 +593,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                     <button type="button" class="remove-preview btn btn-sm btn-danger position-absolute" 
                         style="top: -10px; right: -10px; border-radius: 50%; padding: 0.2rem 0.5rem;"
-                        onclick="window.removePreview(this, ${orderId})">×</button>
+                        onclick="window.removePreview(this, '${complexId}')">×</button>
                 `;
                 previewDiv.appendChild(previewItem);
             }
@@ -480,28 +601,28 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    window.removePreview = function(element, orderId) {
+    window.removePreview = function(element, complexId) {
         const previewItem = element.closest('.preview-item');
         const isVideo = previewItem.querySelector('video') !== null;
 
         // Reset input file tương ứng
         if (isVideo) {
-            const videoInput = document.getElementById(`videoUpload${orderId}`);
+            const videoInput = document.getElementById(`videoUpload${complexId}`);
             if (videoInput) {
                 videoInput.value = '';
             }
         } else {
-            const imageInput = document.getElementById(`imageUpload${orderId}`);
+            const imageInput = document.getElementById(`imageUpload${complexId}`);
             if (imageInput) {
                 // Tạo một input file mới để reset
                 const newImageInput = document.createElement('input');
                 newImageInput.type = 'file';
-                newImageInput.id = `imageUpload${orderId}`;
+                newImageInput.id = `imageUpload${complexId}`;
                 newImageInput.name = 'images[]';
                 newImageInput.multiple = true;
                 newImageInput.accept = 'image/*';
                 newImageInput.className = 'd-none';
-                newImageInput.setAttribute('onchange', `window.previewImages(this, ${orderId})`);
+                newImageInput.setAttribute('onchange', `window.previewImages(this, '${complexId}')`);
                 imageInput.parentNode.replaceChild(newImageInput, imageInput);
             }
         }
@@ -537,4 +658,4 @@ document.addEventListener('DOMContentLoaded', function() {
     // Khởi chạy hàm theo dõi ban đầu
     const debouncedCheckReviewStatus = debounce(checkReviewStatus, 300);
     debouncedCheckReviewStatus();
-}); 
+});
